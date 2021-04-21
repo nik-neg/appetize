@@ -1,25 +1,14 @@
 const db = require('./db');
-// const User = require('./DailyTreat');
+
+const Dish = require('./Dish').Schema;
 
 const DailyTreatSchema = new db.mongoose.Schema({
   userID: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'User' }],
   zipCode: Number, // String
-  breakFast: {
-    title: String,
-    image: { data: Buffer, contentType: String },
-    description: String, // limitation to x char ?
-  },
-  lunch: {
-    title: String,
-    image: { data: Buffer, contentType: String },
-    description: String, // limitation to x char ?
-  },
-  dinner: {
-    title: String,
-    image: { data: Buffer, contentType: String },
-    description: String, // limitation to x char ?
-  },
-  created: Date, // new Date(),
+  breakFast: Dish,
+  lunch: Dish,
+  dinner: Dish,
+  created: Date,
   updated: Date,
 });
 

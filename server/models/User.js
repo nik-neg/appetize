@@ -5,14 +5,17 @@ const UserSchema = new db.mongoose.Schema({
   avatarImage: { data: Buffer, contentType: String },
   firstName: String,
   lastName: String,
-  email: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   password: String,
   dailyFood: [DailyTreat],
   age: Number, // Date ? -> calend
   zipCode: Number, // String ?
   voted: Boolean, // {up: bool, down: bool} ?
   liked: [DailyTreat],
-  isSelfCoocked: Boolean,
   created: Date, // new Date(),
   updated: Date,
 
