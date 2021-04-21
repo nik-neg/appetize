@@ -5,7 +5,6 @@ const User = require('../models/User');
 const saltRounds = 10;
 
 module.exports.createUser = async (req, res) => {
-  console.log(req.body)
   const {
     firstName, lastName, email, password,
   } = req.body;
@@ -42,6 +41,7 @@ module.exports.loginUser = async (req, res) => {
     });
     const checkedPassword = await bcrypt.compare(password, user.password);
     if (!checkedPassword) throw new Error();
+    console.log(user)
     res.status(200).send(user);
   } catch (error) {
     res

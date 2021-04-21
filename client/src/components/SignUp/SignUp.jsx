@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LOGIN_MESSAGE = {isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register'}
 export default function SignUp() {
   const classes = useStyles();
 
@@ -58,10 +59,12 @@ export default function SignUp() {
     lastName: '',
     email: '',
     password: '',
+    isUser: false,
+    isUserMessage: LOGIN_MESSAGE['isNewUser'],
     error: '',
   });
 
-  const handleClick = async (event) => {
+  const handleRegister = async (event) => {
     const registerResponse = await ApiClient.registerUser(input);
     console.log(registerResponse)
     if(registerResponse.error === '409' ) {
@@ -70,6 +73,23 @@ export default function SignUp() {
     }
     event.preventDefault();
   }
+
+  const handleLogIn = async () => {
+
+    setInput({
+      isUser: !input.isUser,
+      isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser']
+    });
+
+    // const loginResponse = await ApiClient.loginUser(input);
+    // console.log(loginResponse)
+    // if(loginResponse.error === '401' ) {
+    //   setInput('');
+    //   setInput({error: loginResponse.message})
+    // }
+    // event.preventDefault();
+  }
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInput((prevInput) => ({ ...prevInput, [name]: value }));
@@ -94,33 +114,37 @@ export default function SignUp() {
         {/* action="/action_page.php" onSubmit={handleClick} */}
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                onChange={handleChange}
-                value={input.firstName}
-              />
+            {!input.isUser ?
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  onChange={handleChange}
+                  value={input.firstName}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  onChange={handleChange}
+                  value={input.lastName}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                onChange={handleChange}
-                value={input.lastName}
-              />
-            </Grid>
+            : ''}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -162,14 +186,14 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleClick}
+            onClick={handleRegister}
           >
-            Sign Up
+          {input.isUser ? 'Sign in' : 'Sign up'}
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
+              <Link href="#" variant="body2" onClick={handleLogIn}>
+                {input.isUserMessage}
               </Link>
             </Grid>
           </Grid>
