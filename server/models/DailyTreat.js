@@ -1,6 +1,6 @@
 const db = require('./db');
 
-const Dish = require('./Dish').Schema;
+const Dish = require('./Dish').schema;
 
 const DailyTreatSchema = new db.mongoose.Schema({
   userID: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'User' }],

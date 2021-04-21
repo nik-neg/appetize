@@ -4,8 +4,10 @@
         "commonjs": true,
         "es2021": true
     },
-    "extends": "airbnb",
-
+    "extends": [
+        "eslint:recommended",
+        "airbnb"
+    ],
     "parserOptions": {
         "ecmaVersion": 12
     },

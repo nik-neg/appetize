@@ -11,6 +11,7 @@ const UserSchema = new db.mongoose.Schema({
     unique: true,
   },
   password: String,
+  nikName: String,
   dailyFood: [DailyTreat],
   age: Number, // Date ? -> calend
   zipCode: Number, // String ?
