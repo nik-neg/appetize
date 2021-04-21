@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
-export default function RegisterLogin ({isUserForRouting, onRegister}) {
+export default function RegisterLogin ({isUserForRouting, onRegister, onLogin }) {
   const classes = useStyles();
 
   const [input, setInput] = useState({
@@ -59,36 +59,45 @@ export default function RegisterLogin ({isUserForRouting, onRegister}) {
     lastName: '',
     email: '',
     password: '',
-    isUser: isUserForRouting,
+    isUser: isUserForRouting.isUser,
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
 
-  const handleRegister = async (event) => {
-    const registerResponse = await ApiClient.registerUser(input);
-    console.log(registerResponse)
-    if(registerResponse.error === '409' ) {
-      setInput('');
-      setInput({error: registerResponse.message})
-    }
+  const handleRegisterOrLogin = async (event) => {
     event.preventDefault();
+
+    console.log(input, input.isUser)
+    if(!input.isUser) {
+      console.log("REGISTER")
+      const registerResponse = await ApiClient.registerUser(input);
+      console.log(registerResponse)
+      if(registerResponse.error === '409' ) {
+        setInput('');
+        setInput({error: registerResponse.message})
+      }
+    } else {
+      console.log("LOGIN REACT")
+      const loginResponse = await ApiClient.loginUser(input);
+      console.log("CLIENT LOGIN RESPONSE")
+      console.log(loginResponse)
+      if(loginResponse.error === '401' ) {
+        setInput('');
+        setInput({error: loginResponse.message})
+      } else {
+        onLogin(loginResponse._id);
+      }
+    }
   }
 
 
-  const handleLogIn = async () => {
+  const handleLogIn = async (event) => {
     // console.log('login', input.isUser)
     setInput({
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser']
     });
     onRegister(input.isUser);
-
-    const loginResponse = await ApiClient.loginUser(input);
-    console.log(loginResponse)
-    if(loginResponse.error === '401' ) {
-      setInput('');
-      setInput({error: loginResponse.message})
-    }
     event.preventDefault();
   }
 
@@ -114,7 +123,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister}) {
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             {!input.isUser ?
-            <Grid container spacing={2}>
+            <>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="fname"
@@ -142,7 +151,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister}) {
                   value={input.lastName}
                 />
               </Grid>
-            </Grid>
+            </>
             : ''}
             <Grid item xs={12}>
               <TextField
@@ -185,7 +194,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister}) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleRegister}
+            onClick={handleRegisterOrLogin}
           >
           {input.isUser ? 'Sign in' : 'Sign up'}
           </Button>

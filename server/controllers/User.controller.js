@@ -5,6 +5,7 @@ const User = require('../models/User');
 const saltRounds = 10;
 
 module.exports.createUser = async (req, res) => {
+  console.log(req.body)
   const {
     firstName, lastName, email, password,
   } = req.body;
@@ -34,6 +35,8 @@ module.exports.createUser = async (req, res) => {
 };
 
 module.exports.loginUser = async (req, res) => {
+  console.log("LOGIN SERVER")
+  console.log(req.body)
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -41,11 +44,24 @@ module.exports.loginUser = async (req, res) => {
     });
     const checkedPassword = await bcrypt.compare(password, user.password);
     if (!checkedPassword) throw new Error();
-    console.log(user)
+    console.log("REDIRECT")
     res.status(200).send(user);
+    // res.redirect('/profile/'+user._id)
   } catch (error) {
     res
       .status(401)
       .send({ error: '401', message: 'Username or password is incorrect' });
   }
 };
+
+module.exports.showProfile = async (req, res) => {
+  console.log('PROFILE');
+  console.log(req.params)
+  let user = await User.findOne({
+    _id: req.params.id
+  });
+  console.log(user)
+  res.status(200).send(user);
+
+
+}
