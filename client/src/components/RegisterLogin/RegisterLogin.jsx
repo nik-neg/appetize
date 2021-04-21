@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LOGIN_MESSAGE = {isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register'}
-export default function SignUp() {
+const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
+export default function RegisterLogin ({isUserForRouting, onRegister}) {
   const classes = useStyles();
 
   const [input, setInput] = useState({
@@ -59,8 +59,8 @@ export default function SignUp() {
     lastName: '',
     email: '',
     password: '',
-    isUser: false,
-    isUserMessage: LOGIN_MESSAGE['isNewUser'],
+    isUser: isUserForRouting,
+    isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
 
@@ -74,20 +74,22 @@ export default function SignUp() {
     event.preventDefault();
   }
 
-  const handleLogIn = async () => {
 
+  const handleLogIn = async () => {
+    // console.log('login', input.isUser)
     setInput({
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser']
     });
+    onRegister(input.isUser);
 
-    // const loginResponse = await ApiClient.loginUser(input);
-    // console.log(loginResponse)
-    // if(loginResponse.error === '401' ) {
-    //   setInput('');
-    //   setInput({error: loginResponse.message})
-    // }
-    // event.preventDefault();
+    const loginResponse = await ApiClient.loginUser(input);
+    console.log(loginResponse)
+    if(loginResponse.error === '401' ) {
+      setInput('');
+      setInput({error: loginResponse.message})
+    }
+    event.preventDefault();
   }
 
   const handleChange = (event) => {
@@ -100,13 +102,10 @@ export default function SignUp() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar
-        // className={classes.avatar}
-        // className={classes.small}
           style={{ height: '100px', width: '100px' }}
           alt="Remy Sharp"
           src={Logo}
         >
-          {/* <LockOutlinedIcon /> */}
         </Avatar>
         <Typography component="h1" variant="h3" style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>
           Appetize
