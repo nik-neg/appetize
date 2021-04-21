@@ -5,6 +5,7 @@ const User = require('../models/User');
 const saltRounds = 10;
 
 module.exports.createUser = async (req, res) => {
+  console.log(req.body)
   const {
     firstName, lastName, email, password,
   } = req.body;
