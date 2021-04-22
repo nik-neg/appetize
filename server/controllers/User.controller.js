@@ -29,6 +29,7 @@ module.exports.createUser = async (req, res) => {
     });
     user = await newUser.save();
     res.status(201).send(user);
+    // res.redirect('/login')
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
   }
@@ -55,6 +56,7 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.showProfile = async (req, res) => {
+  console.log(req)
   console.log('PROFILE');
   console.log(req.params)
   let user = await User.findOne({

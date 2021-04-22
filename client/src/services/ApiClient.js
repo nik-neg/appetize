@@ -40,4 +40,17 @@ const getProfile = (id) => {
     .catch((err) => console.log(err));
 };
 
-  module.exports = { loginUser, registerUser, getProfile };
+const uploadImage = (files) => {
+  var formData = new FormData();
+  formData.append('file', files[0]);
+
+  return fetch(`${baseUrl}/profile`, {
+    method: 'POST',
+    body: formData
+  })
+    .then((data) => data.json())
+    .then((user) => user)
+    .catch((err) => console.log(err));
+}
+
+  module.exports = { loginUser, registerUser, getProfile, uploadImage };

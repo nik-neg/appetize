@@ -75,6 +75,8 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
       if(registerResponse.error === '409' ) {
         setInput('');
         setInput({error: registerResponse.message})
+      } else {
+        onLogin(registerResponse._id);
       }
     } else {
       console.log("LOGIN REACT")
@@ -92,13 +94,14 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
 
 
   const handleLogIn = async (event) => {
+    event.preventDefault();
     // console.log('login', input.isUser)
     setInput({
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser']
     });
     onRegister(input.isUser);
-    event.preventDefault();
+    // event.preventDefault();
   }
 
   const handleChange = (event) => {
