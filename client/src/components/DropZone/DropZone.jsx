@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+import ApiClient from '../../services/ApiClient';
+
 import Box from '@material-ui/core/Box';
 // import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,7 +25,7 @@ import Box from '@material-ui/core/Box';
 //   },
 // }));
 
-export default function DropZone () {
+export default function DropZone (props) {
 
   // const classes = useStyles();
 
@@ -52,6 +54,13 @@ export default function DropZone () {
       </IconButton>
     </>
   );
+
+  const handleSave = async () => {
+    console.log("HANDLE SAVE")
+    console.log(fileObjects['0'])
+    const uploadReponse = await ApiClient.uploadImage(props.id, fileObjects['0']);
+    console.log(uploadReponse)
+  }
 
   // const [files, setFiles] = useState([]);
   const handleDelete = deleted => {
@@ -136,6 +145,7 @@ export default function DropZone () {
         onClose={() => setOpen(false)}
         onSave={() => {
           console.log('onSave', fileObjects);
+          handleSave();
           setOpen(false);
         }}
         showPreviews={true}

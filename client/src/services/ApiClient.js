@@ -40,16 +40,30 @@ const getProfile = (id) => {
     .catch((err) => console.log(err));
 };
 
-const uploadImage = (files) => {
+const uploadImage = (id, data) => {
+  console.log(id, data.file)
   var formData = new FormData();
-  formData.append('file', files[0]);
+  formData.append('file', data.file); // image
+  console.log(formData)
 
-  return fetch(`${baseUrl}/profile`, {
-    method: 'POST',
-    body: formData
-  })
-    .then((data) => data.json())
-    .then((user) => user)
+  return fetch(`${baseUrl}/profile/${id}/upload`,
+    {
+      method: 'POST',
+      // headers: { 'Content-Type': 'multipart/form-data' },
+      body: formData //JSON.stringify(user),
+    }
+
+//     body: JSON.stringify(data),
+//   }
+// )
+//   .then((data) => data.json())
+//   .then((userData) => userData)
+//   .catch((err) => console.log(err));
+
+    // body: formData
+  )
+    .then((imageData) => imageData)
+    .then((imageData) => imageData)
     .catch((err) => console.log(err));
 }
 

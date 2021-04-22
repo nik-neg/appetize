@@ -3,11 +3,15 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+const bodyParser = require('body-parser')
+
 const router = require('./router');
 
 const db = require('./models/db');
 
 app.use(cors())
+  .use(bodyParser())
+  .use(express.urlencoded({ extended: true }))
   .use(express.json())
   .use(router);
 

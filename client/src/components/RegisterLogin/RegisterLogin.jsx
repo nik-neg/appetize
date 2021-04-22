@@ -16,6 +16,11 @@ import Logo from './logo.jpg';
 
 import ApiClient from '../../services/ApiClient';
 
+// import { BrowserRouter as Router } from 'react-router-dom';
+// import { Switch, Route } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -51,8 +56,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
+// const ROUTE = {REGISTER: '/register', LOGIN: '/login'};
 export default function RegisterLogin ({isUserForRouting, onRegister, onLogin }) {
   const classes = useStyles();
+  // const history = useHistory();
 
   const [input, setInput] = useState({
     firstName: '',
@@ -63,6 +70,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
+  // const [route, setRoute] = useState(ROUTE['REGISTER']);
 
   const handleRegisterOrLogin = async (event) => {
     event.preventDefault();
@@ -96,10 +104,13 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
   const handleLogIn = async (event) => {
     event.preventDefault();
     // console.log('login', input.isUser)
+    // setRoute(!input.isUser ? ROUTE['REGISTER']: ROUTE['LOGIN'])
     setInput({
       isUser: !input.isUser,
-      isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser']
+      isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser'],
     });
+    // console.log(route);
+    // history.push(route)
     onRegister(input.isUser);
     // event.preventDefault();
   }
@@ -206,6 +217,9 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
               <Link href="#" variant="body2" onClick={handleLogIn}>
                 {input.isUserMessage}
               </Link>
+              {/* <Router>
+                <Link to="/" onClick={(e) => handleLogIn(e)}>{input.isUserMessage}</Link>
+              </Router> */}
             </Grid>
           </Grid>
         </form>

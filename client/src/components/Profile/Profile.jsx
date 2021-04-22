@@ -13,7 +13,7 @@ export default function Profile ({id}) {
   return (
     <div>
       Hello {userData.firstName}
-      <DropZone/>
+      <DropZone id={id}/>
     </div>
   );
 }
