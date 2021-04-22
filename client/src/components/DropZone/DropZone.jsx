@@ -12,6 +12,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import ApiClient from '../../services/ApiClient';
 
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+
+import Card from '../Card/Card'
+
 // import { makeStyles } from '@material-ui/core/styles';
 
 // const useStyles = makeStyles((theme) => ({
@@ -67,63 +71,94 @@ export default function DropZone (props) {
     setFileObjects(fileObjects.filter(f => f !== deleted));
   };
 
-
   return (
-    // <DropzoneAreaBase
-    //   fileObjects={files}
-    //   onAdd={handleAdd}
-    //   onDelete={handleDelete}
-    // />
-
-    // <DropzoneArea
-    //   acceptedFiles={['image/*']}
-    //   dropzoneText={"Drag and drop an image here or click"}
-    //   onChange={(files) => console.log('Files:', files)}
-    // />
-
     <div>
-      <div className="button-box">
-        <Box component="span" display="block">
-          <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setOpen(true)}
-          startIcon={<CloudUploadIcon />}
-          style={upLoadButtonStyle}
-          >
-            Breakfast
-          </Button>
-        </Box>
-      </div>
+      <Grid
+        container
+        spacing={6}
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        style={{"padding-left": "5%", "padding-top": "2%"}}
+      >
+        <Grid item xs={6}>
+          <div className="button-box">
+            <Box component="span" display="block">
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+              startIcon={<CloudUploadIcon />}
+              style={upLoadButtonStyle}
+              >
+              Breakfast
+              </Button>
+            </Box>
+          </div>
+        </Grid>
+        <Grid
+        container
+        spacing={6}
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+        style={{"padding-left": "25%",  "position": "absolute"}}
+      >
+        <Grid item xs={6}>
+          <Card/>
+        </Grid>
+      </Grid>
+      </Grid>
 
-      <div className="button-box">
-        <Box component="span" display="block">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpen(true)}
-            startIcon={<CloudUploadIcon />}
-            style={upLoadButtonStyle}
-            >
-            Lunch
-          </Button>
-        </Box>
-      </div>
+      <Grid
+        container
+        spacing={6}
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        style={{"padding-left": "5%", "padding-top": "2%"}}
+      >
+        <Grid item xs={6}>
+          <div className="button-box">
+            <Box component="span" display="block">
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+              startIcon={<CloudUploadIcon />}
+              style={upLoadButtonStyle}
+              >
+              Lunch
+              </Button>
+            </Box>
+          </div>
+        </Grid>
+      </Grid>
 
-      <div className="button-box">
-        <Box component="span" display="block">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpen(true)}
-            startIcon={<CloudUploadIcon />}
-            style={upLoadButtonStyle}
-            >
-            Dinner
-          </Button>
-        </Box>
-      </div>
-
+      <Grid
+        container
+        spacing={6}
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        style={{"padding-left": "5%", "padding-top": "2%"}}
+      >
+        <Grid item xs={6}>
+          <div className="button-box">
+            <Box component="span" display="block">
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+              startIcon={<CloudUploadIcon />}
+              style={upLoadButtonStyle}
+              >
+              Dinner
+              </Button>
+            </Box>
+          </div>
+        </Grid>
+      </Grid>
 
       <DropzoneDialogBase
         dialogTitle={dialogTitle()}

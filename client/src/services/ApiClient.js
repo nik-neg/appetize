@@ -41,7 +41,7 @@ const getProfile = (id) => {
 };
 
 const uploadImage = (id, data) => {
-  console.log(id, data.file)
+  console.log(id, data.file, data.file.name)
   var formData = new FormData();
   formData.append('file', data.file); // image
   console.log(formData)
@@ -52,19 +52,23 @@ const uploadImage = (id, data) => {
       // headers: { 'Content-Type': 'multipart/form-data' },
       body: formData //JSON.stringify(user),
     }
-
-//     body: JSON.stringify(data),
-//   }
-// )
-//   .then((data) => data.json())
-//   .then((userData) => userData)
-//   .catch((err) => console.log(err));
-
-    // body: formData
   )
     .then((imageData) => imageData)
     .then((imageData) => imageData)
     .catch((err) => console.log(err));
 }
+
+// const displayImage = (id) => {
+//   console.log("GET IMAGE BY CLIENT")
+//   return fetch(`${baseUrl}/profile/${id}/upload`,
+//     {
+//       method: 'GET',
+//       headers: { 'Content-Type': 'application/json' },
+//     }
+//   )
+//     .then((data) => data.json())
+//     .then((user) => user)
+//     .catch((err) => console.log(err));
+// };
 
   module.exports = { loginUser, registerUser, getProfile, uploadImage };

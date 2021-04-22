@@ -9,16 +9,18 @@ var storage = new GridFsStorage({
     const match = ["image/png", "image/jpeg"]; // /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/
 
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${Date.now()}-userid-${file.originalname}`;
+      const filename = `${req.params.id}`; // id of user is filename
       return filename;
     }
 
     return {
-      bucketName: "photos",
-      filename: `${Date.now()}-userid-${file.originalname}`
+      bucketName: "fs",
+      filename: `${req.params.id}` // id of user is filename
     };
   }
 });
+
+
 
 // var uploadFiles = multer({ storage: storage }).array("multi-files", 10);
 var uploadFiles = multer({ storage: storage }).single("file");

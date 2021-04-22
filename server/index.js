@@ -10,6 +10,7 @@ const router = require('./router');
 const db = require('./models/db');
 
 app.use(cors())
+  // .use("/", express.static(__dirname + '/index.html'))
   .use(bodyParser())
   .use(express.urlencoded({ extended: true }))
   .use(express.json())

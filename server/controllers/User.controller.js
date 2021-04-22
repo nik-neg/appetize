@@ -1,11 +1,17 @@
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
-const Dish = require('../models/Dish')
 
 const upload = require("../middleware/upload");
 
+const db = require('../models/db');
+
 const saltRounds = 10;
+
+const mongodb = require('mongodb');
+const mongoose = require('mongoose');
+
+var gridfs = require('gridfs-stream');
 
 module.exports.createUser = async (req, res) => {
   console.log(req.body)
@@ -70,7 +76,7 @@ module.exports.showProfile = async (req, res) => {
 }
 
 module.exports.saveImage = async (req, res) => {
-  console.log(req, req.data, req.body)
+  console.log(req, req.body, req.params.id, req.params.imageName, req.url)
   console.log('SAVE IMAGE');
 
   const title ="TestImage"
@@ -80,13 +86,13 @@ module.exports.saveImage = async (req, res) => {
 
   try {
     await upload(req, res);
-    console.log(req.files);
+    // await retrieveImage(req, res);
+    console.log(req.file);
 
-    if (!req.files || req.files.length <= 0) {
+    if (!req.file || req.file.length <= 0) {
       return res.send(`You must select at least 1 file.`);
     }
-
-    return res.send(`Files have been uploaded.`);
+    // return res.send(`Files have been uploaded.`);
 
     // console.log(req.file);
 
@@ -105,6 +111,21 @@ module.exports.saveImage = async (req, res) => {
 
     // return res.send(`Error when trying upload image: ${error}`);
   }
-
 }
 
+
+module.exports.retrieveImage = async (req, res) => {
+  console.log("RETRIEVE IMAGE")
+  gridfs.mongo = mongoose.mongo;
+  var connection = mongoose.connection;
+  var gfs = gridfs(connection.db);
+
+  gfs.exist({ filename: '60819a99d074173a3128eda0' }, function (err, file) { // req.params.id
+            if (err || !file) {
+                res.send('File Not Found');
+            } else {
+                var readstream = gfs.createReadStream({ filename: '60819a99d074173a3128eda0' });
+                readstream.pipe(res);
+            }
+        });
+}
