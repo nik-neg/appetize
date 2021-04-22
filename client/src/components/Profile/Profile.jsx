@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ApiClient from '../../services/ApiClient';
+import DropZone from '../DropZone/DropZone';
 
 export default function Profile ({id}) {
   const [userData, setUserData] = useState({});
@@ -11,7 +12,8 @@ export default function Profile ({id}) {
 
   return (
     <div>
-      {userData.firstName}
+      Hello {userData.firstName}
+      <DropZone/>
     </div>
   );
 }

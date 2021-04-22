@@ -28,7 +28,7 @@ const loginUser = (user) => {
 };
 
 const getProfile = (id) => {
-  // console.log(user)
+  console.log("GET PROFILE BY CLIENT")
   return fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'GET',
