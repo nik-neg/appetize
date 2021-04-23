@@ -9,6 +9,8 @@ import DropZone from '../DropZone/DropZone';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 
 import { TextField } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
 
 import Card from '../Card/Card'
 
@@ -42,8 +44,16 @@ const useStylesGrid = makeStyles((theme) => ({
   },
 }));
 
+const useStylesSaveButton = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
 
 export default function Profile ({id}) {
+  const classes = useStylesSaveButton();
+
   const CHARACTER_LIMIT_TITLE = 10;
   const [zipCode, setZipCode] = useState('');
   const [userData, setUserData] = useState({});
@@ -99,6 +109,18 @@ export default function Profile ({id}) {
             InputProps={{ classes: { input: styles.someTextField } }}
           />
         </Grid>
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            className={classes.button}
+            startIcon={<SaveIcon />}
+          >
+            Save
+          </Button>
+        </Grid>
+
       </Grid>
       <DropZone id={id}/>
       {/* <Grid item xs={6}>
