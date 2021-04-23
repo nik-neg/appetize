@@ -134,3 +134,7 @@ module.exports.retrieveImage = async (req, res) => {
     }
   });
 }
+
+module.exports.publishDish = async () => {
+  console.log("PUBLISH DISH")
+}

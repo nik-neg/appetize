@@ -1,0 +1,71 @@
+import React from 'react';
+import './index.css'
+// import { makeStyles } from '@material-ui/core/styles';
+// import Paper from '@material-ui/core/Paper';
+// import Grid from '@material-ui/core/Grid';
+
+import { useState } from 'react';
+import { TextField } from '@material-ui/core';
+import Slider from '../Slider/Slider';
+import CheckBox from '../CheckBox/CheckBox';
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//   },
+//   paper: {
+//     padding: theme.spacing(2),
+//     textAlign: 'center',
+//     color: theme.palette.text.secondary,
+//   },
+// }));
+
+export default function LocalDishesDashboard () {
+  // const classes = useStyles();
+  const CHARACTER_LIMIT_TITLE = 10;
+  const [zipCode, setZipCode] = useState('');
+
+  const handleChange = (event) => {
+    setZipCode(event.target.value);
+    console.log(zipCode)
+  }
+
+  const styles = {
+    someTextField: {
+      minHeight: 420,
+      minWidth: 800,
+      paddingTop: "10%"
+    }
+  };
+
+  return (
+    <div className='dashboard-header'>
+      <div className='dashboard-header-column'>
+
+      </div>
+      <div className='dashboard-header-column'>
+      <TextField
+        id="standard-basic"
+        label="ZIP CODE"
+        inputProps={{
+          maxlength: CHARACTER_LIMIT_TITLE
+        }}
+        value={zipCode}
+        helperText={`${zipCode.length}/${CHARACTER_LIMIT_TITLE}`}
+        style={{"margin-top": "2.5%", "max-width": "6rem"}}
+        variant="filled"
+        onChange={handleChange}
+        InputProps={{ classes: { input: styles.someTextField } }}
+        />
+        <div className='center-element'>
+          <Slider/>
+        </div>
+        <div className='center-element'>
+          <CheckBox />
+        </div>
+      </div>
+      <div className='dashboard-header-column'>
+      </div>
+    </div>
+  );
+}

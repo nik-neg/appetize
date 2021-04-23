@@ -29,6 +29,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
+import SearchIcon from '@material-ui/icons/Search';
+
 // import {  withStyles } from '@material-ui/core/styles';
 // import Icon from '@material-ui/core/Icon';
 
@@ -98,10 +100,10 @@ export default function DropZone (props) {
 
   // const ColorButton = withStyles(() => ({
   //   root: {
-  //     color: "#bdd2b6",
-  //     backgroundColor: "#966c3b",
+  //     color: "#FFFFFF",
+  //     backgroundColor: "#B8B8B8",
   //     '&:hover': {
-  //       backgroundColor: "#966c3b",
+  //       backgroundColor: "#B8B8B8",
   //     },
   //   },
   // }))(Button);
@@ -178,7 +180,21 @@ export default function DropZone (props) {
               startIcon={<CloudUploadIcon />}
               style={upLoadButtonStyle}
               >
-              Meal of the Day
+              Daily Treat
+              </Button>
+            </Box>
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div className="button-box">
+            <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
+              <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SearchIcon />}
+              style={upLoadButtonStyle}
+              >
+              Hall of Fame
               </Button>
             </Box>
           </div>
