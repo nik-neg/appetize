@@ -51,13 +51,22 @@ import FadeIn from 'react-fade-in';
 
 export default function DropZone (props) {
   // const classes = useStyles();
-
+  const CHARACTER_LIMIT_TITLE = 20;
+  const CHARACTER_LIMIT_DESCRIPTION = 140;
+  const CHARACTER_LIMIT_RECIPE = 500;
   const [imagePath, setImagePath] = useState(``);
+
+  const [input, setInput] = useState({
+    title: "",
+    description: "",
+    recipe: ""
+  });
 
   const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
   const styles = {
     someTextField: {
       minHeight: 420,
+      minWidth: 800,
       paddingTop: "10%"
     }
   };
@@ -93,6 +102,17 @@ export default function DropZone (props) {
   const handleDelete = deleted => {
     setFileObjects(fileObjects.filter(f => f !== deleted));
   };
+
+  const handleChange = name => (event) => {
+    // const { name, value } = event.target;
+    // setInput((prevInput) => ({ ...prevInput, [name]: value }));
+    setInput((prevValue) => ({ ...prevValue, [name]: event.target.value }));
+    console.log(input)
+  }
+
+  // const handleChange = name => event => {
+  //   setValues({ ...values, [name]: event.target.value });
+  // };
 
   return (
     <div>
@@ -149,18 +169,65 @@ export default function DropZone (props) {
         { imagePath.length > 0 ?
           <FadeIn delay={1000} transitionDuration={1000}>
             <TextField
-                id="standard-basic"
-                label="Description"
-                style={{"margin-left": "75%", "margin-top": "2.5%"}}
-                multiline
-                rowsMax="10"
-                variant="filled"
-                InputProps={{ classes: { input: styles.someTextField } }}
+              id="standard-basic"
+              label="Title"
+              inputProps={{
+                maxlength: CHARACTER_LIMIT_TITLE
+              }}
+              value={input.title}
+              helperText={`${input.title.length}/${CHARACTER_LIMIT_TITLE}`}
+              style={{"margin-left": "75%", "margin-top": "2.5%"}}
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChange('title')}
+              InputProps={{ classes: { input: styles.someTextField } }}
             />
           </FadeIn>
           : ''}
-
         </Grid>
+        <Grid item xs={6}>
+        { imagePath.length > 0 ?
+          <FadeIn delay={2000} transitionDuration={1000}>
+            <TextField
+              id="standard-basic"
+              label="Description"
+              inputProps={{
+                maxlength: CHARACTER_LIMIT_DESCRIPTION
+              }}
+              value={input.description}
+              helperText={`${input.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
+              style={{"margin-left": "75%", "margin-top": "2.5%"}}
+              multiline
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChange('description')}
+              InputProps={{ classes: { input: styles.someTextField } }}
+            />
+          </FadeIn>
+          : ''}
+        </Grid>
+        <Grid item xs={6}>
+        { imagePath.length > 0 ?
+          <FadeIn delay={3000} transitionDuration={1000}>
+            <TextField
+              id="standard-basic"
+              label="Recipe"
+              inputProps={{
+                maxlength: CHARACTER_LIMIT_RECIPE
+              }}
+              value={input.recipe}
+              helperText={`${input.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+              style={{"margin-left": "75%", "margin-top": "2.5%"}}
+              multiline
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChange('recipe')}
+              InputProps={{ classes: { input: styles.someTextField } }}
+            />
+          </FadeIn>
+          : ''}
+        </Grid>
+        {/* <Card/> */}
 
       <DropzoneDialogBase
         dialogTitle={dialogTitle()}

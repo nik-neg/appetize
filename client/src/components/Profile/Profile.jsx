@@ -60,7 +60,7 @@ export default function Profile ({id}) {
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{"padding-left": "10%", "padding-top": "5%"}}
+        style={{"padding-left": "11%", "padding-top": "5%"}}
       >
         <Grid item xs={6}>
           <h1>{userData.firstName}</h1>
