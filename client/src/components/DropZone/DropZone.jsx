@@ -15,7 +15,7 @@ import ApiClient from '../../services/ApiClient';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
-// import Image from 'material-ui-image'
+import Image from 'material-ui-image'
 
 // import Card from '../Card/Card'
 
@@ -66,7 +66,7 @@ export default function DropZone (props) {
     </>
   );
 
-  const handleSave = async () => {
+  const handleUpload = async () => {
     console.log("HANDLE SAVE")
     // console.log(fileObjects['0'])
     const uploadReponse = await ApiClient.uploadImage(props.id, fileObjects['0']);
@@ -75,7 +75,7 @@ export default function DropZone (props) {
     // setImageSaved(true);
   }
 
-  const handleUpload = async () => {
+  const handleDownload = async () => {
     console.log("DOWNLOAD IMAGE")
     const downloadResponse = await ApiClient.displayImage(props.id);
     console.log("DOWNLOAD RESPONSE")
@@ -117,12 +117,12 @@ export default function DropZone (props) {
               imageStyle={{width:500, height:300}}
               style={{"backgroundColor": "inherit"}}
             /> : ''} */}
-            {/* <Image src={`http://localhost:3001/profile/${props.id}/download`}
+            <Image src={imagePath}
               imageStyle={{width:500, height:300}}
               style={{"backgroundColor": "inherit"}}
-            /> */}
-            <div></div>
-              <img src={imagePath}/>
+            />
+            {/* <div></div>
+              <img src={imagePath}/> */}
             {/* {`http://localhost:3001/profile/${props.id}/download`} */}
             {/* <img src={imageSaved ? imagePath: ''} width={500} height={300}/> */}
             {/* {imageSaved} */}
@@ -198,8 +198,8 @@ export default function DropZone (props) {
         onClose={() => setOpen(false)}
         onSave={ async () => {
           console.log('onSave', fileObjects);
-          await handleSave();
-          handleUpload();
+          await handleUpload();
+          handleDownload();
           setOpen(false);
         }}
         showPreviews={true}
