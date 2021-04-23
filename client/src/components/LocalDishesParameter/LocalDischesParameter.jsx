@@ -9,6 +9,10 @@ import { TextField } from '@material-ui/core';
 import Slider from '../Slider/Slider';
 import CheckBox from '../CheckBox/CheckBox';
 
+import SearchIcon from '@material-ui/icons/Search';
+import Button from '@material-ui/core/Button';
+
+
 // const useStyles = makeStyles((theme) => ({
 //   root: {
 //     flexGrow: 1,
@@ -37,6 +41,7 @@ export default function LocalDishesDashboard () {
       paddingTop: "10%"
     }
   };
+  const upLoadButtonStyle = {maxWidth: '230px', maxHeight: '40px', minWidth: '230px', minHeight: '40px'};
 
   return (
     <div className='dashboard-header'>
@@ -62,6 +67,16 @@ export default function LocalDishesDashboard () {
         </div>
         <div className='center-element'>
           <CheckBox />
+        </div>
+        <div className='center-element'>
+        <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SearchIcon />}
+              style={upLoadButtonStyle}
+              >
+              Find nice dishes 😋
+              </Button>
         </div>
       </div>
       <div className='dashboard-header-column'>
