@@ -28,6 +28,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+
+// import {  withStyles } from '@material-ui/core/styles';
 // import Icon from '@material-ui/core/Icon';
 
 // import Card from '../Card/Card'
@@ -94,6 +96,16 @@ export default function DropZone (props) {
     }
   };
 
+  // const ColorButton = withStyles(() => ({
+  //   root: {
+  //     color: "#bdd2b6",
+  //     backgroundColor: "#966c3b",
+  //     '&:hover': {
+  //       backgroundColor: "#966c3b",
+  //     },
+  //   },
+  // }))(Button);
+
 
 
 
@@ -153,6 +165,9 @@ export default function DropZone (props) {
         alignItems="flex-start"
         style={{"padding-left": "5%", "padding-top": "2%"}}
       >
+      {/* <ColorButton variant="contained" color="primary" className={classes.margin}>
+        Custom CSS
+      </ColorButton> */}
         <Grid item xs={6}>
           <div className="button-box">
             <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
