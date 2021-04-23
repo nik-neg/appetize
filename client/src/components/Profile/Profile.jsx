@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import ApiClient from '../../services/ApiClient';
 import DropZone from '../DropZone/DropZone';
 
+// import { TextField } from '@material-ui/core';
+
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -58,7 +60,7 @@ export default function Profile ({id}) {
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{"paddingLeft": "6%", "paddingTop": "5%"}}
+        style={{"padding-left": "10%", "padding-top": "5%"}}
       >
         <Grid item xs={6}>
           <h1>{userData.firstName}</h1>
@@ -66,7 +68,13 @@ export default function Profile ({id}) {
         </Grid>
       </Grid>
       <DropZone id={id}/>
-      {/* <img src="http://localhost:3001/profile/60819a99d074173a3128eda0/upload" width={500} height={300}/> */}
+      {/* <Grid item xs={6}>
+          <TextField
+            id="standard-basic"
+            label="Standard"
+            style={{"margin-left": "75%"}}
+          />
+        </Grid> */}
     </div>
   );
 }

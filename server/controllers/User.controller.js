@@ -45,7 +45,7 @@ module.exports.createUser = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
   console.log("LOGIN SERVER")
-  console.log(req.body)
+  // console.log(req.body)
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -64,13 +64,13 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.showProfile = async (req, res) => {
-  console.log(req)
+  // console.log(req)
   console.log('PROFILE');
-  console.log(req.params)
+  // console.log(req.params)
   let user = await User.findOne({
     _id: req.params.id
   });
-  console.log(user)
+  // console.log(user)
   res.status(200).send(user);
 }
 

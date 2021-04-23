@@ -75,7 +75,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
   const handleRegisterOrLogin = async (event) => {
     event.preventDefault();
 
-    console.log(input, input.isUser)
+    // console.log(input, input.isUser)
     if(!input.isUser) {
       console.log("REGISTER")
       const registerResponse = await ApiClient.registerUser(input);
@@ -90,7 +90,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
       console.log("LOGIN REACT")
       const loginResponse = await ApiClient.loginUser(input);
       console.log("CLIENT LOGIN RESPONSE")
-      console.log(loginResponse)
+      // console.log(loginResponse)
       if(loginResponse.error === '401' ) {
         setInput('');
         setInput({error: loginResponse.message})
