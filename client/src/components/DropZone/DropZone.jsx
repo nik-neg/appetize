@@ -9,7 +9,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 // import CloseIcon from '@material-ui/icons/Close';
-import SendIcon from '@material-ui/icons/Send';
+// import SendIcon from '@material-ui/icons/Send';
 
 import ApiClient from '../../services/ApiClient';
 
@@ -22,7 +22,12 @@ import { TextField } from '@material-ui/core';
 // import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
+
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 // import Icon from '@material-ui/core/Icon';
 
 // import Card from '../Card/Card'
@@ -57,17 +62,17 @@ import { makeStyles } from '@material-ui/core/styles';
 //   },
 // }));
 
-  const useStylessButton = makeStyles((theme) => ({
-    button: {
-      margin: theme.spacing(1),
-    },
-  }));
+  // const useStylessButton = makeStyles((theme) => ({
+  //   button: {
+  //     margin: theme.spacing(1),
+  //   },
+  // }));
 
 
 import FadeIn from 'react-fade-in';
 
 export default function DropZone (props) {
-  const classes = useStylessButton();
+  // const classes = useStylessButton();
 
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
@@ -134,6 +139,10 @@ export default function DropZone (props) {
   //   setValues({ ...values, [name]: event.target.value });
   // };
 
+  const handlePublish = (event) => {
+    console.log('click', event.target.value)
+  }
+
   return (
     <div>
       <Grid
@@ -144,21 +153,21 @@ export default function DropZone (props) {
         alignItems="flex-start"
         style={{"padding-left": "5%", "padding-top": "2%"}}
       >
-          <Grid item xs={6}>
-            <div className="button-box">
-              <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
-                <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setOpen(true)}
-                startIcon={<CloudUploadIcon />}
-                style={upLoadButtonStyle}
-                >
-                Meal of the Day
-                </Button>
-              </Box>
-            </div>
-          </Grid>
+        <Grid item xs={6}>
+          <div className="button-box">
+            <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+              startIcon={<CloudUploadIcon />}
+              style={upLoadButtonStyle}
+              >
+              Meal of the Day
+              </Button>
+            </Box>
+          </div>
+        </Grid>
       <Grid
         container
         spacing={6}
@@ -247,15 +256,25 @@ export default function DropZone (props) {
           </FadeIn>
           : ''}
         </Grid>
-        <Button
+        { imagePath.length > 0 ?
+        <FadeIn delay={4000} transitionDuration={1000}>
+          <FormControlLabel
+            control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} name="checkedH" />}
+            label="Publish"
+            style={{"margin-left": "1.5%"}}
+            onClick={handlePublish}
+          />
+        </FadeIn>
+        : ''}
+        {/* <Button
         variant="contained"
         color="primary"
         style={{right: '12px', top: '8px'}}
         className={classes.button}
         endIcon={<SendIcon/>}
       >
-       Become famous 🤩
-      </Button>
+       Go online 🤩
+      </Button> */}
         {/* <Card/> */}
 
 
