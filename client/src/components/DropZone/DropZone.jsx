@@ -8,7 +8,8 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+// import CloseIcon from '@material-ui/icons/Close';
+import SendIcon from '@material-ui/icons/Send';
 
 import ApiClient from '../../services/ApiClient';
 
@@ -20,6 +21,9 @@ import { TextField } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+
+import { makeStyles } from '@material-ui/core/styles';
+// import Icon from '@material-ui/core/Icon';
 
 // import Card from '../Card/Card'
 
@@ -47,10 +51,24 @@ import Grid from '@material-ui/core/Grid';
 //   },
 // }));
 
+// const useStyles = makeStyles((theme) => ({
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+// }));
+
+  const useStylessButton = makeStyles((theme) => ({
+    button: {
+      margin: theme.spacing(1),
+    },
+  }));
+
+
 import FadeIn from 'react-fade-in';
 
 export default function DropZone (props) {
-  // const classes = useStyles();
+  const classes = useStylessButton();
+
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
   const CHARACTER_LIMIT_RECIPE = 500;
@@ -72,6 +90,8 @@ export default function DropZone (props) {
   };
 
 
+
+
   const [open, setOpen] = useState(false);
   const [fileObjects, setFileObjects] = useState([]);
   const dialogTitle = () => (
@@ -80,7 +100,7 @@ export default function DropZone (props) {
       <IconButton
         style={{right: '12px', top: '8px', position: 'absolute'}}
         onClick={() => setOpen(false)}>
-        <CloseIcon />
+        {/* <CloseIcon /> */}
       </IconButton>
     </>
   );
@@ -227,7 +247,17 @@ export default function DropZone (props) {
           </FadeIn>
           : ''}
         </Grid>
+        <Button
+        variant="contained"
+        color="primary"
+        style={{right: '12px', top: '8px'}}
+        className={classes.button}
+        endIcon={<SendIcon/>}
+      >
+       Become famous 🤩
+      </Button>
         {/* <Card/> */}
+
 
       <DropzoneDialogBase
         dialogTitle={dialogTitle()}
