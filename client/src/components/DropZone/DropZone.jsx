@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-// import { DropzoneAreaBase } from "material-ui-dropzone";
+// import React, { useState } from "react"; //useEffect
+import React, { useState, useEffect } from "react";
+
 import './index.css';
 // import { DropzoneArea } from 'material-ui-dropzone';
 import { DropzoneDialogBase } from 'material-ui-dropzone';
@@ -14,7 +15,9 @@ import ApiClient from '../../services/ApiClient';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
-import Card from '../Card/Card'
+// import Image from 'material-ui-image'
+
+// import Card from '../Card/Card'
 
 // import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,9 +45,13 @@ export default function DropZone (props) {
   //   setFiles(files.filter(f => f !== deleted));
   // };
 
+  const [imagePath, setImagePath] = useState(``); //`http://localhost:3001/profile/${props.id}/download`
+  // const [imageSaved, setImageSaved] = useState(null);
+  useEffect(() => {
+    console.log(imagePath)
+ }, [imagePath])
 
-  const upLoadButtonStyle = {maxWidth: '130px', maxHeight: '40px', minWidth: '130px', minHeight: '40px'};
-
+  const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
 
   const [open, setOpen] = useState(false);
   const [fileObjects, setFileObjects] = useState([]);
@@ -61,9 +68,19 @@ export default function DropZone (props) {
 
   const handleSave = async () => {
     console.log("HANDLE SAVE")
-    console.log(fileObjects['0'])
+    // console.log(fileObjects['0'])
     const uploadReponse = await ApiClient.uploadImage(props.id, fileObjects['0']);
+    // setImagePath(`http://localhost:3001/profile/${props.id}/download`);
     console.log(uploadReponse)
+    // setImageSaved(true);
+  }
+
+  const handleUpload = async () => {
+    console.log("DOWNLOAD IMAGE")
+    const downloadResponse = await ApiClient.displayImage(props.id);
+    console.log("DOWNLOAD RESPONSE")
+    console.log(downloadResponse)
+    setImagePath(downloadResponse.url);
   }
 
   // const [files, setFiles] = useState([]);
@@ -81,36 +98,37 @@ export default function DropZone (props) {
         alignItems="flex-start"
         style={{"padding-left": "5%", "padding-top": "2%"}}
       >
-        <Grid item xs={6}>
-          <div className="button-box">
-            <Box component="span" display="block">
-              <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setOpen(true)}
-              startIcon={<CloudUploadIcon />}
-              style={upLoadButtonStyle}
-              >
-              Breakfast
-              </Button>
-            </Box>
-          </div>
-        </Grid>
-        <Grid
-        container
-        spacing={6}
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{"padding-left": "25%",  "position": "absolute"}}
-      >
-        <Grid item xs={6}>
-          <Card/>
-        </Grid>
-      </Grid>
+          <Grid item xs={6}>
+            <div className="button-box">
+              <Box component="span" display="block">
+                <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setOpen(true)}
+                startIcon={<CloudUploadIcon />}
+                style={upLoadButtonStyle}
+                >
+                Meal of the Day
+                </Button>
+              </Box>
+            </div>
+          </Grid>
+          {/* {imagePath !== '' ? <Image src={imagePath}
+              imageStyle={{width:500, height:300}}
+              style={{"backgroundColor": "inherit"}}
+            /> : ''} */}
+            {/* <Image src={`http://localhost:3001/profile/${props.id}/download`}
+              imageStyle={{width:500, height:300}}
+              style={{"backgroundColor": "inherit"}}
+            /> */}
+            <div></div>
+              <img src={imagePath}/>
+            {/* {`http://localhost:3001/profile/${props.id}/download`} */}
+            {/* <img src={imageSaved ? imagePath: ''} width={500} height={300}/> */}
+            {/* {imageSaved} */}
       </Grid>
 
-      <Grid
+      {/* <Grid
         container
         spacing={6}
         direction="column"
@@ -133,9 +151,9 @@ export default function DropZone (props) {
             </Box>
           </div>
         </Grid>
-      </Grid>
+      </Grid> */}
 
-      <Grid
+      {/* <Grid
         container
         spacing={6}
         direction="column"
@@ -158,7 +176,7 @@ export default function DropZone (props) {
             </Box>
           </div>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       <DropzoneDialogBase
         dialogTitle={dialogTitle()}
@@ -169,8 +187,8 @@ export default function DropZone (props) {
         maxFileSize={5000000}
         open={open}
         onAdd={newFileObjs => {
-          console.log('onAdd', newFileObjs);
-          console.log('onAdd', newFileObjs['0'].data);
+          // console.log('onAdd', newFileObjs);
+          // console.log('onAdd', newFileObjs['0'].data);
           setFileObjects([].concat(fileObjects, newFileObjs));
         }}
         // onDelete={deleteFileObj => {
@@ -178,9 +196,10 @@ export default function DropZone (props) {
         // }}
         onDelete={handleDelete}
         onClose={() => setOpen(false)}
-        onSave={() => {
+        onSave={ async () => {
           console.log('onSave', fileObjects);
-          handleSave();
+          await handleSave();
+          handleUpload();
           setOpen(false);
         }}
         showPreviews={true}

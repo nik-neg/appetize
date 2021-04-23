@@ -58,7 +58,7 @@ export default function Profile ({id}) {
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{"padding-left": "6%", "padding-top": "5%"}}
+        style={{"paddingLeft": "6%", "paddingTop": "5%"}}
       >
         <Grid item xs={6}>
           <h1>{userData.firstName}</h1>
@@ -66,11 +66,6 @@ export default function Profile ({id}) {
         </Grid>
       </Grid>
       <DropZone id={id}/>
-      {/* <Image src="http://localhost:3001/profile/60819a99d074173a3128eda0/upload"
-      imageStyle={{width:500, height:300}}
-      style={{"backgroundColor": "inherit"}}
-      /> */}
-
       {/* <img src="http://localhost:3001/profile/60819a99d074173a3128eda0/upload" width={500} height={300}/> */}
     </div>
   );

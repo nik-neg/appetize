@@ -14,7 +14,6 @@ const mongoose = require('mongoose');
 var gridfs = require('gridfs-stream');
 
 module.exports.createUser = async (req, res) => {
-  console.log(req.body)
   const {
     firstName, lastName, email, password,
   } = req.body;
@@ -76,7 +75,7 @@ module.exports.showProfile = async (req, res) => {
 }
 
 module.exports.saveImage = async (req, res) => {
-  console.log(req, req.body, req.params.id, req.params.imageName, req.url)
+  // console.log(req, req.body, req.params.id, req.params.imageName, req.url)
   console.log('SAVE IMAGE');
 
   const title ="TestImage"
@@ -86,12 +85,17 @@ module.exports.saveImage = async (req, res) => {
 
   try {
     await upload(req, res);
-    // await retrieveImage(req, res);
+
+
+
     console.log(req.file);
 
     if (!req.file || req.file.length <= 0) {
       return res.send(`You must select at least 1 file.`);
+    } else {
+      res.end();
     }
+    // await retrieveImage(req, res);
     // return res.send(`Files have been uploaded.`);
 
     // console.log(req.file);
@@ -120,12 +124,13 @@ module.exports.retrieveImage = async (req, res) => {
   var connection = mongoose.connection;
   var gfs = gridfs(connection.db);
 
-  gfs.exist({ filename: '60819a99d074173a3128eda0' }, function (err, file) { // req.params.id
-            if (err || !file) {
-                res.send('File Not Found');
-            } else {
-                var readstream = gfs.createReadStream({ filename: '60819a99d074173a3128eda0' });
-                readstream.pipe(res);
-            }
-        });
+  gfs.exist({ filename: req.params.id }, function (err, file) { // req.params.id
+    if (err || !file) {
+        res.send('File Not Found');
+    } else {
+        var readstream = gfs.createReadStream({ filename: req.params.id });
+        readstream.pipe(res);
+
+    }
+  });
 }

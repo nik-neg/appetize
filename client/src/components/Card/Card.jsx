@@ -39,13 +39,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
 
   return (
     <Card className={classes.root}>
@@ -65,7 +66,7 @@ export default function RecipeReviewCard() {
       />
       <CardMedia
         className={classes.media}
-        image="http://localhost:3001/profile/60819a99d074173a3128eda0/upload"
+        image={`http://localhost:3001/profile/${props.id}/upload`}
         title="Paella dish"
       />
       <CardContent>
