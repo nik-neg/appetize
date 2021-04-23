@@ -176,7 +176,7 @@ export default function DropZone (props) {
               }}
               value={input.title}
               helperText={`${input.title.length}/${CHARACTER_LIMIT_TITLE}`}
-              style={{"margin-left": "75%", "margin-top": "2.5%"}}
+              style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               rowsMax="10"
               variant="filled"
               onChange={handleChange('title')}
@@ -196,7 +196,7 @@ export default function DropZone (props) {
               }}
               value={input.description}
               helperText={`${input.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-              style={{"margin-left": "75%", "margin-top": "2.5%"}}
+              style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               multiline
               rowsMax="10"
               variant="filled"
@@ -217,7 +217,7 @@ export default function DropZone (props) {
               }}
               value={input.recipe}
               helperText={`${input.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-              style={{"margin-left": "75%", "margin-top": "2.5%"}}
+              style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               multiline
               rowsMax="10"
               variant="filled"
