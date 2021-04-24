@@ -154,13 +154,16 @@ export default function DropZone (props) {
   // };
 
   const handlePublish = async (event) => {
-    console.log('click', event.target.value)
-    // Api client send save request with url to images db for dashbard
-    const firstName = props.firstName;
-    const publishObject = {...dish, firstName};
-    console.log(publishObject);
-    const publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
-    console.log(publishResponse)
+    console.log('click', event.target.checked)
+    if(event.target.checked) {
+      // Api client send save request with url to images db for dashbard
+      const firstName = props.firstName;
+      const publishObject = {...dish, firstName};
+      console.log(publishObject);
+      const publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
+      console.log(publishResponse)
+    }
+
   }
 
   return (
@@ -296,10 +299,11 @@ export default function DropZone (props) {
         { imagePath.length > 0 ?
         <FadeIn delay={4500} transitionDuration={1000}>
           <FormControlLabel
-            control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} name="checkedH" />}
+            control={<Checkbox onChange={handlePublish} icon={<FavoriteBorder />}
+            checkedIcon={<Favorite/>}
+            name="checkedH" />}
             label="Publish"
             style={{"margin-left": "1.5%"}}
-            onClick={handlePublish}
           />
         </FadeIn>
         : ''}

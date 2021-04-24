@@ -160,6 +160,15 @@ module.exports.publishDish = async (req, res) => {
   const { title, description, recipe, firstName } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
+  let alreadyPublished = await DailyTreat.findOne({
+    userID: id,
+  });
+  if (alreadyPublished) {
+    return res
+      .status(409)
+      .send({ error: '409', message: 'DailyTreat already published!' });
+  }
+
   // create dish to publish
   const dailyTreat = new DailyTreat();
   dailyTreat.userID = id;
