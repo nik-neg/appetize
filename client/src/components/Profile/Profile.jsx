@@ -6,13 +6,14 @@ import Grid from '@material-ui/core/Grid';
 
 import ApiClient from '../../services/ApiClient';
 import DropZone from '../DropZone/DropZone';
-import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
+// import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 
-import Card from '../Card/Card'
+// import Card from '../Card/Card'
+import Dashboard from '../Dashboard/Dashboard';
 
 
 const useStylesAvatar = makeStyles((theme) => ({
@@ -137,8 +138,9 @@ export default function Profile ({id}) {
             style={{"margin-left": "75%"}}
           />
         </Grid> */}
-        <LocalDishesParameter/>
-         <Card id={id}/>
+        {/* <LocalDishesParameter/>
+         <Card id={id}/> */}
+         <Dashboard id={id}/>
     </div>
   );
 }

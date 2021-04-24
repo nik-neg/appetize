@@ -190,6 +190,7 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.description = description;
   dailyTreat.recipe = recipe;
   dailyTreat.imageUrl = imageUrl;
+  dailyTreat.votes = 0;
 
   // save to db
   try {

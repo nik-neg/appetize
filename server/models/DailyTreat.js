@@ -10,6 +10,7 @@ const DailyTreatSchema = new db.mongoose.Schema({
   description: String,
   recipe: String,
   imageUrl: String,
+  votes: Number,
   created: Date,
   updated: Date,
 });
