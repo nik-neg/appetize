@@ -7,8 +7,9 @@ router.get('/profile/:id', userController.showProfile);
 router.post('/profile/:id/upload', userController.saveImage);
 router.get('/profile/:id/download', userController.retrieveImage);
 router.put('/profile/:id', userController.setZipCode);
-
 router.post('/profile/:id/dashboard', userController.publishDish);
 router.get('/profile/:id/dashboard/:radius', userController.checkDishesInRadius);
+
+router.patch('/profile/:id/dashboard/:dailyTreatsID', userController.upVote); // != users dish dailyTreatsID
 
 module.exports = router;

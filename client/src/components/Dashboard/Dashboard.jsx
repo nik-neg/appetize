@@ -8,6 +8,7 @@ export default function Dashboard ({id}) {
 
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
 
+  // to reduce processing delays data needs to be fetched
   // useEffect(() => {
     // setMouthWateringDishes(mouthWateringDishes)
   // }, [mouthWateringDishes]);

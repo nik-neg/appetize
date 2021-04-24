@@ -177,6 +177,7 @@ module.exports.publishDish = async (req, res) => {
   const dailyTreat = new DailyTreat();
   dailyTreat.userID = id;
   dailyTreat.creatorName = firstName;
+  dailyTreat.likedByUserID = [];
 
   // get user for zip code
   let user
@@ -257,18 +258,36 @@ module.exports.checkDishesInRadius = async (req, res) => {
     let dishesForClient = [];
     let dailyTreatsFromDB;
     for(let i=0; i < zipCodesInRadius.length; i++) {
-        try {
-          dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}); // what if more than 1 ?
-          // console.log(dailyTreatsFromDB)
-          if(dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
-            dishesForClient.push(dailyTreatsFromDB[0])
-          }
-        } catch(e) {
-          console.log(e);
+      try {
+        dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}); // what if more than 1 ?
+        // console.log(dailyTreatsFromDB)
+        if(dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
+          dishesForClient.push(dailyTreatsFromDB[0])
         }
+      } catch(e) {
+        console.log(e);
+      }
     }
 
     // console.log(dishesForClient)
     res.send(dishesForClient);
+  }
+}
+
+module.exports.upVote = async (req, res) => {
+  console.log("UPVOTE")
+  const { id, dailyTreatsID } = req.params;
+  console.log(id, dailyTreatsID )
+
+  let dailyTreatsFromDB;
+  try {
+    // like dish
+    dailyTreatsFromDB = await DailyTreat.updateOne(
+      {_id: dailyTreatsID},
+      { $inc: { votes: 1 }, $push: { likedByUserID: id }}
+    );
+    console.log(dailyTreatsFromDB)
+  } catch(e) {
+    console.log(e);
   }
 }

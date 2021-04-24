@@ -47,6 +47,11 @@ export default function RecipeReviewCard(props) {
     setExpanded(!expanded);
   };
 
+  const handleLike = async () => {
+    console.log('like')
+
+  }
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -75,8 +80,8 @@ export default function RecipeReviewCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton aria-label="add to favorites" >
+          <FavoriteIcon onClick={handleLike}/>
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />

@@ -11,6 +11,7 @@ const DailyTreatSchema = new db.mongoose.Schema({
   recipe: String,
   imageUrl: String,
   votes: Number,
+  likedByUserID: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'User' }],
   created: Date,
   updated: Date,
 });
