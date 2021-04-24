@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
+const DailyTreat = require('../models/DailyTreat');
+
 
 const upload = require("../middleware/upload");
 
@@ -76,10 +78,10 @@ module.exports.saveImage = async (req, res) => {
   // console.log(req, req.body, req.params.id, req.params.imageName, req.url)
   console.log('SAVE IMAGE');
 
-  const title ="TestImage"
-  const image = { data: Buffer, contentType: String };
-  const description = "Saving Testimage"
-  const isSelfCoocked = false;
+  // const title ="TestImage"
+  // const image = { data: Buffer, contentType: String };
+  // const description = "Saving Testimage"
+  // const isSelfCoocked = false;
 
   try {
     await upload(req, res);
@@ -91,7 +93,7 @@ module.exports.saveImage = async (req, res) => {
     if (!req.file || req.file.length <= 0) {
       return res.send(`You must select at least 1 file.`);
     } else {
-      res.end();
+      res.end(); // status 201 ?
     }
     // await retrieveImage(req, res);
     // return res.send(`Files have been uploaded.`);
@@ -145,12 +147,37 @@ module.exports.setZipCode = async (req, res) => {
         res.send(err);
       }
     });
-    res.send(user);
+    res.status(201).send(user);
   } catch(e) {
     console.log(e)
   }
 }
 
-module.exports.publishDish = async () => {
+module.exports.publishDish = async (req, res) => {
   console.log("PUBLISH DISH")
+  console.log(req.params.id, req.body)
+  const { id } = req.params;
+  const { title, description, recipe, firstName, zipCode } = req.body;
+  const imageUrl = `http://localhost:3001/profile/${id}/download`;
+
+  // create dish to publish
+  const dailyTreat = new DailyTreat();
+  dailyTreat.userID = id;
+  dailyTreat.creatorName = firstName;
+  dailyTreat.zipOode = zipCode;
+  dailyTreat.title = title;
+  dailyTreat.description = description;
+  dailyTreat.recipe = recipe;
+  dailyTreat.imageUrl = imageUrl;
+
+  // save to db
+  try {
+    const dailyTreatSaveResponse = await dailyTreat.save();
+    console.log(dailyTreatSaveResponse);
+    res.status(201).send(dailyTreatSaveResponse);
+  } catch(e) {
+    console.log(e)
+  }
+
+
 }

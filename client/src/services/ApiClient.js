@@ -84,4 +84,25 @@ const confirmZipCode = (id, zipCode) => {
     .catch((err) => console.log(err));
 }
 
-module.exports = { loginUser, registerUser, getProfile, uploadImage, displayImage, confirmZipCode };
+const publishToDashBoard = (id, data) => {
+
+  return fetch(`${baseUrl}/profile/${id}/dashboard`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((imageData) => imageData)
+    .then((imageData) => imageData)
+    .catch((err) => console.log(err));
+}
+
+module.exports = {
+  loginUser,
+  registerUser,
+  getProfile,
+  uploadImage,
+  displayImage,
+  confirmZipCode,
+  publishToDashBoard };

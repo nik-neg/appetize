@@ -83,7 +83,7 @@ export default function DropZone (props) {
   const CHARACTER_LIMIT_RECIPE = 500;
   const [imagePath, setImagePath] = useState(``);
 
-  const [input, setInput] = useState({
+  const [dish, setDish] = useState({
     title: "",
     description: "",
     recipe: ""
@@ -145,8 +145,8 @@ export default function DropZone (props) {
   const handleChange = name => (event) => {
     // const { name, value } = event.target;
     // setInput((prevInput) => ({ ...prevInput, [name]: value }));
-    setInput((prevValue) => ({ ...prevValue, [name]: event.target.value }));
-    console.log(input)
+    setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
+    console.log(dish)
   }
 
   // const handleChange = name => event => {
@@ -155,6 +155,13 @@ export default function DropZone (props) {
 
   const handlePublish = (event) => {
     console.log('click', event.target.value)
+    // Api client send save request with url to images db for dashbard
+    const zipCode = props.zipCode;
+    const firstName = props.firstName;
+    const publishObject = {...dish, imagePath, zipCode, firstName};
+    console.log(publishObject);
+    const publishResponse = ApiClient.publishToDashBoard(imagePath)
+    console.log(publishResponse)
   }
 
   return (
@@ -234,8 +241,8 @@ export default function DropZone (props) {
               inputProps={{
                 maxlength: CHARACTER_LIMIT_TITLE
               }}
-              value={input.title}
-              helperText={`${input.title.length}/${CHARACTER_LIMIT_TITLE}`}
+              value={dish.title}
+              helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
               style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               rowsMax="10"
               variant="filled"
@@ -254,8 +261,8 @@ export default function DropZone (props) {
               inputProps={{
                 maxlength: CHARACTER_LIMIT_DESCRIPTION
               }}
-              value={input.description}
-              helperText={`${input.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
+              value={dish.description}
+              helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
               style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               multiline
               rowsMax="10"
@@ -275,8 +282,8 @@ export default function DropZone (props) {
               inputProps={{
                 maxlength: CHARACTER_LIMIT_RECIPE
               }}
-              value={input.recipe}
-              helperText={`${input.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+              value={dish.recipe}
+              helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
               style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               multiline
               rowsMax="10"
