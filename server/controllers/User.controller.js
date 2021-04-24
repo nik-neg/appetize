@@ -232,15 +232,15 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode)
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=7b2fe480-984e-11eb-aa3b-551b4b4fc68f&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=521e6860-a518-11eb-869e-dd35b856af08&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
-        const zipCodeInRadius = response.data.results.map((element) => {
+        const zipCodesInRadius = response.data.results.map((element) => {
           return {zipCode: element.code, city: element.city}
         });
-        console.log(zipCodeInRadius)
-        helperFindDishesInDB(res, res, zipCode);
+        console.log(zipCodesInRadius)
+        helperFindDishesInDB(res, res, zipCodesInRadius);
 
         // res.send(response.data.results)
       })
@@ -253,13 +253,22 @@ module.exports.checkDishesInRadius = async (req, res) => {
       });
   }
 
-  const helperFindDishesInDB = async (req, res, zipCodeForDish) => {
-    try {
-      const dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodeForDish});
-      console.log(dailyTreatsFromDB)
-      res.send(dailyTreatsFromDB);
-    } catch(e) {
-      console.log(e);
+  const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
+    let dishesForClient = [];
+    let dailyTreatsFromDB;
+    for(let i=0; i < zipCodesInRadius.length; i++) {
+        try {
+          dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}); // what if more than 1 ?
+          // console.log(dailyTreatsFromDB)
+          if(dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
+            dishesForClient.push(dailyTreatsFromDB[0])
+          }
+        } catch(e) {
+          console.log(e);
+        }
     }
+
+    // console.log(dishesForClient)
+    res.send(dishesForClient);
   }
 }

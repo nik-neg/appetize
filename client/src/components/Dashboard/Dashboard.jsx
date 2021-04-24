@@ -14,18 +14,28 @@ export default function Dashboard ({id}) {
   return (
     <div>
       Hello Dashboard.
-      {/* <LocalDishesParameter/>
-      {mouthWateringDishes.length > 0 ?
-        mouthWateringDishes.map((dish) => {
-          return <Card id={id}/>
-        })
-      : ''} */}
       <LocalDishesParameter
-        mouthWateringDishes={mouthWateringDishes}
+        // mouthWateringDishes={mouthWateringDishes}
         onRadiusSearch={setMouthWateringDishes}
         id={id}
       />
-      <Card id={id}/>
+      { mouthWateringDishes.length > 0 ?
+        mouthWateringDishes.map((dish, index) => {
+          return <Card
+              key={index}
+              id={dish.userID}
+              title={dish.title}
+              description={dish.description}
+              recipe={dish.recipe}
+              />
+        })
+      : ''}
+      {/* <LocalDishesParameter
+        // mouthWateringDishes={mouthWateringDishes}
+        onRadiusSearch={setMouthWateringDishes}
+        id={id}
+      /> */}
+      {/* <Card id={id}/> */}
     </div>
   );
 }

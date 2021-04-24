@@ -45,7 +45,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RecipeReviewCard(props) {
   const classes = useStyles();
-
+  const styles =
+  {
+      width: '100%',
+      height: '100%'
+  };
 
   return (
     <Grid container spacing={3}>
@@ -62,19 +66,19 @@ export default function RecipeReviewCard(props) {
             R
           </Avatar>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={props.title}
+        // subheader="September 14, 2016"
       />
 
       <CardMedia
         className={classes.media}
         image={`http://localhost:3001/profile/${props.id}/download`}
-        title="Paella dish"
+        title={props.title}
+        classes={styles}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
+          {props.title}
         </Typography>
       </CardContent>
 
@@ -98,16 +102,14 @@ export default function RecipeReviewCard(props) {
             Description
           </Typography>
           <Typography variant="body2" component="p" align="left">
-           This impressive paella is a perfect party dish and a fun meal to cook together with your
-           guests. Add 1 cup of frozen peas along with the mussels, if you like.
+           {props.description}
           </Typography>
 
           <Typography className={classes.pos} color="textSecondary">
             Recipe
           </Typography>
           <Typography variant="body2" component="p" align="left">
-           This impressive paella is a perfect party dish and a fun meal to cook together with your
-           guests. Add 1 cup of frozen peas along with the mussels, if you like.
+          {props.recipe}
           </Typography>
         </CardContent>
       </Card>

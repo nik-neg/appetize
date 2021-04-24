@@ -43,7 +43,7 @@ export default function LocalDishesDashboard (props) {
     const APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
     console.log(APIResponse)
     // console.log(dishesInRadiusResponse)
-    // props.onRadiusSearch(props.mouthWateringDishes)
+    props.onRadiusSearch(APIResponse)
   }
 
 
