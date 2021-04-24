@@ -1,14 +1,14 @@
-// import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
+import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 import Card from '../Card/Card'
 // import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
 
 export default function Dashboard ({id}) {
 
-  // const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
+  const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
 
   // useEffect(() => {
-  // setMouthWateringDishes(mouthWateringDishes)
+    // setMouthWateringDishes(mouthWateringDishes)
   // }, [mouthWateringDishes]);
 
   return (
@@ -20,6 +20,11 @@ export default function Dashboard ({id}) {
           return <Card id={id}/>
         })
       : ''} */}
+      <LocalDishesParameter
+        mouthWateringDishes={mouthWateringDishes}
+        onRadiusSearch={setMouthWateringDishes}
+        id={id}
+      />
       <Card id={id}/>
     </div>
   );

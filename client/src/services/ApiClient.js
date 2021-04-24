@@ -98,6 +98,19 @@ const publishToDashBoard = (id, data) => {
     .catch((err) => console.log(err));
 }
 
+const getDishesInRadius = (id, radius) => {
+  console.log("CLIENT - GET DISHES IN RADIUS")
+  return fetch(`${baseUrl}/profile/${id}/dashboard/${radius}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+  )
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
+};
+
 module.exports = {
   loginUser,
   registerUser,
@@ -105,4 +118,5 @@ module.exports = {
   uploadImage,
   displayImage,
   confirmZipCode,
-  publishToDashBoard };
+  publishToDashBoard,
+  getDishesInRadius };

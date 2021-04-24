@@ -12,6 +12,8 @@ import CheckBox from '../CheckBox/CheckBox';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
+import ApiClient from '../../services/ApiClient';
+
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -24,7 +26,7 @@ import Button from '@material-ui/core/Button';
 //   },
 // }));
 
-export default function LocalDishesDashboard () {
+export default function LocalDishesDashboard (props) {
   // const classes = useStyles();
   const CHARACTER_LIMIT_TITLE = 10;
   const [zipCode, setZipCode] = useState('');
@@ -33,6 +35,17 @@ export default function LocalDishesDashboard () {
     setZipCode(event.target.value);
     console.log(zipCode)
   }
+
+  const [radius, setRadius] = useState(2);
+
+  const handleRadiusSearch = async () => {
+    console.log("API CLIENT - HANDLE RADIUS SEARCH")
+    const APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
+    console.log(APIResponse)
+    // console.log(dishesInRadiusResponse)
+    // props.onRadiusSearch(props.mouthWateringDishes)
+  }
+
 
   const styles = {
     someTextField: {
@@ -63,20 +76,21 @@ export default function LocalDishesDashboard () {
         InputProps={{ classes: { input: styles.someTextField } }}
         />
         <div className='center-element'>
-          <Slider/>
+          <Slider onSearch={setRadius}/>
         </div>
         <div className='center-element'>
           <CheckBox />
         </div>
         <div className='center-element'>
         <Button
-              variant="contained"
-              color="primary"
-              startIcon={<SearchIcon />}
-              style={upLoadButtonStyle}
-              >
-              Find nice dishes 😋
-              </Button>
+          variant="contained"
+          color="primary"
+          startIcon={<SearchIcon />}
+          style={upLoadButtonStyle}
+          onClick={handleRadiusSearch}
+          >
+          Find nice dishes 😋
+        </Button>
         </div>
       </div>
       <div className='dashboard-header-column'>

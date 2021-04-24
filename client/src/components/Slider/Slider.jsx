@@ -14,12 +14,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function InputSlider() {
+export default function InputSlider(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(10);
+  const [value, setValue] = React.useState(2);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
+    props.onSearch(newValue)
   };
 
   const handleInputChange = (event) => {
@@ -55,7 +56,7 @@ export default function InputSlider() {
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
-              step: 10,
+              step: 2,
               min: 0,
               max: 100,
               type: 'number',

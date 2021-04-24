@@ -15,6 +15,8 @@ const mongoose = require('mongoose');
 
 var gridfs = require('gridfs-stream');
 
+const axios = require('axios');
+
 module.exports.createUser = async (req, res) => {
   const {
     firstName, lastName, email, password,
@@ -200,6 +202,53 @@ module.exports.publishDish = async (req, res) => {
   } catch(e) {
     console.log(e)
   }
+}
 
+module.exports.checkDishesInRadius = async (req, res) => {
+  console.log('SERVER - CHECK DISHES')
+  console.log(req.params.id, req.params.radius)
 
+  const { id, radius } = req.params;
+  let user;
+  try {
+    // get zip code of user
+    user = await User.findOne({
+      _id:id
+    });
+  } catch(e) {
+    console.log(e);
+  }
+
+  let zipCode;
+  if (user) {
+    zipCode = user.zipCode;
+  } else {
+    return res
+      .status(409)
+      .send({ error: '409', message: 'User doesn\'t exist' });
+  }
+
+  if(zipCode) {
+    console.log(zipCode)
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=7b2fe480-984e-11eb-aa3b-551b4b4fc68f&code=${zipCode}&radius=${radius}&country=de`
+    axios.get(url)
+      .then(function (response) {
+        // handle success
+        // console.log(response.data.results)
+
+        const zipCodeInRadius = response.data.results.map((element) => {
+          return {zipCode: element.code, city: element.city}
+        });
+        console.log(zipCodeInRadius)
+
+        // res.send(response.data.results)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  }
 }
