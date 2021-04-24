@@ -15,6 +15,8 @@ import SaveIcon from '@material-ui/icons/Save';
 // import Card from '../Card/Card'
 import Dashboard from '../Dashboard/Dashboard';
 
+import FadeIn from 'react-fade-in';
+
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -89,6 +91,7 @@ export default function Profile ({id}) {
 
   return (
     <div className={classesGrid.root}>
+    <FadeIn delay={950} transitionDuration={1650}>
       <Grid
         container
         spacing={4}
@@ -141,6 +144,7 @@ export default function Profile ({id}) {
         {/* <LocalDishesParameter/>
          <Card id={id}/> */}
          <Dashboard id={id}/>
+         </FadeIn>
     </div>
   );
 }

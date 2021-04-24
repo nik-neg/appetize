@@ -54,7 +54,6 @@ function App() {
           </Route>
           : '' } */}
 
-
           { !isUserForRouting.loggedIn ?
             <RegisterLogin
               isUserForRouting={isUserForRouting}
