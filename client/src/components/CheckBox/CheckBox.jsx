@@ -7,8 +7,10 @@ export default function CheckboxLabels() {
   const [state, setState] = React.useState({
     checkedA: true,
     checkedB: true,
+    checkedC: true,
+    checkedD: true,
+    checkedE: true,
     checkedF: true,
-    checkedG: true,
   });
 
   const handleChange = (event) => {
@@ -31,24 +33,13 @@ export default function CheckboxLabels() {
       <FormControlLabel
         control={
           <Checkbox
-            checked={state.checkedB}
-            onChange={handleChange}
-            name="checkedB"
-            color="primary"
-          />
-        }
-        label="Indish"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
             checked={state.checkedC}
             onChange={handleChange}
             name="checkedC"
             color="primary"
           />
         }
-        label="Indish"
+        label="Veggie"
       />
       <FormControlLabel
         control={
@@ -59,7 +50,29 @@ export default function CheckboxLabels() {
             color="primary"
           />
         }
-        label="Indish"
+        label="StreetFood"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={state.checkedE}
+            onChange={handleChange}
+            name="checkedE"
+            color="primary"
+          />
+        }
+        label="Coocked"
+      />
+            <FormControlLabel
+        control={
+          <Checkbox
+            checked={state.checkedF}
+            onChange={handleChange}
+            name="checkedF"
+            color="primary"
+          />
+        }
+        label="Ordered"
       />
     </FormGroup>
   );

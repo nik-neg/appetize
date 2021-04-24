@@ -135,6 +135,24 @@ module.exports.retrieveImage = async (req, res) => {
   });
 }
 
+module.exports.setZipCode = async (req, res) => {
+  console.log("SET ZIP CODE")
+  console.log(req.params.id)
+  const { id } = req.params;
+  const { zipCode } = req.body;
+
+  try {
+    const user = await User.findOneAndUpdate({ _id: id}, {zipCode: zipCode}, function(err, result) {
+      if (err) {
+        res.send(err);
+      }
+    });
+    res.send(user);
+  } catch(e) {
+    console.log(e)
+  }
+}
+
 module.exports.publishDish = async () => {
   console.log("PUBLISH DISH")
 }
