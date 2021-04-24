@@ -233,7 +233,7 @@ export default function DropZone (props) {
 
       <Grid item xs={6}>
         { imagePath.length > 0 ?
-          <FadeIn delay={1000} transitionDuration={1000}>
+          <FadeIn delay={1500} transitionDuration={1000}>
             <TextField
               id="standard-basic"
               label="Title"
@@ -253,7 +253,7 @@ export default function DropZone (props) {
         </Grid>
         <Grid item xs={6}>
         { imagePath.length > 0 ?
-          <FadeIn delay={2000} transitionDuration={1000}>
+          <FadeIn delay={2500} transitionDuration={1000}>
             <TextField
               id="standard-basic"
               label="Description"
@@ -274,7 +274,7 @@ export default function DropZone (props) {
         </Grid>
         <Grid item xs={6}>
         { imagePath.length > 0 ?
-          <FadeIn delay={3000} transitionDuration={1000}>
+          <FadeIn delay={3500} transitionDuration={1000}>
             <TextField
               id="standard-basic"
               label="Recipe"
@@ -294,7 +294,7 @@ export default function DropZone (props) {
           : ''}
         </Grid>
         { imagePath.length > 0 ?
-        <FadeIn delay={4000} transitionDuration={1000}>
+        <FadeIn delay={4500} transitionDuration={1000}>
           <FormControlLabel
             control={<Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} name="checkedH" />}
             label="Publish"
