@@ -157,14 +157,26 @@ module.exports.publishDish = async (req, res) => {
   console.log("PUBLISH DISH")
   console.log(req.params.id, req.body)
   const { id } = req.params;
-  const { title, description, recipe, firstName, zipCode } = req.body;
+  const { title, description, recipe, firstName } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
   // create dish to publish
   const dailyTreat = new DailyTreat();
   dailyTreat.userID = id;
   dailyTreat.creatorName = firstName;
-  dailyTreat.zipOode = zipCode;
+
+  // get user for zip code
+  let user
+  try {
+    user = await User.findOne({
+      _id: id,
+    });
+  } catch(e) {
+    console.log(e);
+  }
+  dailyTreat.zipCode = user.zipCode ? user.zipCode : "10000"; // default zip code
+
+
   dailyTreat.title = title;
   dailyTreat.description = description;
   dailyTreat.recipe = recipe;

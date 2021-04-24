@@ -129,7 +129,7 @@ export default function Profile ({id}) {
         </Grid>
 
       </Grid>
-      <DropZone id={id} zipCode={zipCode} firstName={userData.firstName}/>
+      <DropZone id={id} firstName={userData.firstName}/>
       {/* <Grid item xs={6}>
           <TextField
             id="standard-basic"

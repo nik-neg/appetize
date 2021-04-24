@@ -153,14 +153,13 @@ export default function DropZone (props) {
   //   setValues({ ...values, [name]: event.target.value });
   // };
 
-  const handlePublish = (event) => {
+  const handlePublish = async (event) => {
     console.log('click', event.target.value)
     // Api client send save request with url to images db for dashbard
-    const zipCode = props.zipCode;
     const firstName = props.firstName;
-    const publishObject = {...dish, imagePath, zipCode, firstName};
+    const publishObject = {...dish, firstName};
     console.log(publishObject);
-    const publishResponse = ApiClient.publishToDashBoard(imagePath)
+    const publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
     console.log(publishResponse)
   }
 
