@@ -149,6 +149,8 @@ module.exports.setZipCode = async (req, res) => {
         res.send(err);
       }
     });
+    // update dish ?
+
     res.status(201).send(user);
   } catch(e) {
     console.log(e)
@@ -233,13 +235,12 @@ module.exports.checkDishesInRadius = async (req, res) => {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=7b2fe480-984e-11eb-aa3b-551b4b4fc68f&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
-        // handle success
-        // console.log(response.data.results)
 
         const zipCodeInRadius = response.data.results.map((element) => {
           return {zipCode: element.code, city: element.city}
         });
         console.log(zipCodeInRadius)
+        helperFindDishesInDB(res, res, zipCode);
 
         // res.send(response.data.results)
       })
@@ -250,5 +251,15 @@ module.exports.checkDishesInRadius = async (req, res) => {
       .then(function () {
         // always executed
       });
+  }
+
+  const helperFindDishesInDB = async (req, res, zipCodeForDish) => {
+    try {
+      const dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodeForDish});
+      console.log(dailyTreatsFromDB)
+      res.send(dailyTreatsFromDB);
+    } catch(e) {
+      console.log(e);
+    }
   }
 }
