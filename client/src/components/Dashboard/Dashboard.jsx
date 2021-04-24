@@ -12,6 +12,8 @@ export default function Dashboard ({id}) {
     // setMouthWateringDishes(mouthWateringDishes)
   // }, [mouthWateringDishes]);
 
+  let fadeCounter = 0;
+
   return (
     <div>
       Hello Dashboard.
@@ -22,18 +24,18 @@ export default function Dashboard ({id}) {
       />
       { mouthWateringDishes.length > 0 ?
         mouthWateringDishes.map((dish, index) => {
-
-        return <FadeIn key={index} delay={600} transitionDuration={1500}>
-          <Card
-              key={index}
-              id={dish.userID}
-              title={dish.title}
-              description={dish.description}
-              recipe={dish.recipe}
-              />
-          </FadeIn>
-        })
-      : ''}
+        fadeCounter++;
+        return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
+                <Card
+                  key={index}
+                  id={dish.userID}
+                  title={dish.title}
+                  description={dish.description}
+                  recipe={dish.recipe}
+                  />
+                </FadeIn>
+              })
+            : ''}
       {/* <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}
         onRadiusSearch={setMouthWateringDishes}
