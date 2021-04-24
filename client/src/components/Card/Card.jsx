@@ -13,8 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import Grid from '@material-ui/core/Grid';
+
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +53,13 @@ export default function RecipeReviewCard(props) {
 
 
   return (
+    <Grid container spacing={3}>
+      <Grid item xs={6}>
+
+      </Grid>
+      <Grid item xs={6}>
+
+      </Grid>
     <Card className={classes.root}>
       <CardHeader
         avatar={
@@ -57,16 +68,25 @@ export default function RecipeReviewCard(props) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          {/* <ExpandMoreIcon /> */}
+          <NavigateNextIcon/>
+        </IconButton>
         }
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
       />
+
       <CardMedia
         className={classes.media}
-        image={`http://localhost:3001/profile/${props.id}/upload`}
+        image={`http://localhost:3001/profile/${props.id}/download`}
         title="Paella dish"
       />
       <CardContent>
@@ -75,24 +95,6 @@ export default function RecipeReviewCard(props) {
           guests. Add 1 cup of frozen peas along with the mussels, if you like.
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Method:</Typography>
@@ -120,6 +122,19 @@ export default function RecipeReviewCard(props) {
           </Typography>
         </CardContent>
       </Collapse>
-    </Card>
+
+
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+        <IconButton aria-label="share">
+          <ShareIcon />
+        </IconButton>
+      </CardActions>
+
+
+      </Card>
+    </Grid>
   );
 }

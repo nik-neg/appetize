@@ -138,7 +138,7 @@ export default function Profile ({id}) {
           />
         </Grid> */}
         <LocalDishesParameter/>
-         <Card/>
+         <Card id={id}/>
     </div>
   );
 }
