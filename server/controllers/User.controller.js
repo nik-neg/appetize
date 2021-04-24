@@ -53,7 +53,6 @@ module.exports.loginUser = async (req, res) => {
     });
     const checkedPassword = await bcrypt.compare(password, user.password);
     if (!checkedPassword) throw new Error();
-    console.log("REDIRECT")
     res.status(200).send(user);
     // res.redirect('/profile/'+user._id)
   } catch (error) {
@@ -65,7 +64,6 @@ module.exports.loginUser = async (req, res) => {
 
 module.exports.showProfile = async (req, res) => {
   // console.log(req)
-  console.log('PROFILE');
   // console.log(req.params)
   let user = await User.findOne({
     _id: req.params.id

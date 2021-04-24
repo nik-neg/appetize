@@ -67,7 +67,21 @@ const displayImage = (id) => {
 .then((imageData) => imageData)
 .then((imageData) => imageData)
 .catch((err) => console.log(err));
-
 };
 
-  module.exports = { loginUser, registerUser, getProfile, uploadImage, displayImage };
+const confirmZipCode = (id, zipCode) => {
+  console.log("API CLIENT - UPDATE ZIP CODE")
+
+  return fetch(`${baseUrl}/profile/${id}`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(zipCode),
+    }
+  )
+    .then((data) => data.json())
+    .then((userData) => userData)
+    .catch((err) => console.log(err));
+}
+
+module.exports = { loginUser, registerUser, getProfile, uploadImage, displayImage, confirmZipCode };

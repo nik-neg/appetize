@@ -80,6 +80,12 @@ export default function Profile ({id}) {
       console.log(zipCode)
     }
 
+    const handleUpdateZipCode = async () => {
+      console.log("HANDLE UPDATE ZIP CODE")
+      const updateZipCodeResponse = await ApiClient.confirmZipCode(id, {zipCode: zipCode});
+      console.log(updateZipCodeResponse);
+    }
+
   return (
     <div className={classesGrid.root}>
       <Grid
@@ -116,6 +122,7 @@ export default function Profile ({id}) {
             size="small"
             className={classes.button}
             startIcon={<SaveIcon />}
+            onClick={handleUpdateZipCode}
           >
             Save
           </Button>
