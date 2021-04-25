@@ -27,3 +27,5 @@ app.use(cors())
     console.log(e);
   }
 })();
+
+module.exports = app;

@@ -22,6 +22,13 @@ import { useState } from 'react';
 
 import ApiClient from '../../services/ApiClient';
 
+
+// var io = require('socket.io-client');
+// var socket = io.connect("http://localhost:3002/", {
+//     reconnection: true
+// });
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -51,6 +58,8 @@ export default function RecipeReviewCard(props) {
 
   const [likeColor, setLikeColor] = useState(false);
 
+  const [votes, setVotes] = useState(props.votes);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -74,8 +83,13 @@ export default function RecipeReviewCard(props) {
         console.log(e)
       }
     }
-    console.log(likeResponse)
+    setVotes(likeResponse.votes)
 
+    // // socket solution
+    // socket.on(`${props.zipCode}`, function (updatedVotes) {
+    //   setVotes(updatedVotes)
+    //   });
+    // }
   }
 
   return (
@@ -83,7 +97,7 @@ export default function RecipeReviewCard(props) {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {props.votes}
+            {votes}
           </Avatar>
         }
         title={props.title}

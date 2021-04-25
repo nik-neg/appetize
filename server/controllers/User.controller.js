@@ -16,10 +16,16 @@ var gridfs = require('gridfs-stream');
 
 const axios = require('axios');
 
-
-// sockets
+// // socket solution
+// const app = require('../index');
 // const http = require('http').Server(app);
 // const io = require('socket.io')(http);
+// const port = 3002;
+// // const cors = require('cors');
+// // http.use(cors())
+// http.listen(port, () => {
+//   console.log(`Socket.IO server running at http://localhost:${port}/`);
+// });
 
 module.exports.createUser = async (req, res) => {
   const {
@@ -77,12 +83,13 @@ module.exports.showProfile = async (req, res) => { // connect to socket of zip c
   let user = await User.findOne({
     _id: req.params.id
   });
+
+  // // subscribe user for zip code room to voting updates
   // if(user.zipCode !== '10000') { // not the default zip code
-  //   io.on('connection', (socket) => {
-  //     socket.on(`${user.zipCode}`, msg => { // connects to the room (zip code area for live voting)
-  //       io.emit(`${user.zipCode}`, msg);
-  //     });
+  //   io.on('connection', socket => { // connects to the room (zip code area for live voting)
+  //     socket.join(`${user.zipCode}`);
   //   });
+  // }
 
   res.status(200).send(user);
 }
@@ -245,7 +252,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=89133900-a5b3-11eb-81ea-37273b34352e&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=f498f1c0-a5b3-11eb-90fd-b180a2f6c2a2&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
@@ -281,7 +288,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
       }
     }
 
-    // console.log(dishesForClient)
+    console.log(dishesForClient)
     res.send(dishesForClient);
   }
 }
@@ -291,15 +298,11 @@ module.exports.upDownVote = async (req, res) => {
   console.log("VOTE ")
   console.log(id, dailyTreatsID, upDown)
 
-
-
-
-  let dailyTreatsFromDB;
   try {
     if(upDown === "up") {
       console.log("like", upDown)
       // like dish
-      dailyTreatsFromDB = await DailyTreat.updateOne(
+      await DailyTreat.updateOne(
         {_id: dailyTreatsID,
           userID: {$ne: id} },
         { $inc: { votes:  1} ,  $push: {likedByUserID: id}},
@@ -308,20 +311,40 @@ module.exports.upDownVote = async (req, res) => {
     } else {
       // unlike dish
       console.log("unlike", upDown)
-      dailyTreatsFromDB = await DailyTreat.updateOne(
+      await DailyTreat.updateOne(
         {_id: dailyTreatsID,
           userID: {$ne: id} },
         { $inc: { votes:  -1}, $pull: {likedByUserID: id}},
         { new: true }
       );
     }
+      // // broadcast votes for zipCode
+      // let user;
+      // try {
+      //   user = await User.findOne({_id: id}); /// ?
+      //   if(user) {
+      //     const dailyTreat = await DailyTreat.findOne({_id: dailyTreatsID});
+      //     console.log(dailyTreat)
+      //     io.on('connection', function(socket) {
+      //       io.emit(`${user.zipCode}`, dailyTreat.votes);
+      //     });
+      //   }
+      // } catch(e) {
+      //   console.log(e)
+      // }
 
-    // broadcast votes for
 
-    console.log(dailyTreatsFromDB.votes)
-    console.log(dailyTreatsFromDB)
-    res.send(dailyTreatsFromDB);
-  } catch(e) {
-    console.log(e);
+      // get updated votes
+      let dailyTreat;
+      try {
+        dailyTreat = await DailyTreat.findOne({_id: dailyTreatsID});
+        // console.log(dailyTreat)
+        res.send({votes: dailyTreat.votes});
+      } catch(e) {
+        console.log(e);
+      }
+
+    } catch(e) {
+      console.log(e);
+    }
   }
-}

@@ -33,6 +33,7 @@ export default function Dashboard ({id}) {
                   votes={dish.votes}
                   userID={dish.userID}
                   dishID={dish._id}
+                  zipCode={dish.zipCode}
                   title={dish.title}
                   description={dish.description}
                   recipe={dish.recipe}
