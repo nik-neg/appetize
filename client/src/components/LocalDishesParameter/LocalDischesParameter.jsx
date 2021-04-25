@@ -40,10 +40,17 @@ export default function LocalDishesDashboard (props) {
 
   const handleRadiusSearch = async () => {
     console.log("API CLIENT - HANDLE RADIUS SEARCH")
-    const APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
-    console.log(APIResponse)
+    let APIResponse;
+    try {
+      APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
+      APIResponse.sort((a,b) =>  b.votes - a.votes);
+      console.log(APIResponse)
+      props.onRadiusSearch(APIResponse)
+    } catch(e) {
+      console.log(e);
+    }// votes needed in votes of card
     // console.log(dishesInRadiusResponse)
-    props.onRadiusSearch(APIResponse.sort((a,b) =>  Date.parse(b.date) - Date.parse(a.date)))
+    // await props.onRadiusSearch(APIResponse) //.sort((a,b) =>  b.votes - a.votes)
   }
 
 

@@ -252,7 +252,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=f498f1c0-a5b3-11eb-90fd-b180a2f6c2a2&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=cfc15b50-a5c8-11eb-b4cf-a9444e5f95bf&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
@@ -278,7 +278,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
     let dailyTreatsFromDB;
     for(let i=0; i < zipCodesInRadius.length; i++) {
       try {
-        dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}); // what if more than 1 ?
+        dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode});
         // console.log(dailyTreatsFromDB)
         if(dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
           dishesForClient.push(dailyTreatsFromDB[0])

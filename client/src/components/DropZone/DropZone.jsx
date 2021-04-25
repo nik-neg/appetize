@@ -160,7 +160,12 @@ export default function DropZone (props) {
       const firstName = props.firstName;
       const publishObject = {...dish, firstName};
       console.log(publishObject);
-      const publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
+      let publishResponse;
+      try {
+        publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
+      } catch(e) {
+        console.log(e);
+      }
       console.log(publishResponse)
     }
 

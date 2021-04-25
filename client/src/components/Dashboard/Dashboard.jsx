@@ -10,8 +10,16 @@ export default function Dashboard ({id}) {
 
   // to reduce processing delays data needs to be fetched
   // useEffect(() => {
-    // setMouthWateringDishes(mouthWateringDishes)
+  //   setMouthWateringDishes(mouthWateringDishes)
+  //   console.log(mouthWateringDishes)
   // }, [mouthWateringDishes]);
+
+  const handleLocalDishesParameterResults = (updatedValues) => {
+    // request for all button?
+    console.log(updatedValues)
+    setMouthWateringDishes(null)
+    setMouthWateringDishes(updatedValues);
+  }
 
   let fadeCounter = 0;
 
@@ -20,10 +28,10 @@ export default function Dashboard ({id}) {
       Hello Dashboard.
       <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}
-        onRadiusSearch={setMouthWateringDishes}
+        onRadiusSearch={handleLocalDishesParameterResults}
         id={id}
       />
-      { mouthWateringDishes.length > 0 ?
+      { mouthWateringDishes && mouthWateringDishes.length > 0 ?
         (mouthWateringDishes.map((dish, index) => {
         fadeCounter++;
         return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
