@@ -196,6 +196,7 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.recipe = recipe;
   dailyTreat.imageUrl = imageUrl;
   dailyTreat.votes = 0;
+  dailyTreat.created = new Date().toISOString();
 
   // save to db
   try {
@@ -233,7 +234,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=a60f4ea0-a51e-11eb-876e-51691c760c85&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=f1614a00-a5a4-11eb-bb72-a7c89318b3bb&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 

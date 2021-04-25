@@ -35,6 +35,7 @@ export default function Dashboard ({id}) {
                   title={dish.title}
                   description={dish.description}
                   recipe={dish.recipe}
+                  created={dish.created}
                   />
                 </FadeIn>
               })
