@@ -4,6 +4,8 @@ import Card from '../Card/Card'
 import { useState } from 'react';
 import FadeIn from 'react-fade-in';
 
+import './index.scss';
+
 export default function Dashboard ({id}) {
 
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
@@ -31,7 +33,8 @@ export default function Dashboard ({id}) {
         onRadiusSearch={handleLocalDishesParameterResults}
         id={id}
       />
-      { mouthWateringDishes && mouthWateringDishes.length > 0 ?
+      <div className='fadeOut'>
+        {mouthWateringDishes && mouthWateringDishes.length > 0 ?
         (mouthWateringDishes.map((dish, index) => {
         fadeCounter++;
         return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
@@ -50,6 +53,7 @@ export default function Dashboard ({id}) {
                 </FadeIn>
               }))
             : ''}
+      </div>
       {/* <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}
         onRadiusSearch={setMouthWateringDishes}

@@ -11,9 +11,13 @@ import DropZone from '../DropZone/DropZone';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import SearchIcon from '@material-ui/icons/Search';
 
 // import Card from '../Card/Card'
 import Dashboard from '../Dashboard/Dashboard';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Box from '@material-ui/core/Box';
+const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
 
 import FadeIn from 'react-fade-in';
 
@@ -63,6 +67,9 @@ export default function Profile ({id}) {
   const classesAvatar = useStylesAvatar();
   const classesGrid = useStylesGrid();
 
+  const [open, setOpen] = useState(false);
+
+
   const styles = {
     someTextField: {
       minHeight: 420,
@@ -95,16 +102,14 @@ export default function Profile ({id}) {
       <Grid
         container
         spacing={4}
-        direction="column"
+        direction="row"
         justify="flex-start"
         alignItems="flex-start"
-        style={{"padding-left": "11%", "padding-top": "5%"}}
+        // style={{"padding-left": "11%", "padding-top": "5%"}}
       >
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <h1>{userData.firstName}</h1>
-          <Avatar alt="No Avatar" src="./logo.jpg" className={classesAvatar.large} style={{ height: '100px', width: '100px' }}/>
-        </Grid>
-        <Grid item xs={6}>
+          <Avatar alt="No Avatar" src="./logo.jpg" className={classesAvatar.large} style={{ height: '100px', width: '100px', marginLeft: "38.5%" }} />
           <TextField
             id="standard-basic"
             label="ZIP CODE"
@@ -119,7 +124,14 @@ export default function Profile ({id}) {
             InputProps={{ classes: { input: styles.someTextField } }}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
+          Image Drag n Drop
+        </Grid>
+        <Grid item xs={4}>
+            Card Area
+        </Grid>
+        <Grid item xs={4}>
+          <div className="button-box">
           <Button
             variant="contained"
             color="primary"
@@ -130,10 +142,49 @@ export default function Profile ({id}) {
           >
             Save
           </Button>
+          </div>
+          <div className="button-box">
+            <Box component="span" display="block" >
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+              startIcon={<CloudUploadIcon />}
+              style={upLoadButtonStyle}
+              >
+              Daily Treat
+              </Button>
+            </Box>
+            <div className="button-box">
+            <Box component="span" display="block">
+              <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SearchIcon />}
+              style={upLoadButtonStyle}
+              >
+              Hall of Fame
+              </Button>
+            </Box>
+            </div>
+          </div>
+        </Grid>
+        <Grid item xs={4}>
+          <div className="button-box">
+
+          </div>
+        </Grid>
+        <Grid item xs={4}>
+          <DropZone
+          id={id}
+          firstName={userData.firstName}
+          setOpen={setOpen}
+          open={open}
+          />
         </Grid>
 
       </Grid>
-      <DropZone id={id} firstName={userData.firstName}/>
+
       {/* <Grid item xs={6}>
           <TextField
             id="standard-basic"

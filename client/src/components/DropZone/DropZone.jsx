@@ -4,16 +4,16 @@ import React, { useState } from "react"; //useEffect
 import './index.css';
 // import { DropzoneArea } from 'material-ui-dropzone';
 import { DropzoneDialogBase } from 'material-ui-dropzone';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+// import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 // import CloseIcon from '@material-ui/icons/Close';
 // import SendIcon from '@material-ui/icons/Send';
 
 import ApiClient from '../../services/ApiClient';
 
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 
 import Image from 'material-ui-image'
 import { TextField } from '@material-ui/core';
@@ -29,7 +29,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
-import SearchIcon from '@material-ui/icons/Search';
+// import SearchIcon from '@material-ui/icons/Search';
 
 // import {  withStyles } from '@material-ui/core/styles';
 // import Icon from '@material-ui/core/Icon';
@@ -89,7 +89,7 @@ export default function DropZone (props) {
     recipe: ""
   });
 
-  const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
+  // const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
   const styles = {
     someTextField: {
       minHeight: 420,
@@ -111,14 +111,15 @@ export default function DropZone (props) {
 
 
 
-  const [open, setOpen] = useState(false);
+  // const [open, props.setOpen] = useState(false);
+
   const [fileObjects, setFileObjects] = useState([]);
   const dialogTitle = () => (
     <>
       <span>Upload file</span>
       <IconButton
         style={{right: '12px', top: '8px', position: 'absolute'}}
-        onClick={() => setOpen(false)}>
+        onClick={() => props.setOpen(false)}>
         {/* <CloseIcon /> */}
       </IconButton>
     </>
@@ -184,13 +185,13 @@ export default function DropZone (props) {
       {/* <ColorButton variant="contained" color="primary" className={classes.margin}>
         Custom CSS
       </ColorButton> */}
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <div className="button-box">
             <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
               <Button
               variant="contained"
               color="primary"
-              onClick={() => setOpen(true)}
+              onClick={() => props.setOpen(true)}
               startIcon={<CloudUploadIcon />}
               style={upLoadButtonStyle}
               >
@@ -212,7 +213,7 @@ export default function DropZone (props) {
               </Button>
             </Box>
           </div>
-        </Grid>
+        </Grid> */}
       <Grid
         container
         spacing={6}
@@ -331,17 +332,17 @@ export default function DropZone (props) {
         cancelButtonText={"cancel"}
         submitButtonText={"submit"}
         maxFileSize={5000000}
-        open={open}
+        open={props.open}
         onAdd={newFileObjs => {
           setFileObjects([].concat(fileObjects, newFileObjs));
         }}
         onDelete={handleDelete}
-        onClose={() => setOpen(false)}
+        onClose={() => props.setOpen(false)}
         onSave={ async () => {
           console.log('onSave', fileObjects);
           await handleUpload();
           handleDownload();
-          setOpen(false);
+          props.setOpen(false);
         }}
         showPreviews={true}
         showFileNamesInPreview={true}
