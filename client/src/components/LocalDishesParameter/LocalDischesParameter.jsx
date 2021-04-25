@@ -43,7 +43,7 @@ export default function LocalDishesDashboard (props) {
     const APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
     console.log(APIResponse)
     // console.log(dishesInRadiusResponse)
-    props.onRadiusSearch(APIResponse)
+    props.onRadiusSearch(APIResponse.sort((a,b) =>  Date.parse(b.date) - Date.parse(a.date)).reverse())
   }
 
 

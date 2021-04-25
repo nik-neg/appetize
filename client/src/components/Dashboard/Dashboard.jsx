@@ -39,7 +39,7 @@ export default function Dashboard ({id}) {
                   created={dish.created}
                   />
                 </FadeIn>
-              })).sort((a,b) =>  Date.parse(b.date) - Date.parse(a.date)).reverse()
+              }))
             : ''}
       {/* <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}
