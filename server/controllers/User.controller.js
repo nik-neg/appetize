@@ -10,12 +10,16 @@ const db = require('../models/db');
 
 const saltRounds = 10;
 
-const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 
 var gridfs = require('gridfs-stream');
 
 const axios = require('axios');
+
+
+// sockets
+// const http = require('http').Server(app);
+// const io = require('socket.io')(http);
 
 module.exports.createUser = async (req, res) => {
   const {
@@ -66,13 +70,20 @@ module.exports.loginUser = async (req, res) => {
   }
 };
 
-module.exports.showProfile = async (req, res) => {
+module.exports.showProfile = async (req, res) => { // connect to socket of zip code
+
   // console.log(req)
   // console.log(req.params)
   let user = await User.findOne({
     _id: req.params.id
   });
-  // console.log(user)
+  // if(user.zipCode !== '10000') { // not the default zip code
+  //   io.on('connection', (socket) => {
+  //     socket.on(`${user.zipCode}`, msg => { // connects to the room (zip code area for live voting)
+  //       io.emit(`${user.zipCode}`, msg);
+  //     });
+  //   });
+
   res.status(200).send(user);
 }
 
@@ -234,7 +245,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=3b4cf660-a5a7-11eb-b80b-7748f911d15a&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=89133900-a5b3-11eb-81ea-37273b34352e&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
@@ -280,37 +291,36 @@ module.exports.upDownVote = async (req, res) => {
   console.log("VOTE ")
   console.log(id, dailyTreatsID, upDown)
 
+
+
+
   let dailyTreatsFromDB;
   try {
     if(upDown === "up") {
       console.log("like", upDown)
       // like dish
       dailyTreatsFromDB = await DailyTreat.updateOne(
-        {_id: dailyTreatsID},
+        {_id: dailyTreatsID,
+          userID: {$ne: id} },
         { $inc: { votes:  1} ,  $push: {likedByUserID: id}},
         { new: true }
       );
-        // { $push: {likedByUserID: id}}
     } else {
       // unlike dish
       console.log("unlike", upDown)
       dailyTreatsFromDB = await DailyTreat.updateOne(
-        {_id: dailyTreatsID},
+        {_id: dailyTreatsID,
+          userID: {$ne: id} },
         { $inc: { votes:  -1}, $pull: {likedByUserID: id}},
         { new: true }
-        // { $pull: {likedByUserID: id}}
       );
     }
-    // if(upDown) {
-    //   dailyTreatsFromDB.votes = dailyTreatsFromDB.votes + 1;
-    //   dailyTreatsFromDB.likedByUserID.push(id);
-    // } else {
-    //   dailyTreatsFromDB.votes = dailyTreatsFromDB.votes - 1;
-    //   dailyTreatsFromDB.likedByUserID.pop(id);
-    // }
+
+    // broadcast votes for
+
     console.log(dailyTreatsFromDB.votes)
-    // await dailyTreatsFromDB.save();
     console.log(dailyTreatsFromDB)
+    res.send(dailyTreatsFromDB);
   } catch(e) {
     console.log(e);
   }
