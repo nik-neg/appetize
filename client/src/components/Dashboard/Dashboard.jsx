@@ -24,12 +24,13 @@ export default function Dashboard ({id}) {
         id={id}
       />
       { mouthWateringDishes.length > 0 ?
-        mouthWateringDishes.map((dish, index) => {
+        (mouthWateringDishes.map((dish, index) => {
         fadeCounter++;
         return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
                 <Card
                   key={index}
                   voteID={id}
+                  votes={dish.votes}
                   userID={dish.userID}
                   dishID={dish._id}
                   title={dish.title}
@@ -38,7 +39,7 @@ export default function Dashboard ({id}) {
                   created={dish.created}
                   />
                 </FadeIn>
-              })
+              })).sort((a,b) =>  Date.parse(b.date) - Date.parse(a.date)).reverse()
             : ''}
       {/* <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}

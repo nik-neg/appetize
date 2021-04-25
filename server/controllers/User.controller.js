@@ -234,7 +234,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=f1614a00-a5a4-11eb-bb72-a7c89318b3bb&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=352f45e0-a5a6-11eb-8bfb-fd03cb748311&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
