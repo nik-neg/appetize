@@ -15,8 +15,8 @@ import ApiClient from '../../services/ApiClient';
 
 // import Box from '@material-ui/core/Box';
 
-import Image from 'material-ui-image'
-import { TextField } from '@material-ui/core';
+// import Image from 'material-ui-image'
+// import { TextField } from '@material-ui/core';
 
 // import { makeStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
@@ -24,10 +24,10 @@ import Grid from '@material-ui/core/Grid';
 
 // import { makeStyles } from '@material-ui/core/styles';
 
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import Favorite from '@material-ui/icons/Favorite';
+// import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 // import SearchIcon from '@material-ui/icons/Search';
 
@@ -73,30 +73,30 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
   // }));
 
 
-import FadeIn from 'react-fade-in';
+// import FadeIn from 'react-fade-in';
 
 export default function DropZone (props) {
   // const classes = useStylessButton();
 
-  const CHARACTER_LIMIT_TITLE = 20;
-  const CHARACTER_LIMIT_DESCRIPTION = 140;
-  const CHARACTER_LIMIT_RECIPE = 500;
-  const [imagePath, setImagePath] = useState(``);
+  // const CHARACTER_LIMIT_TITLE = 20;
+  // const CHARACTER_LIMIT_DESCRIPTION = 140;
+  // const CHARACTER_LIMIT_RECIPE = 500;
+  // const [imagePath, setImagePath] = useState(``);
 
-  const [dish, setDish] = useState({
-    title: "",
-    description: "",
-    recipe: ""
-  });
+  // const [dish, setDish] = useState({
+  //   title: "",
+  //   description: "",
+  //   recipe: ""
+  // });
 
   // const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
-  const styles = {
-    someTextField: {
-      minHeight: 420,
-      minWidth: 800,
-      paddingTop: "10%"
-    }
-  };
+  // const styles = {
+  //   someTextField: {
+  //     minHeight: 420,
+  //     minWidth: 800,
+  //     paddingTop: "10%"
+  //   }
+  // };
 
   // const ColorButton = withStyles(() => ({
   //   root: {
@@ -136,41 +136,39 @@ export default function DropZone (props) {
     const downloadResponse = await ApiClient.displayImage(props.id);
     console.log("DOWNLOAD RESPONSE")
     console.log(downloadResponse)
-    setImagePath(downloadResponse.url);
+    props.setImagePath(downloadResponse.url);
   }
 
   const handleDelete = deleted => {
     setFileObjects(fileObjects.filter(f => f !== deleted));
   };
 
-  const handleChange = name => (event) => {
-    // const { name, value } = event.target;
-    // setInput((prevInput) => ({ ...prevInput, [name]: value }));
-    setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
-    // console.log(dish)
-  }
+  // const handleTextArea = name => (event) => {
+  //   // const { name, value } = event.target;
+  //   // setInput((prevInput) => ({ ...prevInput, [name]: value }));
+  //   props.setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
+  // }
 
   // const handleChange = name => event => {
   //   setValues({ ...values, [name]: event.target.value });
   // };
 
-  const handlePublish = async (event) => {
-    console.log('click', event.target.checked)
-    if(event.target.checked) {
-      // Api client send save request with url to images db for dashbard
-      const firstName = props.firstName;
-      const publishObject = {...dish, firstName};
-      console.log(publishObject);
-      let publishResponse;
-      try {
-        publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
-      } catch(e) {
-        console.log(e);
-      }
-      console.log(publishResponse)
-    }
-
-  }
+  // const handlePublish = async (event) => {
+  //   console.log('click', event.target.checked)
+  //   if(event.target.checked) {
+  //     // Api client send save request with url to images db for dashbard
+  //     const firstName = props.firstName;
+  //     const publishObject = {...props.dish, firstName};
+  //     console.log(publishObject);
+  //     let publishResponse;
+  //     try {
+  //       publishResponse = await ApiClient.publishToDashBoard(props.id, publishObject)
+  //     } catch(e) {
+  //       console.log(e);
+  //     }
+  //     console.log(publishResponse)
+  //   }
+  // }
 
   return (
     <div>
@@ -229,19 +227,19 @@ export default function DropZone (props) {
           <Paper className={classes.paper}>xs=6</Paper>
         </Grid> */}
 
-        <Grid item xs={6}>
-          {imagePath.length > 0 ?
+        {/* <Grid item xs={6}>
+          {props.setOpen.length > 0 ?
           <Image
-            src={imagePath}
+            src={props.imagePath}
             imageStyle={{width:500, height:300}}
             style={{"backgroundColor": "inherit", "position": "absolute", "padding-right": "1%"}}
           /> : ''}
-        </Grid>
+        </Grid> */}
         </Grid>
       </Grid>
 
-      <Grid item xs={6}>
-        { imagePath.length > 0 ?
+      {/* <Grid item xs={6}>
+        { props.imagePath.length > 0 ?
           <FadeIn delay={1500} transitionDuration={1000}>
             <TextField
               id="standard-basic"
@@ -254,14 +252,14 @@ export default function DropZone (props) {
               style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
               rowsMax="10"
               variant="filled"
-              onChange={handleChange('title')}
+              onChange={handleTextArea('title')}
               InputProps={{ classes: { input: styles.someTextField } }}
             />
           </FadeIn>
           : ''}
         </Grid>
         <Grid item xs={6}>
-        { imagePath.length > 0 ?
+        { props.imagePath.length > 0 ?
           <FadeIn delay={2500} transitionDuration={1000}>
             <TextField
               id="standard-basic"
@@ -275,14 +273,14 @@ export default function DropZone (props) {
               multiline
               rowsMax="10"
               variant="filled"
-              onChange={handleChange('description')}
+              onChange={handleTextArea('description')}
               InputProps={{ classes: { input: styles.someTextField } }}
             />
           </FadeIn>
           : ''}
         </Grid>
         <Grid item xs={6}>
-        { imagePath.length > 0 ?
+        { props.imagePath.length > 0 ?
           <FadeIn delay={3500} transitionDuration={1000}>
             <TextField
               id="standard-basic"
@@ -296,13 +294,13 @@ export default function DropZone (props) {
               multiline
               rowsMax="10"
               variant="filled"
-              onChange={handleChange('recipe')}
+              onChange={handleTextArea('recipe')}
               InputProps={{ classes: { input: styles.someTextField } }}
             />
           </FadeIn>
           : ''}
         </Grid>
-        { imagePath.length > 0 ?
+        { props.imagePath.length > 0 ?
         <FadeIn delay={4500} transitionDuration={1000}>
           <FormControlLabel
             control={<Checkbox onChange={handlePublish} icon={<FavoriteBorder />}
@@ -312,7 +310,7 @@ export default function DropZone (props) {
             style={{"margin-left": "1.5%"}}
           />
         </FadeIn>
-        : ''}
+        : ''} */}
         {/* <Button
         variant="contained"
         color="primary"
