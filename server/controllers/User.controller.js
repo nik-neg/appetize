@@ -274,18 +274,41 @@ module.exports.checkDishesInRadius = async (req, res) => {
   }
 }
 
-module.exports.upVote = async (req, res) => {
-  console.log("UPVOTE")
-  const { id, dailyTreatsID } = req.params;
-  console.log(id, dailyTreatsID )
+module.exports.upDownVote = async (req, res) => {
+  const { id, dailyTreatsID, upDown } = req.params;
+  console.log("VOTE ")
+  console.log(id, dailyTreatsID, upDown)
 
   let dailyTreatsFromDB;
   try {
-    // like dish
-    dailyTreatsFromDB = await DailyTreat.updateOne(
-      {_id: dailyTreatsID},
-      { $inc: { votes: 1 }, $push: { likedByUserID: id }}
-    );
+    if(upDown === "up") {
+      console.log("like", upDown)
+      // like dish
+      dailyTreatsFromDB = await DailyTreat.updateOne(
+        {_id: dailyTreatsID},
+        { $inc: { votes:  1} ,  $push: {likedByUserID: id}},
+        { new: true }
+      );
+        // { $push: {likedByUserID: id}}
+    } else {
+      // unlike dish
+      console.log("unlike", upDown)
+      dailyTreatsFromDB = await DailyTreat.updateOne(
+        {_id: dailyTreatsID},
+        { $inc: { votes:  -1}, $pull: {likedByUserID: id}},
+        { new: true }
+        // { $pull: {likedByUserID: id}}
+      );
+    }
+    // if(upDown) {
+    //   dailyTreatsFromDB.votes = dailyTreatsFromDB.votes + 1;
+    //   dailyTreatsFromDB.likedByUserID.push(id);
+    // } else {
+    //   dailyTreatsFromDB.votes = dailyTreatsFromDB.votes - 1;
+    //   dailyTreatsFromDB.likedByUserID.pop(id);
+    // }
+    console.log(dailyTreatsFromDB.votes)
+    // await dailyTreatsFromDB.save();
     console.log(dailyTreatsFromDB)
   } catch(e) {
     console.log(e);

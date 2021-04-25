@@ -111,6 +111,19 @@ const getDishesInRadius = (id, radius) => {
     .catch((err) => console.log(err));
 };
 
+const voteDish = (id, dailyTreatsID, upDownVote) => {
+  return fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+    }
+  )
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
+}
+
+
 module.exports = {
   loginUser,
   registerUser,
@@ -119,4 +132,5 @@ module.exports = {
   displayImage,
   confirmZipCode,
   publishToDashBoard,
-  getDishesInRadius };
+  getDishesInRadius,
+  voteDish };

@@ -16,6 +16,10 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import { useState } from 'react';
+
+import ApiClient from '../../services/ApiClient';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -43,12 +47,32 @@ export default function RecipeReviewCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
+  const [likeColor, setLikeColor] = useState(false);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const handleLike = async () => {
-    console.log('like')
+    console.log('like', props.dishID, likeColor)
+    setLikeColor(!likeColor);
+    console.log('like', props.dishID, likeColor)
+
+    let likeResponse;
+    if(!likeColor) {
+      try {
+        likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "up");
+      } catch(e) {
+        console.log(e)
+      }
+    } else {
+      try {
+        likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "down");
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    console.log(likeResponse)
 
   }
 
@@ -70,7 +94,7 @@ export default function RecipeReviewCard(props) {
       />
       <CardMedia
         className={classes.media}
-        image={`http://localhost:3001/profile/${props.id}/download`}
+        image={`http://localhost:3001/profile/${props.userID}/download`}
         title="Paella dish"
       />
       <CardContent>
@@ -80,7 +104,7 @@ export default function RecipeReviewCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites" >
+        <IconButton aria-label="add to favorites"  style={{color:likeColor ? "#ff0000": 'inherit'}}>
           <FavoriteIcon onClick={handleLike}/>
         </IconButton>
         <IconButton aria-label="share">

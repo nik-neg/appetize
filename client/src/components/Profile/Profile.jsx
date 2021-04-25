@@ -91,7 +91,7 @@ export default function Profile ({id}) {
 
   return (
     <div className={classesGrid.root}>
-    <FadeIn delay={950} transitionDuration={1650}>
+    <FadeIn delay={950} transitionDuration={1750}>
       <Grid
         container
         spacing={4}

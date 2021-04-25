@@ -29,7 +29,9 @@ export default function Dashboard ({id}) {
         return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
                 <Card
                   key={index}
-                  id={dish.userID}
+                  voteID={id}
+                  userID={dish.userID}
+                  dishID={dish._id}
                   title={dish.title}
                   description={dish.description}
                   recipe={dish.recipe}

@@ -10,6 +10,5 @@ router.put('/profile/:id', userController.setZipCode);
 router.post('/profile/:id/dashboard', userController.publishDish);
 router.get('/profile/:id/dashboard/:radius', userController.checkDishesInRadius);
 
-router.patch('/profile/:id/dashboard/:dailyTreatsID', userController.upVote); // != users dish dailyTreatsID
-
+router.patch('/profile/:id/dashboard/:dailyTreatsID/:upDown', userController.upDownVote); // != users dish dailyTreatsID
 module.exports = router;

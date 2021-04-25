@@ -146,7 +146,7 @@ export default function DropZone (props) {
     // const { name, value } = event.target;
     // setInput((prevInput) => ({ ...prevInput, [name]: value }));
     setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
-    console.log(dish)
+    // console.log(dish)
   }
 
   // const handleChange = name => event => {
