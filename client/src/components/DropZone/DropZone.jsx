@@ -180,38 +180,6 @@ export default function DropZone (props) {
         alignItems="flex-start"
         style={{"padding-left": "5%", "padding-top": "2%"}}
       >
-      {/* <ColorButton variant="contained" color="primary" className={classes.margin}>
-        Custom CSS
-      </ColorButton> */}
-        {/* <Grid item xs={6}>
-          <div className="button-box">
-            <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
-              <Button
-              variant="contained"
-              color="primary"
-              onClick={() => props.setOpen(true)}
-              startIcon={<CloudUploadIcon />}
-              style={upLoadButtonStyle}
-              >
-              Daily Treat
-              </Button>
-            </Box>
-          </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div className="button-box">
-            <Box component="span" display="block" style={{"padding-left": "30%", "padding-top": "5%"}}>
-              <Button
-              variant="contained"
-              color="primary"
-              startIcon={<SearchIcon />}
-              style={upLoadButtonStyle}
-              >
-              Hall of Fame
-              </Button>
-            </Box>
-          </div>
-        </Grid> */}
       <Grid
         container
         spacing={6}
@@ -220,131 +188,31 @@ export default function DropZone (props) {
         alignItems="flex-start"
         style={{"padding-left": "5%", "padding-top": "2%"}}
       >
-      {/* <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid> */}
-
-        {/* <Grid item xs={6}>
-          {props.setOpen.length > 0 ?
-          <Image
-            src={props.imagePath}
-            imageStyle={{width:500, height:300}}
-            style={{"backgroundColor": "inherit", "position": "absolute", "padding-right": "1%"}}
-          /> : ''}
-        </Grid> */}
-        </Grid>
       </Grid>
+    </Grid>
 
-      {/* <Grid item xs={6}>
-        { props.imagePath.length > 0 ?
-          <FadeIn delay={1500} transitionDuration={1000}>
-            <TextField
-              id="standard-basic"
-              label="Title"
-              inputProps={{
-                maxlength: CHARACTER_LIMIT_TITLE
-              }}
-              value={dish.title}
-              helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-              style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
-              rowsMax="10"
-              variant="filled"
-              onChange={handleTextArea('title')}
-              InputProps={{ classes: { input: styles.someTextField } }}
-            />
-          </FadeIn>
-          : ''}
-        </Grid>
-        <Grid item xs={6}>
-        { props.imagePath.length > 0 ?
-          <FadeIn delay={2500} transitionDuration={1000}>
-            <TextField
-              id="standard-basic"
-              label="Description"
-              inputProps={{
-                maxlength: CHARACTER_LIMIT_DESCRIPTION
-              }}
-              value={dish.description}
-              helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-              style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
-              multiline
-              rowsMax="10"
-              variant="filled"
-              onChange={handleTextArea('description')}
-              InputProps={{ classes: { input: styles.someTextField } }}
-            />
-          </FadeIn>
-          : ''}
-        </Grid>
-        <Grid item xs={6}>
-        { props.imagePath.length > 0 ?
-          <FadeIn delay={3500} transitionDuration={1000}>
-            <TextField
-              id="standard-basic"
-              label="Recipe"
-              inputProps={{
-                maxlength: CHARACTER_LIMIT_RECIPE
-              }}
-              value={dish.recipe}
-              helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-              style={{"margin-left": "75%", "margin-top": "2.5%", "min-width": "32rem"}}
-              multiline
-              rowsMax="10"
-              variant="filled"
-              onChange={handleTextArea('recipe')}
-              InputProps={{ classes: { input: styles.someTextField } }}
-            />
-          </FadeIn>
-          : ''}
-        </Grid>
-        { props.imagePath.length > 0 ?
-        <FadeIn delay={4500} transitionDuration={1000}>
-          <FormControlLabel
-            control={<Checkbox onChange={handlePublish} icon={<FavoriteBorder />}
-            checkedIcon={<Favorite/>}
-            name="checkedH" />}
-            label="Publish"
-            style={{"margin-left": "1.5%"}}
-          />
-        </FadeIn>
-        : ''} */}
-        {/* <Button
-        variant="contained"
-        color="primary"
-        style={{right: '12px', top: '8px'}}
-        className={classes.button}
-        endIcon={<SendIcon/>}
-      >
-       Go online 🤩
-      </Button> */}
-        {/* <Card/> */}
-
-
-      <DropzoneDialogBase
-        dialogTitle={dialogTitle()}
-        acceptedFiles={['image/*']}
-        fileObjects={fileObjects}
-        cancelButtonText={"cancel"}
-        submitButtonText={"submit"}
-        maxFileSize={5000000}
-        open={props.open}
-        onAdd={newFileObjs => {
-          setFileObjects([].concat(fileObjects, newFileObjs));
-        }}
-        onDelete={handleDelete}
-        onClose={() => props.setOpen(false)}
-        onSave={ async () => {
-          console.log('onSave', fileObjects);
-          await handleUpload();
-          handleDownload();
-          props.setOpen(false);
-        }}
-        showPreviews={true}
-        showFileNamesInPreview={true}
-      />
+    <DropzoneDialogBase
+      dialogTitle={dialogTitle()}
+      acceptedFiles={['image/*']}
+      fileObjects={fileObjects}
+      cancelButtonText={"cancel"}
+      submitButtonText={"submit"}
+      maxFileSize={5000000}
+      open={props.open}
+      onAdd={newFileObjs => {
+        setFileObjects([].concat(fileObjects, newFileObjs));
+      }}
+      onDelete={handleDelete}
+      onClose={() => props.setOpen(false)}
+      onSave={ async () => {
+        console.log('onSave', fileObjects);
+        await handleUpload();
+        handleDownload();
+        props.setOpen(false);
+      }}
+      showPreviews={true}
+      showFileNamesInPreview={true}
+    />
     </div>
   );
 }

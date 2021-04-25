@@ -1,0 +1,9 @@
+.dish-content {
+  display: "flex";
+}
+
+.element {
+  justify-content: center;
+  margin-right: "10%"
+}
+

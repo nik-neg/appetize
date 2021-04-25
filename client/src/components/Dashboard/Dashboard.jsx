@@ -1,14 +1,14 @@
-import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
+// import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 import Card from '../Card/Card'
 // import { useState, useEffect } from 'react';
-import { useState } from 'react';
+// import { useState } from 'react';
 import FadeIn from 'react-fade-in';
 
 import './index.scss';
 
-export default function Dashboard ({id}) {
+export default function Dashboard (props) {
 
-  const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
+  // const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
 
   // to reduce processing delays data needs to be fetched
   // useEffect(() => {
@@ -16,31 +16,30 @@ export default function Dashboard ({id}) {
   //   console.log(mouthWateringDishes)
   // }, [mouthWateringDishes]);
 
-  const handleLocalDishesParameterResults = (updatedValues) => {
-    // request for all button?
-    console.log(updatedValues)
-    setMouthWateringDishes(null)
-    setMouthWateringDishes(updatedValues);
-  }
+  // const handleLocalDishesParameterResults = (updatedValues) => {
+  //   // request for all button?
+  //   console.log(updatedValues)
+  //   setMouthWateringDishes(null)
+  //   setMouthWateringDishes(updatedValues);
+  // }
 
   let fadeCounter = 0;
 
   return (
     <div>
-      Hello Dashboard.
-      <LocalDishesParameter
+      {/* <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}
         onRadiusSearch={handleLocalDishesParameterResults}
         id={id}
-      />
+      /> */}
       <div className='fadeOut'>
-        {mouthWateringDishes && mouthWateringDishes.length > 0 ?
-        (mouthWateringDishes.map((dish, index) => {
+        {props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
+        (props.mouthWateringDishes.map((dish, index) => {
         fadeCounter++;
         return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
                 <Card
                   key={index}
-                  voteID={id}
+                  voteID={props.id}
                   votes={dish.votes}
                   userID={dish.userID}
                   dishID={dish._id}

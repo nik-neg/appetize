@@ -18,29 +18,7 @@ export default function CheckboxLabels() {
   };
 
   return (
-    <FormGroup row >
-    <FormControlLabel
-        control={
-          <Checkbox
-            checked={state.checkedA}
-            onChange={handleChange}
-            name="checkedA"
-            color="primary"
-          />
-        }
-        label="Indish"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={state.checkedC}
-            onChange={handleChange}
-            name="checkedC"
-            color="primary"
-          />
-        }
-        label="Veggie"
-      />
+    <FormGroup row={true} >
       <FormControlLabel
         control={
           <Checkbox

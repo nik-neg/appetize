@@ -5,7 +5,7 @@ import './index.css'
 // import Grid from '@material-ui/core/Grid';
 
 import { useState } from 'react';
-import { TextField } from '@material-ui/core';
+// import { TextField } from '@material-ui/core';
 import Slider from '../Slider/Slider';
 import CheckBox from '../CheckBox/CheckBox';
 
@@ -13,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
 import ApiClient from '../../services/ApiClient';
+// import Grid from '@material-ui/core/Grid';
 
 
 // const useStyles = makeStyles((theme) => ({
@@ -28,13 +29,7 @@ import ApiClient from '../../services/ApiClient';
 
 export default function LocalDishesDashboard (props) {
   // const classes = useStyles();
-  const CHARACTER_LIMIT_TITLE = 10;
-  const [zipCode, setZipCode] = useState('');
 
-  const handleChange = (event) => {
-    setZipCode(event.target.value);
-    console.log(zipCode)
-  }
 
   const [radius, setRadius] = useState(2);
 
@@ -54,34 +49,40 @@ export default function LocalDishesDashboard (props) {
   }
 
 
-  const styles = {
-    someTextField: {
-      minHeight: 420,
-      minWidth: 800,
-      paddingTop: "10%"
-    }
-  };
+  // const styles = {
+  //   someTextField: {
+  //     minHeight: 420,
+  //     minWidth: 800,
+  //     paddingTop: "10%"
+  //   }
+  // };
   const upLoadButtonStyle = {maxWidth: '230px', maxHeight: '40px', minWidth: '230px', minHeight: '40px'};
 
   return (
+    // <Grid container spacing={1}>
+    //   <Grid container item xs={12} spacing={3}>
+    //     <Slider onSearch={setRadius}/>
+    //   </Grid>
+    //   <Grid container item xs={12} spacing={3}>
+    //     <CheckBox />
+    //   </Grid>
+    //   <Grid container item xs={12} spacing={3}>
+    //    <Button
+    //       variant="contained"
+    //       color="primary"
+    //       startIcon={<SearchIcon />}
+    //       style={upLoadButtonStyle}
+    //       onClick={handleRadiusSearch}
+    //       >
+    //       Find nice dishes 😋
+    //     </Button>
+    //   </Grid>
+    // </Grid>
     <div className='dashboard-header'>
       <div className='dashboard-header-column'>
 
       </div>
       <div className='dashboard-header-column'>
-      <TextField
-        id="standard-basic"
-        label="ZIP CODE"
-        inputProps={{
-          maxlength: CHARACTER_LIMIT_TITLE
-        }}
-        value={zipCode}
-        helperText={`${zipCode.length}/${CHARACTER_LIMIT_TITLE}`}
-        style={{"margin-top": "2.5%", "max-width": "6rem"}}
-        variant="filled"
-        onChange={handleChange}
-        InputProps={{ classes: { input: styles.someTextField } }}
-        />
         <div className='center-element'>
           <Slider onSearch={setRadius}/>
         </div>
