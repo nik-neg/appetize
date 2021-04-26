@@ -6,6 +6,9 @@ import FadeIn from 'react-fade-in';
 
 import './index.scss';
 
+// import { spacing } from '@material-ui/system';
+import Box from '@material-ui/core/Box';
+
 export default function Dashboard (props) {
 
   // const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
@@ -35,26 +38,26 @@ export default function Dashboard (props) {
       <div className='fadeOut'>
         {props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
         (props.mouthWateringDishes.map((dish, index) => {
-        fadeCounter++;
-        return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
-        <div className='card-padding'>
-                <Card
-                  key={index}
-                  voteID={props.id}
-                  votes={dish.votes}
-                  userID={dish.userID}
-                  dishID={dish._id}
-                  zipCode={dish.zipCode}
-                  title={dish.title}
-                  description={dish.description}
-                  recipe={dish.recipe}
-                  created={dish.created}
-                  />
-                  <h1>Hello</h1>
-        </div>
-                </FadeIn>
-              }))
-            : ''}
+          fadeCounter++;
+          return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
+                  <Box m={2}>
+                    <Card
+                      key={index}
+                      city={dish.city}
+                      voteID={props.id}
+                      votes={dish.votes}
+                      userID={dish.userID}
+                      dishID={dish._id}
+                      zipCode={dish.zipCode}
+                      title={dish.title}
+                      description={dish.description}
+                      recipe={dish.recipe}
+                      created={dish.created}
+                      />
+                  </Box>
+                  </FadeIn>
+                }))
+        : ''}
       </div>
       {/* <LocalDishesParameter
         // mouthWateringDishes={mouthWateringDishes}

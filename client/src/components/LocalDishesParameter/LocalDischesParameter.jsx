@@ -27,7 +27,7 @@ import ApiClient from '../../services/ApiClient';
 //   },
 // }));
 
-export default function LocalDishesDashboard (props) {
+export default function LocalDishesParameter (props) {
   // const classes = useStyles();
 
 
@@ -38,7 +38,7 @@ export default function LocalDishesDashboard (props) {
     let APIResponse;
     try {
       APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
-      APIResponse && APIResponse.sort((a,b) =>  b.votes - a.votes);
+      APIResponse.sort((a,b) =>  b.votes - a.votes); // check for undefined ?
       console.log(APIResponse)
       props.onRadiusSearch(APIResponse)
     } catch(e) {

@@ -97,7 +97,8 @@ export default function RecipeReviewCard(props) {
   }
 
   return (
-    <Card className={classes.root}>
+    // <div className='card-padding'>
+    <Card className={classes.root} >
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -105,7 +106,7 @@ export default function RecipeReviewCard(props) {
           </Avatar>
         }
         title={props.title}
-        subheader={moment(props.created).format("MMMM Do, YYYY")}
+        subheader={props.city+', '+moment(props.created).format("MMMM Do, YYYY")}
       />
       <CardMedia
         className={classes.media}
@@ -162,5 +163,6 @@ export default function RecipeReviewCard(props) {
         </CardContent>
       </Collapse>
     </Card>
+    // </div>
   );
 }

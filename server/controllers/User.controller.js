@@ -144,7 +144,11 @@ module.exports.retrieveImage = async (req, res) => {
   var connection = mongoose.connection;
   var gfs = gridfs(connection.db);
 
-  gfs.exist({ filename: req.params.id }, function (err, file) { // req.params.id
+  // loop through all fs.files and retrieve all images - in progress
+
+  // posssible to loop n times with counter from dailyTreats
+
+  gfs.exist({ filename: req.params.id }, function (err, file) {
     if (err || !file) {
         res.send('File Not Found');
     } else {
@@ -252,7 +256,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=e7b12fd0-a683-11eb-8d61-c757eb5db459&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=cc862e70-a69e-11eb-b361-29be49cebc8e&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
@@ -278,11 +282,19 @@ module.exports.checkDishesInRadius = async (req, res) => {
     let dailyTreatsFromDB;
     for(let i=0; i < zipCodesInRadius.length; i++) {
       try {
-        dailyTreatsFromDB = await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}, (err, dailyTreats) => {
-          console.log("found in: "+zipCodesInRadius[i].zipCode)
-          console.log(dailyTreats)
+        let dailyTreatsFromDB = [];
+        await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}, (err, dailyTreats) => {
+          // console.log("found in: "+zipCodesInRadius[i].zipCode)
+          // console.log(dailyTreats)
+          dailyTreats.forEach((dailyTreat) => {
+            const copyDailyTreat = Object.assign({}, {...dailyTreat._doc, city:zipCodesInRadius[i].city});
+            // console.log("copy");
+            // console.log(copyDailyTreat)
+            dailyTreatsFromDB.push(copyDailyTreat)
+          });
         });
-        console.log(dailyTreatsFromDB)
+        // console.log("dailyTreats")
+        // console.log(dailyTreatsFromDB)
         if(dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
           dishesForClient.push(...dailyTreatsFromDB) // not only one elements
         }

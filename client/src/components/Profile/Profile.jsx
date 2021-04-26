@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 
 import ApiClient from '../../services/ApiClient';
 import DropZone from '../DropZone/DropZone';
-// import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';

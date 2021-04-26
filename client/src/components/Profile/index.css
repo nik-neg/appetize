@@ -8,18 +8,12 @@
 } */
 .publish-button-row {
   display: flex;
-  justify-content: center;
-  /* border: 1px solid blue; */
-  width: 30rem;
-
 }
 
 .publish-button-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* flex: 1; */
-  /* border: 1px solid; */
-  width: 10rem;
+  flex-grow: 1;
+  height: 100px;
+}
+.item + .item {
+  margin-left: 2%;
 }
