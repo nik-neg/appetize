@@ -29,7 +29,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 
 // import FormGroup from '@material-ui/core/FormGroup';
-
+import './index.css'
 
 
 
@@ -157,15 +157,6 @@ export default function Profile ({id}) {
     setMouthWateringDishes(updatedValues);
   }
 
-  const [checkBoxState, setCheckBoxState] = useState({
-    checkedA: true,
-    checkedB: true,
-  });
-
-  const handleChange = (event) => {
-    setCheckBoxState({ ...checkBoxState, [event.target.name]: event.target.checked });
-  };
-
 
   return (
     <div className={classesGrid.root}>
@@ -243,7 +234,7 @@ export default function Profile ({id}) {
             {/* <div className="text-box"> */}
 
             { imagePath.length > 0 ?
-              <FadeIn delay={1000} transitionDurati on={100}>
+              <FadeIn delay={1500} transitionDuration={1000}>
 
                 <TextField
                   id="standard-basic"
@@ -265,9 +256,9 @@ export default function Profile ({id}) {
 
             </Grid>
 
-          <Grid item lg={4}  style={{"marginTop": "2.5%", "min-width": "30rem"}}>
+          <Grid item lg={4}  style={{"min-width": "30rem"}}>
             { imagePath.length > 0 ?
-              <FadeIn delay={2000} transitionDuration={1000}>
+              <FadeIn delay={2500} transitionDuration={1000}>
 
                 <TextField
                   id="standard-basic"
@@ -277,7 +268,7 @@ export default function Profile ({id}) {
                   }}
                   value={dish.description}
                   helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-                  style={{"marginTop": "2.5%", "min-width": "30rem"}}
+                  style={{"min-width": "30rem"}}
                   multiline
                   rowsMax="10"
                   variant="filled"
@@ -291,68 +282,130 @@ export default function Profile ({id}) {
 
             <Grid item lg={4}>
 
-            { imagePath.length > 0 ?
-              <FadeIn delay={3000} transitionDuration={1000}>
-                <TextField
-                  id="standard-basic"
-                  label="Recipe"
-                  inputProps={{
-                    maxlength: CHARACTER_LIMIT_RECIPE
-                  }}
-                  value={dish.recipe}
-                  helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                  style={{"margin-top": "2.5%", "min-width": "30rem"}} //
-                  multiline
-                  rowsMax="10"
-                  variant="filled"
-                  onChange={handleChangeTextArea('recipe')}
-                  InputProps={{ classes: { input: styles.someTextField } }}
-                />
+              { imagePath.length > 0 ?
+                <FadeIn delay={3500} transitionDuration={1000}>
+                  <TextField
+                    id="standard-basic"
+                    label="Recipe"
+                    inputProps={{
+                      maxlength: CHARACTER_LIMIT_RECIPE
+                    }}
+                    value={dish.recipe}
+                    helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+                    style={{"margin-top": "2.5%", "min-width": "30rem"}} //
+                    multiline
+                    rowsMax="10"
+                    variant="filled"
+                    onChange={handleChangeTextArea('recipe')}
+                    InputProps={{ classes: { input: styles.someTextField } }}
+                  />
+                  </FadeIn>
+
+                : ''}
+
+          </Grid>
+          {/* <Grid item lg={4}> */}
+          { imagePath.length > 0 ?
+                <FadeIn delay={4500} transitionDuration={1000}>
+                  <div className="publish-button-row">
+                  {/* <Grid
+                  container
+                  spacing={6}
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  // style={{"padding-left": "11%", "padding-top": "5%"}}
+                > */}
+                  {/* <Grid item lg={4}> */}
+                    <div className="publish-button-col">
+                      <FormControlLabel
+                        control={<Checkbox
+                                    onChange={handlePublish}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite/>}
+                                  />}
+                        label="Publish"
+                      />
+                    </div>
+                  {/* </Grid> */}
+                    <div className="publish-button-col">
+                    {/* <Grid item lg={4}> */}
+                      <FormControlLabel
+                        control={<Checkbox
+                                    // onChange={handlePublish}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite/>}
+                                  />}
+                        label="Coocked"
+                        // style={{"margin-left": "1.5%"}}
+                      />
+                    </div>
+                    {/* </Grid> */}
+                    <div className="publish-button-col">
+                    {/* <Grid item lg={4}> */}
+                      <FormControlLabel
+                        control={<Checkbox
+                                    // onChange={handlePublish}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite/>}
+                                  />}
+                        label="Ordered"
+                        // style={{"margin-left": "1.5%"}}
+                      />
+                    </div>
+                    {/* </Grid> */}
+                  </div>
+                {/* </Grid> */}
                 </FadeIn>
               : ''}
 
+          {/* </Grid> */}
 
-              { imagePath.length > 0 ?
 
-                <FadeIn delay={4000} transitionDuration={1000}>
-                <FormControlLabel
-                  control={<Checkbox
-                              onChange={handlePublish}
-                              icon={<FavoriteBorder />}
-                              checkedIcon={<Favorite/>}
-                            />}
-                  label="Publish"
-                  style={{"margin-left": "1.5%"}}
-                />
-                               <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checkBoxState.checkedE}
-                      onChange={handleChange}
-                      name="checkedA"
-                      color="primary"
-                    />
-                  }
-                  label="Coocked"
-                />
-                                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checkBoxState.checkedF}
-                      onChange={handleChange}
-                      name="checkedB"
-                      color="primary"
-                    />
-                  }
-                  label="Ordered"
-                />
-                              </FadeIn>
-              : ''}
-            </Grid>
+              {/* { imagePath.length > 0 ?
+                <FadeIn delay={4500} transitionDuration={1000}>
+                  <div className="publish-button-row">
+                    <div className="publish-button-col">
+                      <FormControlLabel
+                        control={<Checkbox
+                                    onChange={handlePublish}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite/>}
+                                  />}
+                        label="Publish"
+                      />
+                    </div>
+                    <div className="publish-button-col">
+                      <FormControlLabel
+                        control={<Checkbox
+                                    // onChange={handlePublish}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite/>}
+                                  />}
+                        label="Coocked"
+                        style={{"margin-left": "1.5%"}}
+                      />
+                    </div>
+                    <div className="publish-button-col">
+                      <FormControlLabel
+                        control={<Checkbox
+                                    // onChange={handlePublish}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite/>}
+                                  />}
+                        label="Ordered"
+                        style={{"margin-left": "1.5%"}}
+                      />
+                    </div>
+                  </div>
+                </FadeIn>
+              : ''} */}
+
+
         </Grid>
         </Grid>
           <Grid item lg={12}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            {/* Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
             {/* </Grid> */}
             {/* <Grid item lg={4}> */}
               <DropZone

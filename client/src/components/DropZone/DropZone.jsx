@@ -20,7 +20,7 @@ import ApiClient from '../../services/ApiClient';
 
 // import { makeStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 
 // import { makeStyles } from '@material-ui/core/styles';
 
@@ -172,7 +172,7 @@ export default function DropZone (props) {
 
   return (
     <div>
-      <Grid
+      {/* <Grid
         container
         spacing={6}
         direction="column"
@@ -189,7 +189,7 @@ export default function DropZone (props) {
         style={{"padding-left": "5%", "padding-top": "2%"}}
       >
       </Grid>
-    </Grid>
+    </Grid> */}
 
     <DropzoneDialogBase
       dialogTitle={dialogTitle()}

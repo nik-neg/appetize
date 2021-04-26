@@ -1,9 +1,25 @@
-.dish-content {
+/* .dish-content {
   display: "flex";
-}
+} */
 
-.element {
+/* .element {
   justify-content: center;
   margin-right: "10%"
+} */
+.publish-button-row {
+  display: flex;
+  justify-content: center;
+  /* border: 1px solid blue; */
+  width: 30rem;
+
 }
 
+.publish-button-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* flex: 1; */
+  /* border: 1px solid; */
+  width: 10rem;
+}
