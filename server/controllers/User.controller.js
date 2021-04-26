@@ -104,9 +104,7 @@ module.exports.saveImage = async (req, res) => {
   // const isSelfCoocked = false;
 
   try {
-    await upload(req, res);
-
-
+    // await upload(req, res);
 
     console.log(req.file);
 
