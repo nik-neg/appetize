@@ -38,7 +38,7 @@ export default function LocalDishesDashboard (props) {
     let APIResponse;
     try {
       APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
-      APIResponse.sort((a,b) =>  b.votes - a.votes);
+      APIResponse && APIResponse.sort((a,b) =>  b.votes - a.votes);
       console.log(APIResponse)
       props.onRadiusSearch(APIResponse)
     } catch(e) {

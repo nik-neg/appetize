@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  /* z-index: 0; */
   /* background-image: url("login-small.jpg"); */
   background: url("login-small.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -9,9 +10,18 @@
 }
 
 html {
+  /* z-index: -1; */
   background: url("login-small.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
+/*
+.languages {
+  z-index: 0;
+  position: absolute;
+  top: 50px;
+  left: 240px;
+  /* padding-bottom: 25%; */
+/* } */

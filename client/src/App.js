@@ -5,6 +5,8 @@ import { useState } from 'react';
 import RegisterLogin from './components/RegisterLogin/RegisterLogin';
 import Profile from './components/Profile/Profile';
 
+// import TransparentLanguages from './transparent_languages.gif'
+
 function App() {
   const [isUserForRouting, setIsUserForRouting] = useState({
     id: null,
@@ -60,8 +62,14 @@ function App() {
               onRegister={handleRegister}
               onLogin={handleLogin}
             />
+
             : '' }
+          {/* <img src={TransparentLanguages} className="languages"
+            width={1500}
+            heigth={1500}
+          /> */}
           { isUserForRouting.loggedIn ? <Profile id={isUserForRouting.id}/> : '' }
+
           {/* </Switch>
         </Router> */}
     </div>
