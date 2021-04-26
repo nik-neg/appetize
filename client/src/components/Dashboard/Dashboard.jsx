@@ -37,6 +37,7 @@ export default function Dashboard (props) {
         (props.mouthWateringDishes.map((dish, index) => {
         fadeCounter++;
         return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
+        <div className='card-padding'>
                 <Card
                   key={index}
                   voteID={props.id}
@@ -49,6 +50,8 @@ export default function Dashboard (props) {
                   recipe={dish.recipe}
                   created={dish.created}
                   />
+                  <h1>Hello</h1>
+        </div>
                 </FadeIn>
               }))
             : ''}

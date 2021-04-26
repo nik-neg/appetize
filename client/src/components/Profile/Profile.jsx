@@ -28,6 +28,9 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 
+// import FormGroup from '@material-ui/core/FormGroup';
+
+
 
 
 const useStylesAvatar = makeStyles((theme) => ({
@@ -154,6 +157,16 @@ export default function Profile ({id}) {
     setMouthWateringDishes(updatedValues);
   }
 
+  const [checkBoxState, setCheckBoxState] = useState({
+    checkedA: true,
+    checkedB: true,
+  });
+
+  const handleChange = (event) => {
+    setCheckBoxState({ ...checkBoxState, [event.target.name]: event.target.checked });
+  };
+
+
   return (
     <div className={classesGrid.root}>
       <FadeIn delay={950} transitionDuration={1750}>
@@ -230,7 +243,7 @@ export default function Profile ({id}) {
             {/* <div className="text-box"> */}
 
             { imagePath.length > 0 ?
-              <FadeIn delay={1500} transitionDurati on={1000}>
+              <FadeIn delay={1000} transitionDurati on={100}>
 
                 <TextField
                   id="standard-basic"
@@ -254,7 +267,7 @@ export default function Profile ({id}) {
 
           <Grid item lg={4}  style={{"marginTop": "2.5%", "min-width": "30rem"}}>
             { imagePath.length > 0 ?
-              <FadeIn delay={2500} transitionDuration={1000}>
+              <FadeIn delay={2000} transitionDuration={1000}>
 
                 <TextField
                   id="standard-basic"
@@ -279,7 +292,7 @@ export default function Profile ({id}) {
             <Grid item lg={4}>
 
             { imagePath.length > 0 ?
-              <FadeIn delay={3500} transitionDuration={1000}>
+              <FadeIn delay={3000} transitionDuration={1000}>
                 <TextField
                   id="standard-basic"
                   label="Recipe"
@@ -298,9 +311,10 @@ export default function Profile ({id}) {
                 </FadeIn>
               : ''}
 
-                { imagePath.length > 0 ?
-                  <FadeIn delay={4500} transitionDuration={1000}>
 
+              { imagePath.length > 0 ?
+
+                <FadeIn delay={4000} transitionDuration={1000}>
                 <FormControlLabel
                   control={<Checkbox
                               onChange={handlePublish}
@@ -310,17 +324,37 @@ export default function Profile ({id}) {
                   label="Publish"
                   style={{"margin-left": "1.5%"}}
                 />
-
-</FadeIn>
+                               <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkBoxState.checkedE}
+                      onChange={handleChange}
+                      name="checkedA"
+                      color="primary"
+                    />
+                  }
+                  label="Coocked"
+                />
+                                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkBoxState.checkedF}
+                      onChange={handleChange}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  }
+                  label="Ordered"
+                />
+                              </FadeIn>
               : ''}
             </Grid>
-
         </Grid>
         </Grid>
-            <Grid item lg={4}>
-
-            </Grid>
-            <Grid item lg={4}>
+          <Grid item lg={12}>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            {/* </Grid> */}
+            {/* <Grid item lg={4}> */}
               <DropZone
                 id={id}
                 firstName={userData.firstName}
@@ -334,7 +368,11 @@ export default function Profile ({id}) {
                 id={id}
                 mouthWateringDishes={mouthWateringDishes}
                />
-            </Grid>
+               {/* Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
+            {/* </Grid> */}
+            {/* <Grid item lg={4}> */}
+            {/* Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
+          </Grid>
         </Grid>
 
       </FadeIn>

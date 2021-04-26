@@ -1,6 +1,7 @@
 .fadeOut {
   cursor: pointer;
-  position: absolute;
+  position: relative;
+  display: flex;
   right: 20px;
   top: 20px;
   &.inactive {
@@ -29,4 +30,8 @@
       background: #fab800;
     }
   }
+}
+
+.card-padding {
+  padding: "0%";
 }

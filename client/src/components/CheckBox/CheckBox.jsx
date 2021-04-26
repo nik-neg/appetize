@@ -22,17 +22,6 @@ export default function CheckboxLabels() {
       <FormControlLabel
         control={
           <Checkbox
-            checked={state.checkedD}
-            onChange={handleChange}
-            name="checkedD"
-            color="primary"
-          />
-        }
-        label="StreetFood"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
             checked={state.checkedE}
             onChange={handleChange}
             name="checkedE"
