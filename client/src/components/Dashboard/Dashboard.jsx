@@ -47,6 +47,7 @@ export default function Dashboard (props) {
                       voteID={props.id}
                       votes={dish.votes}
                       userID={dish.userID}
+                      creatorName={dish.creatorName}
                       dishID={dish._id}
                       zipCode={dish.zipCode}
                       title={dish.title}

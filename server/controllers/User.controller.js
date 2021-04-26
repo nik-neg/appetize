@@ -256,7 +256,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   if(zipCode) {
     console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=cc862e70-a69e-11eb-b361-29be49cebc8e&code=${zipCode}&radius=${radius}&country=de`
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=026606d0-a6b8-11eb-a1b8-c7b32adebfa1&code=${zipCode}&radius=${radius}&country=de`
     axios.get(url)
       .then(function (response) {
 
@@ -279,17 +279,16 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
   const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
     let dishesForClient = [];
-    let dailyTreatsFromDB;
     for(let i=0; i < zipCodesInRadius.length; i++) {
       try {
         let dailyTreatsFromDB = [];
         await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}, (err, dailyTreats) => {
-          // console.log("found in: "+zipCodesInRadius[i].zipCode)
-          // console.log(dailyTreats)
+          console.log("found in: "+zipCodesInRadius[i].zipCode)
+          console.log(dailyTreats)
           dailyTreats.forEach((dailyTreat) => {
             const copyDailyTreat = Object.assign({}, {...dailyTreat._doc, city:zipCodesInRadius[i].city});
-            // console.log("copy");
-            // console.log(copyDailyTreat)
+            console.log("copy");
+            console.log(copyDailyTreat)
             dailyTreatsFromDB.push(copyDailyTreat)
           });
         });

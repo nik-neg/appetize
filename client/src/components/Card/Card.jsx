@@ -106,7 +106,8 @@ export default function RecipeReviewCard(props) {
           </Avatar>
         }
         title={props.title}
-        subheader={props.city+', '+moment(props.created).format("MMMM Do, YYYY")}
+        subheader={moment(props.created).format("MMMM Do, YYYY")}
+        style={{'textAlign': 'left'}}
       />
       <CardMedia
         className={classes.media}
@@ -138,7 +139,7 @@ export default function RecipeReviewCard(props) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
+          <Typography paragraph>{props.creatorName+' from '+props.city+':'}</Typography>
           <Typography paragraph>
             {props.recipe}
           </Typography>
