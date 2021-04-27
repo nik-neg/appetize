@@ -1,5 +1,5 @@
 # appetize
-Solo Project @Codeworks
+1 week Solo Project @Codeworks
 
 Demo: https://youtu.be/_8mGjuWzNS0
 
