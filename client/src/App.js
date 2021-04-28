@@ -9,7 +9,7 @@ function App() {
   const [isUserForRouting, setIsUserForRouting] = useState({
     id: null,
     isUser: false,
-    loggedIn: false
+    loggedIn: false,
   });
 
   const handleRegister = (isUserRegistered) => {
@@ -54,18 +54,16 @@ function App() {
           </Route>
           : '' } */}
 
-          { !isUserForRouting.loggedIn ?
-            <RegisterLogin
-              isUserForRouting={isUserForRouting}
-              onRegister={handleRegister}
-              onLogin={handleLogin}
-            />
-
-            : '' }
-          { isUserForRouting.loggedIn ? <Profile id={isUserForRouting.id}/> : '' }
-
-          {/* </Switch>
-        </Router> */}
+      { !isUserForRouting.loggedIn
+        ? <RegisterLogin
+            isUserForRouting={isUserForRouting}
+            onRegister={handleRegister}
+            onLogin={handleLogin}
+          />
+        : '' }
+      { isUserForRouting.loggedIn ? <Profile id={isUserForRouting.id}/> : '' }
+      {/* </Switch>
+      </Router> */}
     </div>
   );
 }
