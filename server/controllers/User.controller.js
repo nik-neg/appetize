@@ -1,13 +1,5 @@
 const bcrypt = require('bcrypt');
 
-const User = require('../models/User');
-const DailyTreat = require('../models/DailyTreat');
-
-
-// const upload = require("../middleware/upload");
-
-const db = require('../models/db');
-
 const saltRounds = 10;
 
 const mongoose = require('mongoose');
@@ -15,6 +7,13 @@ const mongoose = require('mongoose');
 var gridfs = require('gridfs-stream');
 
 const axios = require('axios');
+
+const User = require('../models/User');
+const DailyTreat = require('../models/DailyTreat');
+
+// const upload = require('../middleware/upload');
+
+// const db = require('../models/db');
 
 // const http = require('../index');
 // const io = require('socket.io')(http);
@@ -50,7 +49,7 @@ module.exports.createUser = async (req, res) => {
 };
 
 module.exports.loginUser = async (req, res) => {
-  console.log("LOGIN SERVER")
+  // console.log('LOGIN SERVER');
   // console.log(req.body)
   try {
     const { email, password } = req.body;
@@ -69,17 +68,16 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.showProfile = async (req, res) => { // connect to socket of zip code
-
   // console.log(req)
   // console.log(req.params)
-  console.log('SHOW PROFILE')
-  let user = await User.findOne({
-    _id: req.params.id
+  // console.log('SHOW PROFILE');
+  const user = await User.findOne({
+    _id: req.params.id,
   });
 
   // subscribe user for zip code room to voting updates
   // if(user.zipCode !== '10000') { // not the default zip code
-  //   console.log("SOCKET ON JOIN ")
+  //   console.log('SOCKET ON JOIN ')
   //   io.on('connection',function(socket){ // connects to the room (zip code area for live voting)
   //     console.log(`add user: ${req.params.id} to ${user.zipCode} room.`)
   //     socket.join(`${user.zipCode}`);
@@ -87,52 +85,31 @@ module.exports.showProfile = async (req, res) => { // connect to socket of zip c
   // }
 
   res.status(200).send(user);
-}
+};
 
 module.exports.saveImage = async (req, res) => {
-  // console.log(req, req.body, req.params.id, req.params.imageName, req.url)
-  console.log('SAVE IMAGE');
-
-  // const title ="TestImage"
-  // const image = { data: Buffer, contentType: String };
-  // const description = "Saving Testimage"
-  // const isSelfCoocked = false;
-
   try {
     // await upload(req, res);
-
-    console.log(req.file);
-
-    if (!req.file || req.file.length <= 0) {
-      return res.send(`You must select at least 1 file.`);
-    } else {
-      res.end(); // status 201 ?
-    }
-    // await retrieveImage(req, res);
-    // return res.send(`Files have been uploaded.`);
-
     // console.log(req.file);
 
-    // if (req.file == undefined) {
-    //   return res.send(`You must select a file.`);
-    // }
-
-    // return res.send(`File has been uploaded.`);
+    if (!req.file || req.file.length <= 0) {
+      return res.send('You must select at least 1 file.');
+    }
+    res.end(); // status
   } catch (error) {
     console.log(error);
 
-    if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      return res.send("Too many files to upload.");
+    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
+      return res.send('Too many files to upload.');
     }
     return res.send(`Error when trying upload many files: ${error}`);
 
     // return res.send(`Error when trying upload image: ${error}`);
   }
-}
-
+};
 
 module.exports.retrieveImage = async (req, res) => {
-  console.log("RETRIEVE IMAGE")
+  // console.log('RETRIEVE IMAGE')
   gridfs.mongo = mongoose.mongo;
   var connection = mongoose.connection;
   var gfs = gridfs(connection.db);
@@ -143,23 +120,22 @@ module.exports.retrieveImage = async (req, res) => {
 
   gfs.exist({ filename: req.params.id }, function (err, file) {
     if (err || !file) {
-        res.send('File Not Found');
+      res.send('File Not Found');
     } else {
-        var readstream = gfs.createReadStream({ filename: req.params.id });
-        readstream.pipe(res);
-
+      var readstream = gfs.createReadStream({ filename: req.params.id });
+      readstream.pipe(res);
     }
   });
-}
+};
 
 module.exports.setZipCode = async (req, res) => {
-  console.log("SET ZIP CODE")
-  console.log(req.params.id)
+  // console.log('SET ZIP CODE')
+  // console.log(req.params.id)
   const { id } = req.params;
   const { zipCode } = req.body;
 
   try {
-    const user = await User.findOneAndUpdate({ _id: id}, {zipCode: zipCode}, function(err, result) {
+    const user = await User.findOneAndUpdate({ _id: id }, { zipCode }, function (err, result) {
       if (err) {
         res.send(err);
       }
@@ -167,16 +143,18 @@ module.exports.setZipCode = async (req, res) => {
     // update dish ?
 
     res.status(201).send(user);
-  } catch(e) {
-    console.log(e)
+  } catch (e) {
+    console.log(e);
   }
-}
+};
 
 module.exports.publishDish = async (req, res) => {
-  console.log("PUBLISH DISH")
-  console.log(req.params.id, req.body)
+  // console.log('PUBLISH DISH')
+  // console.log(req.params.id, req.body)
   const { id } = req.params;
-  const { title, description, recipe, firstName } = req.body;
+  const {
+    title, description, recipe, firstName,
+  } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
   let alreadyPublished = await DailyTreat.findOne({
@@ -195,7 +173,7 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.likedByUserID = [];
 
   // get user for zip code
-  let user
+  let user;
   try {
     user = await User.findOne({
       _id: id,
@@ -203,7 +181,7 @@ module.exports.publishDish = async (req, res) => {
   } catch(e) {
     console.log(e);
   }
-  dailyTreat.zipCode = user.zipCode ? user.zipCode : "10000"; // default zip code
+  dailyTreat.zipCode = user.zipCode ? user.zipCode : '10000'; // default zip code
 
 
   dailyTreat.title = title;
@@ -219,22 +197,22 @@ module.exports.publishDish = async (req, res) => {
     console.log(dailyTreatSaveResponse);
     res.status(201).send(dailyTreatSaveResponse);
   } catch(e) {
-    console.log(e)
+    console.log(e);
   }
-}
+};
 
 module.exports.checkDishesInRadius = async (req, res) => {
-  console.log('SERVER - CHECK DISHES')
-  console.log(req.params.id, req.params.radius)
+  // console.log('SERVER - CHECK DISHES');
+  // console.log(req.params.id, req.params.radius)
 
   const { id, radius } = req.params;
   let user;
   try {
     // get zip code of user
     user = await User.findOne({
-      _id:id
+      _id:id,
     });
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 
@@ -247,16 +225,16 @@ module.exports.checkDishesInRadius = async (req, res) => {
       .send({ error: '409', message: 'User doesn\'t exist' });
   }
 
-  if(zipCode) {
-    console.log(zipCode) // hash of api key ?
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`
+  if (zipCode) {
+    // console.log(zipCode); // hash of api key ?
+    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
     axios.get(url)
       .then(function (response) {
 
         const zipCodesInRadius = response.data.results.map((element) => {
-          return {zipCode: element.code, city: element.city}
+          return { zipCode: element.code, city: element.city };
         });
-        console.log(zipCodesInRadius)
+        // console.log(zipCodesInRadius);
         helperFindDishesInDB(res, res, zipCodesInRadius);
 
         // res.send(response.data.results)
@@ -275,84 +253,84 @@ module.exports.checkDishesInRadius = async (req, res) => {
     for(let i=0; i < zipCodesInRadius.length; i++) {
       try {
         let dailyTreatsFromDB = [];
-        await DailyTreat.find({"zipCode": zipCodesInRadius[i].zipCode}, (err, dailyTreats) => {
-          console.log("found in: "+zipCodesInRadius[i].zipCode)
-          console.log(dailyTreats)
+        await DailyTreat.find({ zipCode: zipCodesInRadius[i].zipCode}, (err, dailyTreats) => {
+          // console.log('found in: '+zipCodesInRadius[i].zipCode)
+          // console.log(dailyTreats)
           dailyTreats.forEach((dailyTreat) => {
             const copyDailyTreat = Object.assign({}, {...dailyTreat._doc, city:zipCodesInRadius[i].city});
-            console.log("copy");
-            console.log(copyDailyTreat)
-            dailyTreatsFromDB.push(copyDailyTreat)
+            // console.log('copy');
+            // console.log(copyDailyTreat);
+            dailyTreatsFromDB.push(copyDailyTreat);
           });
         });
-        // console.log("dailyTreats")
+        // console.log('dailyTreats')
         // console.log(dailyTreatsFromDB)
-        if(dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
-          dishesForClient.push(...dailyTreatsFromDB) // not only one elements
+        if (dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
+          dishesForClient.push(...dailyTreatsFromDB); // not only one elements
         }
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
     }
 
-    console.log(dishesForClient)
+    // console.log(dishesForClient);
     res.send(dishesForClient);
-  }
-}
+  };
+};
 
 module.exports.upDownVote = async (req, res) => {
   const { id, dailyTreatsID, upDown } = req.params;
-  console.log("VOTE ")
-  console.log(id, dailyTreatsID, upDown)
+  //console.log('VOTE ')
+  //console.log(id, dailyTreatsID, upDown)
 
   try {
-    if(upDown === "up") {
-      console.log("like", upDown)
+    if(upDown === 'up') {
+      // console.log('like', upDown)
       // like dish
       await DailyTreat.updateOne(
-        {_id: dailyTreatsID,
-          userID: {$ne: id} },
-        { $inc: { votes:  1} ,  $push: {likedByUserID: id}},
-        { new: true }
+        { _id: dailyTreatsID,
+          userID: { $ne: id },
+        },
+        { $inc: { votes: 1 }, $push: { likedByUserID: id } },
+        { new: true },
       );
     } else {
       // unlike dish
-      console.log("unlike", upDown)
+      // console.log('unlike', upDown)
       await DailyTreat.updateOne(
-        {_id: dailyTreatsID,
-          userID: {$ne: id} },
-        { $inc: { votes:  -1}, $pull: {likedByUserID: id}},
-        { new: true }
+        { _id: dailyTreatsID,
+          userID: { $ne: id } },
+        { $inc: { votes: -1 }, $pull: { likedByUserID: id } },
+        { new: true },
       );
     }
-      // broadcast votes for zipCode
-      // let user;
-      // try {
-      //   user = await User.findOne({_id: id}); /// ?
-      //   if(user) {
-      //     const updatedDailyTreat = await DailyTreat.findOne({_id: dailyTreatsID});
-      //     console.log(updatedDailyTreat)
-      //     io.on('connection', function(socket) {
-      //       console.log(`Broadcast to ${user.zipCode} room.`)
-      //       io.emit(`${user.zipCode}`, updatedDailyTreat.votes);
-      //     });
-      //   }
-      // } catch(e) {
-      //   console.log(e)
-      // }
+    // broadcast votes for zipCode
+    // let user;
+    // try {
+    //   user = await User.findOne({_id: id}); /// ?
+    //   if(user) {
+    //     const updatedDailyTreat = await DailyTreat.findOne({_id: dailyTreatsID});
+    //     console.log(updatedDailyTreat)
+    //     io.on('connection', function(socket) {
+    //       console.log(`Broadcast to ${user.zipCode} room.`)
+    //       io.emit(`${user.zipCode}`, updatedDailyTreat.votes);
+    //     });
+    //   }
+    // } catch(e) {
+    //   console.log(e)
+    // }
 
-
-      // get updated votes for the realted user
-      let dailyTreat;
-      try {
-        dailyTreat = await DailyTreat.findOne({_id: dailyTreatsID});
-        // console.log(dailyTreat)
-        res.send({votes: dailyTreat.votes});
-      } catch(e) {
-        console.log(e);
-      }
-
-    } catch(e) {
+    // get updated votes for the realted user
+    let dailyTreat;
+    try {
+      dailyTreat = await DailyTreat.findOne({ _id: dailyTreatsID });
+      // console.log(dailyTreat)
+      res.send({ votes: dailyTreat.votes });
+    } catch (e) {
       console.log(e);
     }
+
+  } catch (e) {
+    console.log(e);
+  }
   }
