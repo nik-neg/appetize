@@ -9,6 +9,8 @@ const router = require('./router');
 
 const db = require('./models/db');
 
+require('dotenv').config();
+
 app.use(cors())
   // .use("/", express.static(__dirname + '/index.html'))
   .use(bodyParser())
@@ -19,7 +21,7 @@ app.use(cors())
 (async () => {
   try {
     db.connect();
-    const PORT = 3001;
+    const PORT = process.env.SERVER_PORT;
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });

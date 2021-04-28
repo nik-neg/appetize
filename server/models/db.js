@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const connect = async () => {
-  await mongoose.connect('mongodb://localhost/appetizeDB', {
+  await mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
