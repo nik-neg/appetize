@@ -35,7 +35,7 @@ export default function Dashboard (props) {
         onRadiusSearch={handleLocalDishesParameterResults}
         id={id}
       /> */}
-      <div className='fadeOut'>
+      <div className='cards-position'>
         {props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
         (props.mouthWateringDishes.map((dish, index) => {
           fadeCounter++;

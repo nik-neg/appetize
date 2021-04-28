@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import Image from 'material-ui-image'
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -10,9 +9,6 @@ import DropZone from '../DropZone/DropZone';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
-// import SearchIcon from '@material-ui/icons/Search';
-
-// import Card from '../Card/Card'
 import Dashboard from '../Dashboard/Dashboard';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Box from '@material-ui/core/Box';
@@ -27,7 +23,6 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 
-// import FormGroup from '@material-ui/core/FormGroup';
 import './index.css'
 
 
@@ -99,8 +94,6 @@ export default function Profile ({id}) {
     }
   };
 
-  // const [images, setImages] = useState({});
-
   useEffect(() => {
     ApiClient.getProfile(id)
     .then((data) => setUserData(data))
@@ -108,50 +101,41 @@ export default function Profile ({id}) {
 
     const handleChangeZipCode = (event) => {
       setZipCode(event.target.value);
-      console.log(zipCode)
+      // console.log(zipCode)
     }
     const handleChangeTextArea = name => (event) => {
-      // const { name, value } = event.target;
-      // setInput((prevInput) => ({ ...prevInput, [name]: value }));
       setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
     }
 
     const handleUpdateZipCode = async () => {
-      console.log("HANDLE UPDATE ZIP CODE")
-      const updateZipCodeResponse = await ApiClient.confirmZipCode(id, {zipCode: zipCode});
-      console.log(updateZipCodeResponse);
+      // console.log("HANDLE UPDATE ZIP CODE")
+      await ApiClient.confirmZipCode(id, {zipCode: zipCode});
+      // console.log(updateZipCodeResponse);
     }
 
 
   const handlePublish = async (event) => {
-    console.log('click', event.target.checked)
+    // console.log('click', event.target.checked)
     if(event.target.checked) {
       // Api client send save request with url to images db for dashbard
       const firstName = userData.firstName;
       const publishObject = {...dish, firstName};
-      console.log(publishObject);
-      let publishResponse;
+      // console.log(publishObject);
+      // let publishResponse;
       try {
-        publishResponse = await ApiClient.publishToDashBoard(id, publishObject)
+        await ApiClient.publishToDashBoard(id, publishObject)
       } catch(e) {
         console.log(e);
       }
-      console.log(publishResponse)
+      // console.log(publishResponse)
     }
   }
 
-
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
-
-  // to reduce processing delays data needs to be fetched
-  // useEffect(() => {
-  //   setMouthWateringDishes(mouthWateringDishes)
-  //   console.log(mouthWateringDishes)
-  // }, [mouthWateringDishes]);
 
   const handleLocalDishesParameterResults = (updatedValues) => {
     // request for all button?
-    console.log(updatedValues)
+    // console.log(updatedValues)
     setMouthWateringDishes(null)
     setMouthWateringDishes(updatedValues);
   }
@@ -166,7 +150,6 @@ export default function Profile ({id}) {
           direction="row"
           justify="flex-start"
           alignItems="flex-start"
-          // style={{"padding-left": "11%", "padding-top": "5%"}}
         >
           <Grid item lg={4}>
             <h1>{userData.firstName}</h1>
@@ -213,7 +196,6 @@ export default function Profile ({id}) {
               onRadiusSearch={handleLocalDishesParameterResults}
               id={id}
             />
-            {/* <Dashboard id={id}/> */}
           </Grid>
 
           {imagePath.length > 0 ?
@@ -230,8 +212,6 @@ export default function Profile ({id}) {
         <Grid item lg={4}>
           <Grid item lg={4}>
             <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
-            {/* <div className="text-box"> */}
-
             { imagePath.length > 0 ?
               <FadeIn delay={1500} transitionDuration={1000}>
 
@@ -303,19 +283,9 @@ export default function Profile ({id}) {
                 : ''}
 
           </Grid>
-          {/* <Grid item lg={4}> */}
           { imagePath.length > 0 ?
                 <FadeIn delay={4500} transitionDuration={1000}>
                   <div className="publish-button-row">
-                  {/* <Grid
-                  container
-                  spacing={6}
-                  direction="row"
-                  justify="center"
-                  alignItems="center"
-                  // style={{"padding-left": "11%", "padding-top": "5%"}}
-                > */}
-                  {/* <Grid item lg={4}> */}
                     <div className="publish-button-col">
                       <FormControlLabel
                         control={<Checkbox
@@ -326,9 +296,7 @@ export default function Profile ({id}) {
                         label="Publish"
                       />
                     </div>
-                  {/* </Grid> */}
                     <div className="publish-button-col">
-                    {/* <Grid item lg={4}> */}
                       <FormControlLabel
                         control={<Checkbox
                                     // onChange={handlePublish}
@@ -336,12 +304,9 @@ export default function Profile ({id}) {
                                     checkedIcon={<Favorite/>}
                                   />}
                         label="Coocked"
-                        // style={{"margin-left": "1.5%"}}
                       />
                     </div>
-                    {/* </Grid> */}
                     <div className="publish-button-col">
-                    {/* <Grid item lg={4}> */}
                       <FormControlLabel
                         control={<Checkbox
                                     // onChange={handlePublish}
@@ -349,64 +314,14 @@ export default function Profile ({id}) {
                                     checkedIcon={<Favorite/>}
                                   />}
                         label="Ordered"
-                        // style={{"margin-left": "1.5%"}}
                       />
                     </div>
-                    {/* </Grid> */}
                   </div>
-                {/* </Grid> */}
                 </FadeIn>
               : ''}
-
-          {/* </Grid> */}
-
-
-              {/* { imagePath.length > 0 ?
-                <FadeIn delay={4500} transitionDuration={1000}>
-                  <div className="publish-button-row">
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                    onChange={handlePublish}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite/>}
-                                  />}
-                        label="Publish"
-                      />
-                    </div>
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                    // onChange={handlePublish}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite/>}
-                                  />}
-                        label="Coocked"
-                        style={{"margin-left": "1.5%"}}
-                      />
-                    </div>
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                    // onChange={handlePublish}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite/>}
-                                  />}
-                        label="Ordered"
-                        style={{"margin-left": "1.5%"}}
-                      />
-                    </div>
-                  </div>
-                </FadeIn>
-              : ''} */}
-
-
         </Grid>
         </Grid>
           <Grid item lg={12}>
-            {/* Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
-            {/* </Grid> */}
-            {/* <Grid item lg={4}> */}
               <DropZone
                 id={id}
                 firstName={userData.firstName}
@@ -420,10 +335,6 @@ export default function Profile ({id}) {
                 id={id}
                 mouthWateringDishes={mouthWateringDishes}
                />
-               {/* Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
-            {/* </Grid> */}
-            {/* <Grid item lg={4}> */}
-            {/* Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
           </Grid>
         </Grid>
 

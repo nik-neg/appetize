@@ -28,7 +28,7 @@ const loginUser = (user) => {
 };
 
 const getProfile = (id) => {
-  console.log("GET PROFILE BY CLIENT")
+  // console.log("GET PROFILE BY CLIENT")
   return fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'GET',
@@ -57,7 +57,7 @@ const uploadImage = (id, data) => {
 }
 
 const displayImage = (id) => {
-  console.log("GET IMAGE BY CLIENT")
+  // console.log("GET IMAGE BY CLIENT")
   return fetch(`${baseUrl}/profile/${id}/download`,
     {
       method: 'GET',
@@ -70,7 +70,7 @@ const displayImage = (id) => {
 };
 
 const confirmZipCode = (id, zipCode) => {
-  console.log("API CLIENT - UPDATE ZIP CODE")
+  // console.log("API CLIENT - UPDATE ZIP CODE")
 
   return fetch(`${baseUrl}/profile/${id}`,
     {
@@ -99,7 +99,7 @@ const publishToDashBoard = (id, data) => {
 }
 
 const getDishesInRadius = (id, radius) => {
-  console.log("CLIENT - GET DISHES IN RADIUS")
+  // console.log("CLIENT - GET DISHES IN RADIUS")
   return fetch(`${baseUrl}/profile/${id}/dashboard/${radius}`,
     {
       method: 'GET',

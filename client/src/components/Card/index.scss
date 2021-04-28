@@ -1,0 +1,17 @@
+.card-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.box {
+  display: flex;
+}
+
+.favourite {
+  &.active {
+    color: "#ff0000"
+  }
+  &.inactive {
+    color: 'inherit'
+  }
+}

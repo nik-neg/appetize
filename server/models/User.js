@@ -13,7 +13,7 @@ const UserSchema = new db.mongoose.Schema({
   password: String,
   nikName: String,
   dailyFood: [DailyTreat],
-  age: Number, // Date ? -> calend
+  age: Number,
   zipCode: Number, // String ?
   voted: Boolean, // {up: bool, down: bool} ?
   liked: [DailyTreat],

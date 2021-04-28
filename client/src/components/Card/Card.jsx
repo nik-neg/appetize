@@ -14,7 +14,6 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import moment from 'moment';
 
@@ -27,6 +26,8 @@ import ApiClient from '../../services/ApiClient';
 // var socket = io.connect("http://localhost:3002/", {
 //     reconnection: true
 // });
+
+import './index.scss';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,35 +66,32 @@ export default function RecipeReviewCard(props) {
   };
 
   const handleLike = async () => {
-    console.log('like', props.dishID, likeColor)
+    // console.log('like', props.dishID, likeColor)
     setLikeColor(!likeColor);
-    console.log('like', props.dishID, likeColor)
+    // console.log('like', props.dishID, likeColor)
 
     let likeResponse;
     if(!likeColor) {
-      console.log("up vote", likeColor)
+      // console.log("up vote", likeColor)
       try {
         likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "up");
-        // setVotes(votes+1)
       } catch(e) {
         console.log(e)
       }
     } else {
-      console.log("donw vote", likeColor)
+      // console.log("donw vote", likeColor)
       try {
         likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "down");
-        // setVotes(votes-1);
       } catch(e) {
         console.log(e)
       }
     }
     setVotes(likeResponse.votes)
 
-    // // socket solution
+    // socket solution
     // socket.on(`${props.zipCode}`, function (updatedVotes) {
     //   setVotes(updatedVotes)
     //   });
-    // }
   }
 
   return (
@@ -120,7 +118,7 @@ export default function RecipeReviewCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites"  style={{color:likeColor ? "#ff0000": 'inherit'}}>
+        <IconButton aria-label="add to favorites"  style={{ color: likeColor ? "#ff0000": 'inherit'}}>
           <FavoriteIcon onClick={handleLike}/>
         </IconButton>
         <IconButton aria-label="share">
@@ -143,24 +141,6 @@ export default function RecipeReviewCard(props) {
           <Typography paragraph>
             {props.recipe}
           </Typography>
-          {/* <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-            heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-            browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-            and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-            pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-            without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-            medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-            again without stirring, until mussels have opened and rice is just tender, 5 to 7
-            minutes more. (Discard any mussels that don’t open.)
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography> */}
         </CardContent>
       </Collapse>
     </Card>

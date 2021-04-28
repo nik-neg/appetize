@@ -3,12 +3,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-// import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -59,7 +56,6 @@ const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 
 // const ROUTE = {REGISTER: '/register', LOGIN: '/login'};
 export default function RegisterLogin ({isUserForRouting, onRegister, onLogin }) {
   const classes = useStyles();
-  // const history = useHistory();
 
   const [input, setInput] = useState({
     firstName: '',
@@ -77,9 +73,9 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
 
     // console.log(input, input.isUser)
     if(!input.isUser) {
-      console.log("REGISTER")
+      // console.log("REGISTER")
       const registerResponse = await ApiClient.registerUser(input);
-      console.log(registerResponse)
+      // console.log(registerResponse)
       if(registerResponse.error === '409' ) {
         setInput('');
         setInput({error: registerResponse.message})
@@ -89,7 +85,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     } else {
       console.log("LOGIN REACT")
       const loginResponse = await ApiClient.loginUser(input);
-      console.log("CLIENT LOGIN RESPONSE")
+      // console.log("CLIENT LOGIN RESPONSE")
       // console.log(loginResponse)
       if(loginResponse.error === '401' ) {
         setInput('');
@@ -133,7 +129,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
         <Typography component="h1" variant="h3" style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>
           Appetize
         </Typography>
-        {/* action="/action_page.php" onSubmit={handleClick} */}
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             {!input.isUser ?
@@ -196,10 +191,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
             </Grid>
             <Grid item xs={12}>
             <label>{input.error}</label>
-              {/* <FormControlLabel
-                // control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label= {input.error}// "I want to receive inspiration, marketing promotions and updates via email."
-              /> */}
             </Grid>
           </Grid>
           <Button
