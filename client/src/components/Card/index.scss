@@ -15,3 +15,15 @@
     color: 'inherit'
   }
 }
+
+#rotate{
+  width: 100px;
+  height: 100px;
+  background: red;
+  margin: 50px;
+  text-align: center
+}
+
+#rotate.rotated{
+  transform: rotate(90deg);
+}

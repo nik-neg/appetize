@@ -46,12 +46,14 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: 'rotate(90deg)',
   },
   avatar: {
     backgroundColor: red[500],
   },
 }));
+
+
 
 export default function RecipeReviewCard(props) {
   const classes = useStyles();
