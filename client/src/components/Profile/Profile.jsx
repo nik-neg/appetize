@@ -101,7 +101,6 @@ export default function Profile ({id}) {
 
     const handleChangeZipCode = (event) => {
       setZipCode(event.target.value);
-      // console.log(zipCode)
     }
     const handleChangeTextArea = name => (event) => {
       setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
@@ -110,32 +109,24 @@ export default function Profile ({id}) {
     const handleUpdateZipCode = async () => {
       // console.log("HANDLE UPDATE ZIP CODE")
       await ApiClient.confirmZipCode(id, {zipCode: zipCode});
-      // console.log(updateZipCodeResponse);
     }
 
 
   const handlePublish = async (event) => {
-    // console.log('click', event.target.checked)
     if(event.target.checked) {
-      // Api client send save request with url to images db for dashbard
       const firstName = userData.firstName;
       const publishObject = {...dish, firstName};
-      // console.log(publishObject);
-      // let publishResponse;
       try {
         await ApiClient.publishToDashBoard(id, publishObject)
       } catch(e) {
         console.log(e);
       }
-      // console.log(publishResponse)
     }
   }
 
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
 
   const handleLocalDishesParameterResults = (updatedValues) => {
-    // request for all button?
-    // console.log(updatedValues)
     setMouthWateringDishes(null)
     setMouthWateringDishes(updatedValues);
   }
@@ -197,7 +188,6 @@ export default function Profile ({id}) {
               id={id}
             />
           </Grid>
-
           {imagePath.length > 0 ?
           <Grid item lg={4}>
             <Image
@@ -207,14 +197,11 @@ export default function Profile ({id}) {
             />
           </Grid>
           : ''}
-
-
         <Grid item lg={4}>
           <Grid item lg={4}>
             <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
             { imagePath.length > 0 ?
               <FadeIn delay={1500} transitionDuration={1000}>
-
                 <TextField
                   id="standard-basic"
                   label="Title"
@@ -230,15 +217,11 @@ export default function Profile ({id}) {
                   InputProps={{ classes: { input: styles.someTextField } }}
                 />
               </FadeIn>
-
               : ''}
-
             </Grid>
-
           <Grid item lg={4}  style={{"min-width": "30rem"}}>
             { imagePath.length > 0 ?
               <FadeIn delay={2500} transitionDuration={1000}>
-
                 <TextField
                   id="standard-basic"
                   label="Description"
@@ -254,13 +237,10 @@ export default function Profile ({id}) {
                   onChange={handleChangeTextArea('description')}
                   InputProps={{ classes: { input: styles.someTextField } }}
                 />
-                              </FadeIn>
+             </FadeIn>
               : ''}
-
             </Grid>
-
             <Grid item lg={4}>
-
               { imagePath.length > 0 ?
                 <FadeIn delay={3500} transitionDuration={1000}>
                   <TextField
@@ -278,41 +258,37 @@ export default function Profile ({id}) {
                     onChange={handleChangeTextArea('recipe')}
                     InputProps={{ classes: { input: styles.someTextField } }}
                   />
-                  </FadeIn>
-
+                </FadeIn>
                 : ''}
-
-          </Grid>
+            </Grid>
           { imagePath.length > 0 ?
                 <FadeIn delay={4500} transitionDuration={1000}>
                   <div className="publish-button-row">
                     <div className="publish-button-col">
                       <FormControlLabel
                         control={<Checkbox
-                                    onChange={handlePublish}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite/>}
-                                  />}
+                                  onChange={handlePublish}
+                                  icon={<FavoriteBorder />}
+                                  checkedIcon={<Favorite/>}
+                                />}
                         label="Publish"
                       />
                     </div>
                     <div className="publish-button-col">
                       <FormControlLabel
                         control={<Checkbox
-                                    // onChange={handlePublish}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite/>}
-                                  />}
+                                  icon={<FavoriteBorder />}
+                                  checkedIcon={<Favorite/>}
+                                />}
                         label="Coocked"
                       />
                     </div>
                     <div className="publish-button-col">
                       <FormControlLabel
                         control={<Checkbox
-                                    // onChange={handlePublish}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite/>}
-                                  />}
+                                  icon={<FavoriteBorder />}
+                                  checkedIcon={<Favorite/>}
+                                />}
                         label="Ordered"
                       />
                     </div>

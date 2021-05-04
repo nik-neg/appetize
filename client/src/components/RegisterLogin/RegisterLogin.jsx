@@ -53,10 +53,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
-// const ROUTE = {REGISTER: '/register', LOGIN: '/login'};
 export default function RegisterLogin ({isUserForRouting, onRegister, onLogin }) {
   const classes = useStyles();
-
   const [input, setInput] = useState({
     firstName: '',
     lastName: '',
@@ -66,16 +64,12 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
-  // const [route, setRoute] = useState(ROUTE['REGISTER']);
-
   const handleRegisterOrLogin = async (event) => {
     event.preventDefault();
 
-    // console.log(input, input.isUser)
     if(!input.isUser) {
       // console.log("REGISTER")
       const registerResponse = await ApiClient.registerUser(input);
-      // console.log(registerResponse)
       if(registerResponse.error === '409' ) {
         setInput('');
         setInput({error: registerResponse.message})
@@ -86,7 +80,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
       console.log("LOGIN REACT")
       const loginResponse = await ApiClient.loginUser(input);
       // console.log("CLIENT LOGIN RESPONSE")
-      // console.log(loginResponse)
       if(loginResponse.error === '401' ) {
         setInput('');
         setInput({error: loginResponse.message})
@@ -96,19 +89,14 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     }
   }
 
-
   const handleLogIn = async (event) => {
     event.preventDefault();
     // console.log('login', input.isUser)
-    // setRoute(!input.isUser ? ROUTE['REGISTER']: ROUTE['LOGIN'])
     setInput({
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser'],
     });
-    // console.log(route);
-    // history.push(route)
     onRegister(input.isUser);
-    // event.preventDefault();
   }
 
   const handleChange = (event) => {

@@ -18,7 +18,7 @@ export default function LocalDishesParameter (props) {
     let APIResponse;
     try {
       APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
-      APIResponse.sort((a,b) =>  b.votes - a.votes); // check for undefined ?
+      APIResponse.sort((a,b) =>  b.votes - a.votes);
       // console.log(APIResponse)
       props.onRadiusSearch(APIResponse)
     } catch(e) {

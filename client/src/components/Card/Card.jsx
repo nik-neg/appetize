@@ -68,20 +68,16 @@ export default function RecipeReviewCard(props) {
   };
 
   const handleLike = async () => {
-    // console.log('like', props.dishID, likeColor)
     setLikeColor(!likeColor);
-    // console.log('like', props.dishID, likeColor)
 
     let likeResponse;
     if(!likeColor) {
-      // console.log("up vote", likeColor)
       try {
         likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "up");
       } catch(e) {
         console.log(e)
       }
     } else {
-      // console.log("donw vote", likeColor)
       try {
         likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "down");
       } catch(e) {
@@ -97,7 +93,6 @@ export default function RecipeReviewCard(props) {
   }
 
   return (
-    // <div className='card-padding'>
     <Card className={classes.root} >
       <CardHeader
         avatar={
@@ -146,6 +141,5 @@ export default function RecipeReviewCard(props) {
         </CardContent>
       </Collapse>
     </Card>
-    // </div>
   );
 }

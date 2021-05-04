@@ -45,8 +45,7 @@ const uploadImage = (id, data) => {
   return fetch(`${baseUrl}/profile/${id}/upload`,
     {
       method: 'POST',
-      // headers: { 'Content-Type': 'multipart/form-data' },
-      body: formData, //JSON.stringify(user),
+      body: formData,
     })
     .then((imageData) => imageData)
     .then((imageData) => imageData)
@@ -58,7 +57,6 @@ const displayImage = (id) => {
   return fetch(`${baseUrl}/profile/${id}/download`,
     {
       method: 'GET',
-      // headers: { 'Content-Type': 'application/json' },
     })
     .then((imageData) => imageData)
     .then((imageData) => imageData)

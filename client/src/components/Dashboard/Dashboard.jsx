@@ -10,31 +10,10 @@ import './index.scss';
 import Box from '@material-ui/core/Box';
 
 export default function Dashboard (props) {
-
-  // const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
-
-  // to reduce processing delays data needs to be fetched
-  // useEffect(() => {
-  //   setMouthWateringDishes(mouthWateringDishes)
-  //   console.log(mouthWateringDishes)
-  // }, [mouthWateringDishes]);
-
-  // const handleLocalDishesParameterResults = (updatedValues) => {
-  //   // request for all button?
-  //   console.log(updatedValues)
-  //   setMouthWateringDishes(null)
-  //   setMouthWateringDishes(updatedValues);
-  // }
-
   let fadeCounter = 0;
 
   return (
     <div>
-      {/* <LocalDishesParameter
-        // mouthWateringDishes={mouthWateringDishes}
-        onRadiusSearch={handleLocalDishesParameterResults}
-        id={id}
-      /> */}
       <div className='cards-position'>
         {props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
         (props.mouthWateringDishes.map((dish, index) => {
@@ -60,12 +39,6 @@ export default function Dashboard (props) {
                 }))
         : ''}
       </div>
-      {/* <LocalDishesParameter
-        // mouthWateringDishes={mouthWateringDishes}
-        onRadiusSearch={setMouthWateringDishes}
-        id={id}
-      /> */}
-      {/* <Card id={id}/> */}
     </div>
   );
 }
