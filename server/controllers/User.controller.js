@@ -6,7 +6,6 @@ const User = require('../models/User');
 
 // const http = require('../index');
 // const io = require('socket.io')(http);
-
 module.exports.createUser = async (req, res) => {
   const {
     firstName, lastName, email, password,
@@ -31,7 +30,6 @@ module.exports.createUser = async (req, res) => {
     });
     user = await newUser.save();
     res.status(201).send(user);
-    // res.redirect('/login')
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
   }

@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+
 const cors = require('cors');
 
 const bodyParser = require('body-parser');
@@ -12,7 +13,6 @@ const db = require('./models/db');
 require('dotenv').config();
 
 app.use(cors())
-  // .use("/", express.static(__dirname + '/index.html'))
   .use(bodyParser())
   .use(express.urlencoded({ extended: true }))
   .use(express.json())
