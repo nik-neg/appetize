@@ -17,8 +17,18 @@ React with Material UI, Node.js with Express, MongoDB with Mongoose, ZipCodeBase
 # Content page before publishing
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/3_favourite_food.png)
 
-# Published local food in the zip postal area
+# Published local food in the zip postal code area
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/4_area_food.png)
 
 # Demo:
 https://youtu.be/_8mGjuWzNS0
+
+# Getting started
+
+-> run "npm i" in the server & client folder
+  
+-> run the mongodb server, e.g. "sudo mongod"
+  
+-> run "nodemon index.js" in the server folder
+
+-> run "npm start" in the client folder
