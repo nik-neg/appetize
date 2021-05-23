@@ -1,9 +1,24 @@
-# appetize
+# Appetize
 1 week (21.04.21-28.04.21) Solo Project @Codeworks
 
-Demo: https://youtu.be/_8mGjuWzNS0
+Appetize is a social media application for local food, where user can upload their image from the filesystem,
+add a title, description, and recipe and then publish it within their postal zip code area.
+A simple voting system enables to vote for favourite dishes.
+
+# Tech Stack:
+React with Material UI, Node.js with Express, MongoDB with Mongoose, ZipCodeBaseAPI
 
 # Login page
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/1_login.png)
 
-Further description will be provided around the end of May 2021.
+# Upload with preview
+![alt text](https://github.com/nik-neg/appetize/blob//main/images/2_dropzone_preview.png)
+
+# Content page before publishing
+![alt text](https://github.com/nik-neg/appetize/blob//main/images/3_favourite_food.png)
+
+# Published local food in the zip postal area
+![alt text](https://github.com/nik-neg/appetize/blob//main/images/4_area_food.png)
+
+# Demo:
+https://youtu.be/_8mGjuWzNS0
