@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var gridfs = require('gridfs-stream');
+const gridfs = require('gridfs-stream');
 
 module.exports.saveImage = async (req, res) => {
   try {
@@ -20,15 +20,15 @@ module.exports.saveImage = async (req, res) => {
 module.exports.retrieveImage = async (req, res) => {
   // console.log('RETRIEVE IMAGE')
   gridfs.mongo = mongoose.mongo;
-  var connection = mongoose.connection;
-  var gfs = gridfs(connection.db);
+  const { connection } = mongoose;
+  const gfs = gridfs(connection.db);
   // loop through all fs.files and retrieve all images - in progress
   // posssible to loop n times with counter from dailyTreats
-  gfs.exist({ filename: req.params.id }, function (err, file) {
+  gfs.exist({ filename: req.params.id }, (err, file) => {
     if (err || !file) {
       res.send('File Not Found');
     } else {
-      var readstream = gfs.createReadStream({ filename: req.params.id });
+      const readstream = gfs.createReadStream({ filename: req.params.id });
       readstream.pipe(res);
     }
   });

@@ -81,7 +81,7 @@ module.exports.setZipCode = async (req, res) => {
   const { zipCode } = req.body;
 
   try {
-    const user = await User.findOneAndUpdate({ _id: id }, { zipCode }, function (err, result) {
+    const user = await User.findOneAndUpdate({ _id: id }, { zipCode }, (err, result) => {
       if (err) {
         res.send(err);
       }

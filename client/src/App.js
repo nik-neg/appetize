@@ -55,13 +55,15 @@ function App() {
           : '' } */}
 
       { !isUserForRouting.loggedIn
-        ? <RegisterLogin
+        ? (
+          <RegisterLogin
             isUserForRouting={isUserForRouting}
             onRegister={handleRegister}
             onLogin={handleLogin}
           />
+        )
         : '' }
-      { isUserForRouting.loggedIn ? <Profile id={isUserForRouting.id}/> : '' }
+      { isUserForRouting.loggedIn ? <Profile id={isUserForRouting.id} /> : '' }
       {/* </Switch>
       </Router> */}
     </div>

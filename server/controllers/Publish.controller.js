@@ -13,7 +13,7 @@ module.exports.publishDish = async (req, res) => {
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
-  let alreadyPublished = await DailyTreat.findOne({
+  const alreadyPublished = await DailyTreat.findOne({
     userID: id,
   });
   if (alreadyPublished) {
@@ -79,37 +79,35 @@ module.exports.checkDishesInRadius = async (req, res) => {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
     axios
       .get(url)
-      .then(function (response) {
-        const zipCodesInRadius = response.data.results.map((element) => {
-          return { zipCode: element.code, city: element.city };
-        });
+      .then((response) => {
+        const zipCodesInRadius = response.data.results.map((element) => ({ zipCode: element.code, city: element.city }));
         // console.log(zipCodesInRadius);
         helperFindDishesInDB(res, res, zipCodesInRadius);
       })
-      .catch(function (error) {
+      .catch((error) => {
         // handle error
         console.log(error);
       })
-      .then(function () {
+      .then(() => {
         // always executed
       });
   }
 
   const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
-    let dishesForClient = [];
+    const dishesForClient = [];
     for (let i = 0; i < zipCodesInRadius.length; i++) {
       try {
-        let dailyTreatsFromDB = [];
+        const dailyTreatsFromDB = [];
         await DailyTreat.find(
           { zipCode: zipCodesInRadius[i].zipCode },
           (err, dailyTreats) => {
             // console.log('found in: '+zipCodesInRadius[i].zipCode)
             // console.log(dailyTreats)
             dailyTreats.forEach((dailyTreat) => {
-              const copyDailyTreat = Object.assign(
-                {},
-                { ...dailyTreat._doc, city: zipCodesInRadius[i].city },
-              );
+              const copyDailyTreat = {
+
+                ...dailyTreat._doc, city: zipCodesInRadius[i].city,
+              };
               // console.log('copy');
               // console.log(copyDailyTreat);
               dailyTreatsFromDB.push(copyDailyTreat);
@@ -132,8 +130,8 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
 module.exports.upDownVote = async (req, res) => {
   const { id, dailyTreatsID, upDown } = req.params;
-  //console.log('VOTE ')
-  //console.log(id, dailyTreatsID, upDown)
+  // console.log('VOTE ')
+  // console.log(id, dailyTreatsID, upDown)
   try {
     if (upDown === 'up') {
       // console.log('like', upDown)
