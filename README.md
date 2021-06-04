@@ -15,7 +15,7 @@ A simple voting system enables to vote for favourite dishes.
  </td><td>
  
 [Zip Code API](https://zipcodebase.com/)
-<tr><td></table> 
+</td></tr> </table> 
 
 # Login page
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/1_login.png)
