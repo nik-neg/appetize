@@ -5,8 +5,15 @@ Appetize is a social media application for local food, where user can upload the
 add a title, description, and recipe and then publish it within their postal zip code area.
 A simple voting system enables to vote for favourite dishes.
 
-# Tech Stack:
-React with Material UI, Node.js with Express, MongoDB with Mongoose, ZipCodeBaseAPI
+<table>
+<tr><th>Tech Stack</th></tr>
+<tr><td>
+
+ <sub> React </sub> |  <sub> Material-UI </sub> | <sub> Node.js </sub> | <sub> Express </sub> | <sub> MongoDB </sub> | <sub> Mongoose </sub> |  <sub> JavaScript </sub> 
+|--|--|--|--|--|--|--
+[<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/react.svg" alt="drawing" width="50"/>](https://reactjs.org/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/material-ui.svg" alt="drawing" width="50"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/nodejs.svg" alt="drawing" width="50"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/express.svg" alt="drawing" width="50"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongodb.svg" alt="drawing" width="50"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/digital-menu/blob/main/techstack_images/mongoose.png" alt="drawing" width="50"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/digital-menu/blob/main/techstack_images/javascript.svg" alt="drawing" width="50"/>](https://www.javascript.com/) </td></tr> </table> 
+
+ </table> 
 
 # Login page
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/1_login.png)
