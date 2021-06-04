@@ -25,10 +25,10 @@ https://youtu.be/_8mGjuWzNS0
 
 # Getting started
 
--> run "npm i" in the server & client folder
+-> run `npm i` in the server & client folder
   
--> run the mongodb server, e.g. "sudo mongod"
+-> run the mongodb server, e.g. `sudo mongod`
   
--> run "nodemon index.js" in the server folder
+-> run `nodemon index.js` in the server folder
 
--> run "npm start" in the client folder
+-> run `npm start` in the client folder
