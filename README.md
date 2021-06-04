@@ -13,12 +13,7 @@ A simple voting system enables to vote for favourite dishes.
 |--|--|--|--|--|--|--
 [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/react.svg" alt="drawing" width="50"/>](https://reactjs.org/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/material-ui.svg" alt="drawing" width="50"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/nodejs.svg" alt="drawing" width="50"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/express.svg" alt="drawing" width="50"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongodb.svg" alt="drawing" width="50"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongoose.png" alt="drawing" width="50"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/javascript.svg" alt="drawing" width="50"/>](https://www.javascript.com/) </td></tr> </table> 
 
-<tr><td>
-
- <sub> React </sub> |  <sub> Material-UI </sub> | <sub> Node.js </sub> | <sub> Express </sub> | <sub> MongoDB </sub> | <sub> Mongoose </sub> |  <sub> JavaScript </sub> 
-|--|--|--|--|--|--|--
-[<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/react.svg" alt="drawing" width="50"/>](https://reactjs.org/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/material-ui.svg" alt="drawing" width="50"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/nodejs.svg" alt="drawing" width="50"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/express.svg" alt="drawing" width="50"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongodb.svg" alt="drawing" width="50"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongoose.png" alt="drawing" width="50"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/javascript.svg" alt="drawing" width="50"/>](https://www.javascript.com/) </td></tr> </table> 
- </table> 
+<tr><td> </table> 
 
 # Login page
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/1_login.png)
