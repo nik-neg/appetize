@@ -21,12 +21,6 @@ import { useState } from 'react';
 
 import ApiClient from '../../services/ApiClient';
 
-
-// var io = require('socket.io-client');
-// var socket = io.connect("http://localhost:3002/", {
-//     reconnection: true
-// });
-
 import './index.scss';
 
 
@@ -85,11 +79,6 @@ export default function RecipeReviewCard(props) {
       }
     }
     setVotes(likeResponse.votes)
-
-    // socket solution
-    // socket.on(`${props.zipCode}`, function (updatedVotes) {
-    //   setVotes(updatedVotes)
-    //   });
   }
 
   return (

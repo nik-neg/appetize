@@ -1,7 +1,6 @@
 const baseUrl = 'http://localhost:3001';
 
 const registerUser = (user) =>
-  // console.log(user);
   fetch(`${baseUrl}/register`,
     {
       method: 'POST',
@@ -12,7 +11,6 @@ const registerUser = (user) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 const loginUser = (user) =>
-  // console.log(user);
   fetch(`${baseUrl}/login`,
     {
       method: 'POST',
@@ -23,7 +21,6 @@ const loginUser = (user) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 const getProfile = (id) =>
-  // console.log("GET PROFILE BY CLIENT")
   fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'GET',
@@ -34,7 +31,7 @@ const getProfile = (id) =>
     .catch((err) => console.log(err));
 const uploadImage = (id, data) => {
   const formData = new FormData();
-  formData.append('file', data.file); // image
+  formData.append('file', data.file);
 
   return fetch(`${baseUrl}/profile/${id}/upload`,
     {
@@ -47,7 +44,6 @@ const uploadImage = (id, data) => {
 };
 
 const displayImage = (id) =>
-  // console.log("GET IMAGE BY CLIENT")
   fetch(`${baseUrl}/profile/${id}/download`,
     {
       method: 'GET',
@@ -56,7 +52,6 @@ const displayImage = (id) =>
     .then((imageData) => imageData)
     .catch((err) => console.log(err));
 const confirmZipCode = (id, zipCode) =>
-// console.log("API CLIENT - UPDATE ZIP CODE")
 
   fetch(`${baseUrl}/profile/${id}`,
     {
@@ -78,7 +73,6 @@ const publishToDashBoard = (id, data) => fetch(`${baseUrl}/profile/${id}/dashboa
   .catch((err) => console.log(err));
 
 const getDishesInRadius = (id, radius) =>
-  // console.log("CLIENT - GET DISHES IN RADIUS")
   fetch(`${baseUrl}/profile/${id}/dashboard/${radius}`,
     {
       method: 'GET',

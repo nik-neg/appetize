@@ -18,7 +18,6 @@ module.exports.saveImage = async (req, res) => {
 };
 
 module.exports.retrieveImage = async (req, res) => {
-  // console.log('RETRIEVE IMAGE')
   gridfs.mongo = mongoose.mongo;
   const { connection } = mongoose;
   const gfs = gridfs(connection.db);

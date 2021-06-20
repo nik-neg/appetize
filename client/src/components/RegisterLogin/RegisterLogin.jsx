@@ -13,11 +13,6 @@ import Logo from './logo.jpg';
 
 import ApiClient from '../../services/ApiClient';
 
-// import { BrowserRouter as Router } from 'react-router-dom';
-// import { Switch, Route } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -68,7 +63,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     event.preventDefault();
 
     if(!input.isUser) {
-      // console.log("REGISTER")
       const registerResponse = await ApiClient.registerUser(input);
       if(registerResponse.error === '409' ) {
         setInput('');
@@ -79,7 +73,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     } else {
       console.log("LOGIN REACT")
       const loginResponse = await ApiClient.loginUser(input);
-      // console.log("CLIENT LOGIN RESPONSE")
       if(loginResponse.error === '401' ) {
         setInput('');
         setInput({error: loginResponse.message})
@@ -91,7 +84,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
 
   const handleLogIn = async (event) => {
     event.preventDefault();
-    // console.log('login', input.isUser)
     setInput({
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser'],
@@ -196,9 +188,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
               <Link href="#" variant="body2" onClick={handleLogIn}>
                 {input.isUserMessage}
               </Link>
-              {/* <Router>
-                <Link to="/" onClick={(e) => handleLogIn(e)}>{input.isUserMessage}</Link>
-              </Router> */}
             </Grid>
           </Grid>
         </form>

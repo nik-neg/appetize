@@ -18,12 +18,10 @@ export default function DropZone (props) {
   );
 
   const handleUpload = async () => {
-    // console.log("HANDLE SAVE")
     await ApiClient.uploadImage(props.id, fileObjects['0']);
   }
 
   const handleDownload = async () => {
-    // console.log("DOWNLOAD IMAGE")
     const downloadResponse = await ApiClient.displayImage(props.id);
     props.setImagePath(downloadResponse.url);
   }

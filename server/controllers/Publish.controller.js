@@ -5,8 +5,6 @@ const User = require('../models/User');
 const DailyTreat = require('../models/DailyTreat');
 
 module.exports.publishDish = async (req, res) => {
-  // console.log('PUBLISH DISH')
-  // console.log(req.params.id, req.body)
   const { id } = req.params;
   const {
     title, description, recipe, firstName,
@@ -54,8 +52,6 @@ module.exports.publishDish = async (req, res) => {
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
-  // console.log('SERVER - CHECK DISHES');
-  // console.log(req.params.id, req.params.radius)
   const { id, radius } = req.params;
   let user;
   try {
@@ -75,13 +71,11 @@ module.exports.checkDishesInRadius = async (req, res) => {
       .send({ error: '409', message: 'User doesn\'t exist' });
   }
   if (zipCode) {
-    // console.log(zipCode);
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
     axios
       .get(url)
       .then((response) => {
         const zipCodesInRadius = response.data.results.map((element) => ({ zipCode: element.code, city: element.city }));
-        // console.log(zipCodesInRadius);
         helperFindDishesInDB(res, res, zipCodesInRadius);
       })
       .catch((error) => {
@@ -101,21 +95,15 @@ module.exports.checkDishesInRadius = async (req, res) => {
         await DailyTreat.find(
           { zipCode: zipCodesInRadius[i].zipCode },
           (err, dailyTreats) => {
-            // console.log('found in: '+zipCodesInRadius[i].zipCode)
-            // console.log(dailyTreats)
             dailyTreats.forEach((dailyTreat) => {
               const copyDailyTreat = {
 
                 ...dailyTreat._doc, city: zipCodesInRadius[i].city,
               };
-              // console.log('copy');
-              // console.log(copyDailyTreat);
               dailyTreatsFromDB.push(copyDailyTreat);
             });
           },
         );
-        // console.log('dailyTreats')
-        // console.log(dailyTreatsFromDB)
         if (dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
           dishesForClient.push(...dailyTreatsFromDB); // not only one elements
         }
@@ -123,18 +111,14 @@ module.exports.checkDishesInRadius = async (req, res) => {
         console.log(e);
       }
     }
-    // console.log(dishesForClient);
     res.send(dishesForClient);
   };
 };
 
 module.exports.upDownVote = async (req, res) => {
   const { id, dailyTreatsID, upDown } = req.params;
-  // console.log('VOTE ')
-  // console.log(id, dailyTreatsID, upDown)
   try {
     if (upDown === 'up') {
-      // console.log('like', upDown)
       // like dish
       await DailyTreat.updateOne(
         {
@@ -146,7 +130,6 @@ module.exports.upDownVote = async (req, res) => {
       );
     } else {
       // unlike dish
-      // console.log('unlike', upDown)
       await DailyTreat.updateOne(
         {
           _id: dailyTreatsID,
@@ -156,27 +139,11 @@ module.exports.upDownVote = async (req, res) => {
         { new: true },
       );
     }
-    // broadcast votes for zipCode
-    // let user;
-    // try {
-    //   user = await User.findOne({_id: id}); /// ?
-    //   if(user) {
-    //     const updatedDailyTreat = await DailyTreat.findOne({_id: dailyTreatsID});
-    //     console.log(updatedDailyTreat)
-    //     io.on('connection', function(socket) {
-    //       console.log(`Broadcast to ${user.zipCode} room.`)
-    //       io.emit(`${user.zipCode}`, updatedDailyTreat.votes);
-    //     });
-    //   }
-    // } catch(e) {
-    //   console.log(e)
-    // }
 
     // get updated votes for the realted user
     let dailyTreat;
     try {
       dailyTreat = await DailyTreat.findOne({ _id: dailyTreatsID });
-      // console.log(dailyTreat)
       res.send({ votes: dailyTreat.votes });
     } catch (e) {
       console.log(e);

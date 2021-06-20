@@ -14,12 +14,10 @@ export default function LocalDishesParameter (props) {
   const [radius, setRadius] = useState(2);
 
   const handleRadiusSearch = async () => {
-    // console.log("API CLIENT - HANDLE RADIUS SEARCH")
     let APIResponse;
     try {
       APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
       APIResponse.sort((a,b) =>  b.votes - a.votes);
-      // console.log(APIResponse)
       props.onRadiusSearch(APIResponse)
     } catch(e) {
       console.log(e);

@@ -1,12 +1,8 @@
-// import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 import Card from '../Card/Card'
-// import { useState, useEffect } from 'react';
-// import { useState } from 'react';
 import FadeIn from 'react-fade-in';
 
 import './index.scss';
 
-// import { spacing } from '@material-ui/system';
 import Box from '@material-ui/core/Box';
 
 export default function Dashboard (props) {

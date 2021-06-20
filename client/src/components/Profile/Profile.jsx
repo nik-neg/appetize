@@ -107,7 +107,6 @@ export default function Profile ({id}) {
     }
 
     const handleUpdateZipCode = async () => {
-      // console.log("HANDLE UPDATE ZIP CODE")
       await ApiClient.confirmZipCode(id, {zipCode: zipCode});
     }
 
