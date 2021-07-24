@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Logo from './logo.jpg';
+import history from '../../history';
+
 
 import ApiClient from '../../services/ApiClient';
 
@@ -48,14 +50,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
-export default function RegisterLogin ({isUserForRouting, onRegister, onLogin }) {
+export default function RegisterLogin () {
+
   const classes = useStyles();
   const [input, setInput] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    isUser: isUserForRouting.isUser,
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
@@ -67,7 +69,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
         setInput('');
         setInput({error: registerResponse.message})
       } else {
-        onLogin(registerResponse._id);
+        history.push('/profile');
       }
     } else {
       const loginResponse = await ApiClient.loginUser(input);
@@ -75,7 +77,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
         setInput('');
         setInput({error: loginResponse.message})
       } else {
-        onLogin(loginResponse._id);
+        history.push('/profile');
       }
     }
   }
@@ -86,7 +88,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser'],
     });
-    onRegister(input.isUser);
   }
 
   const handleChange = (event) => {

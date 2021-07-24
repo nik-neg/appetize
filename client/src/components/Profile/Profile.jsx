@@ -63,7 +63,7 @@ const useStylesSaveButton = makeStyles((theme) => ({
 }));
 
 
-export default function Profile ({id}) {
+export default function Profile () {
   const classes = useStylesSaveButton();
 
   const CHARACTER_LIMIT_ZIP_CODE = 10;
@@ -78,6 +78,7 @@ export default function Profile ({id}) {
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
   const CHARACTER_LIMIT_RECIPE = 500;
+  const id = 1;
 
   const [dish, setDish] = useState({
     title: "",
