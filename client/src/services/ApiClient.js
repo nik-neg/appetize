@@ -10,6 +10,7 @@ const registerUser = (user) =>
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
+
 const loginUser = (user) =>
   fetch(`${baseUrl}/login`,
     {
@@ -20,6 +21,7 @@ const loginUser = (user) =>
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
+
 const getProfile = (id) =>
   fetch(`${baseUrl}/profile/${id}`,
     {
@@ -29,6 +31,7 @@ const getProfile = (id) =>
     .then((data) => data.json())
     .then((user) => user)
     .catch((err) => console.log(err));
+
 const uploadImage = (id, data) => {
   const formData = new FormData();
   formData.append('file', data.file);
@@ -51,8 +54,8 @@ const displayImage = (id) =>
     .then((imageData) => imageData)
     .then((imageData) => imageData)
     .catch((err) => console.log(err));
-const confirmZipCode = (id, zipCode) =>
 
+const confirmZipCode = (id, zipCode) =>
   fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'PUT',
@@ -62,6 +65,7 @@ const confirmZipCode = (id, zipCode) =>
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
+
 const publishToDashBoard = (id, data) => fetch(`${baseUrl}/profile/${id}/dashboard`,
   {
     method: 'POST',
@@ -81,6 +85,7 @@ const getDishesInRadius = (id, radius) =>
     .then((data) => data.json())
     .then((data) => data)
     .catch((err) => console.log(err));
+
 const voteDish = (id, dailyTreatsID, upDownVote) => fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
   {
     method: 'PATCH',
@@ -90,7 +95,7 @@ const voteDish = (id, dailyTreatsID, upDownVote) => fetch(`${baseUrl}/profile/${
   .then((data) => data)
   .catch((err) => console.log(err));
 
-module.exports = {
+export default {
   loginUser,
   registerUser,
   getProfile,

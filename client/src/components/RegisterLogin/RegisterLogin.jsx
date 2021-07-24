@@ -61,7 +61,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
   });
   const handleRegisterOrLogin = async (event) => {
     event.preventDefault();
-
     if(!input.isUser) {
       const registerResponse = await ApiClient.registerUser(input);
       if(registerResponse.error === '409' ) {
@@ -71,7 +70,6 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
         onLogin(registerResponse._id);
       }
     } else {
-      console.log("LOGIN REACT")
       const loginResponse = await ApiClient.loginUser(input);
       if(loginResponse.error === '401' ) {
         setInput('');
@@ -82,7 +80,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
     }
   }
 
-  const handleLogIn = async (event) => {
+  const handleLoginByUser = async (event) => {
     event.preventDefault();
     setInput({
       isUser: !input.isUser,
@@ -185,7 +183,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2" onClick={handleLogIn}>
+              <Link href="#" variant="body2" onClick={handleLoginByUser}>
                 {input.isUserMessage}
               </Link>
             </Grid>
