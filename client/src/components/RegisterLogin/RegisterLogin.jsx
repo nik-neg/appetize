@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Logo from './logo.jpg';
+import history from '../../history';
+
 
 import ApiClient from '../../services/ApiClient';
 
@@ -48,47 +50,44 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
-export default function RegisterLogin ({isUserForRouting, onRegister, onLogin }) {
+export default function RegisterLogin () {
+
   const classes = useStyles();
   const [input, setInput] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    isUser: isUserForRouting.isUser,
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
   const handleRegisterOrLogin = async (event) => {
     event.preventDefault();
-
     if(!input.isUser) {
       const registerResponse = await ApiClient.registerUser(input);
       if(registerResponse.error === '409' ) {
         setInput('');
         setInput({error: registerResponse.message})
       } else {
-        onLogin(registerResponse._id);
+        history.push('/profile');
       }
     } else {
-      console.log("LOGIN REACT")
       const loginResponse = await ApiClient.loginUser(input);
       if(loginResponse.error === '401' ) {
         setInput('');
         setInput({error: loginResponse.message})
       } else {
-        onLogin(loginResponse._id);
+        history.push('/profile');
       }
     }
   }
 
-  const handleLogIn = async (event) => {
+  const handleLoginByUser = async (event) => {
     event.preventDefault();
     setInput({
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser'],
     });
-    onRegister(input.isUser);
   }
 
   const handleChange = (event) => {
@@ -185,7 +184,7 @@ export default function RegisterLogin ({isUserForRouting, onRegister, onLogin })
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2" onClick={handleLogIn}>
+              <Link href="#" variant="body2" onClick={handleLoginByUser}>
                 {input.isUserMessage}
               </Link>
             </Grid>
