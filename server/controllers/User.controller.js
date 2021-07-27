@@ -1,4 +1,5 @@
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const saltRounds = 10;
 
@@ -41,7 +42,9 @@ module.exports.loginUser = async (req, res) => {
     });
     const checkedPassword = await bcrypt.compare(password, user.password);
     if (!checkedPassword) throw new Error();
-    res.status(200).send(user);
+    // set the hashed password to  null before delivering the data for the global storage
+    user.password = null;
+    res.status(200).send(user); // send only needed data, like name, dishes etc.
   } catch (error) {
     res
       .status(401)

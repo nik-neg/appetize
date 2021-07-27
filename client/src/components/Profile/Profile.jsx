@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState,  } from 'react'; // useEffect
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -22,10 +22,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-
+import { useSelector } from 'react-redux';
 import './index.css'
-
-
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -68,7 +66,9 @@ export default function Profile () {
 
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
-  const [userData, setUserData] = useState({});
+  // const [userData, setUserData] = useState({});
+  const userData = useSelector((state) => state.user.userData);
+
   const classesAvatar = useStylesAvatar();
   const classesGrid = useStylesGrid();
 
@@ -95,10 +95,10 @@ export default function Profile () {
     }
   };
 
-  useEffect(() => {
-    ApiClient.getProfile(id)
-    .then((data) => setUserData(data))
-    }, []);
+  // useEffect(() => {
+  //   // ApiClient.getProfile(id)
+  //   // .then((data) => setUserData(data))
+  //   }, []);
 
     const handleChangeZipCode = (event) => {
       setZipCode(event.target.value);
