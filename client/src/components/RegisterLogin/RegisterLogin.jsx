@@ -11,9 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Logo from './logo.jpg';
 import history from '../../history';
-
-
-import ApiClient from '../../services/ApiClient';
+import { useDispatch } from 'react-redux';
+import { fetchUserDataFromDB, createUserAndSafeToDB } from '../../store/userSlice';
+// import { useSelector } from 'react-redux';
+import { store } from '../../store/index';
 
 function Copyright() {
   return (
@@ -51,6 +52,8 @@ const useStyles = makeStyles((theme) => ({
 
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
 export default function RegisterLogin () {
+  const dispatch = useDispatch();
+  // const userData = useSelector((state) => state.user);
 
   const classes = useStyles();
   const [input, setInput] = useState({
@@ -58,24 +61,45 @@ export default function RegisterLogin () {
     lastName: '',
     email: '',
     password: '',
+    isUser: false,
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
   });
+
+  const asyncWrapper = async (dispatch, asyncFunc, data) => {
+    await dispatch(asyncFunc(data));
+  }
+
   const handleRegisterOrLogin = async (event) => {
+    let userData;
     event.preventDefault();
     if(!input.isUser) {
-      const registerResponse = await ApiClient.registerUser(input);
-      if(registerResponse.error === '409' ) {
-        setInput('');
-        setInput({error: registerResponse.message})
+      await asyncWrapper(dispatch, createUserAndSafeToDB, input);
+      userData = store.getState().user.userData;
+      if(userData?.error === '409' ) { // TODO: refactor reset state ?
+        setInput((prevState) => {
+          return {
+            ...prevState,
+            email: '',
+            password: '',
+            error: userData.message
+          }
+        });
       } else {
         history.push('/profile');
       }
     } else {
-      const loginResponse = await ApiClient.loginUser(input);
-      if(loginResponse.error === '401' ) {
-        setInput('');
-        setInput({error: loginResponse.message})
+      await asyncWrapper(dispatch, fetchUserDataFromDB, input);
+      userData = store.getState().user.userData;
+      if(userData?.error === '401' ) {
+        setInput((prevState) => { // TODO: refactor reset state ?
+          return {
+            ...prevState,
+            email: '',
+            password: '',
+            error: userData.message
+          }
+        });
       } else {
         history.push('/profile');
       }
@@ -90,9 +114,12 @@ export default function RegisterLogin () {
     });
   }
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     const { name, value } = event.target;
-    setInput((prevInput) => ({ ...prevInput, [name]: value }));
+    setInput((prevInput) => ({
+      ...prevInput,
+      [name]: value
+    }));
   }
 
   return (
