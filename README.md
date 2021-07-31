@@ -20,7 +20,7 @@ A simple voting system enables to vote for favourite dishes.
 </td></tr> </table> 
 
 # Login/Register page
-![alt text](https://github.com/nik-neg/appetize/blob//main/images/1_login.png)
+ <img src="https://github.com/nik-neg/appetize/blob//main/images/1_login.png" alt="drawing" width="50"/>
 
 # Upload with preview
 ![alt text](https://github.com/nik-neg/appetize/blob//main/images/2_dropzone_preview.png)
