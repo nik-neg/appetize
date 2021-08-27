@@ -78,7 +78,7 @@ export default function Profile () {
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
   const CHARACTER_LIMIT_RECIPE = 500;
-  const id = 1;
+  // const id = 1;
 
   const [dish, setDish] = useState({
     title: "",
@@ -108,7 +108,7 @@ export default function Profile () {
     }
 
     const handleUpdateZipCode = async () => {
-      await ApiClient.confirmZipCode(id, {zipCode: zipCode});
+      await ApiClient.confirmZipCode(userData._id, {zipCode: zipCode});
     }
 
 
@@ -117,7 +117,7 @@ export default function Profile () {
       const firstName = userData.firstName;
       const publishObject = {...dish, firstName};
       try {
-        await ApiClient.publishToDashBoard(id, publishObject)
+        await ApiClient.publishToDashBoard(userData._id, publishObject)
       } catch(e) {
         console.log(e);
       }
@@ -185,7 +185,7 @@ export default function Profile () {
             </div>
             <LocalDishesParameter
               onRadiusSearch={handleLocalDishesParameterResults}
-              id={id}
+              id={userData._id}
             />
           </Grid>
           {imagePath.length > 0 ?
@@ -299,7 +299,7 @@ export default function Profile () {
         </Grid>
           <Grid item lg={12}>
               <DropZone
-                id={id}
+                id={userData._id}
                 firstName={userData.firstName}
                 setOpen={setOpen}
                 open={open}
@@ -308,7 +308,7 @@ export default function Profile () {
                 dish={dish}
               />
                <Dashboard
-                id={id}
+                id={userData._id}
                 mouthWateringDishes={mouthWateringDishes}
                />
           </Grid>
