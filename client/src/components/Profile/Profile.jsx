@@ -66,7 +66,9 @@ export default function Profile () {
 
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
-  const userData = useSelector((state) => state.user.userData);
+  const userData = {...useSelector((state) => state.user.userData)};
+  let firstName = userData.firstName;
+  userData.firstName = firstName[0].toUpperCase()+firstName.slice(1);
 
   const classesAvatar = useStylesAvatar();
   const classesGrid = useStylesGrid();
