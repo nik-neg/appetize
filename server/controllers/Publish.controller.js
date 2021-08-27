@@ -51,6 +51,35 @@ module.exports.publishDish = async (req, res) => {
   }
 };
 
+const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
+  const dishesForClient = [];
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < zipCodesInRadius.length; i++) {
+    try {
+      const dailyTreatsFromDB = [];
+      // eslint-disable-next-line no-await-in-loop
+      await DailyTreat.find(
+        { zipCode: zipCodesInRadius[i].zipCode },
+        (err, dailyTreats) => {
+          dailyTreats.forEach((dailyTreat) => {
+            const copyDailyTreat = {
+              // eslint-disable-next-line no-underscore-dangle
+              ...dailyTreat._doc, city: zipCodesInRadius[i].city,
+            };
+            dailyTreatsFromDB.push(copyDailyTreat);
+          });
+        },
+      );
+      if (dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
+        dishesForClient.push(...dailyTreatsFromDB); // not only one elements
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  res.send(dishesForClient);
+};
+
 module.exports.checkDishesInRadius = async (req, res) => {
   const { id, radius } = req.params;
   let user;
@@ -75,8 +104,11 @@ module.exports.checkDishesInRadius = async (req, res) => {
     axios
       .get(url)
       .then((response) => {
-        const zipCodesInRadius = response.data.results.map((element) => ({ zipCode: element.code, city: element.city }));
-        helperFindDishesInDB(res, res, zipCodesInRadius);
+        if (!response.data.results.error) {
+          const zipCodesInRadius = response.data.results.map((element) => (
+            { zipCode: element.code, city: element.city }));
+          helperFindDishesInDB(res, res, zipCodesInRadius);
+        }
       })
       .catch((error) => {
         // handle error
@@ -86,33 +118,6 @@ module.exports.checkDishesInRadius = async (req, res) => {
         // always executed
       });
   }
-
-  const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
-    const dishesForClient = [];
-    for (let i = 0; i < zipCodesInRadius.length; i++) {
-      try {
-        const dailyTreatsFromDB = [];
-        await DailyTreat.find(
-          { zipCode: zipCodesInRadius[i].zipCode },
-          (err, dailyTreats) => {
-            dailyTreats.forEach((dailyTreat) => {
-              const copyDailyTreat = {
-
-                ...dailyTreat._doc, city: zipCodesInRadius[i].city,
-              };
-              dailyTreatsFromDB.push(copyDailyTreat);
-            });
-          },
-        );
-        if (dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
-          dishesForClient.push(...dailyTreatsFromDB); // not only one elements
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    res.send(dishesForClient);
-  };
 };
 
 module.exports.upDownVote = async (req, res) => {
