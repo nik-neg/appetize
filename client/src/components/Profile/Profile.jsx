@@ -66,7 +66,6 @@ export default function Profile () {
 
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
-  // const [userData, setUserData] = useState({});
   const userData = useSelector((state) => state.user.userData);
 
   const classesAvatar = useStylesAvatar();
@@ -78,7 +77,6 @@ export default function Profile () {
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
   const CHARACTER_LIMIT_RECIPE = 500;
-  // const id = 1;
 
   const [dish, setDish] = useState({
     title: "",
@@ -109,6 +107,7 @@ export default function Profile () {
 
     const handleUpdateZipCode = async () => {
       await ApiClient.confirmZipCode(userData._id, {zipCode: zipCode});
+      setZipCode('');
     }
 
 
