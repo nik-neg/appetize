@@ -44,7 +44,6 @@ module.exports.publishDish = async (req, res) => {
   // save to db
   try {
     const dailyTreatSaveResponse = await dailyTreat.save();
-    console.log(dailyTreatSaveResponse);
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
     console.log(e);

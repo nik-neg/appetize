@@ -70,6 +70,11 @@ export default function Profile () {
   let firstName = userData.firstName;
   userData.firstName = firstName[0].toUpperCase()+firstName.slice(1);
 
+  const [cookedOrdered, setCoockedOrdered] = useState({
+    cooked: false,
+    ordered: false
+  })
+
   const classesAvatar = useStylesAvatar();
   const classesGrid = useStylesGrid();
 
@@ -112,6 +117,15 @@ export default function Profile () {
       setZipCode('');
     }
 
+    const handleCookedOrdered = async (event) => {
+      event.preventDefault();
+      const { name, checked } = event.target;
+      setCoockedOrdered((prevValue) => ({
+        [name === 'cooked' ? prevValue['ordered'] : prevValue['cooked']]: false,
+        [name]: checked
+
+      }))
+    }
 
   const handlePublish = async (event) => {
     if(event.target.checked) {
@@ -278,8 +292,11 @@ export default function Profile () {
                     <div className="publish-button-col">
                       <FormControlLabel
                         control={<Checkbox
+                                  onChange={handleCookedOrdered}
                                   icon={<FavoriteBorder />}
                                   checkedIcon={<Favorite/>}
+                                  checked={cookedOrdered.cooked}
+                                  name='cooked'
                                 />}
                         label="Coocked"
                       />
@@ -287,8 +304,11 @@ export default function Profile () {
                     <div className="publish-button-col">
                       <FormControlLabel
                         control={<Checkbox
+                                  onChange={handleCookedOrdered}
                                   icon={<FavoriteBorder />}
                                   checkedIcon={<Favorite/>}
+                                  checked={cookedOrdered.ordered}
+                                  name="ordered"
                                 />}
                         label="Ordered"
                       />
