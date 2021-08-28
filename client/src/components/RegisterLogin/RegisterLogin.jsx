@@ -76,7 +76,7 @@ export default function RegisterLogin () {
     if(!input.isUser) {
       await asyncWrapper(dispatch, createUserAndSafeToDB, input);
       userData = store.getState().user.userData;
-      if(userData?.error === '409' ) { // TODO: refactor reset state ?
+      if(userData?.error === '409' ) {
         setInput((prevState) => {
           return {
             ...prevState,

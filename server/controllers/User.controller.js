@@ -70,6 +70,7 @@ module.exports.setZipCode = async (req, res) => {
         res.send(err);
       }
     });
+    user.password = null;
     res.status(201).send(user);
   } catch (e) {
     console.log(e);

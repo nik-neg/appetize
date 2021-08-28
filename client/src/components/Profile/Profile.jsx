@@ -22,7 +22,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserZipCode } from '../../store/userSlice';
 import './index.css'
 
 const useStylesAvatar = makeStyles((theme) => ({
@@ -100,6 +101,12 @@ export default function Profile () {
     }
   };
 
+  const dispatch = useDispatch();
+
+  const asyncWrapper = async (dispatch, asyncFunc, data) => {
+    await dispatch(asyncFunc(data));
+  }
+
   // useEffect(() => {
   //   // ApiClient.getProfile(id)
   //   // .then((data) => setUserData(data))
@@ -113,7 +120,7 @@ export default function Profile () {
     }
 
     const handleUpdateZipCode = async () => {
-      await ApiClient.confirmZipCode(userData._id, {zipCode: zipCode});
+      await asyncWrapper(dispatch, updateUserZipCode, { id: userData._id, zipCode });
       setZipCode('');
     }
 
