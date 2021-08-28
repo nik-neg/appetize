@@ -25,6 +25,7 @@ import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter'
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserZipCode } from '../../store/userSlice';
 import './index.css'
+import { store } from '../../store/index';
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -68,8 +69,11 @@ export default function Profile () {
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
   const userData = {...useSelector((state) => state.user.userData)};
-  let firstName = userData.firstName;
-  userData.firstName = firstName[0].toUpperCase()+firstName.slice(1);
+  if(userData) {
+    let firstName = userData.firstName;
+    userData.firstName = firstName[0].toUpperCase()+firstName.slice(1);
+  }
+
 
   const [cookedOrdered, setCoockedOrdered] = useState({
     cooked: false,
@@ -148,9 +152,11 @@ export default function Profile () {
 
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
 
-  const handleLocalDishesParameterResults = (updatedValues) => {
+  const handleLocalDishesParameterResults = () => {
+    const newMouthWateringDishes = [...store.getState().user.dishesInRadius] // TODO: use of selector?
+    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
     setMouthWateringDishes(null)
-    setMouthWateringDishes(updatedValues);
+    setMouthWateringDishes(newMouthWateringDishes);
   }
 
 
@@ -207,7 +213,7 @@ export default function Profile () {
             </div>
             <LocalDishesParameter
               onRadiusSearch={handleLocalDishesParameterResults}
-              id={userData._id}
+              // id={userData._id}
             />
           </Grid>
           {imagePath.length > 0 ?

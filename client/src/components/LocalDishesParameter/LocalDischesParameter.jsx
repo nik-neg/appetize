@@ -7,18 +7,24 @@ import CheckBox from '../CheckBox/CheckBox';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
-import ApiClient from '../../services/ApiClient';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDishesInRadius } from '../../store/userSlice';
+
 
 export default function LocalDishesParameter (props) {
 
   const [radius, setRadius] = useState(2);
+  const userDataClone = {...useSelector((state) => state.user.userData)};
+  const dispatch = useDispatch();
+
+  const asyncWrapper = async (dispatch, asyncFunc, data) => {
+    return await dispatch(asyncFunc(data));
+  }
 
   const handleRadiusSearch = async () => {
-    let APIResponse;
     try {
-      APIResponse = await ApiClient.getDishesInRadius(props.id, radius);
-      APIResponse.sort((a,b) =>  b.votes - a.votes);
-      props.onRadiusSearch(APIResponse)
+      await asyncWrapper(dispatch, getDishesInRadius, { id: userDataClone._id, radius });
+      props.onRadiusSearch()
     } catch(e) {
       console.log(e);
     }
@@ -36,7 +42,10 @@ export default function LocalDishesParameter (props) {
           <Slider onSearch={setRadius}/>
         </div>
         <div className='center-element'>
-          <CheckBox />
+          <CheckBox label='Cooked'/>
+        </div>
+        <div className='center-element'>
+          <CheckBox label='Ordered'/>
         </div>
         <div className='center-element'>
         <Button

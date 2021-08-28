@@ -3,6 +3,7 @@ import ApiClient from '../services/ApiClient';
 
 const initialState = {
   userData: {},
+  dishesInRadius: [],
   loading: false,
 };
 
@@ -30,10 +31,26 @@ export const updateUserZipCode = createAsyncThunk(
   }
 );
 
+export const getDishesInRadius = createAsyncThunk(
+  'userData/getDishesInRadius',
+  async ({ id, radius }) => {
+    const response =  await ApiClient.getDishesInRadius(id, radius);
+    return response;
+  }
+);
+
 export const userSlice = createSlice({
   name: 'userData',
   initialState,
   extraReducers: {
+    [createUserAndSafeToDB.fulfilled]: (state, action) => {
+      state.userData = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [createUserAndSafeToDB.pending]: (state, action) => {
+      state.loading = true;
+    },
     [fetchUserDataFromDB.fulfilled]: (state, action) => {
       state.userData = action.payload;
       state.loading = false;
@@ -48,6 +65,14 @@ export const userSlice = createSlice({
     },
     // eslint-disable-next-line no-unused-vars
     [updateUserZipCode.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getDishesInRadius.fulfilled]: (state, action) => {
+      state.dishesInRadius = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [getDishesInRadius.pending]: (state, action) => {
       state.loading = true;
     }
   }

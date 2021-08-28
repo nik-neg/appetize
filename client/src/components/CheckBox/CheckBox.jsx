@@ -3,9 +3,10 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-export default function CheckboxLabels() {
+export default function CheckboxLabels(props) {
   const [state, setState] = React.useState({
     checked: false,
+    name: props.label
   });
 
   const handleChange = (event) => {
@@ -17,13 +18,13 @@ export default function CheckboxLabels() {
       <FormControlLabel
         control={
           <Checkbox
-            checked={state.checkedE}
+            checked={state.name}
             onChange={handleChange}
-            name="checkedE"
+            name="name"
             color="primary"
           />
         }
-        label="Coocked"
+        label={props.label}
       />
     </FormGroup>
   );
