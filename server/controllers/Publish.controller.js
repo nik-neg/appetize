@@ -11,7 +11,7 @@ module.exports.publishDish = async (req, res) => {
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
-  const alreadyPublished = await DailyTreat.findOne({
+  const alreadyPublished = await DailyTreat.findOne({ //TODO: think about removing limitation
     userID: id,
   });
   if (alreadyPublished) {
@@ -44,6 +44,11 @@ module.exports.publishDish = async (req, res) => {
   // save to db
   try {
     const dailyTreatSaveResponse = await dailyTreat.save();
+    if (dailyTreatSaveResponse) {
+      // eslint-disable-next-line no-underscore-dangle
+      user.dailyFood.push(dailyTreatSaveResponse._id);
+      await user.save();
+    }
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
     console.log(e);

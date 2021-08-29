@@ -12,7 +12,7 @@ const UserSchema = new db.mongoose.Schema({
   },
   password: String,
   nikName: String,
-  dailyFood: [DailyTreat],
+  dailyFood: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'DailyTreat' }],
   age: Number,
   zipCode: Number, // String ?
   voted: Boolean, // {up: bool, down: bool} ?
