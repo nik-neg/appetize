@@ -7,7 +7,7 @@ const DailyTreat = require('../models/DailyTreat');
 module.exports.publishDish = async (req, res) => {
   const { id } = req.params;
   const {
-    title, description, recipe, firstName,
+    title, description, recipe, firstName, cookedNotOrdered,
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
@@ -24,6 +24,7 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.userID = id;
   dailyTreat.creatorName = firstName;
   dailyTreat.likedByUserID = [];
+  dailyTreat.cookedNotOrdered = cookedNotOrdered;
   // get user for zip code
   let user;
   try {
@@ -38,12 +39,16 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.title = title;
   dailyTreat.description = description;
   dailyTreat.recipe = recipe;
-  dailyTreat.imageUrl = imageUrl;
+  // dailyTreat.imageUrl = imageUrl;
   dailyTreat.votes = 0;
   dailyTreat.created = new Date().toISOString();
   // save to db
   try {
     const dailyTreatSaveResponse = await dailyTreat.save();
+    // eslint-disable-next-line no-underscore-dangle
+    const imageId = dailyTreatSaveResponse._id;
+    dailyTreat.imageUrl = `${imageUrl}/${imageId}`;
+    await dailyTreat.save();
     if (dailyTreatSaveResponse) {
       // eslint-disable-next-line no-underscore-dangle
       user.dailyFood.push(dailyTreatSaveResponse._id);

@@ -141,7 +141,11 @@ export default function Profile () {
   const handlePublish = async (event) => {
     if(event.target.checked) {
       const firstName = userData.firstName;
-      const publishObject = {...dish, firstName};
+      const publishObject = {
+        ...dish,
+        firstName,
+        cookedNotOrdered: cookedOrdered.cooked === true ? true : false
+      };
       try {
         await ApiClient.publishToDashBoard(userData._id, publishObject)
       } catch(e) {
@@ -213,7 +217,6 @@ export default function Profile () {
             </div>
             <LocalDishesParameter
               onRadiusSearch={handleLocalDishesParameterResults}
-              // id={userData._id}
             />
           </Grid>
           {imagePath.length > 0 ?
