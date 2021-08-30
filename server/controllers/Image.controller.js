@@ -23,6 +23,8 @@ module.exports.retrieveImage = async (req, res) => {
   const gfs = gridfs(connection.db);
   // loop through all fs.files and retrieve all images - in progress
   // posssible to loop n times with counter from dailyTreats
+
+  // TODO: get only the daily published image with: today - uploadDate < 24 h
   gfs.exist({ filename: req.params.id }, (err, file) => {
     if (err || !file) {
       res.send('File Not Found');
