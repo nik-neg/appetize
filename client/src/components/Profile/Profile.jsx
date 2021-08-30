@@ -1,7 +1,10 @@
 // import { useState, useEffect } from 'react'; // useEffect
 import { makeStyles } from '@material-ui/core/styles';
-// import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
+import withWidth from '@material-ui/core/withWidth';
+import PropTypes from 'prop-types';
 
 // import ApiClient from '../../services/ApiClient';
 // import DropZone from '../DropZone/DropZone';
@@ -27,22 +30,22 @@ import { useSelector,  } from 'react-redux'; //
 import './index.css'
 // import { store } from '../../store/index';
 
-// const useStylesAvatar = makeStyles((theme) => ({
-//   root: {
-//     display: 'flex',
-//     '& > *': {
-//       margin: theme.spacing(1),
-//     },
-//   },
-//   small: {
-//     width: theme.spacing(3),
-//     height: theme.spacing(3),
-//   },
-//   large: {
-//     width: theme.spacing(7),
-//     height: theme.spacing(7),
-//   },
-// }));
+const useStylesAvatar = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 
 
 const useStylesGrid = makeStyles((theme) => ({
@@ -62,8 +65,9 @@ const useStylesGrid = makeStyles((theme) => ({
 //   },
 // }));
 
+// https://material-ui.com/components/hidden/
 
-export default function Profile () {
+function Profile () {
   // const classes = useStylesSaveButton();
 
   // const CHARACTER_LIMIT_ZIP_CODE = 10;
@@ -80,7 +84,7 @@ export default function Profile () {
   //   ordered: false
   // })
 
-  // const classesAvatar = useStylesAvatar();
+  const classesAvatar = useStylesAvatar();
   const classesGrid = useStylesGrid();
 
   // const [open, setOpen] = useState(false);
@@ -175,27 +179,39 @@ export default function Profile () {
           justify="flex-start"
           alignItems="flex-start"
         >
-          <Grid item lg={4}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet..Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            {/* <LocalDishesParameter
-              onRadiusSearch={handleLocalDishesParameterResults}
-            /> */}
+          <Grid item lg={4} sm={12} xs={12} >
+          <h1>{userData.firstName}</h1>
+          <div className="avatar-box">
+              <Avatar alt="No Avatar" src="./logo.jpg" className={classesAvatar.large} style={{ height: '8rem', width: '8rem' }} />
+              {/* <LocalDishesParameter
+                onRadiusSearch={handleLocalDishesParameterResults}
+              /> */}
+          </div>
           </Grid>
+          <Hidden smUp>
+            <Grid item xs>
+              FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST
+            </Grid>
+          </Hidden>
           {/* {imagePath.length > 0 ? */}
-          <Grid item lg={4}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet..Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            {/* <Image
-              src={imagePath}
-              imageStyle={{width:"80%", height:"48%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
-              style={{"backgroundColor": "inherit", "marginTop": "25%", "marginLeft": "5%"}}
-            /> */}
-          </Grid>
-          <Grid item lg={4}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet..Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            {/* <LocalDishesParameter
-              onRadiusSearch={handleLocalDishesParameterResults}
-            /> */}
-          </Grid>
+          <Hidden only={['xs', 'sm', 'md']}>
+            <Grid item lg={4}>
+            SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND
+              {/* <Image
+                src={imagePath}
+                imageStyle={{width:"80%", height:"48%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
+                style={{"backgroundColor": "inherit", "marginTop": "25%", "marginLeft": "5%"}}
+              /> */}
+            </Grid>
+          </Hidden>
+          <Hidden only={['xs', 'sm', 'md']}>
+            <Grid item lg={4}>
+            THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD THIRD
+              {/* <LocalDishesParameter
+                onRadiusSearch={handleLocalDishesParameterResults}
+              /> */}
+            </Grid>
+          </Hidden>
           <Grid item lg={4}>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
@@ -357,3 +373,10 @@ export default function Profile () {
     </div>
   );
 }
+
+Profile.propTypes = {
+  width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
+};
+
+
+export default withWidth()(Profile);

@@ -1,11 +1,8 @@
-/* .dish-content {
-  display: "flex";
-} */
-
-/* .element {
+.avatar-box {
+  display: flex;
   justify-content: center;
-  margin-right: "10%"
-} */
+}
+
 .publish-button-row {
   display: flex;
 }
