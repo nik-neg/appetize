@@ -33,34 +33,63 @@ export default function LocalDishesParameter (props) {
   const upLoadButtonStyle = {maxWidth: '230px', maxHeight: '40px', minWidth: '230px', minHeight: '40px'};
 
   return (
-    <div className='dashboard-header'>
-      <div className='dashboard-header-column'>
-
-      </div>
-      <div className='dashboard-header-column'>
-        <div className='center-element'>
+    <div className="container">
+      <div className="row">
+        <div className="col">
           <Slider onSearch={setRadius}/>
         </div>
-        <div className='center-element'>
+      </div>
+      <div className="row">
+        <div className="col">
           <CheckBox label='Cooked'/>
         </div>
-        <div className='center-element'>
+        <div className="col">
           <CheckBox label='Ordered'/>
         </div>
-        <div className='center-element'>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<SearchIcon />}
-          style={upLoadButtonStyle}
-          onClick={handleRadiusSearch}
-          >
-          Find nice dishes 😋
-        </Button>
+      </div>
+      <div className="row">
+        <div className="col">
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<SearchIcon />}
+            style={upLoadButtonStyle}
+            onClick={handleRadiusSearch}
+            >
+            Find nice dishes 😋
+          </Button>
         </div>
       </div>
-      <div className='dashboard-header-column'>
-      </div>
     </div>
+
+    // <div className='dashboard-header'>
+    //   <div className='dashboard-header-column'>
+
+    //   </div>
+    //   <div className='dashboard-header-column'>
+    //     <div className='center-element'>
+    //       <Slider onSearch={setRadius}/>
+    //     </div>
+    //     <div className='center-element'>
+    //       <CheckBox label='Cooked'/>
+    //     </div>
+    //     <div className='center-element'>
+    //       <CheckBox label='Ordered'/>
+    //     </div>
+    //     <div className='center-element'>
+    //     <Button
+    //       variant="contained"
+    //       color="primary"
+    //       startIcon={<SearchIcon />}
+    //       style={upLoadButtonStyle}
+    //       onClick={handleRadiusSearch}
+    //       >
+    //       Find nice dishes 😋
+    //     </Button>
+    //     </div>
+    //   </div>
+    //   <div className='dashboard-header-column'>
+    //   </div>
+    // </div>
   );
 }
