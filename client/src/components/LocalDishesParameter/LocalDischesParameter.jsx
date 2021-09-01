@@ -61,35 +61,5 @@ export default function LocalDishesParameter (props) {
         </div>
       </div>
     </div>
-
-    // <div className='dashboard-header'>
-    //   <div className='dashboard-header-column'>
-
-    //   </div>
-    //   <div className='dashboard-header-column'>
-    //     <div className='center-element'>
-    //       <Slider onSearch={setRadius}/>
-    //     </div>
-    //     <div className='center-element'>
-    //       <CheckBox label='Cooked'/>
-    //     </div>
-    //     <div className='center-element'>
-    //       <CheckBox label='Ordered'/>
-    //     </div>
-    //     <div className='center-element'>
-    //     <Button
-    //       variant="contained"
-    //       color="primary"
-    //       startIcon={<SearchIcon />}
-    //       style={upLoadButtonStyle}
-    //       onClick={handleRadiusSearch}
-    //       >
-    //       Find nice dishes 😋
-    //     </Button>
-    //     </div>
-    //   </div>
-    //   <div className='dashboard-header-column'>
-    //   </div>
-    // </div>
   );
 }

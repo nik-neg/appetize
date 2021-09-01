@@ -16,7 +16,6 @@
 .container {
   /* display: flex;
   justify-content: center; */
-
 }
 
 .row {
@@ -25,6 +24,7 @@
   justify-content: center;
   align-items: center
 }
+
 .col {
   /* display: flex; */
   /* flex: 1 0 21%; */

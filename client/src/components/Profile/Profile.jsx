@@ -223,12 +223,6 @@ function Profile () {
               </Box>
             </div>
           </Grid>
-          <Hidden smUp>
-            <Grid item xs>
-              FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST FIRST
-            </Grid>
-          </Hidden>
-          {/* {imagePath.length > 0 ? */}
           <Hidden only={['xs', 'sm', 'md']}>
             <Grid item lg={4}>
             { imagePath.length > 0 ?
@@ -242,155 +236,257 @@ function Profile () {
           </Hidden>
           <Hidden only={['xs', 'sm', 'md']}>
             <Grid item lg={4}>
-            <Grid item lg={4}>
-          <Grid item lg={4}>
-            <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
-            { imagePath.length > 0 ?
-               <FadeIn delay={1500} transitionDuration={1000}>
-                <TextField
-                  id="standard-basic"
-                  label="Title"
-                  inputProps={{
-                    maxlength: CHARACTER_LIMIT_TITLE
-                  }}
-                  value={dish.title}
-                  helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-                  style={{"marginTop": "16.5%", "marginRight": "16.5%", "min-width": "30rem"}}
-                  rowsMax="10"
-                  variant="filled"
-                  onChange={handleChangeTextArea('title')}
-                  InputProps={{ classes: { input: styles.someTextField } }}
-                />
-              </FadeIn>
-              : ''}
-            </Grid>
-          <Grid item lg={4}  style={{"min-width": "30rem"}}>
-             { imagePath.length > 0 ?
-              <FadeIn delay={2500} transitionDuration={1000}>
-                <TextField
-                  id="standard-basic"
-                  label="Description"
-                  inputProps={{
-                    maxlength: CHARACTER_LIMIT_DESCRIPTION
-                  }}
-                  value={dish.description}
-                  helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-                  style={{"min-width": "30rem"}}
-                  multiline
-                  rowsMax="10"
-                  variant="filled"
-                  onChange={handleChangeTextArea('description')}
-                  InputProps={{ classes: { input: styles.someTextField } }}
-                />
-             </FadeIn>
-              : ''}
-             </Grid>
-            <Grid item lg={4}>
-              { imagePath.length > 0 ?
-                <FadeIn delay={3500} transitionDuration={1000}>
-                  <TextField
-                    id="standard-basic"
-                    label="Recipe"
-                    inputProps={{
-                      maxlength: CHARACTER_LIMIT_RECIPE
-                    }}
-                    value={dish.recipe}
-                    helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                    style={{"margin-top": "2.5%", "min-width": "30rem"}} //
-                    multiline
-                    rowsMax="10"
-                    variant="filled"
-                    onChange={handleChangeTextArea('recipe')}
-                    InputProps={{ classes: { input: styles.someTextField } }}
-                  />
-                </FadeIn>
-                : ''}
-            </Grid>
+              <Grid item lg={4}>
+                <Grid item lg={4}>
+                  <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
+                  { imagePath.length > 0 ?
+                    <FadeIn delay={1500} transitionDuration={1000}>
+                      <TextField
+                        id="standard-basic"
+                        label="Title"
+                        inputProps={{
+                          maxlength: CHARACTER_LIMIT_TITLE
+                        }}
+                        value={dish.title}
+                        helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
+                        style={{"marginTop": "16.5%", "marginRight": "16.5%", "min-width": "30rem"}}
+                        rowsMax="10"
+                        variant="filled"
+                        onChange={handleChangeTextArea('title')}
+                        InputProps={{ classes: { input: styles.someTextField } }}
+                      />
+                    </FadeIn>
+                    : ''}
+                  </Grid>
+                <Grid item lg={4}  style={{"min-width": "30rem"}}>
+                  { imagePath.length > 0 ?
+                    <FadeIn delay={2500} transitionDuration={1000}>
+                      <TextField
+                        id="standard-basic"
+                        label="Description"
+                        inputProps={{
+                          maxlength: CHARACTER_LIMIT_DESCRIPTION
+                        }}
+                        value={dish.description}
+                        helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
+                        style={{"min-width": "30rem"}}
+                        multiline
+                        rowsMax="10"
+                        variant="filled"
+                        onChange={handleChangeTextArea('description')}
+                        InputProps={{ classes: { input: styles.someTextField } }}
+                      />
+                  </FadeIn>
+                    : ''}
+                  </Grid>
+                  <Grid item lg={4}>
+                    { imagePath.length > 0 ?
+                      <FadeIn delay={3500} transitionDuration={1000}>
+                        <TextField
+                          id="standard-basic"
+                          label="Recipe"
+                          inputProps={{
+                            maxlength: CHARACTER_LIMIT_RECIPE
+                          }}
+                          value={dish.recipe}
+                          helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+                          style={{"margin-top": "2.5%", "min-width": "30rem"}} //
+                          multiline
+                          rowsMax="10"
+                          variant="filled"
+                          onChange={handleChangeTextArea('recipe')}
+                          InputProps={{ classes: { input: styles.someTextField } }}
+                        />
+                      </FadeIn>
+                      : ''}
+                  </Grid>
+                { imagePath.length > 0 ?
+                      <FadeIn delay={4500} transitionDuration={1000}>
+                        <div className="publish-button-row">
+                          <div className="publish-button-col">
+                            <FormControlLabel
+                              control={<Checkbox
+                                        onChange={handlePublish}
+                                        icon={<FavoriteBorder />}
+                                        checkedIcon={<Favorite/>}
+                                      />}
+                              label="Publish"
+                            />
+                          </div>
+                          <div className="publish-button-col">
+                            <FormControlLabel
+                              control={<Checkbox
+                                        onChange={handleCookedOrdered}
+                                        icon={<FavoriteBorder />}
+                                        checkedIcon={<Favorite/>}
+                                        checked={cookedOrdered.cooked}
+                                        name='cooked'
+                                      />}
+                              label="Coocked"
+                            />
+                          </div>
+                          <div className="publish-button-col">
+                            <FormControlLabel
+                              control={<Checkbox
+                                        onChange={handleCookedOrdered}
+                                        icon={<FavoriteBorder />}
+                                        checkedIcon={<Favorite/>}
+                                        checked={cookedOrdered.ordered}
+                                        name="ordered"
+                                      />}
+                              label="Ordered"
+                            />
+                          </div>
+                        </div>
+                      </FadeIn>
+                    : ''}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Hidden>
+
+        <Hidden lgUp>
+          <Grid item sm={12} xs={12}>
           { imagePath.length > 0 ?
-                <FadeIn delay={4500} transitionDuration={1000}>
-                  <div className="publish-button-row">
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                  onChange={handlePublish}
-                                  icon={<FavoriteBorder />}
-                                  checkedIcon={<Favorite/>}
-                                />}
-                        label="Publish"
-                      />
-                    </div>
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                  onChange={handleCookedOrdered}
-                                  icon={<FavoriteBorder />}
-                                  checkedIcon={<Favorite/>}
-                                  checked={cookedOrdered.cooked}
-                                  name='cooked'
-                                />}
-                        label="Coocked"
-                      />
-                    </div>
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                  onChange={handleCookedOrdered}
-                                  icon={<FavoriteBorder />}
-                                  checkedIcon={<Favorite/>}
-                                  checked={cookedOrdered.ordered}
-                                  name="ordered"
-                                />}
-                        label="Ordered"
-                      />
-                    </div>
-                  </div>
-                </FadeIn>
-              : ''}
-          </Grid>
-        </Grid>
-      </Grid>
-          </Hidden>
-          <Grid item lg={4}>
-            {/* PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER
-            PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER PARAMETER */}
-            <LocalDishesParameter
-              onRadiusSearch={handleLocalDishesParameterResults}
-            />
-          </Grid>
-          <Grid item lg={4}>
-            DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE
-            DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE DROPZONE
-              <DropZone
-                id={userData._id}
-                firstName={userData.firstName}
-                setOpen={setOpen}
-                open={open}
-                setImagePath={setImagePath}
-                imagePath={imagePath}
-                dish={dish}
+              <Image
+                src={imagePath}
+                imageStyle={{width:"75%", height:"100%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
+                style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "20%", "padding": "150px"}}
               />
-          </Grid>
-          <Grid item lg={4}>
-            RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER RECIPE_PLACEHOLDER
+            : ''}
           </Grid>
 
           { imagePath.length > 0 ?
-            <>
-          <Grid item lg={4}>
-          IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE
-          IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE IMAGE
-            {/* <Image
-              src={imagePath}
-              imageStyle={{width:"80%", height:"48%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
-              style={{"backgroundColor": "inherit", "marginTop": "25%", "marginLeft": "5%"}}
-            /> */}
+          <>
+          <Grid item sm={12} xs={12}>
+            <FadeIn delay={1500} transitionDuration={1000}>
+              <TextField
+                id="standard-basic"
+                label="Title"
+                inputProps={{
+                  maxlength: CHARACTER_LIMIT_TITLE
+                }}
+                value={dish.title}
+                helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
+                style={{"min-width": "60vw"}}
+                rowsMax="10"
+                variant="filled"
+                onChange={handleChangeTextArea('title')}
+                InputProps={{ classes: { input: styles.someTextField } }}
+              />
+            </FadeIn>
           </Grid>
-          <Grid item lg={4}>
-          RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE
-          RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE RECIPE
+          <Grid item sm={12} xs={12}>
+            <FadeIn delay={2500} transitionDuration={1000}>
+              <TextField
+                id="standard-basic"
+                label="Description"
+                inputProps={{
+                  maxlength: CHARACTER_LIMIT_DESCRIPTION
+                }}
+                value={dish.description}
+                helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
+                style={{"min-width": "60vw"}}
+                multiline
+                rowsMax="10"
+                variant="filled"
+                onChange={handleChangeTextArea('description')}
+                InputProps={{ classes: { input: styles.someTextField } }}
+              />
+          </FadeIn>
+          </Grid>
+          <Grid item sm={12} xs={12}>
+            <FadeIn delay={3500} transitionDuration={1000}>
+              <TextField
+                id="standard-basic"
+                label="Recipe"
+                inputProps={{
+                  maxlength: CHARACTER_LIMIT_RECIPE
+                }}
+                value={dish.recipe}
+                helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+                style={{"min-width": "60vw"}}
+                multiline
+                rowsMax="10"
+                variant="filled"
+                onChange={handleChangeTextArea('recipe')}
+                InputProps={{ classes: { input: styles.someTextField } }}
+              />
+            </FadeIn>
+          </Grid>
+          <Grid item sm={12} xs={12}>
+          <FadeIn delay={4500} transitionDuration={1000}>
+            <div className="publish-button-row">
+              <div className="publish-button-col">
+                <FormControlLabel
+                  control={<Checkbox
+                            onChange={handlePublish}
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite/>}
+                          />}
+                  label="Publish"
+                />
+              </div>
+              <div className="publish-button-col">
+                <FormControlLabel
+                  control={<Checkbox
+                            onChange={handleCookedOrdered}
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite/>}
+                            checked={cookedOrdered.cooked}
+                            name='cooked'
+                          />}
+                  label="Coocked"
+                />
+              </div>
+              <div className="publish-button-col">
+                <FormControlLabel
+                  control={<Checkbox
+                            onChange={handleCookedOrdered}
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite/>}
+                            checked={cookedOrdered.ordered}
+                            name="ordered"
+                          />}
+                  label="Ordered"
+                />
+              </div>
+            </div>
+          </FadeIn>
           </Grid>
           </>
           : ''}
+        </Hidden>
+        <Grid item lg={4}>
+          <LocalDishesParameter
+            onRadiusSearch={handleLocalDishesParameterResults}
+          />
+        </Grid>
+        <DropZone
+          id={userData._id}
+          firstName={userData.firstName}
+          setOpen={setOpen}
+          open={open}
+          setImagePath={setImagePath}
+          imagePath={imagePath}
+          dish={dish}
+        />
+        <Hidden only={['xs', 'sm', 'md']}>
+          <Grid item lg={4}>
+
+          </Grid>
+        </Hidden>
+        <Hidden only={['xs', 'sm', 'md']}>
+          <Grid item lg={4}>
+
+          </Grid>
+        </Hidden>
+        <Hidden only={['xs', 'sm', 'md']}>
+          <Grid item lg={4}>
+
+          </Grid>
+        </Hidden>
+
           <Grid item lg={12}>
           DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES
           DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES
@@ -401,132 +497,6 @@ function Profile () {
             mouthWateringDishes= {mouthWateringDishes}//{mouthWateringDishes}
             />
           </Grid>
-          {/* : ''} */}
-        {/* <Grid item lg={4}>
-          <Grid item lg={4}>
-            <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
-            {/* { imagePath.length > 0 ? */}
-              {/* <FadeIn delay={1500} transitionDuration={1000}>
-                <TextField
-                  id="standard-basic"
-                  label="Title"
-                  inputProps={{
-                    maxlength: CHARACTER_LIMIT_TITLE
-                  }}
-                  value={dish.title}
-                  helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-                  style={{"marginTop": "16.5%", "marginRight": "16.5%", "min-width": "30rem"}}
-                  rowsMax="10"
-                  variant="filled"
-                  onChange={handleChangeTextArea('title')}
-                  InputProps={{ classes: { input: styles.someTextField } }}
-                />
-              </FadeIn> */}
-              {/* : ''} */}
-            {/* </Grid>
-          <Grid item lg={4}  style={{"min-width": "30rem"}}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
-            {/* { imagePath.length > 0 ?
-              <FadeIn delay={2500} transitionDuration={1000}>
-                <TextField
-                  id="standard-basic"
-                  label="Description"
-                  inputProps={{
-                    maxlength: CHARACTER_LIMIT_DESCRIPTION
-                  }}
-                  value={dish.description}
-                  helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-                  style={{"min-width": "30rem"}}
-                  multiline
-                  rowsMax="10"
-                  variant="filled"
-                  onChange={handleChangeTextArea('description')}
-                  InputProps={{ classes: { input: styles.someTextField } }}
-                />
-             </FadeIn>
-              : ''} */}
-            {/* </Grid>
-            <Grid item lg={4}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. */}
-              {/* { imagePath.length > 0 ?
-                <FadeIn delay={3500} transitionDuration={1000}>
-                  <TextField
-                    id="standard-basic"
-                    label="Recipe"
-                    inputProps={{
-                      maxlength: CHARACTER_LIMIT_RECIPE
-                    }}
-                    value={dish.recipe}
-                    helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                    style={{"margin-top": "2.5%", "min-width": "30rem"}} //
-                    multiline
-                    rowsMax="10"
-                    variant="filled"
-                    onChange={handleChangeTextArea('recipe')}
-                    InputProps={{ classes: { input: styles.someTextField } }}
-                  />
-                </FadeIn>
-                : ''} */}
-            {/* </Grid> */}
-          {/* { imagePath.length > 0 ?
-                <FadeIn delay={4500} transitionDuration={1000}>
-                  <div className="publish-button-row">
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                  onChange={handlePublish}
-                                  icon={<FavoriteBorder />}
-                                  checkedIcon={<Favorite/>}
-                                />}
-                        label="Publish"
-                      />
-                    </div>
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                  onChange={handleCookedOrdered}
-                                  icon={<FavoriteBorder />}
-                                  checkedIcon={<Favorite/>}
-                                  checked={cookedOrdered.cooked}
-                                  name='cooked'
-                                />}
-                        label="Coocked"
-                      />
-                    </div>
-                    <div className="publish-button-col">
-                      <FormControlLabel
-                        control={<Checkbox
-                                  onChange={handleCookedOrdered}
-                                  icon={<FavoriteBorder />}
-                                  checkedIcon={<Favorite/>}
-                                  checked={cookedOrdered.ordered}
-                                  name="ordered"
-                                />}
-                        label="Ordered"
-                      />
-                    </div>
-                  </div>
-                </FadeIn>
-              : ''} */}
-        {/* </Grid> */}
-        {/* </Grid> */}
-          {/* <Grid item lg={12}>
-          dropzone
-              <DropZone
-                id={userData._id}
-                firstName={userData.firstName}
-                setOpen={setOpen}
-                open={open}
-                setImagePath={setImagePath}
-                imagePath={imagePath}
-                dish={dish}
-              />
-               <Dashboard
-                id={userData._id}
-                mouthWateringDishes= {[]}//{mouthWateringDishes}
-               />
-          </Grid> */}
         </Grid>
 
       </FadeIn>
