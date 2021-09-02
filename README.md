@@ -5,7 +5,7 @@ Appetize is a social media application for local food, where user can upload the
 add a title, description, and recipe and then publish it within their postal zip code area.
 A simple voting system enables to vote for favourite dishes.
 
-`Hint`: Next steps is to make the app full responsive.
+`Hint`: Next planned steps are to make the app full responsive, add CI / CD pipeline with Travis, add tests with Jest and Cypress.
 
 <table>
 <tr><th>Tech Stack</th><th>API</th></tr>
