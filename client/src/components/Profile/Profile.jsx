@@ -290,7 +290,7 @@ function Profile () {
                           }}
                           value={dish.recipe}
                           helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                          style={{"margin-top": "2.5%", "min-width": "30rem"}} //
+                          style={{"margin-top": "2.5%", "min-width": "30rem"}}
                           multiline
                           rowsMax="10"
                           variant="filled"
@@ -346,16 +346,15 @@ function Profile () {
               </Hidden>
 
         <Hidden lgUp>
+        { imagePath.length > 0 ?
           <Grid item sm={12} xs={12}>
-          { imagePath.length > 0 ?
-              <Image
-                src={imagePath}
-                imageStyle={{width:"75%", height:"100%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
-                style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "20%", "padding": "150px"}}
-              />
-            : ''}
+            <Image
+              src={imagePath}
+              imageStyle={{width:"75%", height:"100%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
+              style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "20%", "padding": "150px"}}
+            />
           </Grid>
-
+          : ''}
           { imagePath.length > 0 ?
           <>
           <Grid item sm={12} xs={12}>
@@ -416,8 +415,7 @@ function Profile () {
           </Grid>
           <Grid item sm={12} xs={12}>
           <FadeIn delay={4500} transitionDuration={1000}>
-            <div className="publish-button-row">
-              <div className="publish-button-col">
+            <div className="publish-button-row-small-device">
                 <FormControlLabel
                   control={<Checkbox
                             onChange={handlePublish}
@@ -426,8 +424,6 @@ function Profile () {
                           />}
                   label="Publish"
                 />
-              </div>
-              <div className="publish-button-col">
                 <FormControlLabel
                   control={<Checkbox
                             onChange={handleCookedOrdered}
@@ -438,8 +434,6 @@ function Profile () {
                           />}
                   label="Coocked"
                 />
-              </div>
-              <div className="publish-button-col">
                 <FormControlLabel
                   control={<Checkbox
                             onChange={handleCookedOrdered}
@@ -450,7 +444,6 @@ function Profile () {
                           />}
                   label="Ordered"
                 />
-              </div>
             </div>
           </FadeIn>
           </Grid>
@@ -494,7 +487,7 @@ function Profile () {
           DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES DISHES
           <Dashboard
             id={userData._id}
-            mouthWateringDishes= {mouthWateringDishes}//{mouthWateringDishes}
+            mouthWateringDishes= {mouthWateringDishes}
             />
           </Grid>
         </Grid>

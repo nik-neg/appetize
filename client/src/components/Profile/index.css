@@ -5,27 +5,18 @@
 
 .publish-button-row {
   display: flex;
+  padding-left: 6rem;
 }
 
 .publish-button-col {
   flex-grow: 1;
   height: 100px;
 }
+.publish-button-row-small-device {
+  display: flex;
+  justify-content:  center;
+}
+
 .item + .item {
   margin-left: 2%;
-}
-
-.fadeOut{
-  opacity:0;
-  /* width:0;
-  height:0; */
-  transition: width 0.5s 0.5s, height 0.5s 0.5s, opacity 0.5s;
-
-}
-.fadeIn{
-  opacity:1;
-  /* width:100px;
-  height:100px; */
-  transition: width 0.5s, height 0.5s, opacity 0.5s 0.5s;
-
 }
