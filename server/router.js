@@ -14,7 +14,7 @@ router.post('/profile/:id/upload', upload, imageController.saveImage);
 router.get('/profile/:id/download', imageController.retrieveImage);
 
 router.post('/profile/:id/dashboard', publishController.publishDish);
-router.get('/profile/:id/dashboard/:radius', publishController.checkDishesInRadius);
+router.get('/profile/:id/dashboard', publishController.checkDishesInRadius);
 router.patch('/profile/:id/dashboard/:dailyTreatsID/:upDown', publishController.upDownVote);
 
 module.exports = router;

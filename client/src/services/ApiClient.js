@@ -76,15 +76,23 @@ const publishToDashBoard = (id, data) => fetch(`${baseUrl}/profile/${id}/dashboa
   .then((imageData) => imageData)
   .catch((err) => console.log(err));
 
-const getDishesInRadius = (id, radius) =>
-  fetch(`${baseUrl}/profile/${id}/dashboard/${radius}`,
-    {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-    .then((data) => data.json())
-    .then((data) => data)
-    .catch((err) => console.log(err));
+const getDishesInRadius = (id, radius, cookedOrdered) =>
+{
+  let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
+  url.search = new URLSearchParams({
+    id,
+    radius,
+    cookedOrdered
+  })
+  return fetch(url,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then((data) => data.json())
+  .then((data) => data)
+  .catch((err) => console.log(err));
+}
 
 const voteDish = (id, dailyTreatsID, upDownVote) => fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
   {

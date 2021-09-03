@@ -60,15 +60,21 @@ module.exports.publishDish = async (req, res) => {
   }
 };
 
-const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
+const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) => {
   const dishesForClient = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < zipCodesInRadius.length; i++) {
     try {
       const dailyTreatsFromDB = [];
+      const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+        ? 'ALL' : !!(cookedOrdered.cooked && !cookedOrdered.ordered);
+      const queryObject = cookedOrderedParam !== 'ALL' ? {
+        zipCode: zipCodesInRadius[i].zipCode,
+        cookedNotOrdered: cookedOrderedParam,
+      } : { zipCode: zipCodesInRadius[i].zipCode };
       // eslint-disable-next-line no-await-in-loop
       await DailyTreat.find(
-        { zipCode: zipCodesInRadius[i].zipCode },
+        queryObject,
         (err, dailyTreats) => {
           dailyTreats.forEach((dailyTreat) => {
             const copyDailyTreat = {
@@ -90,7 +96,8 @@ const helperFindDishesInDB = async (req, res, zipCodesInRadius) => {
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
-  const { id, radius } = req.params;
+  const { id, radius, cookedOrdered } = req.query;
+  const parsedCookedOrdered = JSON.parse(cookedOrdered);
   let user;
   try {
     // get zip code of user
@@ -116,7 +123,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
         if (!response.data.results.error) {
           const zipCodesInRadius = response.data.results.map((element) => (
             { zipCode: element.code, city: element.city }));
-          helperFindDishesInDB(res, res, zipCodesInRadius);
+          helperFindDishesInDB(res, res, zipCodesInRadius, parsedCookedOrdered);
         }
       })
       .catch((error) => {
