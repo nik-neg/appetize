@@ -480,14 +480,23 @@ function Profile () {
           </Grid>
         </Hidden>
 
+        <Hidden only={['xs', 'sm', 'md']}>
           <Grid item lg={12}>
           <Dashboard
             id={userData._id}
             mouthWateringDishes= {mouthWateringDishes}
             />
           </Grid>
+          </Hidden>
         </Grid>
-
+        <Hidden lgUp>
+          <Grid item sm={12}>
+            <Dashboard
+              id={userData._id}
+              mouthWateringDishes= {mouthWateringDishes}
+              />
+          </Grid>
+        </Hidden>
       </FadeIn>
     </div>
   );

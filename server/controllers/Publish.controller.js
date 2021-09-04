@@ -12,7 +12,7 @@ module.exports.publishDish = async (req, res) => {
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
   const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
-    userID: id,
+    userID: id, // TODO: check for actual date ?
   });
   if (alreadyPublished) {
     return res
