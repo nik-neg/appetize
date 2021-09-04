@@ -33,8 +33,8 @@ export const updateUserZipCode = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   'userData/getDishesInRadius',
-  async ({ id, radius }) => {
-    const response =  await ApiClient.getDishesInRadius(id, radius);
+  async ({ id, radius, cookedOrdered }) => {
+    const response =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered);
     return response;
   }
 );
