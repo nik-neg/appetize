@@ -11,7 +11,7 @@ module.exports.publishDish = async (req, res) => {
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
-  const alreadyPublished = await DailyTreat.findOne({ //TODO: think about removing limitation
+  const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
     userID: id,
   });
   if (alreadyPublished) {
@@ -66,12 +66,16 @@ const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) =
   for (let i = 0; i < zipCodesInRadius.length; i++) {
     try {
       const dailyTreatsFromDB = [];
+      const ALL_DISHES = 'ALL_DISHES';
       const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-        ? 'ALL' : !!(cookedOrdered.cooked && !cookedOrdered.ordered);
-      const queryObject = cookedOrderedParam !== 'ALL' ? {
+        ? ALL_DISHES : cookedOrdered.cooked;
+
+      const queryObject = {
         zipCode: zipCodesInRadius[i].zipCode,
-        cookedNotOrdered: cookedOrderedParam,
-      } : { zipCode: zipCodesInRadius[i].zipCode };
+      };
+      if (cookedOrderedParam !== ALL_DISHES) {
+        queryObject.cookedNotOrdered = cookedOrderedParam;
+      }
       // eslint-disable-next-line no-await-in-loop
       await DailyTreat.find(
         queryObject,
