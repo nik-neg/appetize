@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const gridfs = require('gridfs-stream');
 
 module.exports.saveImage = async (req, res) => { // TODO: return date information
-  // console.log(created)
   try {
     if (!req.file || req.file.length <= 0) {
       return res.send('You must select at least 1 file.');
@@ -23,7 +22,6 @@ module.exports.retrieveImage = async (req, res) => {
   const { connection } = mongoose;
   const gfs = gridfs(connection.db);
   const { created } = req.query;
-  console.log('retrieve', created)
   // loop through all fs.files and retrieve all images - in progress
   // posssible to loop n times with counter from dailyTreats
 
@@ -43,4 +41,10 @@ module.exports.retrieveImage = async (req, res) => {
       readstream.pipe(res);
     }
   });
+};
+
+// TODO: remove not published, but saved images from chunk, files bucket
+module.exports.removeImages = async (req, res) => {
+  console.log(req.query)
+  res.end();
 };

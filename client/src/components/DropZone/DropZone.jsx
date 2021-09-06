@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import './index.css';
 import { DropzoneDialogBase } from 'material-ui-dropzone';
 import IconButton from '@material-ui/core/IconButton';
-import ApiClient from '../../services/ApiClient';
+// import ApiClient from '../../services/ApiClient';
+import { useSelector, useDispatch } from 'react-redux';
+import { uploadImageBeforePublish } from '../../store/userSlice';
+// import { store } from '../../store/index';
 
 export default function DropZone (props) {
 
@@ -17,18 +20,22 @@ export default function DropZone (props) {
     </>
   );
 
-  const [createdImageDate, setCreateImageDate] = useState(0); // TODO: create async thunk with redux
-
-  const handleUpload = async () => { // TODO: set limitation here, or handle image control via a counter to save / retrive the actual image
-    const newCreatedImageDate = new Date().getTime();
-    setCreateImageDate(newCreatedImageDate);
-    await ApiClient.uploadImage(props.id, fileObjects['0'], newCreatedImageDate);
+  const asyncWrapper = async (dispatch, asyncFunc, data) => {
+    await dispatch(asyncFunc(data));
   }
 
-  const handleDownload = async () => {
-    console.log(createdImageDate)
-    const downloadResponse = await ApiClient.displayImage(props.id, createdImageDate); // TODO: pass date informatinon
-    props.setImagePath(downloadResponse.url);
+  const dispatch = useDispatch();
+  const userData = {...useSelector((state) => state.user.userData)};
+  const baseUrl = 'http://localhost:3001';
+  let imageURL = `${baseUrl}/profile/${userData._id}/download?created=`
+  // const chosenImageDate = useSelector((state) => state.user.chosenImageDate);
+
+  const handleUpload = async () => { // TODO: set limitation here, or handle image control via a counter to save / retrive the actual image
+    props.setImagePath('');
+    const newCreatedImageDate = new Date().getTime();
+    imageURL += newCreatedImageDate;
+    await asyncWrapper(dispatch, uploadImageBeforePublish, {userId: userData._id, file: fileObjects['0'], newCreatedImageDate});
+    props.setImagePath(imageURL);
   }
 
   const handleDelete = deleted => {
@@ -52,7 +59,6 @@ export default function DropZone (props) {
         onClose={() => props.setOpen(false)}
         onSave={ async () => {
           await handleUpload();
-          await handleDownload();
           props.setOpen(false);
         }}
         showPreviews={true}

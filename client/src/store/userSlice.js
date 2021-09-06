@@ -4,6 +4,7 @@ import ApiClient from '../services/ApiClient';
 const initialState = {
   userData: {},
   dishesInRadius: [],
+  chosenImageDate: '',
   loading: false,
 };
 
@@ -36,6 +37,14 @@ export const getDishesInRadius = createAsyncThunk(
   async ({ id, radius, cookedOrdered }) => {
     const response =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered);
     return response;
+  }
+);
+
+export const uploadImageBeforePublish = createAsyncThunk(
+  'userData/uploadImageBeforePublish',
+  async ({ userId, file, newCreatedImageDate }) => {
+    await ApiClient.uploadImage(userId, file, newCreatedImageDate);
+    return newCreatedImageDate;
   }
 );
 
@@ -73,6 +82,14 @@ export const userSlice = createSlice({
     },
     // eslint-disable-next-line no-unused-vars
     [getDishesInRadius.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [uploadImageBeforePublish.fulfilled]: (state, action) => {
+      state.chosenImageDate = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [uploadImageBeforePublish.pending]: (state, action) => {
       state.loading = true;
     }
   }

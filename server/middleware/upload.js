@@ -9,7 +9,7 @@ const storage = new GridFsStorage({
     const match = ['image/png', 'image/jpeg']; // /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/
 
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${req.params.id}`; // id of user is filename
+      const filename = `${req.params.id}/${req.query.created}`; // id of user is filename
       return filename;
     }
 

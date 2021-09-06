@@ -25,7 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useSelector,  useDispatch} from 'react-redux'; //
+import { useSelector,  useDispatch} from 'react-redux';
 import { updateUserZipCode } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -145,6 +145,8 @@ function Profile () {
     }
 
   const handlePublish = async (event) => { // TODO: if image is not published, remove from DB?
+    const userId = userData._id;
+    const chosenImageDate = store.getState().user.chosenImageDate;
     if(event.target.checked) {
       const firstName = userData.firstName;
       const publishObject = {
@@ -153,7 +155,8 @@ function Profile () {
         cookedNotOrdered: cookedOrdered.cooked === true ? true : false
       };
       try {
-        await ApiClient.publishToDashBoard(userData._id, publishObject)
+        await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate);
+        await ApiClient.publishToDashBoard(userId, publishObject);
       } catch(e) {
         console.log(e);
       }
