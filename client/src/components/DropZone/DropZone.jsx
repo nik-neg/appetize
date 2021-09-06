@@ -17,12 +17,17 @@ export default function DropZone (props) {
     </>
   );
 
-  const handleUpload = async () => {
-    await ApiClient.uploadImage(props.id, fileObjects['0']);
+  const [createdImageDate, setCreateImageDate] = useState(0); // TODO: create async thunk with redux
+
+  const handleUpload = async () => { // TODO: set limitation here, or handle image control via a counter to save / retrive the actual image
+    const newCreatedImageDate = new Date().getTime();
+    setCreateImageDate(newCreatedImageDate);
+    await ApiClient.uploadImage(props.id, fileObjects['0'], newCreatedImageDate);
   }
 
   const handleDownload = async () => {
-    const downloadResponse = await ApiClient.displayImage(props.id);
+    console.log(createdImageDate)
+    const downloadResponse = await ApiClient.displayImage(props.id, createdImageDate); // TODO: pass date informatinon
     props.setImagePath(downloadResponse.url);
   }
 
@@ -47,7 +52,7 @@ export default function DropZone (props) {
         onClose={() => props.setOpen(false)}
         onSave={ async () => {
           await handleUpload();
-          handleDownload();
+          await handleDownload();
           props.setOpen(false);
         }}
         showPreviews={true}

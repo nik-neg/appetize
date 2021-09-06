@@ -32,11 +32,15 @@ const getProfile = (id) =>
     .then((user) => user)
     .catch((err) => console.log(err));
 
-const uploadImage = (id, data) => {
+const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSearchParams to pass new Date
+  let url = new URL(`${baseUrl}/profile/${id}/upload`)
+  url.search = new URLSearchParams({
+    created: newCreatedImageDate,
+  })
   const formData = new FormData();
   formData.append('file', data.file);
 
-  return fetch(`${baseUrl}/profile/${id}/upload`,
+  return fetch(url,
     {
       method: 'POST',
       body: formData,
@@ -46,14 +50,21 @@ const uploadImage = (id, data) => {
     .catch((err) => console.log(err));
 };
 
-const displayImage = (id) =>
-  fetch(`${baseUrl}/profile/${id}/download`,
+const displayImage = async (id, createImageDate) =>
+{
+  console.log(createImageDate)
+  let url = new URL(`${baseUrl}/profile/${id}/download`)
+  url.search = new URLSearchParams({
+    created: createImageDate
+  })
+   return fetch(url,
     {
       method: 'GET',
     })
     .then((imageData) => imageData)
     .then((imageData) => imageData)
     .catch((err) => console.log(err));
+}
 
 const confirmZipCode = (id, zipCode) =>
   fetch(`${baseUrl}/profile/${id}`,

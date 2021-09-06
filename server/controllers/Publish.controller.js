@@ -11,8 +11,12 @@ module.exports.publishDish = async (req, res) => {
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download`;
 
+  // const oneDay = 1000 * 60 * 60 * 24;
+
   const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
     userID: id, // TODO: check for actual date ?
+    // created: { $gt: new Date().getTime() - oneDay },
+    // 1000*60*60*24 == 1 day
   });
   if (alreadyPublished) {
     return res
@@ -41,7 +45,7 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.recipe = recipe;
   // dailyTreat.imageUrl = imageUrl;
   dailyTreat.votes = 0;
-  dailyTreat.created = new Date().toISOString();
+  dailyTreat.created = new Date().getTime();
   // save to db
   try {
     const dailyTreatSaveResponse = await dailyTreat.save();

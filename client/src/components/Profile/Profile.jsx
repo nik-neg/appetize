@@ -144,7 +144,7 @@ function Profile () {
       }))
     }
 
-  const handlePublish = async (event) => {
+  const handlePublish = async (event) => { // TODO: if image is not published, remove from DB?
     if(event.target.checked) {
       const firstName = userData.firstName;
       const publishObject = {
