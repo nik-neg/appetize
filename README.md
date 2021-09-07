@@ -1,8 +1,8 @@
 # Appetize
 1 week (21.04.21-28.04.21) Solo Project @Codeworks
 
-Appetize is a social media application for local food, where user can upload their image from the filesystem,
-add a title, description, and recipe and then publish it within their postal zip code area.
+Appetize is a full responsive social media application for local food, where user can upload their image from the filesystem,
+add a title, description, and recipe and then publish it within their postal zip code area (currently only german postal zip codes are supported).
 A simple voting system enables to vote for favourite dishes.
 
 `Hint`: Next planned steps are to make the app more robust in functionality and performance, add CI / CD pipeline with Travis, add tests with Jest and Cypress.
