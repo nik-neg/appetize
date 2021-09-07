@@ -1,21 +1,5 @@
-/* .dashboard-header {
-  display: flex;
-  flex-direction: row;
-}
-
-.dashboard-header-column {
-	width: 33%;
-	height: 100px;
-}
-
-.center-element {
-  display: flex;
-  justify-content: center;
-} */
-
 .container {
-  /* display: flex;
-  justify-content: center; */
+
 }
 
 .row {
@@ -26,8 +10,5 @@
 }
 
 .col {
-  /* display: flex; */
-  /* flex: 1 0 21%; */
-  /* justify-content: center; */
   flex-direction: column;
 }

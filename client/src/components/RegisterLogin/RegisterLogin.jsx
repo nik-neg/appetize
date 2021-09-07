@@ -13,7 +13,6 @@ import Logo from './logo.jpg';
 import history from '../../history';
 import { useDispatch } from 'react-redux';
 import { fetchUserDataFromDB, createUserAndSafeToDB } from '../../store/userSlice';
-// import { useSelector } from 'react-redux';
 import { store } from '../../store/index';
 
 function Copyright() {
