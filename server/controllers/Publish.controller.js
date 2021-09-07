@@ -38,7 +38,7 @@ module.exports.publishDish = async (req, res) => {
   } catch (e) {
     console.log(e);
   }
-  dailyTreat.zipCode = user.zipCode ? user.zipCode : '10000'; // default zip code
+  dailyTreat.zipCode = user.zipCode ? user.zipCode : '10000'; // default zip code, change ?
 
   dailyTreat.title = title;
   dailyTreat.description = description;
