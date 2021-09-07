@@ -48,19 +48,22 @@ module.exports.removeImages = async (req, res) => { // TODO: add logic per day
   const { date } = req.query;
   const deletePattern = new RegExp(`^(?!.+${date}$)${id}.*`);
   const { connection } = mongoose;
-  let filesIDArray = [];
-  connection.db.collection('fs.files', (err, collection) => {
-    collection.find({ filename: { $regex: deletePattern } }).toArray((err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(500).end();
-      }
-      filesIDArray = data.map((entry) => entry._id);
-      filesIDArray.forEach((fileId) => {
-        connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
+  try {
+    connection.db.collection('fs.files', (err, collection) => {
+      collection.find({ filename: { $regex: deletePattern } }).toArray((err, data) => {
+        if (err) console.log(err); // TODO: refactor?
+
+        const filesIDArray = data.map((entry) => entry._id);
+        filesIDArray.forEach((fileId) => {
+          connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
+        });
+        connection.db.collection('fs.files').deleteMany({ filename: { $regex: deletePattern } });
       });
-      connection.db.collection('fs.files').deleteMany({ filename: { $regex: deletePattern } });
     });
-  });
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
+  }
+
   res.end();
 };

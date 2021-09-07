@@ -156,7 +156,7 @@ function Profile () {
         chosenImageDate
       };
       try {
-        // await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate);
+        await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate);
         await ApiClient.publishToDashBoard(userId, publishObject);
       } catch(e) {
         console.log(e);
