@@ -67,7 +67,6 @@ const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSe
 // }
 const removeUnusedImagesFromDB = (id, date) =>
 {
-  console.log(id, date)
   let url = new URL(`${baseUrl}/profile/${id}/remove-images`)
   url.search = new URLSearchParams({
     date
