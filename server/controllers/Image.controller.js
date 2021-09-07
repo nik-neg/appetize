@@ -43,8 +43,24 @@ module.exports.retrieveImage = async (req, res) => {
   });
 };
 
-// TODO: remove not published, but saved images from chunk, files bucket
-module.exports.removeImages = async (req, res) => {
-  console.log(req.query)
+module.exports.removeImages = async (req, res) => { // TODO: add logic per day
+  const { id } = req.params;
+  const { date } = req.query;
+  const deletePattern = new RegExp(`^(?!.+${date}$)${id}.*`);
+  const { connection } = mongoose;
+  let filesIDArray = [];
+  connection.db.collection('fs.files', (err, collection) => {
+    collection.find({ filename: { $regex: deletePattern } }).toArray((err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).end();
+      }
+      filesIDArray = data.map((entry) => entry._id);
+      filesIDArray.forEach((fileId) => {
+        connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
+      });
+      connection.db.collection('fs.files').deleteMany({ filename: { $regex: deletePattern } });
+    });
+  });
   res.end();
 };

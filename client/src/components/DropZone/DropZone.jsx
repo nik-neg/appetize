@@ -28,7 +28,6 @@ export default function DropZone (props) {
   const userData = {...useSelector((state) => state.user.userData)};
   const baseUrl = 'http://localhost:3001';
   let imageURL = `${baseUrl}/profile/${userData._id}/download?created=`
-  // const chosenImageDate = useSelector((state) => state.user.chosenImageDate);
 
   const handleUpload = async () => { // TODO: set limitation here, or handle image control via a counter to save / retrive the actual image
     props.setImagePath('');

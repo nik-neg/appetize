@@ -152,7 +152,8 @@ function Profile () {
       const publishObject = {
         ...dish,
         firstName,
-        cookedNotOrdered: cookedOrdered.cooked === true ? true : false
+        cookedNotOrdered: cookedOrdered.cooked === true ? true : false,
+        chosenImageDate
       };
       try {
         await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate);
@@ -496,7 +497,7 @@ function Profile () {
           <Grid item sm={12}>
             <Dashboard
               id={userData._id}
-              mouthWateringDishes= {mouthWateringDishes}
+              mouthWateringDishes={mouthWateringDishes}
               />
           </Grid>
         </Hidden>

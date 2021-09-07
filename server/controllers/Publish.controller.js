@@ -7,9 +7,9 @@ const DailyTreat = require('../models/DailyTreat');
 module.exports.publishDish = async (req, res) => {
   const { id } = req.params;
   const {
-    title, description, recipe, firstName, cookedNotOrdered,
+    title, description, recipe, firstName, cookedNotOrdered, chosenImageDate,
   } = req.body;
-  const imageUrl = `http://localhost:3001/profile/${id}/download`;
+  const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
 
   // const oneDay = 1000 * 60 * 60 * 24;
 
@@ -19,7 +19,7 @@ module.exports.publishDish = async (req, res) => {
     // 1000*60*60*24 == 1 day
   });
   if (alreadyPublished) {
-    return res
+    res
       .status(409)
       .send({ error: '409', message: 'DailyTreat already published!' });
   }
@@ -43,15 +43,14 @@ module.exports.publishDish = async (req, res) => {
   dailyTreat.title = title;
   dailyTreat.description = description;
   dailyTreat.recipe = recipe;
-  // dailyTreat.imageUrl = imageUrl;
   dailyTreat.votes = 0;
   dailyTreat.created = new Date().getTime();
   // save to db
   try {
     const dailyTreatSaveResponse = await dailyTreat.save();
     // eslint-disable-next-line no-underscore-dangle
-    const imageId = dailyTreatSaveResponse._id;
-    dailyTreat.imageUrl = `${imageUrl}/${imageId}`;
+    // const imageId = dailyTreatSaveResponse._id;
+    dailyTreat.imageUrl = imageUrl;
     await dailyTreat.save();
     if (dailyTreatSaveResponse) {
       // eslint-disable-next-line no-underscore-dangle
