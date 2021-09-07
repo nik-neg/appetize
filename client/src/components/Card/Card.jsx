@@ -90,12 +90,12 @@ export default function RecipeReviewCard(props) {
           </Avatar>
         }
         title={props.title}
-        subheader={moment(props.created).format("MMMM Do, YYYY")}
+        subheader={moment(+props.created).format("MMMM Do, YYYY")}
         style={{'textAlign': 'left'}}
       />
       <CardMedia
         className={classes.media}
-        image={`http://localhost:3001/profile/${props.userID}/download`}
+        image={props.imageUrl}
         title={props.title}
       />
       <CardContent>

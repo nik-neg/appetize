@@ -28,6 +28,7 @@ export default function Dashboard (props) {
                       title={dish.title}
                       description={dish.description}
                       recipe={dish.recipe}
+                      imageUrl={dish.imageUrl}
                       created={dish.created}
                       />
                   </Box>

@@ -9,13 +9,13 @@ const storage = new GridFsStorage({
     const match = ['image/png', 'image/jpeg']; // /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/
 
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${req.params.id}`; // id of user is filename
+      const filename = `${req.params.id}/${req.query.created}`; // id of user is filename
       return filename;
     }
 
     return {
       bucketName: 'fs',
-      filename: `${req.params.id}`, // id of user is filename
+      filename: `${req.params.id}/${req.query.created}`, // id of user is filename, TODO: use req.query.param of date to create a id: user_id/date
     };
   },
 });

@@ -25,7 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useSelector,  useDispatch} from 'react-redux'; //
+import { useSelector,  useDispatch} from 'react-redux';
 import { updateUserZipCode } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -144,16 +144,20 @@ function Profile () {
       }))
     }
 
-  const handlePublish = async (event) => {
+  const handlePublish = async (event) => { // TODO: if image is not published, remove from DB?
+    const userId = userData._id;
+    const chosenImageDate = store.getState().user.chosenImageDate;
     if(event.target.checked) {
       const firstName = userData.firstName;
       const publishObject = {
         ...dish,
         firstName,
-        cookedNotOrdered: cookedOrdered.cooked === true ? true : false
+        cookedNotOrdered: cookedOrdered.cooked === true ? true : false,
+        chosenImageDate
       };
       try {
-        await ApiClient.publishToDashBoard(userData._id, publishObject)
+        await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate);
+        await ApiClient.publishToDashBoard(userId, publishObject);
       } catch(e) {
         console.log(e);
       }
@@ -493,7 +497,7 @@ function Profile () {
           <Grid item sm={12}>
             <Dashboard
               id={userData._id}
-              mouthWateringDishes= {mouthWateringDishes}
+              mouthWateringDishes={mouthWateringDishes}
               />
           </Grid>
         </Hidden>
