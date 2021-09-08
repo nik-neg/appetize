@@ -6,6 +6,7 @@
 .publish-button-row {
   display: flex;
   padding-left: 6rem;
+  height: 50px;
 }
 
 .publish-button-col {
@@ -19,4 +20,20 @@
 
 .item + .item {
   margin-left: 2%;
+}
+
+.dashboard {
+  padding-top: 5%;
+}
+
+.logout {
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+}
+
+.logout-small-devices {
+  display: flex;
+  justify-content: center;
+  padding: 2.5% 0 2.5%;
 }

@@ -52,7 +52,7 @@ module.exports.removeImages = async (req, res) => { // TODO: add logic per day
     connection.db.collection('fs.files', (err, collection) => {
       collection.find({ filename: { $regex: deletePattern } }).toArray((err, data) => {
         if (err) console.log(err); // TODO: refactor?
-
+        // TODO: check last 24 h, do same for files instead of all
         const filesIDArray = data.map((entry) => entry._id);
         filesIDArray.forEach((fileId) => {
           connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
