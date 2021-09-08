@@ -1,12 +1,14 @@
 const router = require('express').Router();
 const upload = require('./middleware/upload');
+const auth = require('./middleware/auth');
 const userController = require('./controllers/User.controller');
 
 const imageController = require('./controllers/Image.controller');
 const publishController = require('./controllers/Publish.controller');
 
 router.post('/register', userController.createUser);
-router.post('/login', userController.loginUser);
+router.post('/login', auth, userController.loginUser);
+router.post('/logout', auth, userController.logoutUser);
 router.get('/profile/:id', userController.showProfile);
 router.put('/profile/:id', userController.setZipCode);
 

@@ -12,7 +12,12 @@ const db = require('./models/db');
 
 require('dotenv').config();
 
-app.use(cors())
+const corsConfig = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsConfig))
   .use(bodyParser())
   .use(express.urlencoded({ extended: true }))
   .use(express.json())

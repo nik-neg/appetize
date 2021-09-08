@@ -1,5 +1,7 @@
-// const bcrypt = require('bcrypt');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const SECRET_KEY = process.env.SECRET_KEY || 'loading';
 
 const saltRounds = 10;
 
@@ -27,8 +29,12 @@ module.exports.createUser = async (req, res) => {
       password: hash,
       created: new Date(),
     });
+    // user = await newUser.save();
+    // res.status(201).send(user);
     user = await newUser.save();
-    res.status(201).send(user);
+    const { _id } = user;
+    const accessToken = jwt.sign({ _id }, SECRET_KEY);
+    res.status(201).send({ user, accessToken });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
   }
@@ -50,6 +56,10 @@ module.exports.loginUser = async (req, res) => {
       .status(401)
       .send({ error: '401', message: 'Username or password is incorrect' });
   }
+};
+
+module.exports.logoutUser = async (req, res) => {
+  res.end();
 };
 
 module.exports.showProfile = async (req, res) => { // connect to socket of zip code

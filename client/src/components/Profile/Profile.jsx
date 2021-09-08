@@ -25,7 +25,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 import { useSelector,  useDispatch} from 'react-redux';
-import { updateUserZipCode } from '../../store/userSlice';
+import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
 import history from '../../history';
@@ -176,6 +176,7 @@ function Profile () {
   }
 
   const handleLogout = async () => {
+    await asyncWrapper(dispatch, logoutUser);
     history.push('/');
   }
 

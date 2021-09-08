@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiClient from '../services/ApiClient';
+import apiServiceJWT from '../services/ApiClientJWT';
 
 const initialState = {
   userData: {},
   dishesInRadius: [],
   chosenImageDate: '',
   loading: false,
+  isAuthenticated: false,
 };
 
 export const fetchUserDataFromDB = createAsyncThunk(
@@ -19,7 +21,7 @@ export const fetchUserDataFromDB = createAsyncThunk(
 export const createUserAndSafeToDB = createAsyncThunk(
   'userData/createUser',
   async (input) => {
-    const response =  await ApiClient.registerUser(input);
+    const response  = await apiServiceJWT.register(input);
     return response;
   }
 );
@@ -48,12 +50,23 @@ export const uploadImageBeforePublish = createAsyncThunk(
   }
 );
 
+export const logoutUser =  createAsyncThunk(
+  'userData/logoutUser',
+  async () => {
+    await apiServiceJWT.logout();
+    return initialState;
+  }
+);
+
 export const userSlice = createSlice({
   name: 'userData',
   initialState,
   extraReducers: {
     [createUserAndSafeToDB.fulfilled]: (state, action) => {
-      state.userData = action.payload;
+      const { user, accessToken } = action.payload;
+      localStorage.setItem('accessToken', accessToken);
+      state.userData = user;
+      state.isAuthenticated = true;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
@@ -90,6 +103,17 @@ export const userSlice = createSlice({
     },
     // eslint-disable-next-line no-unused-vars
     [uploadImageBeforePublish.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [logoutUser.fulfilled]: (state, action) => {
+      state.isAuthenticated = false;
+      state.userData = action.payload.userData;
+      state.dishesInRadius = [];
+      state.chosenImageDate = '';
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [logoutUser.pending]: (state, action) => {
       state.loading = true;
     }
   }
