@@ -13,7 +13,7 @@ const initialState = {
 export const fetchUserDataFromDB = createAsyncThunk(
   'userData/fetchData',
   async (input) => {
-    const response =  await ApiClient.loginUser(input);
+    const response =  await apiServiceJWT.loginUser(input);
     return response;
   }
 );
@@ -74,7 +74,10 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     [fetchUserDataFromDB.fulfilled]: (state, action) => {
-      state.userData = action.payload;
+      const { user, accessToken } = action.payload;
+      localStorage.setItem('accessToken', accessToken);
+      state.userData = user;
+      state.isAuthenticated = true;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
