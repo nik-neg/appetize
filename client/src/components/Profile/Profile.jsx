@@ -15,7 +15,6 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Box from '@material-ui/core/Box';
-const upLoadButtonStyle = {maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px'};
 
 import FadeIn from 'react-fade-in';
 import Image from 'material-ui-image'
@@ -29,6 +28,10 @@ import { useSelector,  useDispatch} from 'react-redux';
 import { updateUserZipCode } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
+
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+const upLoadButtonStyle = { maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px' };
+const logOutButtonStyle = { maxWidth: '150px', maxHeight: '40px', minWidth: '150px', minHeight: '40px' };
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -173,6 +176,10 @@ function Profile () {
     setMouthWateringDishes(newMouthWateringDishes);
   }
 
+  const handleLogout = () => {
+
+  }
+
   return (
     <div className={classesGrid.root}>
       <FadeIn delay={950} transitionDuration={1750}>
@@ -233,13 +240,24 @@ function Profile () {
               <Image
                 src={imagePath}
                 // imageStyle={{width:"80%", height:"48%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
-                style={{"backgroundColor": "inherit", "marginTop": "15%", "marginLeft": "5%", "padding": "150px"}}
+                style={{"backgroundColor": "inherit", "marginTop": "17.5%", "marginLeft": "0%", "padding": "150px"}}
               />
             : ''}
             </Grid>
           </Hidden>
           <Hidden only={['xs', 'sm', 'md']}>
             <Grid item lg={4}>
+              <div className="logout">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<ExitToAppIcon />}
+                  style={logOutButtonStyle}
+                  onClick={handleLogout}
+                  >
+                  Logout
+                </Button>
+              </div>
               <Grid item lg={4}>
                 <Grid item lg={4}>
                   <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
@@ -253,7 +271,7 @@ function Profile () {
                         }}
                         value={dish.title}
                         helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-                        style={{"marginTop": "16.5%", "marginRight": "16.5%", "min-width": "30rem"}}
+                        style={{"marginTop": "5%", "marginRight": "16.5%", "min-width": "30rem"}}
                         rowsMax="10"
                         variant="filled"
                         onChange={handleChangeTextArea('title')}
@@ -454,7 +472,7 @@ function Profile () {
           </>
           : ''}
         </Hidden>
-        <Grid item lg={4}>
+        <Grid item lg={4} style={{ top: '8rem' }}>
           <LocalDishesParameter
             onRadiusSearch={handleLocalDishesParameterResults}
           />
@@ -495,11 +513,24 @@ function Profile () {
         </Grid>
         <Hidden lgUp>
           <Grid item sm={12}>
-            <Dashboard
-              id={userData._id}
-              mouthWateringDishes={mouthWateringDishes}
-              />
+            <div className="dashboard">
+              <Dashboard
+                id={userData._id}
+                mouthWateringDishes={mouthWateringDishes}
+                />
+            </div>
           </Grid>
+          <div className="logout-small-devices">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<ExitToAppIcon />}
+                  style={logOutButtonStyle}
+                  onClick={handleLogout}
+                  >
+                  Logout
+                </Button>
+              </div>
         </Hidden>
       </FadeIn>
     </div>
