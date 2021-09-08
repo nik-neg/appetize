@@ -28,6 +28,7 @@ import { useSelector,  useDispatch} from 'react-redux';
 import { updateUserZipCode } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
+import history from '../../history';
 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const upLoadButtonStyle = { maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px' };
@@ -67,8 +68,6 @@ const useStylesSaveButton = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }));
-
-// https://material-ui.com/components/hidden/
 
 function Profile () {
   const classes = useStylesSaveButton();
@@ -176,8 +175,8 @@ function Profile () {
     setMouthWateringDishes(newMouthWateringDishes);
   }
 
-  const handleLogout = () => {
-
+  const handleLogout = async () => {
+    history.push('/');
   }
 
   return (
