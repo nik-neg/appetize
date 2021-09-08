@@ -50,24 +50,8 @@ const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSe
     .catch((err) => console.log(err));
 };
 
-// const displayImage = async (id, createImageDate) =>
-// {
-//   console.log(createImageDate)
-//   let url = new URL(`${baseUrl}/profile/${id}/download`)
-//   url.search = new URLSearchParams({
-//     created: createImageDate
-//   })
-//    return fetch(url,
-//     {
-//       method: 'GET',
-//     })
-//     .then((imageData) => imageData)
-//     .then((imageData) => imageData)
-//     .catch((err) => console.log(err));
-// }
 const removeUnusedImagesFromDB = (id, date) =>
 {
-  console.log(id, date)
   let url = new URL(`${baseUrl}/profile/${id}/remove-images`)
   url.search = new URLSearchParams({
     date
