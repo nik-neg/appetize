@@ -11,7 +11,7 @@ const initialState = {
 };
 
 export const fetchUserDataFromDB = createAsyncThunk(
-  'userData/fetchData',
+  'userData/fetchUserDataFromDB',
   async (input) => {
     const response =  await apiServiceJWT.loginUser(input);
     return response;
@@ -58,7 +58,7 @@ export const logoutUser =  createAsyncThunk(
   }
 );
 
-export const userSlice = createSlice({
+export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
   initialState,
   extraReducers: {
@@ -108,7 +108,7 @@ export const userSlice = createSlice({
     [uploadImageBeforePublish.pending]: (state, action) => {
       state.loading = true;
     },
-    [logoutUser.fulfilled]: (state, action) => {
+    [logoutUser.fulfilled]: (state, action) => { // TODO: refactor?
       state.isAuthenticated = false;
       state.userData = action.payload.userData;
       state.dishesInRadius = [];

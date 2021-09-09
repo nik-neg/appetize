@@ -96,14 +96,15 @@ const getDishesInRadius = (id, radius, cookedOrdered) =>
   .catch((err) => console.log(err));
 }
 
-const voteDish = (id, dailyTreatsID, upDownVote) => fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
-  {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
+const voteDish = (id, dailyTreatsID, upDownVote) =>
+  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
 
 export default {
   loginUser,

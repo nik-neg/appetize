@@ -64,9 +64,9 @@ module.exports.logoutUser = async (req, res) => {
 
 module.exports.showProfile = async (req, res) => {
   // eslint-disable-next-line no-underscore-dangle
-  const data = ({ ...req.user })._doc;
+  const userInfo = ({ ...req.user })._doc;
   try {
-    res.status(200).send({ data });
+    res.status(200).send(userInfo);
   } catch (err) {
     res.status(404).send({ err, message: 'Resource not found' });
   }

@@ -24,7 +24,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useDispatch, useSelector} from 'react-redux'; // useSelector
+import { useDispatch } from 'react-redux'; // useSelector
 import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -77,11 +77,15 @@ function Profile () {
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
 
-  const userData = {...useSelector((state) => state.user.userData)};
-  if(userData) {
-    let firstName = userData.firstName;
-    userData.firstName = firstName && firstName[0].toUpperCase()+firstName.slice(1);
-  }
+  // const userData = {...useSelector((state) => state.user.userData)};
+  // if(userData) {
+  //   let firstName = userData.firstName;
+  //   userData.firstName = firstName && firstName[0].toUpperCase()+firstName.slice(1);
+  // }
+  const [userData, setUserData] = useState({
+    _id: '',
+    firstName: ''
+  })
 
 
   const [cookedOrdered, setCoockedOrdered] = useState({
@@ -126,6 +130,13 @@ function Profile () {
       const userInfo = await apiServiceJWT.getProfile(accessToken);
       if (userInfo.err) {
         history.push('/');
+      } else {
+        let { firstName } = userInfo;
+        firstName = firstName && firstName[0].toUpperCase() + firstName.slice(1);
+        setUserData((prevValue) => ({
+          ...prevValue,
+          firstName,
+        }));
       }
     }
     getProfile(accessToken);
@@ -522,7 +533,7 @@ function Profile () {
           <Grid item sm={12}>
             <div className="dashboard">
               <Dashboard
-                id={userData._id}
+                id={userData._id} // refactor?
                 mouthWateringDishes={mouthWateringDishes}
                 />
             </div>

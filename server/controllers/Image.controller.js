@@ -25,7 +25,7 @@ module.exports.retrieveImage = async (req, res) => {
   // loop through all fs.files and retrieve all images - in progress
   // posssible to loop n times with counter from dailyTreats
 
-  // TODO: get only the daily published image with: today - uploadDate < 24 h
+  // TODO: get only the daily published image with: today - uploadDate < 24 h, or per x hours
   // https://docs.mongodb.com/manual/core/gridfs/
   // https://www.npmjs.com/package/gridfs-stream
   gfs.files.findOne({
