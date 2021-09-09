@@ -131,10 +131,12 @@ function Profile () {
       if (userInfo.err) {
         history.push('/');
       } else {
-        let { firstName } = userInfo;
+        console.log(userInfo)
+        let { firstName, _id } = userInfo;
         firstName = firstName && firstName[0].toUpperCase() + firstName.slice(1);
         setUserData((prevValue) => ({
           ...prevValue,
+          _id,
           firstName,
         }));
       }
@@ -496,7 +498,6 @@ function Profile () {
           />
         </Grid>
         <DropZone
-          id={userData._id}
           firstName={userData.firstName}
           setOpen={setOpen}
           open={open}

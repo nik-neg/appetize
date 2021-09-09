@@ -1,4 +1,5 @@
 import Card from '../Card/Card'
+import { useSelector } from 'react-redux';
 import FadeIn from 'react-fade-in';
 
 import './index.scss';
@@ -7,6 +8,7 @@ import Box from '@material-ui/core/Box';
 
 export default function Dashboard (props) {
   let fadeCounter = 0;
+  const userData = {...useSelector((state) => state.user.userData)};
 
   return (
     <div>
@@ -19,7 +21,7 @@ export default function Dashboard (props) {
                     <Card
                       key={index}
                       city={dish.city}
-                      voteID={props.id}
+                      voteID={userData._id}
                       votes={dish.votes}
                       userID={dish.userID}
                       creatorName={dish.creatorName}
