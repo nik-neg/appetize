@@ -28,11 +28,11 @@ A simple voting system enables to vote for favourite dishes.
 # Profile page
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food.png)
 
-# Profile page with published local food in the zip postal code area
+# Published local food
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food.png)
  
 # Responsive design
- Profile page             |  Profile page with published local food in the zip postal code area
+ Profile page             |  Published local food
 :-------------------------:|:-------------------------:
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food_responsive.png) |  ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food_responsive.png)
 
