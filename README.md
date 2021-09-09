@@ -25,15 +25,16 @@ A simple voting system enables to vote for favourite dishes.
 # Upload with preview
 ![alt text](https://github.com/nik-neg/appetize/blob/main/images/2_dropzone_preview.png)
 
-# Content page before publishing
+# Profile page
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food.png)
 
-# Published local food in the zip postal code area
+# Profile page with published local food in the zip postal code area
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food.png)
  
 # Responsive design
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food_responsive.png)
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food_responsive.png)
+ Profile page             |  Profile page with published local food in the zip postal code area
+:-------------------------:|:-------------------------:
+![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food_responsive.png) |  ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food_responsive.png)
 
 # Demo:
 https://youtu.be/_8mGjuWzNS0
