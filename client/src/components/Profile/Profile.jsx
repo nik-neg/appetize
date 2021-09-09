@@ -1,4 +1,4 @@
-import { useState } from 'react'; // useEffect
+import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -24,8 +24,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useSelector,  useDispatch} from 'react-redux';
-import { updateUserZipCode } from '../../store/userSlice';
+import { useDispatch } from 'react-redux'; // useSelector
+import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
 import history from '../../history';
@@ -33,6 +33,8 @@ import history from '../../history';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const upLoadButtonStyle = { maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px' };
 const logOutButtonStyle = { maxWidth: '150px', maxHeight: '40px', minWidth: '150px', minHeight: '40px' };
+
+import apiServiceJWT from '../../services/ApiClientJWT';
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -74,11 +76,16 @@ function Profile () {
 
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
-  const userData = {...useSelector((state) => state.user.userData)};
-  if(userData) {
-    let firstName = userData.firstName;
-    userData.firstName = firstName && firstName[0].toUpperCase()+firstName.slice(1);
-  }
+
+  // const userData = {...useSelector((state) => state.user.userData)};
+  // if(userData) {
+  //   let firstName = userData.firstName;
+  //   userData.firstName = firstName && firstName[0].toUpperCase()+firstName.slice(1);
+  // }
+  const [userData, setUserData] = useState({
+    _id: '',
+    firstName: ''
+  })
 
 
   const [cookedOrdered, setCoockedOrdered] = useState({
@@ -117,34 +124,47 @@ function Profile () {
     await dispatch(asyncFunc(data));
   }
 
-
-  // useEffect(() => {
-  //   // ApiClient.getProfile(id)
-  //   // .then((data) => setUserData(data))
-  //   // setDish({});
-  //   }, []);
-
-    const handleChangeZipCode = (event) => {
-      setZipCode(event.target.value);
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const getProfile = async (accessToken) => {
+      const userInfo = await apiServiceJWT.getProfile(accessToken);
+      if (userInfo.err) {
+        history.push('/');
+      } else {
+        console.log(userInfo)
+        let { firstName, _id } = userInfo;
+        firstName = firstName && firstName[0].toUpperCase() + firstName.slice(1);
+        setUserData((prevValue) => ({
+          ...prevValue,
+          _id,
+          firstName,
+        }));
+      }
     }
-    const handleChangeTextArea = name => (event) => {
-      setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
-    }
+    getProfile(accessToken);
+  }, []);
 
-    const handleUpdateZipCode = async () => {
-      await asyncWrapper(dispatch, updateUserZipCode, { id: userData._id, zipCode });
-      setZipCode('');
-    }
+  const handleChangeZipCode = (event) => {
+    setZipCode(event.target.value);
+  }
+  const handleChangeTextArea = name => (event) => {
+    setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
+  }
 
-    const handleCookedOrdered = async (event) => {
-      event.preventDefault();
-      const { name, checked } = event.target;
-      setCoockedOrdered((prevValue) => ({
-        [name === 'cooked' ? prevValue['ordered'] : prevValue['cooked']]: false,
-        [name]: checked
+  const handleUpdateZipCode = async () => {
+    await asyncWrapper(dispatch, updateUserZipCode, { id: userData._id, zipCode });
+    setZipCode('');
+  }
 
-      }))
-    }
+  const handleCookedOrdered = async (event) => {
+    event.preventDefault();
+    const { name, checked } = event.target;
+    setCoockedOrdered((prevValue) => ({
+      [name === 'cooked' ? prevValue['ordered'] : prevValue['cooked']]: false,
+      [name]: checked
+
+    }))
+  }
 
   const handlePublish = async (event) => { // TODO: if image is not published, remove from DB?
     const userId = userData._id;
@@ -176,6 +196,7 @@ function Profile () {
   }
 
   const handleLogout = async () => {
+    await asyncWrapper(dispatch, logoutUser);
     history.push('/');
   }
 
@@ -477,7 +498,6 @@ function Profile () {
           />
         </Grid>
         <DropZone
-          id={userData._id}
           firstName={userData.firstName}
           setOpen={setOpen}
           open={open}
@@ -514,7 +534,7 @@ function Profile () {
           <Grid item sm={12}>
             <div className="dashboard">
               <Dashboard
-                id={userData._id}
+                id={userData._id} // refactor?
                 mouthWateringDishes={mouthWateringDishes}
                 />
             </div>

@@ -22,16 +22,6 @@ const loginUser = (user) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const getProfile = (id) =>
-  fetch(`${baseUrl}/profile/${id}`,
-    {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-    .then((data) => data.json())
-    .then((user) => user)
-    .catch((err) => console.log(err));
-
 const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSearchParams to pass new Date
   let url = new URL(`${baseUrl}/profile/${id}/upload`)
   url.search = new URLSearchParams({
@@ -106,19 +96,19 @@ const getDishesInRadius = (id, radius, cookedOrdered) =>
   .catch((err) => console.log(err));
 }
 
-const voteDish = (id, dailyTreatsID, upDownVote) => fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
-  {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
+const voteDish = (id, dailyTreatsID, upDownVote) =>
+  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
 
 export default {
   loginUser,
   registerUser,
-  getProfile,
   uploadImage,
   removeUnusedImagesFromDB,
   confirmZipCode,

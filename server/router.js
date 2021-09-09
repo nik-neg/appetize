@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const upload = require('./middleware/upload');
+const auth = require('./middleware/auth');
 const userController = require('./controllers/User.controller');
 
 const imageController = require('./controllers/Image.controller');
@@ -7,7 +8,8 @@ const publishController = require('./controllers/Publish.controller');
 
 router.post('/register', userController.createUser);
 router.post('/login', userController.loginUser);
-router.get('/profile/:id', userController.showProfile);
+router.post('/logout', userController.logoutUser); // optional auth for jwt blocklist?
+router.get('/profile', auth, userController.showProfile);
 router.put('/profile/:id', userController.setZipCode);
 
 router.post('/profile/:id/upload', upload, imageController.saveImage);

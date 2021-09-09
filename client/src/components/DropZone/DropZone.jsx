@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import './index.css';
 import { DropzoneDialogBase } from 'material-ui-dropzone';
 import IconButton from '@material-ui/core/IconButton';
-// import ApiClient from '../../services/ApiClient';
 import { useSelector, useDispatch } from 'react-redux';
 import { uploadImageBeforePublish } from '../../store/userSlice';
-// import { store } from '../../store/index';
 
 export default function DropZone (props) {
-
   const [fileObjects, setFileObjects] = useState([]);
   const dialogTitle = () => (
     <>

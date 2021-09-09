@@ -65,7 +65,7 @@ export default function RegisterLogin () {
     error: '',
   });
 
-  const asyncWrapper = async (dispatch, asyncFunc, data) => {
+  const asyncWrapper = async (dispatch, asyncFunc, data) => { // TODO: refactor without wrapper ?
     await dispatch(asyncFunc(data));
   }
 
@@ -73,7 +73,11 @@ export default function RegisterLogin () {
     let userData;
     event.preventDefault();
     if(!input.isUser) {
-      await asyncWrapper(dispatch, createUserAndSafeToDB, input);
+      const {
+        firstName, lastName, email, password,
+      } = input;
+      const user = { firstName, lastName, email, password, };
+      await asyncWrapper(dispatch, createUserAndSafeToDB, user);
       userData = store.getState().user.userData;
       if(userData?.error === '409' ) {
         setInput((prevState) => {
@@ -88,7 +92,11 @@ export default function RegisterLogin () {
         history.push('/profile');
       }
     } else {
-      await asyncWrapper(dispatch, fetchUserDataFromDB, input);
+      const {
+        email, password,
+      } = input;
+      const loginCredentials = { email, password, };
+      await asyncWrapper(dispatch, fetchUserDataFromDB, loginCredentials);
       userData = store.getState().user.userData;
       if(userData?.error === '401' ) {
         setInput((prevState) => { // TODO: refactor reset state ?
