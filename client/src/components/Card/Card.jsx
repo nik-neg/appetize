@@ -65,18 +65,16 @@ export default function RecipeReviewCard(props) {
     setLikeColor(!likeColor);
 
     let likeResponse;
+    let vote = ''
     if(!likeColor) {
-      try {
-        likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "up");
-      } catch(e) {
-        console.log(e)
-      }
+      vote = 'up'
     } else {
-      try {
-        likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, "down");
-      } catch(e) {
-        console.log(e)
-      }
+      vote = 'down';
+    }
+    try {
+      likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, vote);
+    } catch(e) {
+      console.log(e)
     }
     setVotes(likeResponse.votes)
   }
