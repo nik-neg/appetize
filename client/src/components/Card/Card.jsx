@@ -14,6 +14,7 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import StarsIcon from '@material-ui/icons/Stars';
 
 import moment from 'moment';
 
@@ -45,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  ownImageColor: {
+    color: red[500],
+  }
 }));
 
 
@@ -118,6 +122,9 @@ export default function RecipeReviewCard(props) {
         >
           <ExpandMoreIcon />
         </IconButton>
+        { props.voteID === props.userID ?
+          <StarsIcon className={classes.ownImageColor}/>
+        : ''}
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
