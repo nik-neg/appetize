@@ -130,7 +130,7 @@ function Profile () {
       } else {
         console.log(userInfo)
 
-        let hasUpdatedZipCode;
+        let hasUpdatedZipCode = false;
         if(userInfo.zipCode) {
           hasUpdatedZipCode = true;
         }
