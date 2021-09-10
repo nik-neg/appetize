@@ -24,7 +24,8 @@ export default function LocalDishesParameter (props) {
   }
 
   const handleRadiusSearch = async () => {
-    if (!cookedOrdered.cooked && !cookedOrdered.ordered) { //TODO: pop up window to choose paramters, e.g. alert
+    // TODO: pop up window to choose paramters, e.g. alert
+    if (!cookedOrdered.cooked && !cookedOrdered.ordered || !userDataClone.zipCode) {
       return;
     }
     try {

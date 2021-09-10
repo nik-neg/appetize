@@ -3,6 +3,10 @@
   justify-content: center;
 }
 
+.button-box {
+  padding-bottom: 1rem;
+}
+
 .publish-button-row {
   display: flex;
   padding-left: 6rem;
