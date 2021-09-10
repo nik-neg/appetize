@@ -77,14 +77,11 @@ function Profile () {
   const CHARACTER_LIMIT_ZIP_CODE = 10;
   const [zipCode, setZipCode] = useState('');
 
-  // const userData = {...useSelector((state) => state.user.userData)};
-  // if(userData) {
-  //   let firstName = userData.firstName;
-  //   userData.firstName = firstName && firstName[0].toUpperCase()+firstName.slice(1);
-  // }
   const [userData, setUserData] = useState({
     _id: '',
-    firstName: ''
+    firstName: '',
+    hasUpdatedZipCode: false,
+    notUpdatedZipCodeMessage: 'Please update the zip code'
   })
 
 
@@ -132,12 +129,18 @@ function Profile () {
         history.push('/');
       } else {
         console.log(userInfo)
+
+        let hasUpdatedZipCode;
+        if(userInfo.zipCode) {
+          hasUpdatedZipCode = true;
+        }
         let { firstName, _id } = userInfo;
         firstName = firstName && firstName[0].toUpperCase() + firstName.slice(1);
         setUserData((prevValue) => ({
           ...prevValue,
           _id,
           firstName,
+          hasUpdatedZipCode,
         }));
       }
     }
@@ -154,6 +157,12 @@ function Profile () {
   const handleUpdateZipCode = async () => {
     await asyncWrapper(dispatch, updateUserZipCode, { id: userData._id, zipCode });
     setZipCode('');
+    if(!userData.hasUpdatedZipCode) {
+      setUserData((prevValue) => ({
+        ...prevValue,
+        hasUpdatedZipCode: true,
+      }));
+    }
   }
 
   const handleCookedOrdered = async (event) => {
@@ -228,6 +237,9 @@ function Profile () {
               onChange={handleChangeZipCode}
               InputProps={{ classes: { input: styles.someTextField } }}
             />
+            <div>
+            { !userData.hasUpdatedZipCode ? userData.notUpdatedZipCodeMessage : ''}
+            </div>
             <div className="button-box">
               <Button
                 variant="contained"
