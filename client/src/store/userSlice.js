@@ -58,6 +58,14 @@ export const logoutUser =  createAsyncThunk(
   }
 );
 
+export const deleteDish = createAsyncThunk(
+  'userDate/deleteDish',
+  async ({ userId, dishId }) => {
+    await ApiClient.deleteDish(userId, dishId);
+    return dishId;
+  }
+)
+
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
   initialState,
@@ -118,6 +126,14 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     // eslint-disable-next-line no-unused-vars
     [logoutUser.pending]: (state, action) => {
       state.loading = true;
-    }
+    },
+    [deleteDish.fulfilled]: (state, action) => {
+      state.dishesInRadius = state.dishesInRadius.filter((dailyTreat) => dailyTreat._id !== action.payload);
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [deleteDish.pending]: (state, action) => {
+      state.loading = true;
+    },
   }
 });

@@ -106,7 +106,6 @@ function Profile () {
     recipe: ""
   });
 
-
   const styles = {
     someTextField: {
       minHeight: 420,
@@ -194,7 +193,6 @@ function Profile () {
       }
     }
   }
-
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
 
   const handleLocalDishesParameterResults = () => {

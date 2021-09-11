@@ -24,6 +24,9 @@ import ApiClient from '../../services/ApiClient';
 
 import './index.scss';
 
+import { useDispatch } from 'react-redux';
+import { deleteDish } from '../../store/userSlice';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,6 +100,16 @@ export default function RecipeReviewCard(props) {
     setMouseIsNotOver(!mouseIsNotOver)
   }
 
+  const dispatch = useDispatch();
+
+  const handleDelete = async () => {
+    try {
+      dispatch(deleteDish({ userId: props.voteID, dishId: props.dishID }))
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
   return (
     <Card className={classes.root} >
       <CardHeader
@@ -145,7 +158,7 @@ export default function RecipeReviewCard(props) {
         >
         { mouseIsNotOver
           ? <StarsIcon className={classes.ownImageColor}/>
-          : <DeleteIcon />
+          : <DeleteIcon onClick={handleDelete}/>
         }
         </IconButton>
         : ''}

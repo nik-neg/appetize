@@ -106,6 +106,16 @@ const voteDish = (id, dailyTreatsID, upDownVote) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
+const deleteDish = (id, dailyTreatID) =>
+  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`,
+  {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then((data) => data.json())
+  .then((data) => data)
+  .catch((err) => console.log(err));
+
 export default {
   loginUser,
   registerUser,
@@ -115,4 +125,5 @@ export default {
   publishToDashBoard,
   getDishesInRadius,
   voteDish,
+  deleteDish
 };
