@@ -66,6 +66,7 @@ export default function RecipeReviewCard(props) {
   };
 
   const handleLike = async () => {
+    if (props.voteID === props.userID) return;
     setLikeColor(!likeColor);
 
     let likeResponse;
@@ -82,6 +83,8 @@ export default function RecipeReviewCard(props) {
     }
     setVotes(likeResponse.votes)
   }
+
+  const likeColorStatement = props.voteID === props.userID || likeColor ? "#ff0000": 'inherit';
 
   return (
     <Card className={classes.root} >
@@ -106,7 +109,7 @@ export default function RecipeReviewCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites"  style={{ color: likeColor ? "#ff0000": 'inherit'}}>
+        <IconButton aria-label="add to favorites"  style={{ color: likeColorStatement}}>
           <FavoriteIcon onClick={handleLike}/>
         </IconButton>
         <IconButton aria-label="share">
