@@ -168,7 +168,7 @@ module.exports.upDownVote = async (req, res) => {
       );
     }
 
-    // get updated votes for the realted user
+    // get updated votes for the related user
     let dailyTreat;
     try {
       dailyTreat = await DailyTreat.findOne({ _id: dailyTreatsID });

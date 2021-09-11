@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
 export default function RegisterLogin () {
   const dispatch = useDispatch();
-  // const userData = useSelector((state) => state.user);
 
   const classes = useStyles();
   const [input, setInput] = useState({
@@ -116,6 +115,8 @@ export default function RegisterLogin () {
   const handleLoginByUser = async (event) => {
     event.preventDefault();
     setInput({
+      email: '',
+      password: '',
       isUser: !input.isUser,
       isUserMessage: input.isUser ? LOGIN_MESSAGE['isUser'] : LOGIN_MESSAGE['isNewUser'],
     });

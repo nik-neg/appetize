@@ -2,7 +2,7 @@ const db = require('./db');
 const DailyTreat = require('./DailyTreat').schema;
 
 const UserSchema = new db.mongoose.Schema({
-  avatarImage: { data: Buffer, contentType: String },
+  avatarImage: { data: Buffer, contentType: String }, // TODO: replace with url from file?
   firstName: String,
   lastName: String,
   email: {
