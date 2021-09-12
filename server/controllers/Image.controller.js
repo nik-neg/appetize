@@ -26,20 +26,13 @@ module.exports.retrieveImage = async (req, res) => {
   const { connection } = mongoose;
   const gfs = gridfs(connection.db);
   const { created } = req.query;
-  // loop through all fs.files and retrieve all images - in progress
-  // posssible to loop n times with counter from dailyTreats
-
-  // TODO: get only the daily published image with: today - uploadDate < 24 h, or per x hours
-  // https://docs.mongodb.com/manual/core/gridfs/
-  // https://www.npmjs.com/package/gridfs-stream
   gfs.files.findOne({
-    filename: `${req.params.id}/${created}`, // TODO: pass date info user_id/date
-    // uploadDate: { $gt: new Date(new Date().getTime() - time).toISOString() },
+    filename: `${req.params.id}/${created}`,
   }, (err, file) => {
     if (err || !file) {
       res.send('File Not Found');
     } else {
-      const readstream = gfs.createReadStream({ // TODO: refactor ?
+      const readstream = gfs.createReadStream({
         filename: `${req.params.id}/${created}`,
       });
       readstream.pipe(res);

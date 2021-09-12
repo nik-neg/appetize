@@ -24,7 +24,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useDispatch } from 'react-redux'; // useSelector
+import { useDispatch, useSelector } from 'react-redux'; // useSelector
 import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -146,12 +146,13 @@ function Profile () {
     getProfile(accessToken);
   }, []);
 
-  // useEffect(() => {
-  //   const newMouthWateringDishes = [...store.getState().user.dishesInRadius] // TODO: use of selector?
-  //   newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
-  //   setMouthWateringDishes(null)
-  //   setMouthWateringDishes(newMouthWateringDishes);
-  // }, [...store.getState().user.dishesInRadius.map((dish) => dish._id)])
+  const dishes = useSelector((state) => state.user.dishesInRadius);
+  useEffect(() => {
+    const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
+    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
+    setMouthWateringDishes(null)
+    setMouthWateringDishes(newMouthWateringDishes);
+  }, [dishes])
 
   const handleChangeZipCode = (event) => {
     setZipCode(event.target.value);
