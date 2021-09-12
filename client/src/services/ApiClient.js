@@ -40,12 +40,9 @@ const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSe
     .catch((err) => console.log(err));
 };
 
-const removeUnusedImagesFromDB = (id, date) =>
+const removeUnusedImagesFromDB = (id) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/remove-images`)
-  url.search = new URLSearchParams({
-    date
-  })
   return fetch(url,
   {
     method: 'DELETE',

@@ -12,19 +12,6 @@ module.exports.publishDish = async (req, res) => {
     title, description, recipe, firstName, cookedNotOrdered, chosenImageDate,
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
-
-  // const oneDay = 1000 * 60 * 60 * 24;
-
-  // const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
-  //   userID: id, // TODO: check for actual date ?
-  //   // created: { $gt: new Date().getTime() - oneDay },
-  //   // 1000*60*60*24 == 1 day
-  // });
-  // if (alreadyPublished) {
-  //   res
-  //     .status(409)
-  //     .send({ error: '409', message: 'DailyTreat already published!' });
-  // }
   // create dish to publish
   const dailyTreat = new DailyTreat();
   dailyTreat.userID = id;

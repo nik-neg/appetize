@@ -193,8 +193,9 @@ function Profile () {
         chosenImageDate
       };
       try {
-        // await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate); // TODO: switch order first publish, then remove ?
         await ApiClient.publishToDashBoard(userId, publishObject);
+        await ApiClient.removeUnusedImagesFromDB(userId);
+
       } catch(e) {
         console.log(e);
       }

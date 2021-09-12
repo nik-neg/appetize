@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const gridfs = require('gridfs-stream');
 
+const User = require('../models/User');
+
+const DailyTreat = require('../models/DailyTreat');
+
 module.exports.saveImage = async (req, res) => { // TODO: return date information
   try {
     if (!req.file || req.file.length <= 0) {
@@ -44,20 +48,27 @@ module.exports.retrieveImage = async (req, res) => {
 };
 
 module.exports.removeImages = async (req, res) => {
-  // TODO: check for 2 images from same user are displayed before refacotring
   const { id } = req.params;
-  const { date } = req.query;
-  // TODO: get user (or dailytreats of the user) and check for published dishes (dailyFood)
-  // then get the buffered images of the user via the created tag in image url
-  // of the daily treat from dailyFood attribute
-  // remove buffered images which are not in in the dailyFood aatribute of the user
-  const deletePattern = new RegExp(`^(?!.+${date}$)${id}.*`); // TODO: change regex
+  const dailyTreats = await DailyTreat.find({ userID: id });
+  const createdDateArray = dailyTreats.map((dailyTreat) => {
+    let createdTime = Array.from(dailyTreat.imageUrl).reverse();
+    const cutIndex = createdTime.indexOf('=');
+    createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+    return createdTime;
+  });
+
+  let notMatchingDatesString = '';
+  createdDateArray.forEach((date) => {
+    notMatchingDatesString += `${date}|`;
+  });
+  notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
+
+  const deletePattern = new RegExp(`^(?!.+(${notMatchingDatesString})$)${id}.*`);
   const { connection } = mongoose;
   try {
     connection.db.collection('fs.files', (err, collection) => {
       collection.find({ filename: { $regex: deletePattern } }).toArray((err, data) => {
-        if (err) console.log(err); // TODO: refactor?
-        // TODO: check last 24 h, do same for files instead of all
+        if (err) console.log(err);
         const filesIDArray = data.map((entry) => entry._id);
         filesIDArray.forEach((fileId) => {
           connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
