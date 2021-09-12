@@ -40,12 +40,9 @@ const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSe
     .catch((err) => console.log(err));
 };
 
-const removeUnusedImagesFromDB = (id, date) =>
+const removeUnusedImagesFromDB = (id) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/remove-images`)
-  url.search = new URLSearchParams({
-    date
-  })
   return fetch(url,
   {
     method: 'DELETE',
@@ -106,6 +103,16 @@ const voteDish = (id, dailyTreatsID, upDownVote) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
+const deleteDish = (id, dailyTreatID) =>
+  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`,
+  {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then((data) => data.json())
+  .then((data) => data)
+  .catch((err) => console.log(err));
+
 export default {
   loginUser,
   registerUser,
@@ -115,4 +122,5 @@ export default {
   publishToDashBoard,
   getDishesInRadius,
   voteDish,
+  deleteDish
 };

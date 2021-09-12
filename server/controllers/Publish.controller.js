@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const mongoose = require('mongoose');
+
 const User = require('../models/User');
 
 const DailyTreat = require('../models/DailyTreat');
@@ -10,19 +12,6 @@ module.exports.publishDish = async (req, res) => {
     title, description, recipe, firstName, cookedNotOrdered, chosenImageDate,
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
-
-  // const oneDay = 1000 * 60 * 60 * 24;
-
-  const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
-    userID: id, // TODO: check for actual date ?
-    // created: { $gt: new Date().getTime() - oneDay },
-    // 1000*60*60*24 == 1 day
-  });
-  if (alreadyPublished) {
-    res
-      .status(409)
-      .send({ error: '409', message: 'DailyTreat already published!' });
-  }
   // create dish to publish
   const dailyTreat = new DailyTreat();
   dailyTreat.userID = id;
@@ -49,7 +38,6 @@ module.exports.publishDish = async (req, res) => {
   try {
     const dailyTreatSaveResponse = await dailyTreat.save();
     // eslint-disable-next-line no-underscore-dangle
-    // const imageId = dailyTreatSaveResponse._id;
     dailyTreat.imageUrl = imageUrl;
     await dailyTreat.save();
     if (dailyTreatSaveResponse) {
@@ -60,6 +48,39 @@ module.exports.publishDish = async (req, res) => {
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
     console.log(e);
+  }
+};
+
+module.exports.removeDish = async (req, res) => {
+  const { id, dailyTreatID } = req.params;
+  // get created time of dailytreat from image url
+  const dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
+  let createdTime = Array.from(dailyTreat.imageUrl).reverse();
+  const cutIndex = createdTime.indexOf('=');
+  createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+  // remove from dailytreats
+  await DailyTreat.deleteOne({ _id: dailyTreatID });
+  // remove from dailyFood list in user
+  const user = await User.findOne({ _id: id });
+  // eslint-disable-next-line eqeqeq
+  user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
+  await user.save();
+  const { connection } = mongoose;
+
+  // remove from files and chunks
+  try {
+    connection.db.collection('fs.files', (err, collection) => {
+      collection.find({ filename: `${id}/${createdTime}` }).toArray((err, data) => {
+        if (err) console.log(err);
+        const fileId = data.map((entry) => entry._id)[0];
+        connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
+        connection.db.collection('fs.files').deleteMany({ filename: `${id}/${createdTime}` });
+      });
+    });
+    res.status(200).end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
   }
 };
 
@@ -80,7 +101,7 @@ const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) =
         queryObject.cookedNotOrdered = cookedOrderedParam;
       }
       // eslint-disable-next-line no-await-in-loop
-      await DailyTreat.find(
+      await DailyTreat.find( // TODO: use of promise.all?
         queryObject,
         (err, dailyTreats) => {
           dailyTreats.forEach((dailyTreat) => {
@@ -144,13 +165,13 @@ module.exports.checkDishesInRadius = async (req, res) => {
 };
 
 module.exports.upDownVote = async (req, res) => {
-  const { id, dailyTreatsID, upDown } = req.params;
+  const { id, dailyTreatID, upDown } = req.params;
   try {
     if (upDown === 'up') {
       // like dish
       await DailyTreat.updateOne(
         {
-          _id: dailyTreatsID,
+          _id: dailyTreatID,
           userID: { $ne: id },
         },
         { $inc: { votes: 1 }, $push: { likedByUserID: id } },
@@ -160,7 +181,7 @@ module.exports.upDownVote = async (req, res) => {
       // unlike dish
       await DailyTreat.updateOne(
         {
-          _id: dailyTreatsID,
+          _id: dailyTreatID,
           userID: { $ne: id },
         },
         { $inc: { votes: -1 }, $pull: { likedByUserID: id } },
@@ -171,7 +192,7 @@ module.exports.upDownVote = async (req, res) => {
     // get updated votes for the related user
     let dailyTreat;
     try {
-      dailyTreat = await DailyTreat.findOne({ _id: dailyTreatsID });
+      dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
       res.send({ votes: dailyTreat.votes });
     } catch (e) {
       console.log(e);
