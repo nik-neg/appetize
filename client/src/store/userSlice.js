@@ -44,7 +44,7 @@ export const getDishesInRadius = createAsyncThunk(
 
 export const uploadImageBeforePublish = createAsyncThunk(
   'userData/uploadImageBeforePublish',
-  async ({ userId, file, newCreatedImageDate }) => {
+  async ({ userId, file, newCreatedImageDate }) => { // save newCreatedImageDate to created (buffered) image array of user
     await ApiClient.uploadImage(userId, file, newCreatedImageDate);
     return newCreatedImageDate;
   }
@@ -102,6 +102,8 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     [getDishesInRadius.fulfilled]: (state, action) => {
       state.dishesInRadius = action.payload;
+      const filteredUserDishes = [...action.payload.filter((dish) => dish.userID == state.userData._id)]
+      state.userData.dailyFood = filteredUserDishes.map((filteredDish) => filteredDish._id)
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars

@@ -146,6 +146,13 @@ function Profile () {
     getProfile(accessToken);
   }, []);
 
+  // useEffect(() => {
+  //   const newMouthWateringDishes = [...store.getState().user.dishesInRadius] // TODO: use of selector?
+  //   newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
+  //   setMouthWateringDishes(null)
+  //   setMouthWateringDishes(newMouthWateringDishes);
+  // }, [...store.getState().user.dishesInRadius.map((dish) => dish._id)])
+
   const handleChangeZipCode = (event) => {
     setZipCode(event.target.value);
   }
@@ -186,7 +193,7 @@ function Profile () {
         chosenImageDate
       };
       try {
-        await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate);
+        // await ApiClient.removeUnusedImagesFromDB(userId, chosenImageDate); // TODO: switch order first publish, then remove ?
         await ApiClient.publishToDashBoard(userId, publishObject);
       } catch(e) {
         console.log(e);

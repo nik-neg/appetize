@@ -13,6 +13,7 @@ const UserSchema = new db.mongoose.Schema({
   password: String,
   nikName: String,
   dailyFood: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'DailyTreat' }],
+  // TODO: add array of created (buffered) images
   age: Number,
   zipCode: Number,
   voted: Boolean,

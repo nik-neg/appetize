@@ -43,10 +43,15 @@ module.exports.retrieveImage = async (req, res) => {
   });
 };
 
-module.exports.removeImages = async (req, res) => { // TODO: add logic per day
+module.exports.removeImages = async (req, res) => {
+  // TODO: check for 2 images from same user are displayed before refacotring
   const { id } = req.params;
   const { date } = req.query;
-  const deletePattern = new RegExp(`^(?!.+${date}$)${id}.*`);
+  // TODO: get user (or dailytreats of the user) and check for published dishes (dailyFood)
+  // then get the buffered images of the user via the created tag in image url
+  // of the daily treat from dailyFood attribute
+  // remove buffered images which are not in in the dailyFood aatribute of the user
+  const deletePattern = new RegExp(`^(?!.+${date}$)${id}.*`); // TODO: change regex
   const { connection } = mongoose;
   try {
     connection.db.collection('fs.files', (err, collection) => {

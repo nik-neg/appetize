@@ -15,16 +15,16 @@ module.exports.publishDish = async (req, res) => {
 
   // const oneDay = 1000 * 60 * 60 * 24;
 
-  const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
-    userID: id, // TODO: check for actual date ?
-    // created: { $gt: new Date().getTime() - oneDay },
-    // 1000*60*60*24 == 1 day
-  });
-  if (alreadyPublished) {
-    res
-      .status(409)
-      .send({ error: '409', message: 'DailyTreat already published!' });
-  }
+  // const alreadyPublished = await DailyTreat.findOne({ // TODO: think about removing limitation
+  //   userID: id, // TODO: check for actual date ?
+  //   // created: { $gt: new Date().getTime() - oneDay },
+  //   // 1000*60*60*24 == 1 day
+  // });
+  // if (alreadyPublished) {
+  //   res
+  //     .status(409)
+  //     .send({ error: '409', message: 'DailyTreat already published!' });
+  // }
   // create dish to publish
   const dailyTreat = new DailyTreat();
   dailyTreat.userID = id;
@@ -114,7 +114,7 @@ const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) =
         queryObject.cookedNotOrdered = cookedOrderedParam;
       }
       // eslint-disable-next-line no-await-in-loop
-      await DailyTreat.find(
+      await DailyTreat.find( // TODO: use of promise.all?
         queryObject,
         (err, dailyTreats) => {
           dailyTreats.forEach((dailyTreat) => {
@@ -205,7 +205,7 @@ module.exports.upDownVote = async (req, res) => {
     // get updated votes for the related user
     let dailyTreat;
     try {
-      dailyTreat = await DailyTreat.findOne({ _id: dailyTreatsID });
+      dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
       res.send({ votes: dailyTreat.votes });
     } catch (e) {
       console.log(e);
