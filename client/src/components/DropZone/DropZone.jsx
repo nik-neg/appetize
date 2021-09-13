@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { uploadImageBeforePublish } from '../../store/userSlice';
 
-export default function DropZone (props) { // https://yuvaleros.github.io/material-ui-dropzone/
+export default function DropZone (props) {
   const [fileObjects, setFileObjects] = useState([]);
   const dialogTitle = () => (
     <>
@@ -26,7 +26,7 @@ export default function DropZone (props) { // https://yuvaleros.github.io/materi
   const baseUrl = 'http://localhost:3001';
   let imageURL = `${baseUrl}/profile/${userData._id}/download?created=`
 
-  const handleUpload = async () => { // TODO: set limitation here, or handle image control via a counter to save / retrive the actual image
+  const handleUpload = async () => {
     props.setImagePath('');
     const newCreatedImageDate = new Date().getTime();
     imageURL += newCreatedImageDate;
