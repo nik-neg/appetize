@@ -127,6 +127,7 @@ function Profile () {
       if (userInfo.err) {
         history.push('/');
       } else {
+        console.log(userInfo)
 
         let hasUpdatedZipCode = false;
         if(userInfo.zipCode) {
@@ -149,7 +150,7 @@ function Profile () {
   useEffect(() => {
     const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
     newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
-    // setMouthWateringDishes(null)
+    setMouthWateringDishes(null)
     setMouthWateringDishes(newMouthWateringDishes);
   }, [dishes])
 

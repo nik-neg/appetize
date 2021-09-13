@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { uploadImageBeforePublish } from '../../store/userSlice';
 
-export default function DropZone (props) {
+export default function DropZone (props) { // https://yuvaleros.github.io/material-ui-dropzone/
   const [fileObjects, setFileObjects] = useState([]);
   const dialogTitle = () => (
     <>
@@ -47,9 +47,10 @@ export default function DropZone (props) {
         cancelButtonText={"cancel"}
         submitButtonText={"submit"}
         maxFileSize={5000000}
+        filesLimit={1}
         open={props.open}
-        onAdd={newFileObjs => {
-          setFileObjects([].concat(fileObjects, newFileObjs));
+        onAdd={(newFileObjs) => {
+          setFileObjects(newFileObjs);
         }}
         onDelete={handleDelete}
         onClose={() => props.setOpen(false)}
