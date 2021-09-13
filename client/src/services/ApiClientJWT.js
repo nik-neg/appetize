@@ -33,7 +33,7 @@ apiServiceJWT.getProfile = (accessToken) => {
     {
       method: 'GET',
       credentials: 'include',
-      mode: 'cors',
+      mode: 'cors', // TODO: check
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,

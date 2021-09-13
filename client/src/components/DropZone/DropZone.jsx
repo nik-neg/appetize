@@ -26,7 +26,7 @@ export default function DropZone (props) {
   const baseUrl = 'http://localhost:3001';
   let imageURL = `${baseUrl}/profile/${userData._id}/download?created=`
 
-  const handleUpload = async () => { // TODO: set limitation here, or handle image control via a counter to save / retrive the actual image
+  const handleUpload = async () => {
     props.setImagePath('');
     const newCreatedImageDate = new Date().getTime();
     imageURL += newCreatedImageDate;
@@ -47,9 +47,10 @@ export default function DropZone (props) {
         cancelButtonText={"cancel"}
         submitButtonText={"submit"}
         maxFileSize={5000000}
+        filesLimit={1}
         open={props.open}
-        onAdd={newFileObjs => {
-          setFileObjects([].concat(fileObjects, newFileObjs));
+        onAdd={(newFileObjs) => {
+          setFileObjects(newFileObjs);
         }}
         onDelete={handleDelete}
         onClose={() => props.setOpen(false)}
