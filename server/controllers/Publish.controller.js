@@ -74,13 +74,13 @@ module.exports.removeDish = async (req, res) => {
         if (err) console.log(err);
         const fileId = data.map((entry) => entry._id)[0];
         connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
-        connection.db.collection('fs.files').deleteMany({ filename: `${id}/${createdTime}` });
+        connection.db.collection('fs.files').deleteMany({ filename: `${id}/${createdTime}` }); // TODO: delete one?
       });
     });
-    res.status(200).end();
+    res.status(200).send({});
   } catch (err) {
     console.log(err);
-    res.status(500).end();
+    res.status(500).send();
   }
 };
 
