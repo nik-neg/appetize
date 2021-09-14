@@ -1,9 +1,9 @@
 import Card from '../Card/Card'
 import { useSelector } from 'react-redux';
 import FadeIn from 'react-fade-in';
-// import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-// import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-// import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import IconButton from '@material-ui/core/IconButton';
 
 import './index.scss';
 
@@ -16,49 +16,50 @@ export default function Dashboard (props) {
   return ( // TODO: use clear dishes trigger to fade out dishes
     <div>
       <div className='cards-position'>
-      {/* { fadeCounter > 0 && fadeCounter ===  props.mouthWateringDishes.length ?
-        <FadeIn delay={fadeCounter*1000} transitionDuration={1000}>
-            <IconButton aria-label="back">
-              <ArrowBackIosIcon />
+      { props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
+        <div className="arrow-box">
+          <FadeIn delay={props.mouthWateringDishes.length*1000} transitionDuration={1000}>
+            <IconButton aria-label="backward">
+                <ArrowBackIosIcon />
             </IconButton>
           </FadeIn>
-      : ''} */}
+        </div>
+      : ''}
       { props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
-
-        (props.mouthWateringDishes.map((dish, index) => {
-          console.log(fadeCounter)
+        props.mouthWateringDishes.map((dish, index) => {
           fadeCounter++;
-          console.log(fadeCounter, props.mouthWateringDishes.length)
-          return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
-                  <Box m={2}>
-                    <Card
-                      key={index}
-                      city={dish.city}
-                      voteID={userData._id}
-                      votes={dish.votes}
-                      userID={dish.userID}
-                      creatorName={dish.creatorName}
-                      dishID={dish._id}
-                      zipCode={dish.zipCode}
-                      title={dish.title}
-                      description={dish.description}
-                      recipe={dish.recipe}
-                      imageUrl={dish.imageUrl}
-                      created={dish.created}
-                      />
-                  </Box>
-                  </FadeIn>
-                }))
+          return (
+            <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
+                <Box m={2}>
+                  <Card
+                    key={index}
+                    city={dish.city}
+                    voteID={userData._id}
+                    votes={dish.votes}
+                    userID={dish.userID}
+                    creatorName={dish.creatorName}
+                    dishID={dish._id}
+                    zipCode={dish.zipCode}
+                    title={dish.title}
+                    description={dish.description}
+                    recipe={dish.recipe}
+                    imageUrl={dish.imageUrl}
+                    created={dish.created}
+                    />
+                </Box>
+            </FadeIn>)
+                })
         : ''}
-        {/* { fadeCounter > 0 && fadeCounter === props.mouthWateringDishes.length ?
+      { fadeCounter > 0
+      ?
         <div className="arrow-box">
-          <FadeIn delay={fadeCounter*1000} transitionDuration={1000}>
+          <FadeIn delay={props.mouthWateringDishes.length*1000} transitionDuration={1000}>
             <IconButton aria-label="forward">
               <ArrowForwardIosIcon />
             </IconButton>
           </FadeIn>
         </div>
-      : ''} */}
+      : ''}
       </div>
     </div>
   );
