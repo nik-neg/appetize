@@ -1,6 +1,9 @@
 import Card from '../Card/Card'
 import { useSelector } from 'react-redux';
 import FadeIn from 'react-fade-in';
+// import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+// import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+// import IconButton from '@material-ui/core/IconButton';
 
 import './index.scss';
 
@@ -13,9 +16,19 @@ export default function Dashboard (props) {
   return (
     <div>
       <div className='cards-position'>
-        {props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
+      {/* { fadeCounter > 0 && fadeCounter ===  props.mouthWateringDishes.length ?
+        <FadeIn delay={fadeCounter*1000} transitionDuration={1000}>
+            <IconButton aria-label="back">
+              <ArrowBackIosIcon />
+            </IconButton>
+          </FadeIn>
+      : ''} */}
+      { props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
+
         (props.mouthWateringDishes.map((dish, index) => {
+          console.log(fadeCounter)
           fadeCounter++;
+          console.log(fadeCounter, props.mouthWateringDishes.length)
           return <FadeIn key={index} delay={fadeCounter*1000} transitionDuration={1000}>
                   <Box m={2}>
                     <Card
@@ -37,6 +50,15 @@ export default function Dashboard (props) {
                   </FadeIn>
                 }))
         : ''}
+        {/* { fadeCounter > 0 && fadeCounter === props.mouthWateringDishes.length ?
+        <div className="arrow-box">
+          <FadeIn delay={fadeCounter*1000} transitionDuration={1000}>
+            <IconButton aria-label="forward">
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </FadeIn>
+        </div>
+      : ''} */}
       </div>
     </div>
   );

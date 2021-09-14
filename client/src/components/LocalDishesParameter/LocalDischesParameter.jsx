@@ -2,7 +2,6 @@ import React from 'react';
 import './index.css'
 import { useState } from 'react';
 import Slider from '../Slider/Slider';
-// import CheckBox from '../CheckBox/CheckBox';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import SearchIcon from '@material-ui/icons/Search';

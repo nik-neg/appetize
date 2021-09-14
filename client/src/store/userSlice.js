@@ -5,6 +5,7 @@ import apiServiceJWT from '../services/ApiClientJWT';
 const initialState = {
   userData: {},
   dishesInRadius: [],
+  pageNumber: 1,
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,

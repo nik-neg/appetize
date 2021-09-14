@@ -114,7 +114,7 @@ const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) =
         },
       );
       if (dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
-        dishesForClient.push(...dailyTreatsFromDB); // not only one elements
+        dishesForClient.push(...dailyTreatsFromDB);
       }
     } catch (e) {
       console.log(e);
