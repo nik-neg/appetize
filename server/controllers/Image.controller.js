@@ -13,7 +13,7 @@ module.exports.saveImage = async (req, res) => { // TODO: return date informatio
     }
     const { id } = req.params;
     const { imageURL } = req.query;
-    if (imageURL !== 'undefined') {
+    if (imageURL) {
     // TODO: remove old avatar image
 
       const userData = await User.findOne({ _id: id });
