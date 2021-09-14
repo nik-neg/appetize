@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getDishesInRadius } from '../../store/userSlice';
+import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
@@ -28,6 +28,7 @@ export default function LocalDishesParameter (props) {
       return;
     }
     try {
+      await asyncWrapper(dispatch, clearDishesInStore);
       await asyncWrapper(
         dispatch, getDishesInRadius, { id: userDataClone._id, radius,  cookedOrdered: JSON.stringify(cookedOrdered)}
         );
