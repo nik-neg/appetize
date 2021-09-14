@@ -30,6 +30,7 @@ module.exports.createUser = async (req, res) => {
       created: new Date(),
     });
     user = await newUser.save();
+    user.password = null;
     const { _id } = user;
     const accessToken = jwt.sign({ _id }, SECRET_KEY);
     res.status(201).send({ user, accessToken });
