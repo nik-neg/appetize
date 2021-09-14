@@ -10,7 +10,7 @@ export default function Dashboard (props) {
   let fadeCounter = 0;
   const userData = {...useSelector((state) => state.user.userData)};
 
-  return (
+  return ( // TODO: use clear dishes trigger to fade out dishes
     <div>
       <div className='cards-position'>
         {props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
