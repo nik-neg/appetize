@@ -40,6 +40,8 @@ A simple voting system enables to vote for favourite dishes.
 https://youtu.be/_8mGjuWzNS0
 
 # Getting started
+ 
+get your `API KEY` at `https://zipcodebase.com` and put your envrironment variables into the .env file
 
 run `npm i` in the server & client folder
   
