@@ -51,9 +51,13 @@ export const getDishesInRadius = createAsyncThunk(
 
 export const uploadImageBeforePublish = createAsyncThunk(
   'userData/uploadImageBeforePublish',
-  async ({ userId, file, newCreatedImageDate }) => { // save newCreatedImageDate to created (buffered) image array of user
-    await ApiClient.uploadImage(userId, file, newCreatedImageDate);
-    return newCreatedImageDate;
+  async ({ userId, file, chosenImageDate, imageURL}) => { // save newCreatedImageDate to created (buffered) image array of user
+    const userData = await ApiClient.uploadImage(userId, file, chosenImageDate, imageURL);
+    if (userData) {
+      return { ...userData, chosenImageDate };
+    } else {
+      return { chosenImageDate };
+    }
   }
 );
 
@@ -126,7 +130,9 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [uploadImageBeforePublish.fulfilled]: (state, action) => {
-      state.chosenImageDate = action.payload;
+      const { userData, chosenImageDate } = action.payload;
+      if (userData) state.userData = userData;
+      if (chosenImageDate) state.chosenImageDate = chosenImageDate;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars

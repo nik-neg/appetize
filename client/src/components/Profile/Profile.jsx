@@ -36,6 +36,9 @@ const logOutButtonStyle = { maxWidth: '150px', maxHeight: '40px', minWidth: '150
 
 import apiServiceJWT from '../../services/ApiClientJWT';
 
+import IconButton from '@material-ui/core/IconButton';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -94,7 +97,9 @@ function Profile () {
   const classesGrid = useStylesGrid();
 
   const [open, setOpen] = useState(false);
+  const [openAvatar, setOpenAvatar] = useState(false);
   const [imagePath, setImagePath] = useState(``);
+  const [imagePathForAvarar, setImagePathForAvatar] = useState('');
 
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
@@ -133,6 +138,7 @@ function Profile () {
         }
         let { firstName, _id } = userInfo;
         firstName = firstName && firstName[0].toUpperCase() + firstName.slice(1);
+        setImagePathForAvatar(store.getState().user.userData.avatarImageUrl);
         setUserData((prevValue) => ({
           ...prevValue,
           _id,
@@ -226,7 +232,21 @@ function Profile () {
           <Grid item lg={4} sm={12} xs={12} >
             <h1>{userData.firstName}</h1>
             <div className="avatar-box">
-                <Avatar alt="No Avatar" src="./logo.jpg" className={classesAvatar.large} style={{ height: '8rem', width: '8rem' }} />
+                <Avatar alt="No Avatar" src={imagePathForAvarar} className={classesAvatar.large} style={{ height: '8rem', width: '8rem' }} />
+            </div>
+            <div>
+              <DropZone
+                setOpen={setOpenAvatar}
+                open={openAvatar}
+                setImagePath={setImagePathForAvatar}
+                avatar={true}
+              />
+              <IconButton
+              aria-label="foto"
+              onClick={() => setOpenAvatar(true)}
+              >
+                <AddAPhotoIcon />
+            </IconButton>
             </div>
             <TextField
               id="standard-basic"
@@ -514,12 +534,9 @@ function Profile () {
           />
         </Grid>
         <DropZone
-          firstName={userData.firstName}
           setOpen={setOpen}
           open={open}
           setImagePath={setImagePath}
-          imagePath={imagePath}
-          dish={dish}
         />
         <Hidden only={['xs', 'sm', 'md']}>
           <Grid item lg={4}>

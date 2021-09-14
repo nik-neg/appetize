@@ -22,11 +22,15 @@ const loginUser = (user) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSearchParams to pass new Date
+const uploadImage = async (id, data, chosenImageDate, imageURL) => { //TODO: use URLSearchParams to pass new Date
+  const queryObject = {
+    created: chosenImageDate,
+  }
+  if (imageURL) {
+    queryObject.imageURL = imageURL;
+  }
   let url = new URL(`${baseUrl}/profile/${id}/upload`)
-  url.search = new URLSearchParams({
-    created: newCreatedImageDate,
-  })
+  url.search = new URLSearchParams(queryObject);
   const formData = new FormData();
   formData.append('file', data.file);
 
@@ -35,8 +39,8 @@ const uploadImage = async (id, data, newCreatedImageDate) => { //TODO: use URLSe
       method: 'POST',
       body: formData,
     })
-    .then((imageData) => imageData)
-    .then((imageData) => imageData)
+    .then((data) => data.json())
+    .then((data) => data)
     .catch((err) => console.log(err));
 };
 
