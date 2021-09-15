@@ -11,7 +11,18 @@ module.exports.saveImage = async (req, res) => { // TODO: return date informatio
     if (!req.file || req.file.length <= 0) {
       return res.send('You must select at least 1 file.');
     }
-    res.status(201).end();
+    const { id } = req.params;
+    const { imageURL } = req.query;
+    if (imageURL) {
+    // TODO: remove old avatar image
+
+      const userData = await User.findOne({ _id: id });
+      userData.avatarImageUrl = imageURL;
+      await userData.save();
+      userData.password = null;
+      res.status(201).send({ userData });
+    }
+    res.status(201).send();
   } catch (error) {
     console.log(error);
     if (error.code === 'LIMIT_UNEXPECTED_FILE') {
@@ -56,7 +67,7 @@ module.exports.removeImages = async (req, res) => {
   });
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
-  const deletePattern = new RegExp(`^(?!.+(${notMatchingDatesString})$)${id}.*`);
+  const deletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
   const { connection } = mongoose;
   try {
     connection.db.collection('fs.files', (err, collection) => {

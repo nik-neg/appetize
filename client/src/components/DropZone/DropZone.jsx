@@ -28,9 +28,16 @@ export default function DropZone (props) {
 
   const handleUpload = async () => {
     props.setImagePath('');
-    const newCreatedImageDate = new Date().getTime();
-    imageURL += newCreatedImageDate;
-    await asyncWrapper(dispatch, uploadImageBeforePublish, {userId: userData._id, file: fileObjects['0'], newCreatedImageDate});
+    let chosenImageDate = new Date().getTime();
+    chosenImageDate = props.avatar ? `${chosenImageDate}_avatar` : chosenImageDate;
+    imageURL += chosenImageDate;
+    await asyncWrapper(
+      dispatch, uploadImageBeforePublish,
+      { userId: userData._id,
+        file: fileObjects['0'],
+        chosenImageDate,
+        imageURL: props.avatar ? imageURL : undefined
+      });
     props.setImagePath(imageURL);
   }
 
