@@ -152,6 +152,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     [deleteDish.fulfilled]: (state, action) => {
       state.dishesInRadius = state.dishesInRadius.filter((dailyTreat) => dailyTreat._id !== action.payload);
+      state.userData.dailyFood = state.userData.dailyFood.filter((dailyFoodId) => dailyFoodId !== action.payload);
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
