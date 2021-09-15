@@ -6,6 +6,8 @@ const User = require('../models/User');
 
 const DailyTreat = require('../models/DailyTreat');
 
+const helper = require('../helpers/db.helpers');
+
 module.exports.saveImage = async (req, res) => { // TODO: return date information
   try {
     if (!req.file || req.file.length <= 0) {
@@ -14,8 +16,6 @@ module.exports.saveImage = async (req, res) => { // TODO: return date informatio
     const { id } = req.params;
     const { imageURL } = req.query;
     if (imageURL) {
-    // TODO: remove old avatar image
-
       const userData = await User.findOne({ _id: id });
       userData.avatarImageUrl = imageURL;
       await userData.save();
@@ -68,22 +68,5 @@ module.exports.removeImages = async (req, res) => {
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
   const deletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  const { connection } = mongoose;
-  try {
-    connection.db.collection('fs.files', (err, collection) => {
-      collection.find({ filename: { $regex: deletePattern } }).toArray((err, data) => {
-        if (err) console.log(err);
-        const filesIDArray = data.map((entry) => entry._id);
-        filesIDArray.forEach((fileId) => {
-          connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
-        });
-        connection.db.collection('fs.files').deleteMany({ filename: { $regex: deletePattern } });
-      });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).end();
-  }
-
-  res.end();
+  helper.removeImageData(deletePattern, 'deleteMany', res);
 };
