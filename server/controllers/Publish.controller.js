@@ -6,6 +6,8 @@ const User = require('../models/User');
 
 const DailyTreat = require('../models/DailyTreat');
 
+const helper = require('../helpers/db.helpers');
+
 module.exports.publishDish = async (req, res) => {
   const { id } = req.params;
   const {
@@ -65,23 +67,10 @@ module.exports.removeDish = async (req, res) => {
   // eslint-disable-next-line eqeqeq
   user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
   await user.save();
-  const { connection } = mongoose;
 
   // remove from files and chunks
-  try {
-    connection.db.collection('fs.files', (err, collection) => {
-      collection.find({ filename: `${id}/${createdTime}` }).toArray((err, data) => {
-        if (err) console.log(err);
-        const fileId = data.map((entry) => entry._id)[0];
-        connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
-        connection.db.collection('fs.files').deleteMany({ filename: `${id}/${createdTime}` }); // TODO: delete one?
-      });
-    });
-    res.status(200).send({});
-  } catch (err) {
-    console.log(err);
-    res.status(500).send();
-  }
+  const deletePattern = new RegExp(`${id}/${createdTime}`);
+  helper.removeImageData(deletePattern, 'deleteOne', res);
 };
 
 const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) => {
