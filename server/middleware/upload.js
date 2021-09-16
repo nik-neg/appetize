@@ -10,8 +10,8 @@ const storage = new GridFsStorage({
     const { id } = req.params;
     const { imageURL } = req.query;
     if (imageURL) {
-      const deletePattern = new RegExp(`^${id}/[0-9]*_avatar$`);
-      helper.removeImageData(deletePattern, 'deleteOne');
+      const excludeDeletePattern = new RegExp(`^${id}/[0-9]*_avatar$`);
+      helper.removeImageData(excludeDeletePattern, 'deleteOne');
     }
     const match = ['image/png', 'image/jpeg']; // /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/
 
