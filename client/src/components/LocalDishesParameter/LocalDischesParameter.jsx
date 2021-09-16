@@ -8,18 +8,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
+import { getDishesInRadius, clearDishesInStore, refreshDishesInDashboard} from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-export default function LocalDishesParameter (props) {
+import { store } from '../../store/index';
+
+export default function LocalDishesParameter () {
 
   const [radius, setRadius] = useState(2);
   const userDataClone = {...useSelector((state) => state.user.userData)};
   const dispatch = useDispatch();
 
-  // const asyncWrapper = async (dispatch, asyncFunc, data) => {
-  //   return await dispatch(asyncFunc(data));
-  // }
+  const handleLocalDishesParameterResults = () => {
+    const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
+    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
+    dispatch(clearDishesInStore());
+    dispatch(refreshDishesInDashboard(newMouthWateringDishes));
+  }
 
   const initialPageNumber = 1;
 
@@ -36,7 +41,7 @@ export default function LocalDishesParameter (props) {
             cookedOrdered: JSON.stringify(cookedOrdered),
             pageNumber: initialPageNumber,
           }))
-      props.onRadiusSearch() // TODO: after move own func
+      handleLocalDishesParameterResults();
     } catch(e) {
       console.log(e);
     }

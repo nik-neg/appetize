@@ -59,7 +59,7 @@ export const getDishesInRadius = createAsyncThunk(
 
 export const uploadImageBeforePublish = createAsyncThunk(
   'userData/uploadImageBeforePublish',
-  async ({ userId, file, chosenImageDate, imageURL}) => { // save newCreatedImageDate to created (buffered) image array of user
+  async ({ userId, file, chosenImageDate, imageURL}) => {
     const userData = await ApiClient.uploadImage(userId, file, chosenImageDate, imageURL);
     if (userData) {
       return { ...userData, chosenImageDate };
@@ -78,12 +78,19 @@ export const logoutUser =  createAsyncThunk(
 );
 
 export const deleteDish = createAsyncThunk(
-  'userDate/deleteDish',
+  'userData/deleteDish',
   async ({ userId, dishId }) => {
     await ApiClient.deleteDish(userId, dishId);
     return dishId;
   }
-)
+);
+
+export const refreshDishesInDashboard = createAsyncThunk(
+  'userData/refreshDishesInDashboard',
+  async (dishes) => {
+    return dishes;
+  }
+);
 
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
@@ -155,7 +162,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [uploadImageBeforePublish.pending]: (state, action) => {
       state.loading = true;
     },
-    [logoutUser.fulfilled]: (state, action) => { // TODO: refactor?
+    [logoutUser.fulfilled]: (state, action) => {
       state.isAuthenticated = false;
       state.userData = action.payload.userData;
       state.dishesInRadius = [];
@@ -172,6 +179,14 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     // eslint-disable-next-line no-unused-vars
     [deleteDish.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [refreshDishesInDashboard.fulfilled]: (state, action) => {
+      state.dishesInRadius = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [refreshDishesInDashboard.pending]: (state, action) => {
       state.loading = true;
     },
   }
