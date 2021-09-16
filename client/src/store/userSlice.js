@@ -5,6 +5,14 @@ import apiServiceJWT from '../services/ApiClientJWT';
 const initialState = {
   userData: {},
   dishesInRadius: [],
+  searchData: {
+    pageNumber: 1,
+    radius: 0,
+    cookedOrdered: {
+      cooked: true,
+      ordered: true
+    }
+  },
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -43,15 +51,15 @@ export const clearDishesInStore = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   'userData/getDishesInRadius',
-  async ({ id, radius, cookedOrdered }) => {
-    const response =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered);
-    return response;
+  async ({ id, radius, cookedOrdered, pageNumber}) => {
+    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber);
+    return { dishesInRadius, radius, cookedOrdered, pageNumber };
   }
 );
 
 export const uploadImageBeforePublish = createAsyncThunk(
   'userData/uploadImageBeforePublish',
-  async ({ userId, file, chosenImageDate, imageURL}) => { // save newCreatedImageDate to created (buffered) image array of user
+  async ({ userId, file, chosenImageDate, imageURL}) => {
     const userData = await ApiClient.uploadImage(userId, file, chosenImageDate, imageURL);
     if (userData) {
       return { ...userData, chosenImageDate };
@@ -70,12 +78,19 @@ export const logoutUser =  createAsyncThunk(
 );
 
 export const deleteDish = createAsyncThunk(
-  'userDate/deleteDish',
+  'userData/deleteDish',
   async ({ userId, dishId }) => {
     await ApiClient.deleteDish(userId, dishId);
     return dishId;
   }
-)
+);
+
+export const refreshDishesInDashboard = createAsyncThunk(
+  'userData/refreshDishesInDashboard',
+  async (dishes) => {
+    return dishes;
+  }
+);
 
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
@@ -112,8 +127,16 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [getDishesInRadius.fulfilled]: (state, action) => {
-      state.dishesInRadius = action.payload;
-      const filteredUserDishes = [...action.payload.filter((dish) => dish.userID == state.userData._id)]
+      const { dishesInRadius, radius, cookedOrdered, pageNumber } = action.payload;
+      const newSearchData = { radius, cookedOrdered, pageNumber };
+      if (dishesInRadius.length > 0) {
+        state.dishesInRadius = dishesInRadius;
+        state.searchData = newSearchData;
+      } else {
+        state.searchData = newSearchData;
+        state.searchData.pageNumber -= 1;
+      }
+      const filteredUserDishes = [...dishesInRadius.filter((dish) => dish.userID == state.userData._id)]
       state.userData.dailyFood = filteredUserDishes.map((filteredDish) => filteredDish._id)
       state.loading = false;
     },
@@ -139,7 +162,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [uploadImageBeforePublish.pending]: (state, action) => {
       state.loading = true;
     },
-    [logoutUser.fulfilled]: (state, action) => { // TODO: refactor?
+    [logoutUser.fulfilled]: (state, action) => {
       state.isAuthenticated = false;
       state.userData = action.payload.userData;
       state.dishesInRadius = [];
@@ -152,11 +175,18 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     [deleteDish.fulfilled]: (state, action) => {
       state.dishesInRadius = state.dishesInRadius.filter((dailyTreat) => dailyTreat._id !== action.payload);
-      state.userData.dailyFood = state.userData.dailyFood.filter((dailyFoodId) => dailyFoodId !== action.payload);
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
     [deleteDish.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [refreshDishesInDashboard.fulfilled]: (state, action) => {
+      state.dishesInRadius = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [refreshDishesInDashboard.pending]: (state, action) => {
       state.loading = true;
     },
   }

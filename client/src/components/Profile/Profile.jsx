@@ -24,7 +24,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useDispatch, useSelector} from 'react-redux'; // useSelector
+import { useDispatch,} from 'react-redux';
 import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -150,13 +150,6 @@ function Profile () {
     getProfile(accessToken);
   }, []);
 
-  const dishes = useSelector((state) => state.user.dishesInRadius);
-  useEffect(() => {
-    const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
-    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
-    setMouthWateringDishes(newMouthWateringDishes);
-  }, [dishes])
-
   const handleChangeZipCode = (event) => {
     setZipCode(event.target.value);
   }
@@ -185,7 +178,7 @@ function Profile () {
     }))
   }
 
-  const handlePublish = async (event) => { // TODO: if image is not published, remove from DB?
+  const handlePublish = async (event) => {
     const userId = userData._id;
     const chosenImageDate = store.getState().user.chosenImageDate;
     if(event.target.checked) {
@@ -204,14 +197,6 @@ function Profile () {
         console.log(e);
       }
     }
-  }
-  const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
-
-  const handleLocalDishesParameterResults = () => {
-    const newMouthWateringDishes = [...store.getState().user.dishesInRadius] // TODO: use of selector?
-    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
-    setMouthWateringDishes(null)
-    setMouthWateringDishes(newMouthWateringDishes);
   }
 
   const handleLogout = async () => {
@@ -530,7 +515,6 @@ function Profile () {
         </Hidden>
         <Grid item lg={4} style={{ top: '8rem' }}>
           <LocalDishesParameter
-            onRadiusSearch={handleLocalDishesParameterResults}
           />
         </Grid>
         <DropZone
@@ -558,7 +542,6 @@ function Profile () {
           <Grid item lg={12}>
           <Dashboard
             id={userData._id}
-            mouthWateringDishes= {mouthWateringDishes}
             />
           </Grid>
           </Hidden>
@@ -567,8 +550,7 @@ function Profile () {
           <Grid item sm={12}>
             <div className="dashboard">
               <Dashboard
-                id={userData._id} // refactor?
-                mouthWateringDishes={mouthWateringDishes}
+                id={userData._id}
                 />
             </div>
           </Grid>

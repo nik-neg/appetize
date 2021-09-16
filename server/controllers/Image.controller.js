@@ -37,14 +37,15 @@ module.exports.retrieveImage = async (req, res) => {
   const { connection } = mongoose;
   const gfs = gridfs(connection.db);
   const { created } = req.query;
+  const filename = `${req.params.id}/${created}`;
   gfs.files.findOne({
-    filename: `${req.params.id}/${created}`,
+    filename,
   }, (err, file) => {
     if (err || !file) {
       res.send('File Not Found');
     } else {
       const readstream = gfs.createReadStream({
-        filename: `${req.params.id}/${created}`,
+        filename,
       });
       readstream.pipe(res);
     }
@@ -67,6 +68,6 @@ module.exports.removeImages = async (req, res) => {
   });
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
-  const deletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  helper.removeImageData(deletePattern, 'deleteMany', res);
+  const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
+  helper.removeImageData(excludeDeletePattern, 'deleteMany', res);
 };
