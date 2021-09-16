@@ -5,7 +5,7 @@ import FadeIn from 'react-fade-in';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
-import { getDishesInRadius,  } from '../../store/userSlice';
+import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
 import { store } from '../../store/index';
 
 import './index.scss';
@@ -37,6 +37,7 @@ export default function Dashboard () {
       ? searchData.pageNumber  - 1
       : 1;
     }
+    dispatch(clearDishesInStore());
     dispatch(getDishesInRadius({
       id: userData._id,
       ...searchData

@@ -8,10 +8,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getDishesInRadius, clearDishesInStore, refreshDishesInDashboard} from '../../store/userSlice';
+import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import { store } from '../../store/index';
+// import { store } from '../../store/index';
 
 export default function LocalDishesParameter () {
 
@@ -19,12 +19,12 @@ export default function LocalDishesParameter () {
   const userDataClone = {...useSelector((state) => state.user.userData)};
   const dispatch = useDispatch();
 
-  const handleLocalDishesParameterResults = () => {
-    const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
-    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
-    dispatch(clearDishesInStore());
-    dispatch(refreshDishesInDashboard(newMouthWateringDishes));
-  }
+  // const handleLocalDishesParameterResults = () => {
+  //   const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
+  //   newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
+  //   dispatch(clearDishesInStore());
+  //   dispatch(refreshDishesInDashboard(newMouthWateringDishes));
+  // }
 
   const initialPageNumber = 1;
 
@@ -41,7 +41,7 @@ export default function LocalDishesParameter () {
             cookedOrdered: JSON.stringify(cookedOrdered),
             pageNumber: initialPageNumber,
           }))
-      handleLocalDishesParameterResults();
+      // handleLocalDishesParameterResults();
     } catch(e) {
       console.log(e);
     }
