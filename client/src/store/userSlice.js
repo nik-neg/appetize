@@ -5,7 +5,14 @@ import apiServiceJWT from '../services/ApiClientJWT';
 const initialState = {
   userData: {},
   dishesInRadius: [],
-  pageNumber: 1,
+  searchData: {
+    pageNumber: 1,
+    radius: 0,
+    cookedOrdered: {
+      cooked: true,
+      ordered: true
+    }
+  },
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -44,10 +51,9 @@ export const clearDishesInStore = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   'userData/getDishesInRadius',
-  async ({ id, radius, cookedOrdered }) => {
-    const pageNumber = 1;
-    const response =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber);
-    return response;
+  async ({ id, radius, cookedOrdered, pageNumber}) => {
+    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber);
+    return { dishesInRadius, radius, cookedOrdered, pageNumber };
   }
 );
 
@@ -114,8 +120,16 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [getDishesInRadius.fulfilled]: (state, action) => {
-      state.dishesInRadius = action.payload;
-      const filteredUserDishes = [...action.payload.filter((dish) => dish.userID == state.userData._id)]
+      const { dishesInRadius, radius, cookedOrdered, pageNumber } = action.payload;
+      const newSearchData = { radius, cookedOrdered, pageNumber };
+      if (dishesInRadius.length > 0) {
+        state.dishesInRadius = dishesInRadius;
+        state.searchData = newSearchData;
+      } else {
+        state.searchData = newSearchData;
+        state.searchData.pageNumber -= 1;
+      }
+      const filteredUserDishes = [...dishesInRadius.filter((dish) => dish.userID == state.userData._id)]
       state.userData.dailyFood = filteredUserDishes.map((filteredDish) => filteredDish._id)
       state.loading = false;
     },

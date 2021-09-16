@@ -4,6 +4,8 @@ import FadeIn from 'react-fade-in';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
+import { useDispatch } from 'react-redux';
+import { getDishesInRadius,  } from '../../store/userSlice';
 
 import './index.scss';
 
@@ -12,10 +14,23 @@ import Box from '@material-ui/core/Box';
 export default function Dashboard (props) {
   let fadeCounter = 0;
   const userData = {...useSelector((state) => state.user.userData)};
+  const searchData = {...useSelector((state) => state.user.searchData)};
+  const dispatch = useDispatch();
 
   const nextPage = true;
   const handleClick = async (nextPage) => {
-    console.log(nextPage)
+    if (nextPage){
+      searchData.pageNumber += 1;
+    } else {
+      if (searchData.pageNumber === 1) return;
+      searchData.pageNumber = searchData.pageNumber > 0
+      ? searchData.pageNumber  - 1
+      : 1;
+    }
+    dispatch(getDishesInRadius({
+      id: userData._id,
+      ...searchData
+    }))
   }
 
   return ( // TODO: use clear dishes trigger to fade out dishes

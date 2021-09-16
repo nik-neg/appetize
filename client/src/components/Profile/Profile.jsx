@@ -24,7 +24,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useDispatch, useSelector} from 'react-redux'; // useSelector
+import { useDispatch, useSelector} from 'react-redux';
 import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -150,6 +150,7 @@ function Profile () {
     getProfile(accessToken);
   }, []);
 
+  // TODO: move to dashboard?
   const dishes = useSelector((state) => state.user.dishesInRadius);
   useEffect(() => {
     const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
@@ -205,8 +206,8 @@ function Profile () {
       }
     }
   }
+  // TODO: move to dashboard?
   const [mouthWateringDishes, setMouthWateringDishes] = useState([]);
-
   const handleLocalDishesParameterResults = () => {
     const newMouthWateringDishes = [...store.getState().user.dishesInRadius] // TODO: use of selector?
     newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);

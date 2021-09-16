@@ -11,16 +11,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-
 export default function LocalDishesParameter (props) {
 
   const [radius, setRadius] = useState(2);
   const userDataClone = {...useSelector((state) => state.user.userData)};
   const dispatch = useDispatch();
 
-  const asyncWrapper = async (dispatch, asyncFunc, data) => {
-    return await dispatch(asyncFunc(data));
-  }
+  // const asyncWrapper = async (dispatch, asyncFunc, data) => {
+  //   return await dispatch(asyncFunc(data));
+  // }
+
+  const initialPageNumber = 1;
 
   const handleRadiusSearch = async () => {
     // TODO: pop up window to choose paramters, e.g. alert
@@ -28,11 +29,14 @@ export default function LocalDishesParameter (props) {
       return;
     }
     try {
-      await asyncWrapper(dispatch, clearDishesInStore);
-      await asyncWrapper(
-        dispatch, getDishesInRadius, { id: userDataClone._id, radius,  cookedOrdered: JSON.stringify(cookedOrdered)}
-        );
-      props.onRadiusSearch()
+      dispatch(clearDishesInStore());
+      dispatch(getDishesInRadius({
+            id: userDataClone._id,
+            radius,
+            cookedOrdered: JSON.stringify(cookedOrdered),
+            pageNumber: initialPageNumber,
+          }))
+      props.onRadiusSearch() // TODO: after move own func
     } catch(e) {
       console.log(e);
     }
