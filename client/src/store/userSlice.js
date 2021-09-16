@@ -108,6 +108,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [fetchUserDataFromDB.fulfilled]: (state, action) => {
+      console.log('action.payload', action.payload)
       const { user, accessToken } = action.payload;
       localStorage.setItem('accessToken', accessToken);
       state.userData = user;

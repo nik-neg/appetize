@@ -13,7 +13,7 @@ const db = require('./models/db');
 require('dotenv').config();
 
 const corsConfig = {
-  origin: 'http://localhost:3002', // TODO: to change
+  origin: 'http://localhost:3000',
   credentials: true,
 };
 
