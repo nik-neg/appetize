@@ -79,13 +79,14 @@ const publishToDashBoard = (id, data) =>
     .then((imageData) => imageData)
     .catch((err) => console.log(err));
 
-const getDishesInRadius = (id, radius, cookedOrdered) =>
+const getDishesInRadius = (id, radius, cookedOrdered, pageNumber) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
   url.search = new URLSearchParams({
     id,
     radius,
-    cookedOrdered
+    cookedOrdered,
+    pageNumber
   })
   return fetch(url,
   {

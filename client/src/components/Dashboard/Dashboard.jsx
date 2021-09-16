@@ -13,13 +13,18 @@ export default function Dashboard (props) {
   let fadeCounter = 0;
   const userData = {...useSelector((state) => state.user.userData)};
 
+  const nextPage = true;
+  const handleClick = async (nextPage) => {
+    console.log(nextPage)
+  }
+
   return ( // TODO: use clear dishes trigger to fade out dishes
     <div>
       <div className='cards-position'>
       { props.mouthWateringDishes && props.mouthWateringDishes.length > 0 ?
         <div className="arrow-box">
           <FadeIn delay={props.mouthWateringDishes.length*1000} transitionDuration={1000}>
-            <IconButton aria-label="backward">
+            <IconButton aria-label="backward" onClick={() => handleClick(!nextPage)}>
                 <ArrowBackIosIcon />
             </IconButton>
           </FadeIn>
@@ -54,7 +59,7 @@ export default function Dashboard (props) {
       ?
         <div className="arrow-box">
           <FadeIn delay={props.mouthWateringDishes.length*1000} transitionDuration={1000}>
-            <IconButton aria-label="forward">
+            <IconButton aria-label="forward" onClick={() => handleClick(nextPage)}>
               <ArrowForwardIosIcon />
             </IconButton>
           </FadeIn>

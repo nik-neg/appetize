@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 const axios = require('axios');
 
 const mongoose = require('mongoose');
@@ -56,64 +57,69 @@ module.exports.publishDish = async (req, res) => {
 module.exports.removeDish = async (req, res) => {
   const { id, dailyTreatID } = req.params;
   // get created time of dailytreat from image url
-  const dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
-  let createdTime = Array.from(dailyTreat.imageUrl).reverse();
-  const cutIndex = createdTime.indexOf('=');
-  createdTime = createdTime.slice(0, cutIndex).reverse().join('');
-  // remove from dailytreats
-  await DailyTreat.deleteOne({ _id: dailyTreatID });
-  // remove from dailyFood list in user
-  const user = await User.findOne({ _id: id });
-  // eslint-disable-next-line eqeqeq
-  user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
-  await user.save();
-
-  // remove from files and chunks
-  const deletePattern = new RegExp(`${id}/${createdTime}`);
-  helper.removeImageData(deletePattern, 'deleteOne', res);
+  try {
+    const dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
+    let createdTime = Array.from(dailyTreat.imageUrl).reverse();
+    const cutIndex = createdTime.indexOf('=');
+    createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+    // remove from dailytreats
+    await DailyTreat.deleteOne({ _id: dailyTreatID });
+    // remove from dailyFood list in user
+    const user = await User.findOne({ _id: id });
+    // eslint-disable-next-line eqeqeq
+    user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
+    await user.save();
+    // remove from files and chunks
+    const deletePattern = new RegExp(`${id}/${createdTime}`); // TODO: excludeDeletePattern
+    helper.removeImageData(deletePattern, 'deleteOne', res);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send();
+  }
 };
 
-const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered) => {
-  const dishesForClient = [];
+const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => {
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < zipCodesInRadius.length; i++) {
-    try {
-      const dailyTreatsFromDB = [];
-      const ALL_DISHES = 'ALL_DISHES';
-      const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-        ? ALL_DISHES : cookedOrdered.cooked;
-
-      const queryObject = {
-        zipCode: zipCodesInRadius[i].zipCode,
-      };
-      if (cookedOrderedParam !== ALL_DISHES) {
-        queryObject.cookedNotOrdered = cookedOrderedParam;
-      }
-      // eslint-disable-next-line no-await-in-loop
-      await DailyTreat.find( // TODO: use of promise.all?
-        queryObject,
-        (err, dailyTreats) => {
-          dailyTreats.forEach((dailyTreat) => {
-            const copyDailyTreat = {
-              // eslint-disable-next-line no-underscore-dangle
-              ...dailyTreat._doc, city: zipCodesInRadius[i].city,
-            };
-            dailyTreatsFromDB.push(copyDailyTreat);
-          });
-        },
-      );
-      if (dailyTreatsFromDB && dailyTreatsFromDB.length > 0) {
-        dishesForClient.push(...dailyTreatsFromDB);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  const ALL_DISHES = 'ALL_DISHES';
+  const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+    ? ALL_DISHES : cookedOrdered.cooked;
+    // TODO: how to handle imbalanced data ?
+  const queryObject = {};
+  if (cookedOrderedParam !== ALL_DISHES) {
+    queryObject.cookedNotOrdered = cookedOrderedParam;
   }
-  res.send(dishesForClient);
+
+  const zipCodesInRadiusWithOutCity = zipCodesInRadius.map((zipCodeData) => zipCodeData.zipCode);
+  queryObject.zipCode = zipCodesInRadiusWithOutCity;
+  // pagination
+  const PAGE_SIZE = 4;
+  const skip = (pageNumber - 1) * PAGE_SIZE;
+  let dailyTreats = [];
+  try {
+    dailyTreats = await DailyTreat.find(queryObject)
+      .skip(skip)
+      .limit(PAGE_SIZE);
+
+    const zipCodeCityObject = {};
+    zipCodesInRadius.forEach((zipCodeCity) => {
+      zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
+    });
+    // get existing zip codes from db
+    dailyTreats = dailyTreats.map((dailyTreat) => {
+      // eslint-disable-next-line max-len
+      const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode]};
+      return dailyTreatWithCity;
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  res.send(dailyTreats);
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
-  const { id, radius, cookedOrdered } = req.query;
+  const {
+    id, radius, cookedOrdered, pageNumber,
+  } = req.query;
   const parsedCookedOrdered = JSON.parse(cookedOrdered);
   let user;
   try {
@@ -140,7 +146,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
         if (!response.data.results.error) {
           const zipCodesInRadius = response.data.results.map((element) => (
             { zipCode: element.code, city: element.city }));
-          helperFindDishesInDB(res, res, zipCodesInRadius, parsedCookedOrdered);
+          helperFindDishesInDB(res, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
         }
       })
       .catch((error) => {
