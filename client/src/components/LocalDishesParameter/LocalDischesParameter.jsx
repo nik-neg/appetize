@@ -19,13 +19,6 @@ export default function LocalDishesParameter () {
   const userDataClone = {...useSelector((state) => state.user.userData)};
   const dispatch = useDispatch();
 
-  // const handleLocalDishesParameterResults = () => {
-  //   const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
-  //   newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
-  //   dispatch(clearDishesInStore());
-  //   dispatch(refreshDishesInDashboard(newMouthWateringDishes));
-  // }
-
   const initialPageNumber = 1;
 
   const handleRadiusSearch = async () => {
@@ -41,7 +34,6 @@ export default function LocalDishesParameter () {
             cookedOrdered: JSON.stringify(cookedOrdered),
             pageNumber: initialPageNumber,
           }))
-      // handleLocalDishesParameterResults();
     } catch(e) {
       console.log(e);
     }
