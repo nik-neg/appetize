@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
-import Card from '../Card/Card'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector,  } from 'react-redux'; // useDispatch
+// import Card from '../Card/Card'
 import FadeIn from 'react-fade-in';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
-import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
+// import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
 import { store } from '../../store/index';
+import Paper from "@material-ui/core/Paper";
+import Grow from "@mui/material/Grow";
 
 import './index.scss';
 
 import Box from '@material-ui/core/Box';
 
 export default function Dashboard () {
-  let fadeCounter = 0;
-  const userData = {...useSelector((state) => state.user.userData)};
+  // let fadeCounter = 0;
+  // const dispatch = useDispatch();
+  // const userData = {...useSelector((state) => state.user.userData)};
   const searchData = {...useSelector((state) => state.user.searchData)};
-  const dispatch = useDispatch();
+
 
   const [mouthWateringDishes, setMouthWateringDishes] = useState([...store.getState().user.dishesInRadius]);
 
@@ -27,8 +30,18 @@ export default function Dashboard () {
     setMouthWateringDishes(newMouthWateringDishes);
   }, [dishes])
 
+  const icon = (
+    <Paper sx={{ m: 1 }} elevation={4}>
+        TEST
+    </Paper>
+  );
+  const iconArray = Array(4).fill(icon);
+  const [checked, setChecked] = useState(false);
+
   const nextPage = true;
-  const handleClick = async (nextPage) => { // TODO: use of fadein when using pagination ?
+  const handleClick = async (nextPage) => {
+    setChecked(!checked);
+    setTrigger(true);
     if (nextPage){
       searchData.pageNumber += 1;
     } else {
@@ -37,17 +50,68 @@ export default function Dashboard () {
       ? searchData.pageNumber  - 1
       : 1;
     }
-    dispatch(clearDishesInStore());
-    dispatch(getDishesInRadius({
-      id: userData._id,
-      ...searchData
-    }))
+    // dispatch(clearDishesInStore());
+    // dispatch(getDishesInRadius({
+    //   id: userData._id,
+    //   ...searchData
+    // }))
+  }
+  const [trigger, setTrigger] = useState(false);
+  const easeObject = {
+    enter:  (func, triggerValue) => {
+      if (!triggerValue) return;
+      func(() => {
+        console.log('ease out', checked);
+        setChecked(!checked)
+      }, 1250)
+    },
+    exit:  (func, triggerValue) => {
+      if (!triggerValue) return;
+      func(() => {
+        console.log('ease in', checked);
+        setChecked(!checked)
+      }, 1750)
+      setTrigger(false);
+    },
   }
 
-  return ( // TODO: use clear dishes trigger to fade out dishes
+  return (
     <div>
+      {/* { mouthWateringDishes && mouthWateringDishes.length > 0 ? */}
       <div className='cards-position'>
-      { mouthWateringDishes && mouthWateringDishes.length > 0 ?
+        <div className="arrow-box">
+          <FadeIn delay={mouthWateringDishes.length*1000} transitionDuration={1000}>
+            <IconButton aria-label="backward" onClick={() => handleClick(!nextPage)}>
+                <ArrowBackIosIcon />
+            </IconButton>
+          </FadeIn>
+        </div>
+        <Box sx={{ display: "flex" }}>
+          { iconArray.map((el, index) => {
+            return (
+          <Box sx={{ display: "flex" }} key={index}>
+            <Grow
+              key={index}
+              in={checked}
+              // enter={checked ? easeObject.enter(setTimeout, trigger) : ''}
+              exit={ !checked ? easeObject.exit(setTimeout, trigger) : '' }
+              style={{ transformOrigin: "0 0 0" }}
+              {...(checked ? { timeout: index*1000 } : {timeout: index*750})}
+            >
+              {iconArray[0]}
+            </Grow>
+            </Box>
+            );
+          })}
+        </Box>
+        <div className="arrow-box">
+          <FadeIn delay={mouthWateringDishes.length*1000} transitionDuration={1000}>
+            <IconButton aria-label="forward" onClick={() => handleClick(nextPage)}>
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </FadeIn>
+        </div>
+      {/* { mouthWateringDishes && mouthWateringDishes.length > 0 ?
         <div className="arrow-box">
           <FadeIn delay={mouthWateringDishes.length*1000} transitionDuration={1000}>
             <IconButton aria-label="backward" onClick={() => handleClick(!nextPage)}>
@@ -90,8 +154,9 @@ export default function Dashboard () {
             </IconButton>
           </FadeIn>
         </div>
-      : ''}
+      : ''} */}
       </div>
+      {/* : ''} */}
     </div>
   );
 }
