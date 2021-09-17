@@ -11,7 +11,8 @@ const initialState = {
     cookedOrdered: {
       cooked: true,
       ordered: true
-    }
+    },
+    request: false,
   },
   chosenImageDate: '',
   loading: false,
@@ -133,6 +134,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       if (dishesInRadius.length > 0) {
         state.dishesInRadius = dishesInRadius;
         state.searchData = newSearchData;
+        state.request = true;
       } else {
         state.searchData = newSearchData;
         state.searchData.pageNumber -= 1;

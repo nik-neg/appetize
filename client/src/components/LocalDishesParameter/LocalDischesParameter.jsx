@@ -27,7 +27,7 @@ export default function LocalDishesParameter () {
       return;
     }
     try {
-      dispatch(clearDishesInStore());
+      dispatch(clearDishesInStore()); // TODO: remove with fading
       dispatch(getDishesInRadius({
             id: userDataClone._id,
             radius,
