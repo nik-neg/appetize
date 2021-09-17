@@ -11,8 +11,9 @@ const initialState = {
     cookedOrdered: {
       cooked: true,
       ordered: true
-    }
+    },
   },
+  request: 0,
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -45,7 +46,7 @@ export const updateUserZipCode = createAsyncThunk(
 export const clearDishesInStore = createAsyncThunk(
   'userData/clearDishesInStore',
   async () => {
-    return [];
+    return 1;
   }
 );
 
@@ -144,8 +145,10 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [getDishesInRadius.pending]: (state, action) => {
       state.loading = true;
     },
+    // eslint-disable-next-line no-unused-vars
     [clearDishesInStore.fulfilled]: (state, action) => {
-      state.dishesInRadius = action.payload;
+      // state.dishesInRadius = action.payload;
+      state.request += 1; //action.payload;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
