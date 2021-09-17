@@ -21,13 +21,13 @@ export default function LocalDishesParameter () {
 
   const initialPageNumber = 1;
 
-  const handleRadiusSearch = async () => {
+  const handleRadiusSearch = async () => {  // TODO: lock process to avoid to much clicks
     // TODO: pop up window to choose paramters, e.g. alert
     if (!cookedOrdered.cooked && !cookedOrdered.ordered || !userDataClone.zipCode) {
       return;
     }
     try {
-      dispatch(clearDishesInStore()); // TODO: remove with fading
+      dispatch(clearDishesInStore());
       dispatch(getDishesInRadius({
             id: userDataClone._id,
             radius,

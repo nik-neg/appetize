@@ -28,11 +28,20 @@ export default function Dashboard () {
     setMouthWateringDishes(newMouthWateringDishes);
   }, [dishes]);
 
+  const request = useSelector((state) => state.user.request);
+  useEffect(() => {
+    setTimeout(() => {
+      setTrigger(true);
+      setChecked(!checked)
+      setTrigger(false);
+    }, transitionTime)
+  }, [request]);
+
   const [checked, setChecked] = useState(true);
 
   const nextPage = true;
-  const handleClick = async (nextPage) => {
-    if (!nextPage && searchData.pageNumber === 1) return;
+  const handleClick = async (nextPage) => { // TODO: lock process to avoid to much clicks
+    if (nextPage === false && searchData.pageNumber === 1) return;
     // TODO: set info for user that there are no more images ?
     setChecked(!checked);
     setTrigger(true);
@@ -48,7 +57,10 @@ export default function Dashboard () {
       ...searchData
     }))
   }
-  const transitionTime = 1750;
+  const numberOfImages = 4;
+  const transitionTime = 1500;
+  let fadeInFadeOutCoefficent = 0.4;
+  const transitionTimeForArrowButton = transitionTime * (mouthWateringDishes.length/numberOfImages);
   const [trigger, setTrigger] = useState(false);
   const easeObject = {
     // enter:  (func, triggerValue) => {
@@ -71,13 +83,16 @@ export default function Dashboard () {
     <div>
       { mouthWateringDishes && mouthWateringDishes.length > 0 ?
       <div className='cards-position'>
-        <div className="arrow-box">
-          <FadeIn delay={transitionTime} transitionDuration={1000}>
+      {checked
+      ?  <div className="arrow-box">
+          <FadeIn delay={transitionTimeForArrowButton} transitionDuration={1000}>
             <IconButton aria-label="backward" onClick={() => handleClick(!nextPage)}>
                 <ArrowBackIosIcon />
             </IconButton>
           </FadeIn>
         </div>
+      :
+      ''}
         <>
           { mouthWateringDishes.map((dish, index) => {
             return (
@@ -88,7 +103,7 @@ export default function Dashboard () {
               // enter={checked ? easeObject.enter(setTimeout, trigger) : ''}
               exit={ !checked ? easeObject.exit(setTimeout, trigger) : '' }
               style={{ transformOrigin: "0 0 0",}} // style={{ transformOrigin: "0 0 0", transform: "", translate:  "" }}
-              {...(checked ? { timeout: index*1000 } : {timeout: index*1250})}
+              {...(checked ? { timeout: (index+1)*(transitionTime) } : {timeout: index*transitionTime*fadeInFadeOutCoefficent})}
             >
               <Box m={2}>
                 <Card
@@ -112,13 +127,16 @@ export default function Dashboard () {
             );
           })}
         </>
-        <div className="arrow-box">
-          <FadeIn delay={transitionTime} transitionDuration={1000}>
+        {checked
+      ?  <div className="arrow-box">
+          <FadeIn delay={transitionTimeForArrowButton} transitionDuration={1000}>
             <IconButton aria-label="forward" onClick={() => handleClick(nextPage)}>
-              <ArrowForwardIosIcon />
+                <ArrowForwardIosIcon />
             </IconButton>
           </FadeIn>
         </div>
+      :
+      ''}
       </div>
       : ''}
     </div>

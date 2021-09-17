@@ -12,8 +12,8 @@ const initialState = {
       cooked: true,
       ordered: true
     },
-    request: false,
   },
+  request: 0,
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -46,7 +46,7 @@ export const updateUserZipCode = createAsyncThunk(
 export const clearDishesInStore = createAsyncThunk(
   'userData/clearDishesInStore',
   async () => {
-    return [];
+    return 1;
   }
 );
 
@@ -109,7 +109,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [fetchUserDataFromDB.fulfilled]: (state, action) => {
-      console.log('action.payload', action.payload)
       const { user, accessToken } = action.payload;
       localStorage.setItem('accessToken', accessToken);
       state.userData = user;
@@ -134,7 +133,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       if (dishesInRadius.length > 0) {
         state.dishesInRadius = dishesInRadius;
         state.searchData = newSearchData;
-        state.request = true;
       } else {
         state.searchData = newSearchData;
         state.searchData.pageNumber -= 1;
@@ -147,8 +145,10 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [getDishesInRadius.pending]: (state, action) => {
       state.loading = true;
     },
+    // eslint-disable-next-line no-unused-vars
     [clearDishesInStore.fulfilled]: (state, action) => {
-      state.dishesInRadius = action.payload;
+      // state.dishesInRadius = action.payload;
+      state.request += 1; //action.payload;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
