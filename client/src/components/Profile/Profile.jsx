@@ -280,8 +280,8 @@ function Profile () {
             { imagePath.length > 0 ?
               <Image
                 src={imagePath}
-                // imageStyle={{width:"80%", height:"48%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
-                style={{"backgroundColor": "inherit", "marginTop": "17.5%", "marginLeft": "0%", "padding": "150px"}}
+                imageStyle={{"border-radius": "12.5%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
+                style={{"backgroundColor": "inherit", "marginTop": "17.5%","padding": "150px"}}
               />
             : ''}
             </Grid>
@@ -413,8 +413,8 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <Image
               src={imagePath}
-              imageStyle={{width:"75%", height:"100%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
-              style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "20%", "padding": "150px"}}
+              imageStyle={{width:"80%", height:"90%", "border-radius": "5%"}}
+              style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "17.5%", "padding": "150px"}}
             />
           </Grid>
           : ''}
