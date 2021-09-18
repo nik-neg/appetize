@@ -413,8 +413,8 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <Image
               src={imagePath}
-              imageStyle={{width:"80%", height:"90%", "border-radius": "5%"}}
-              style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "17.5%", "padding": "150px"}}
+              imageStyle={{ width:"72.5%", height:"100%", "border-radius": "5%"}}
+              style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "22%", "padding": "150px"}}
             />
           </Grid>
           : ''}
@@ -430,7 +430,7 @@ function Profile () {
                 }}
                 value={dish.title}
                 helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-                style={{"min-width": "60vw"}}
+                style={{"min-width": "55vw"}}
                 rowsMax="10"
                 variant="filled"
                 onChange={handleChangeTextArea('title')}
@@ -448,7 +448,7 @@ function Profile () {
                 }}
                 value={dish.description}
                 helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-                style={{"min-width": "60vw"}}
+                style={{"min-width": "55vw"}}
                 multiline
                 rowsMax="10"
                 variant="filled"
@@ -467,7 +467,7 @@ function Profile () {
                 }}
                 value={dish.recipe}
                 helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                style={{"min-width": "60vw"}}
+                style={{"min-width": "55vw"}}
                 multiline
                 rowsMax="10"
                 variant="filled"
