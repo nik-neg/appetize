@@ -93,6 +93,14 @@ export const refreshDishesInDashboard = createAsyncThunk(
   }
 );
 
+export const upDownVote = createAsyncThunk(
+  'userData/upDownVote',
+  async ({ voteID, dishID, vote }) => {
+    const response =  await ApiClient.voteDish(voteID, dishID, vote);
+    return response;
+  }
+);
+
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
   initialState,
@@ -190,6 +198,16 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     // eslint-disable-next-line no-unused-vars
     [refreshDishesInDashboard.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [upDownVote.fulfilled]: (state, action) => {
+      const { _id } = action.payload;
+      const index = state.dishesInRadius.findIndex((dish) => dish._id === _id);
+      state.dishesInRadius[index] = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [upDownVote.pending]: (state, action) => {
       state.loading = true;
     },
   }

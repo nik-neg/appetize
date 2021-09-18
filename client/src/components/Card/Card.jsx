@@ -20,12 +20,10 @@ import moment from 'moment';
 
 import { useState } from 'react';
 
-import ApiClient from '../../services/ApiClient';
-
 import './index.scss';
 
 import { useDispatch } from 'react-redux';
-import { deleteDish } from '../../store/userSlice';
+import { deleteDish, upDownVote} from '../../store/userSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,9 +64,7 @@ export default function RecipeReviewCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  const [likeColor, setLikeColor] = useState(false);
-
-  const [votes, setVotes] = useState(props.votes);
+  const [likeColor, setLikeColor] = useState(props.voted);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -77,8 +73,6 @@ export default function RecipeReviewCard(props) {
   const handleLike = async () => {
     if (props.voteID === props.userID) return;
     setLikeColor(!likeColor);
-
-    let likeResponse;
     let vote = ''
     if(!likeColor) {
       vote = 'up'
@@ -86,11 +80,10 @@ export default function RecipeReviewCard(props) {
       vote = 'down';
     }
     try {
-      likeResponse = await ApiClient.voteDish(props.voteID, props.dishID, vote);
+      dispatch(upDownVote({ voteID: props.voteID, dishID: props.dishID, vote }));
     } catch(e) {
       console.log(e)
     }
-    setVotes(likeResponse.votes)
   }
 
   const likeColorStatement = props.voteID === props.userID || likeColor ? "#ff0000": 'inherit';
@@ -102,7 +95,7 @@ export default function RecipeReviewCard(props) {
 
   const dispatch = useDispatch();
 
-  const handleDelete = async () => {
+  const handleDelete = async () => { // https://mui.com/components/dialogs/
     try {
       dispatch(deleteDish({ userId: props.voteID, dishId: props.dishID }))
     } catch(e) {
@@ -115,7 +108,7 @@ export default function RecipeReviewCard(props) {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {votes}
+            {props.votes}
           </Avatar>
         }
         title={props.title}
