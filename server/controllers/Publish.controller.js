@@ -188,7 +188,7 @@ module.exports.upDownVote = async (req, res) => {
     let dailyTreat;
     try {
       dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
-      res.send({ votes: dailyTreat.votes });
+      res.send(dailyTreat);
     } catch (e) {
       console.log(e);
     }
