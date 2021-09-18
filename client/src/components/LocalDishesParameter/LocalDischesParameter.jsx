@@ -1,4 +1,3 @@
-import React from 'react';
 import './index.css'
 import { useState } from 'react';
 import Slider from '../Slider/Slider';
@@ -11,11 +10,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-// import { store } from '../../store/index';
-
 export default function LocalDishesParameter () {
 
-  const [radius, setRadius] = useState(2);
+  const [radius, setRadius] = useState(1);
   const userDataClone = {...useSelector((state) => state.user.userData)};
   const dispatch = useDispatch();
 

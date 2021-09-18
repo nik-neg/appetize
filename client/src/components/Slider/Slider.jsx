@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -16,9 +16,10 @@ const useStyles = makeStyles({
 
 export default function InputSlider(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = useState(1);
 
   const handleSliderChange = (event, newValue) => {
+    if (newValue < minValue || newValue > maxValue) return;
     setValue(newValue);
     props.onSearch(newValue)
   };
@@ -35,6 +36,10 @@ export default function InputSlider(props) {
     }
   };
 
+  const maxValue = 20;
+  const minValue = 0.5;
+  const stepSize = 0.1;
+
   return (
     <div className={classes.root}>
       <Typography id="input-slider" gutterBottom>
@@ -46,6 +51,9 @@ export default function InputSlider(props) {
             value={typeof value === 'number' ? value : 0}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
+            max={maxValue}
+            min={minValue}
+            step={stepSize}
           />
         </Grid>
         <Grid item>
@@ -56,9 +64,9 @@ export default function InputSlider(props) {
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
-              step: 2,
-              min: 0,
-              max: 100,
+              step: stepSize,
+              min: minValue,
+              max: maxValue,
               type: 'number',
               'aria-labelledby': 'input-slider',
             }}
