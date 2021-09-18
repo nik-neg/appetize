@@ -28,12 +28,15 @@ export default function LocalDishesParameter () {
     }
     try {
       dispatch(clearDishesInStore());
-      dispatch(getDishesInRadius({
-            id: userDataClone._id,
-            radius,
-            cookedOrdered: JSON.stringify(cookedOrdered),
-            pageNumber: initialPageNumber,
-          }))
+      setTimeout(() => {
+        dispatch(getDishesInRadius({
+          id: userDataClone._id,
+          radius,
+          cookedOrdered: JSON.stringify(cookedOrdered),
+          pageNumber: initialPageNumber,
+        }))
+      }, 1600);
+
     } catch(e) {
       console.log(e);
     }

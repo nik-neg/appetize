@@ -109,6 +109,7 @@ export default function Dashboard () {
                 <Card
                   key={index}
                   city={dish.city}
+                  voted={dish.likedByUserID.some((userId) => userId === userData._id)}
                   voteID={userData._id}
                   votes={dish.votes}
                   userID={dish.userID}
