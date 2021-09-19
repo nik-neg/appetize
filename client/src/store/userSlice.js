@@ -43,15 +43,15 @@ export const updateUserZipCode = createAsyncThunk(
   }
 );
 
-export const clearDishesInStore = createAsyncThunk(
-  'userData/clearDishesInStore',
+export const clearDishesInStoreRequest = createAsyncThunk(
+  'request/clearDishesInStoreRequest',
   async () => {
     return 1;
   }
 );
 
 export const getDishesInRadius = createAsyncThunk(
-  'userData/getDishesInRadius',
+  'dishesInRadius/getDishesInRadius',
   async ({ id, radius, cookedOrdered, pageNumber}) => {
     const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber);
     return { dishesInRadius, radius, cookedOrdered, pageNumber };
@@ -79,22 +79,15 @@ export const logoutUser =  createAsyncThunk(
 );
 
 export const deleteDish = createAsyncThunk(
-  'userData/deleteDish',
+  'dishesInRadius/deleteDish',
   async ({ userId, dishId }) => {
     await ApiClient.deleteDish(userId, dishId);
     return dishId;
   }
 );
 
-export const refreshDishesInDashboard = createAsyncThunk(
-  'userData/refreshDishesInDashboard',
-  async (dishes) => {
-    return dishes;
-  }
-);
-
 export const upDownVote = createAsyncThunk(
-  'userData/upDownVote',
+  'dishesInRadius/upDownVote',
   async ({ voteID, dishID, vote }) => {
     const response =  await ApiClient.voteDish(voteID, dishID, vote);
     return response;
@@ -154,13 +147,13 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     // eslint-disable-next-line no-unused-vars
-    [clearDishesInStore.fulfilled]: (state, action) => {
+    [clearDishesInStoreRequest.fulfilled]: (state, action) => {
       // state.dishesInRadius = action.payload;
       state.request += 1; //action.payload;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
-    [clearDishesInStore.pending]: (state, action) => {
+    [clearDishesInStoreRequest.pending]: (state, action) => {
       state.loading = true;
     },
     [uploadImageBeforePublish.fulfilled]: (state, action) => {
@@ -190,14 +183,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     // eslint-disable-next-line no-unused-vars
     [deleteDish.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [refreshDishesInDashboard.fulfilled]: (state, action) => {
-      state.dishesInRadius = action.payload;
-      state.loading = false;
-    },
-    // eslint-disable-next-line no-unused-vars
-    [refreshDishesInDashboard.pending]: (state, action) => {
       state.loading = true;
     },
     [upDownVote.fulfilled]: (state, action) => {

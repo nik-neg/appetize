@@ -7,7 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getDishesInRadius, clearDishesInStore } from '../../store/userSlice';
+import { getDishesInRadius, clearDishesInStoreRequest } from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default function LocalDishesParameter () {
@@ -24,7 +24,7 @@ export default function LocalDishesParameter () {
       return;
     }
     try {
-      dispatch(clearDishesInStore());
+      dispatch(clearDishesInStoreRequest());
       setTimeout(() => {
         dispatch(getDishesInRadius({
           id: userDataClone._id,
