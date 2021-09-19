@@ -87,11 +87,12 @@ function Profile () {
     notUpdatedZipCodeMessage: 'Please update the zip code'
   })
 
-
-  const [cookedOrdered, setCoockedOrdered] = useState({
+  const cookedOrderedInitialState = {
     cooked: false,
-    ordered: false
-  })
+    ordered: false,
+    published: false
+  }
+  const [cookedOrdered, setCoockedOrdered] = useState(cookedOrderedInitialState);
 
   const classesAvatar = useStylesAvatar();
   const classesGrid = useStylesGrid();
@@ -105,11 +106,12 @@ function Profile () {
   const CHARACTER_LIMIT_DESCRIPTION = 140;
   const CHARACTER_LIMIT_RECIPE = 500;
 
-  const [dish, setDish] = useState({
+  const dishTextInitialState = {
     title: "",
     description: "",
     recipe: ""
-  });
+  }
+  const [dish, setDish] = useState(dishTextInitialState);
 
   const styles = {
     someTextField: {
@@ -189,6 +191,17 @@ function Profile () {
         cookedNotOrdered: cookedOrdered.cooked === true ? true : false,
         chosenImageDate
       };
+      setDish(dishTextInitialState);
+      const {cooked, ordered } = cookedOrderedInitialState;
+
+      setCoockedOrdered(() => ({
+        cooked,
+        ordered,
+        published: event.target.checked,
+      }));
+      setTimeout(() => {
+        setCoockedOrdered(() => (cookedOrderedInitialState));
+      }, 1000);
       try {
         await ApiClient.publishToDashBoard(userId, publishObject);
         await ApiClient.removeUnusedImagesFromDB(userId);
@@ -372,6 +385,7 @@ function Profile () {
                                         onChange={handlePublish}
                                         icon={<FavoriteBorder />}
                                         checkedIcon={<Favorite/>}
+                                        checked={cookedOrdered.published}
                                       />}
                               label="Publish"
                             />
@@ -484,6 +498,7 @@ function Profile () {
                             onChange={handlePublish}
                             icon={<FavoriteBorder />}
                             checkedIcon={<Favorite/>}
+                            checked={cookedOrdered.published}
                           />}
                   label="Publish"
                 />
