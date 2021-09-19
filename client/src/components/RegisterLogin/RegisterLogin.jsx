@@ -64,7 +64,7 @@ export default function RegisterLogin () {
     error: '',
   });
 
-  const asyncWrapper = async (dispatch, asyncFunc, data) => { // TODO: refactor without wrapper ?
+  const asyncWrapper = async (dispatch, asyncFunc, data) => {
     await dispatch(asyncFunc(data));
   }
 

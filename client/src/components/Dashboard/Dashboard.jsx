@@ -40,7 +40,7 @@ export default function Dashboard () {
   const [checked, setChecked] = useState(true);
 
   const nextPage = true;
-  const handleClick = async (nextPage) => { // TODO: lock process to avoid to much clicks
+  const handleClick = async (nextPage) => {
     if (nextPage === false && searchData.pageNumber === 1) return;
     // TODO: set info for user that there are no more images ?
     setChecked(!checked);
