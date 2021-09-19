@@ -18,7 +18,7 @@ export default function LocalDishesParameter () {
 
   const initialPageNumber = 1;
 
-  const handleRadiusSearch = async () => {  // TODO: lock process to avoid to much clicks
+  const handleRadiusSearch = async () => {
     // TODO: pop up window to choose paramters, e.g. alert
     if (!cookedOrdered.cooked && !cookedOrdered.ordered || !userDataClone.zipCode) {
       return;

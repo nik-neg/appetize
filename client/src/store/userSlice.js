@@ -177,7 +177,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [logoutUser.pending]: (state, action) => {
       state.loading = true;
     },
-    [deleteDish.fulfilled]: (state, action) => {
+    [deleteDish.fulfilled]: (state, action) => { // TODO: if dishesInRadius is empty request images from pageNumber -
       state.dishesInRadius = state.dishesInRadius.filter((dailyTreat) => dailyTreat._id !== action.payload);
       state.loading = false;
     },
