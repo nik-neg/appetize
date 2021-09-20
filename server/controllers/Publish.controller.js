@@ -195,9 +195,12 @@ module.exports.upDownVote = async (req, res) => {
     }
     // get updated votes for the related user
     let dailyTreat;
+    let user;
     try {
       dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
-      res.send(dailyTreat);
+      user = await User.findOne({ _id: id });
+      user.password = null; // TODO: lodash omit
+      res.send({ user, dailyTreat });
     } catch (e) {
       console.log(e);
     }

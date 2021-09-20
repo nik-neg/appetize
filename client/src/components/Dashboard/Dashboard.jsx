@@ -23,8 +23,7 @@ export default function Dashboard () {
 
   const dishes = useSelector((state) => state.user.dishesInRadius);
   useEffect(() => {
-    const newMouthWateringDishes = [...store.getState().user.dishesInRadius]
-    newMouthWateringDishes.sort((a,b) =>  b.votes - a.votes);
+    const newMouthWateringDishes = [...store.getState().user.dishesInRadius];
     setMouthWateringDishes(newMouthWateringDishes);
   }, [dishes]);
 
@@ -108,11 +107,12 @@ export default function Dashboard () {
               <Box m={2}>
                 <Card
                   key={index}
+                  index={index}
                   city={dish.city}
                   voted={dish.likedByUserID.some((userId) => userId === userData._id)}
-                  voteID={userData._id}
+                  userID={userData._id}
                   votes={dish.votes}
-                  userID={dish.userID}
+                  dishUserID={dish.userID}
                   creatorName={dish.creatorName}
                   dishID={dish._id}
                   zipCode={dish.zipCode}
