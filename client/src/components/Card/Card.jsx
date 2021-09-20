@@ -23,8 +23,7 @@ import { useState } from 'react';
 import './index.scss';
 
 import { useDispatch } from 'react-redux';
-import { deleteDish, upDownVote, } from '../../store/userSlice'; // clearDishesInStoreRequest
-// import { store } from '../../store/index';
+import { deleteDish, upDownVote, } from '../../store/userSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,35 +58,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function RecipeReviewCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  const [likeColor, setLikeColor] = useState(props.voted);
+  const [likeColor, setLikeColor] = useState(((props.userID === props.dishUserID) || props.voted));
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const handleLike = async () => {
-    if (props.voteID === props.userID) return;
+    if (props.userID === props.dishUserID) return;
     setLikeColor(!likeColor);
     let vote = ''
-    if(!likeColor) {
+    if(!props.voted) {
       vote = 'up'
     } else {
       vote = 'down';
     }
     try {
-      dispatch(upDownVote({ voteID: props.voteID, dishID: props.dishID, vote }));
+      dispatch(upDownVote({ voteID: props.userID, dishID: props.dishID, vote }));
     } catch(e) {
       console.log(e)
     }
   }
 
-  const likeColorStatement = props.voteID === props.userID || likeColor ? "#ff0000": 'inherit';
+  const likeColorStatement = ((props.userID === props.dishUserID) || props.voted ) ? "#ff0000": 'inherit';
 
   const [mouseIsNotOver, setMouseIsNotOver] = useState(true);
   const handleOnMouse = async () => {
@@ -98,7 +95,7 @@ export default function RecipeReviewCard(props) {
 
   const handleDelete = async () => { // https://mui.com/components/dialogs/
     try {
-      dispatch(deleteDish({ userId: props.voteID, dishId: props.dishID }))
+      dispatch(deleteDish({ userId: props.userID, dishId: props.dishID }))
       // const dishes = [...store.getState().user.dishesInRadius]; // TODO: see store: deleteDish
       // if (dishes.length === 0) {
       //   dispatch(clearDishesInStoreRequest());
@@ -148,7 +145,7 @@ export default function RecipeReviewCard(props) {
           <ExpandMoreIcon />
         </IconButton>
 
-        { props.voteID === props.userID
+        { props.userID === props.dishUserID
         ?
         <IconButton
           onMouseEnter={handleOnMouse}

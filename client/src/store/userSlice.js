@@ -132,7 +132,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       const { dishesInRadius, radius, cookedOrdered, pageNumber } = action.payload;
       const newSearchData = { radius, cookedOrdered, pageNumber };
       if (dishesInRadius.length > 0) {
-        state.dishesInRadius = dishesInRadius;
+        state.dishesInRadius = dishesInRadius.sort((a,b) =>  b.votes - a.votes);
         state.searchData = newSearchData;
       } else {
         state.searchData = newSearchData;
@@ -148,8 +148,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     // eslint-disable-next-line no-unused-vars
     [clearDishesInStoreRequest.fulfilled]: (state, action) => {
-      // state.dishesInRadius = action.payload;
-      state.request += 1; //action.payload;
+      state.request += 1;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
@@ -178,7 +177,9 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [deleteDish.fulfilled]: (state, action) => { // TODO: if dishesInRadius is empty request images from pageNumber -
-      state.dishesInRadius = state.dishesInRadius.filter((dailyTreat) => dailyTreat._id !== action.payload);
+      state.dishesInRadius = state.dishesInRadius
+        .filter((dailyTreat) => dailyTreat._id !== action.payload)
+        .sort((a,b) =>  b.votes - a.votes);
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
@@ -186,9 +187,12 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [upDownVote.fulfilled]: (state, action) => {
-      const { _id } = action.payload;
+      const { user, dailyTreat } = action.payload;
+      const { _id } = dailyTreat;
+      state.userData = user;
       const index = state.dishesInRadius.findIndex((dish) => dish._id === _id);
-      state.dishesInRadius[index] = action.payload;
+      state.dishesInRadius[index] = dailyTreat;
+      state.dishesInRadius.sort((a,b) =>  b.votes - a.votes);
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars

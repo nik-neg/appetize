@@ -1,5 +1,4 @@
 const db = require('./db');
-const DailyTreat = require('./DailyTreat').schema;
 
 const UserSchema = new db.mongoose.Schema({
   avatarImageUrl: String,
@@ -11,12 +10,12 @@ const UserSchema = new db.mongoose.Schema({
     unique: true,
   },
   password: String,
-  nikName: String,
+  // nikName: String,
   dailyFood: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'DailyTreat' }],
-  age: Number,
+  // age: Number,
   zipCode: Number,
-  voted: Boolean,
-  liked: [DailyTreat],
+  // voted: Boolean,
+  liked: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'DailyTreat' }],
   created: Date,
   updated: Date,
 
