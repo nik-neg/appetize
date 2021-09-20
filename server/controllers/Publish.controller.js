@@ -172,6 +172,11 @@ module.exports.upDownVote = async (req, res) => {
         { $inc: { votes: 1 }, $push: { likedByUserID: id } },
         { new: true },
       );
+      await User.updateOne(
+        { _id: id },
+        { $push: { liked: dailyTreatID } },
+        { new: true },
+      );
     } else {
       // unlike dish
       await DailyTreat.updateOne(
@@ -182,8 +187,12 @@ module.exports.upDownVote = async (req, res) => {
         { $inc: { votes: -1 }, $pull: { likedByUserID: id } },
         { new: true },
       );
+      await User.updateOne(
+        { _id: id },
+        { $pull: { liked: dailyTreatID } },
+        { new: true },
+      );
     }
-
     // get updated votes for the related user
     let dailyTreat;
     try {
