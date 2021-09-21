@@ -2,9 +2,11 @@ const util = require('util');
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const helper = require('../helpers/db.helpers');
+require('dotenv').config();
 
+const url = process.env.USE_DOCKER === '1' ? process.env.DOCKER_DB_URL : process.env.DB_URL;
 const storage = new GridFsStorage({
-  url: 'mongodb://localhost:27017/appetizeDB',
+  url,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
     const { id } = req.params;
