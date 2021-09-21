@@ -13,7 +13,8 @@ const initialState = {
       ordered: true
     },
   },
-  request: 0,
+  clearDishTextRequest: 0,
+  newDishesRequest: 0,
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -94,6 +95,13 @@ export const upDownVote = createAsyncThunk(
   }
 );
 
+export const clearDishTextRequest = createAsyncThunk(
+  'userData/clearDishTextRequest',
+  async () => {
+    return 1;
+  }
+);
+
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
   initialState,
@@ -148,11 +156,20 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     // eslint-disable-next-line no-unused-vars
     [clearDishesInStoreRequest.fulfilled]: (state, action) => {
-      state.request += 1;
+      state.newDishesRequest += 1;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
     [clearDishesInStoreRequest.pending]: (state, action) => {
+      state.loading = true;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [clearDishTextRequest.fulfilled]: (state, action) => {
+      state.clearDishTextRequest += 1;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [clearDishTextRequest.pending]: (state, action) => {
       state.loading = true;
     },
     [uploadImageBeforePublish.fulfilled]: (state, action) => {

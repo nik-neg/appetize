@@ -27,7 +27,7 @@ export default function Dashboard () {
     setMouthWateringDishes(newMouthWateringDishes);
   }, [dishes]);
 
-  const request = useSelector((state) => state.user.request);
+  const request = useSelector((state) => state.user.newDishesRequest);
   useEffect(() => {
     setTimeout(() => {
       setTrigger(true);

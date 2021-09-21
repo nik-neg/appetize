@@ -1,8 +1,6 @@
 /* eslint-disable no-plusplus */
 const axios = require('axios');
 
-const mongoose = require('mongoose');
-
 const User = require('../models/User');
 
 const DailyTreat = require('../models/DailyTreat');
@@ -70,8 +68,8 @@ module.exports.removeDish = async (req, res) => {
     user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
     await user.save();
     // remove from files and chunks
-    const deletePattern = new RegExp(`${id}/${createdTime}`); // TODO: excludeDeletePattern
-    helper.removeImageData(deletePattern, 'deleteOne', res);
+    const excludeDeletePattern = new RegExp(`${id}/${createdTime}`);
+    helper.removeImageData(excludeDeletePattern, 'deleteOne', res);
   } catch (e) {
     console.log(e);
     res.status(500).send();
