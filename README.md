@@ -44,6 +44,7 @@ https://youtu.be/_8mGjuWzNS0
 get your `API KEY` at `https://zipcodebase.com` and put your envrironment variables into the .env file
  
 with Docker:
+ - set `USE_DOCKER` environmental variable in the .env file in the server folder to `1`
  - run `docker-compose build` in the root folder, where the docker compose file is
  - run `docker-compose up` in the root folder, where the docker compose file is
 
