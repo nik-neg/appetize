@@ -50,10 +50,7 @@ with Docker:
 
 or follow these steps...
 
-run `npm i` in the server & client folder
-  
-run the mongodb server, e.g. `sudo mongod`
-  
-run `nodemon index.js` in the server folder
-
-run `npm start` in the client folder
+- run `npm i` in the server & client folder
+- run the mongodb server, e.g. `sudo mongod`
+- run `nodemon index.js` in the server folder
+- run `npm start` in the client folder
