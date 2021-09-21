@@ -42,6 +42,10 @@ https://youtu.be/_8mGjuWzNS0
 # Getting started
  
 get your `API KEY` at `https://zipcodebase.com` and put your envrironment variables into the .env file
+ 
+with Docker: run `docker-compose build` in the root folder, where the docker compose file is, then run `docker-compose up`
+
+or follow these steps...
 
 run `npm i` in the server & client folder
   
