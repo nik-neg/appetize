@@ -3,7 +3,7 @@ import './index.css';
 import { DropzoneDialogBase } from 'material-ui-dropzone';
 import IconButton from '@material-ui/core/IconButton';
 import { useSelector, useDispatch } from 'react-redux';
-import { uploadImageBeforePublish } from '../../store/userSlice';
+import { uploadImageBeforePublish, clearDishTextRequest } from '../../store/userSlice';
 
 export default function DropZone (props) {
   const [fileObjects, setFileObjects] = useState([]);
@@ -27,6 +27,7 @@ export default function DropZone (props) {
   let imageURL = `${baseUrl}/profile/${userData._id}/download?created=`
 
   const handleUpload = async () => {
+    dispatch(clearDishTextRequest());
     props.setImagePath('');
     let chosenImageDate = new Date().getTime();
     chosenImageDate = props.avatar ? `${chosenImageDate}_avatar` : chosenImageDate;

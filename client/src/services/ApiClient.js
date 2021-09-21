@@ -22,7 +22,7 @@ const loginUser = (user) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const uploadImage = async (id, data, chosenImageDate, imageURL) => { //TODO: use URLSearchParams to pass new Date
+const uploadImage = async (id, data, chosenImageDate, imageURL) => {
   const queryObject = {
     created: chosenImageDate,
   }
@@ -39,7 +39,7 @@ const uploadImage = async (id, data, chosenImageDate, imageURL) => { //TODO: use
       method: 'POST',
       body: formData,
     })
-    .then((data) => data.json())
+    .then((data) => data)
     .then((data) => data)
     .catch((err) => console.log(err));
 };

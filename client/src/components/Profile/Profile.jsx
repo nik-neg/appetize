@@ -24,7 +24,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
-import { useDispatch,} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { updateUserZipCode, logoutUser } from '../../store/userSlice';
 import './index.css'
 import { store } from '../../store/index';
@@ -151,6 +151,11 @@ function Profile () {
     }
     getProfile(accessToken);
   }, []);
+
+  let clearDishTextRequest = useSelector((state) => state.user.clearDishTextRequest);
+  useEffect(() => {
+    setDish(dishTextInitialState)
+  }, [clearDishTextRequest]);
 
   const handleChangeZipCode = (event) => {
     setZipCode(event.target.value);
