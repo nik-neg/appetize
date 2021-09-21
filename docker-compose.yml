@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./client
+
+    network_mode: host
+
+    depends_on:
+      - server
+
+  server:
+    build: ./server
+    ports:
+      - 3001:3001
+    links:
+      - docker-db:27017
+
+  docker-db:
+    image : mongo:4.2.6
+    volumes:
+    - docker-appetize-db:/var/lib/mongodb
+    ports:
+    - 27017:27017
+    restart: unless-stopped
+
+volumes:
+  docker-appetize-db:
