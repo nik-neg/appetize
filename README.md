@@ -41,7 +41,7 @@ https://youtu.be/_8mGjuWzNS0
 
 # Getting started
  
-get your `API KEY` at `https://zipcodebase.com` and put your environment variables into the .env file
+get your `API KEY` at `https://zipcodebase.com` and put it into the .env file of the server
  
 with Docker:
  - set `USE_DOCKER` environmental variable in the .env file in the server folder to `1`
