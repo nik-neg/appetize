@@ -28,12 +28,27 @@ export default function Dashboard () {
   }, [dishes]);
 
   const request = useSelector((state) => state.user.newDishesRequest);
+  const allDishesDeletedRequest = useSelector((state) => state.user.allDishesDeletedRequest);
+
+  useEffect(() => {
+    // check if all dishes in the next page are deleted, then go one page back
+    if (allDishesDeletedRequest) {
+      if (searchData.pageNumber > 1) {
+        searchData.pageNumber -=1;
+      }
+      dispatch(getDishesInRadius({
+        id: userData._id,
+        ...searchData
+      }));
+    }
+  }, [allDishesDeletedRequest]);
+
   useEffect(() => {
     setTimeout(() => {
       setTrigger(true);
       setChecked(!checked)
       setTrigger(false);
-    }, transitionTime)
+    }, transitionTime);
   }, [request]);
 
   const [checked, setChecked] = useState(true);
@@ -54,7 +69,7 @@ export default function Dashboard () {
     dispatch(getDishesInRadius({
       id: userData._id,
       ...searchData
-    }))
+    }));
   }
   const numberOfImages = 4;
   const transitionTime = 1500;
