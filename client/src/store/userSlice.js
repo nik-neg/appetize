@@ -15,6 +15,7 @@ const initialState = {
   },
   clearDishTextRequest: 0,
   newDishesRequest: 0,
+  allDishesDeletedRequest: false,
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -45,7 +46,7 @@ export const updateUserZipCode = createAsyncThunk(
 );
 
 export const clearDishesInStoreRequest = createAsyncThunk(
-  'request/clearDishesInStoreRequest',
+  'newDishesRequest/clearDishesInStoreRequest',
   async () => {
     return 1;
   }
@@ -96,9 +97,16 @@ export const upDownVote = createAsyncThunk(
 );
 
 export const clearDishTextRequest = createAsyncThunk(
-  'userData/clearDishTextRequest',
+  'state/clearDishTextRequest',
   async () => {
     return 1;
+  }
+);
+
+export const allDishesDeletedRequest = createAsyncThunk(
+  'state/allDishesDeletedRequest',
+  async () => {
+    return true;
   }
 );
 
@@ -150,8 +158,9 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
         state.searchData = newSearchData;
         state.searchData.pageNumber -= 1;
       }
-      const filteredUserDishes = [...dishesInRadius.filter((dish) => dish.userID == state.userData._id)]
-      state.userData.dailyFood = filteredUserDishes.map((filteredDish) => filteredDish._id)
+      const filteredUserDishes = [...dishesInRadius.filter((dish) => dish.userID == state.userData._id)];
+      state.userData.dailyFood = filteredUserDishes.map((filteredDish) => filteredDish._id);
+      state.allDishesDeletedRequest = false;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars
@@ -165,6 +174,15 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     },
     // eslint-disable-next-line no-unused-vars
     [clearDishesInStoreRequest.pending]: (state, action) => {
+      state.loading = true;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [allDishesDeletedRequest.fulfilled]: (state, action) => {
+      state.allDishesDeletedRequest = action.payload;
+      state.loading = false;
+    },
+    // eslint-disable-next-line no-unused-vars
+    [allDishesDeletedRequest.pending]: (state, action) => {
       state.loading = true;
     },
     // eslint-disable-next-line no-unused-vars

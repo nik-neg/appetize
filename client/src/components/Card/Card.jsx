@@ -23,7 +23,8 @@ import { useState } from 'react';
 import './index.scss';
 
 import { useDispatch } from 'react-redux';
-import { deleteDish, upDownVote, } from '../../store/userSlice';
+import { deleteDish, upDownVote, allDishesDeletedRequest} from '../../store/userSlice';
+import { store } from '../../store/index';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,15 +92,19 @@ export default function RecipeReviewCard(props) {
     setMouseIsNotOver(!mouseIsNotOver)
   }
 
+  const asyncWrapper = async (dispatch, asyncFunc, data) => {
+    await dispatch(asyncFunc(data));
+  }
+
   const dispatch = useDispatch();
 
   const handleDelete = async () => { // https://mui.com/components/dialogs/
     try {
-      dispatch(deleteDish({ userId: props.userID, dishId: props.dishID }))
-      // const dishes = [...store.getState().user.dishesInRadius]; // TODO: see store: deleteDish
-      // if (dishes.length === 0) {
-      //   dispatch(clearDishesInStoreRequest());
-      // }
+      await asyncWrapper(dispatch, deleteDish, { userId: props.userID, dishId: props.dishID });
+      const dishes = [...store.getState().user.dishesInRadius];
+      if (dishes.length === 0) {
+        dispatch(allDishesDeletedRequest());
+      }
     } catch(e) {
       console.log(e)
     }
