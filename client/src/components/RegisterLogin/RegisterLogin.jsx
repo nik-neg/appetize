@@ -54,11 +54,14 @@ export default function RegisterLogin () {
   const dispatch = useDispatch();
 
   const classes = useStyles();
-  const [input, setInput] = useState({
+  const initialUserCredentials = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+  }
+  const [input, setInput] = useState({
+    ...initialUserCredentials,
     isUser: false,
     isUserMessage: LOGIN_MESSAGE['isUser'],
     error: '',
@@ -82,8 +85,7 @@ export default function RegisterLogin () {
         setInput((prevState) => {
           return {
             ...prevState,
-            email: '',
-            password: '',
+            ...initialUserCredentials,
             error: userData.message
           }
         });

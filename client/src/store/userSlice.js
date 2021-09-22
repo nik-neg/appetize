@@ -107,9 +107,13 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
   initialState,
   extraReducers: {
     [createUserAndSafeToDB.fulfilled]: (state, action) => {
-      const { user, accessToken } = action.payload;
+      const { user, accessToken, error, message } = action.payload;
       localStorage.setItem('accessToken', accessToken);
-      state.userData = user;
+      if (user) {
+        state.userData = user;
+      } else {
+        state.userData = {error, message};
+      }
       state.isAuthenticated = true;
       state.loading = false;
     },
