@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'loading';
 
@@ -30,10 +31,9 @@ module.exports.createUser = async (req, res) => {
       created: new Date(),
     });
     user = await newUser.save();
-    user.password = null;
     const { _id } = user;
     const accessToken = jwt.sign({ _id }, SECRET_KEY);
-    res.status(201).send({ user, accessToken });
+    res.status(201).send({ user: _.omit(user._doc, ['password']), accessToken });
   } catch (error) {
     res.status(400).send({ error, message: 'Could not create user' });
   }
@@ -47,11 +47,9 @@ module.exports.loginUser = async (req, res) => {
     });
     const checkedPassword = await bcrypt.compare(password, user.password);
     if (!checkedPassword) throw new Error();
-    // set the hashed password to  null before delivering the data for the global storage
-    user.password = null;
     const { _id } = user;
     const accessToken = jwt.sign({ _id }, SECRET_KEY);
-    res.status(200).send({ user, accessToken });
+    res.status(200).send({ user: _.omit(user._doc, ['password']), accessToken });
   } catch (error) {
     res
       .status(401)
@@ -78,14 +76,12 @@ module.exports.setZipCode = async (req, res) => {
   const { zipCode } = req.body;
 
   try {
-    const user = await User.findOneAndUpdate({ _id: id }, { zipCode }, (err, result) => { // TODO: refactor
-      if (err) {
-        res.send(err);
-      }
-    });
-    user.password = null;
-    res.status(201).send(user);
-  } catch (e) {
-    console.log(e);
+    const user = await User.findOne({ _id: id });
+    user.zipCode = zipCode;
+    await user.save();
+    res.status(201).send(_.omit(user._doc, ['password']));
+  } catch (err) {
+    console.log(err);
+    res.send(err);
   }
 };
