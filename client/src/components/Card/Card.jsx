@@ -133,8 +133,8 @@ export default function RecipeReviewCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites"  style={{ color: likeColorStatement}}>
-          <FavoriteIcon onClick={handleLike}/>
+        <IconButton aria-label="add to favorites"  style={{ color: likeColorStatement}} onClick={handleLike}>
+          <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
@@ -155,10 +155,11 @@ export default function RecipeReviewCard(props) {
         <IconButton
           onMouseEnter={handleOnMouse}
           onMouseLeave={handleOnMouse}
+          onClick={handleDelete}
         >
         { mouseIsNotOver
           ? <StarsIcon className={classes.ownImageColor}/>
-          : <DeleteIcon onClick={handleDelete}/>
+          : <DeleteIcon />
         }
         </IconButton>
         : ''}
