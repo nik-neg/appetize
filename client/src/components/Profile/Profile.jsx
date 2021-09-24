@@ -255,14 +255,14 @@ function Profile () {
               id="standard-basic"
               label="ZIP CODE"
               inputProps={{
-                maxlength: CHARACTER_LIMIT_ZIP_CODE
+                maxLength: CHARACTER_LIMIT_ZIP_CODE
               }}
               value={zipCode}
               helperText={`${zipCode.length}/${CHARACTER_LIMIT_TITLE}`}
-              style={{"margin-top": "2.5%", "max-width": "6rem"}}
+              style={{"marginTop": "2.5%", "maxWidth": "6rem"}}
               variant="filled"
               onChange={handleChangeZipCode}
-              InputProps={{ classes: { input: styles.someTextField } }}
+              InputProps={{ classes: { input: styles.someTextField.toString() } }}
             />
             <div>
             { !userData.hasUpdatedZipCode ? userData.notUpdatedZipCodeMessage : ''}
@@ -298,7 +298,7 @@ function Profile () {
             { imagePath.length > 0 ?
               <Image
                 src={imagePath}
-                imageStyle={{"border-radius": "12.5%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
+                imageStyle={{"borderRadius": "12.5%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
                 style={{"backgroundColor": "inherit", "marginTop": "17.5%","padding": "150px"}}
               />
             : ''}
@@ -319,43 +319,43 @@ function Profile () {
               </div>
               <Grid item lg={4}>
                 <Grid item lg={4}>
-                  <Grid item lg={4}  style={{"marginTop": "42.5%", "margin-right:": "10%", "min-width": "24rem"}}>
+                  <Grid item lg={4}  style={{"marginTop": "42.5%", "marginRight:": "10%", "minWidth": "24rem"}}>
                   { imagePath.length > 0 ?
                     <FadeIn delay={1500} transitionDuration={1000}>
                       <TextField
                         id="standard-basic"
                         label="Title"
                         inputProps={{
-                          maxlength: CHARACTER_LIMIT_TITLE
+                          maxLength: CHARACTER_LIMIT_TITLE
                         }}
                         value={dish.title}
                         helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-                        style={{"marginTop": "5%", "marginRight": "16.5%", "min-width": "30rem"}}
+                        style={{"marginTop": "5%", "marginRight": "16.5%", "minWidth": "30rem"}}
                         rowsMax="10"
                         variant="filled"
                         onChange={handleChangeTextArea('title')}
-                        InputProps={{ classes: { input: styles.someTextField } }}
+                        InputProps={{ classes: { input: styles.someTextField.toString() } }}
                       />
                     </FadeIn>
                     : ''}
                   </Grid>
-                <Grid item lg={4}  style={{"min-width": "30rem"}}>
+                <Grid item lg={4}  style={{"minWidth": "30rem"}}>
                   { imagePath.length > 0 ?
                     <FadeIn delay={2500} transitionDuration={1000}>
                       <TextField
                         id="standard-basic"
                         label="Description"
                         inputProps={{
-                          maxlength: CHARACTER_LIMIT_DESCRIPTION
+                          maxLength: CHARACTER_LIMIT_DESCRIPTION
                         }}
                         value={dish.description}
                         helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-                        style={{"min-width": "30rem"}}
+                        style={{"minWidth": "30rem"}}
                         multiline
                         rowsMax="10"
                         variant="filled"
                         onChange={handleChangeTextArea('description')}
-                        InputProps={{ classes: { input: styles.someTextField } }}
+                        InputProps={{ classes: { input: styles.someTextField.toString() } }}
                       />
                   </FadeIn>
                     : ''}
@@ -367,16 +367,16 @@ function Profile () {
                           id="standard-basic"
                           label="Recipe"
                           inputProps={{
-                            maxlength: CHARACTER_LIMIT_RECIPE
+                            maxLength: CHARACTER_LIMIT_RECIPE
                           }}
                           value={dish.recipe}
                           helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                          style={{"margin-top": "2.5%", "min-width": "30rem"}}
+                          style={{"marginTop": "2.5%", "minWidth": "30rem"}}
                           multiline
                           rowsMax="10"
                           variant="filled"
                           onChange={handleChangeTextArea('recipe')}
-                          InputProps={{ classes: { input: styles.someTextField } }}
+                          InputProps={{ classes: { input: styles.someTextField.toString(), } }}
                         />
                       </FadeIn>
                       : ''}
@@ -445,15 +445,15 @@ function Profile () {
                 id="standard-basic"
                 label="Title"
                 inputProps={{
-                  maxlength: CHARACTER_LIMIT_TITLE
+                  maxLength: CHARACTER_LIMIT_TITLE
                 }}
                 value={dish.title}
                 helperText={`${dish.title.length}/${CHARACTER_LIMIT_TITLE}`}
-                style={{"min-width": "55vw"}}
+                style={{"minWidth": "55vw"}}
                 rowsMax="10"
                 variant="filled"
                 onChange={handleChangeTextArea('title')}
-                InputProps={{ classes: { input: styles.someTextField } }}
+                InputProps={{ classes: { input: styles.someTextField.toString() } }}
               />
             </FadeIn>
           </Grid>
@@ -463,16 +463,16 @@ function Profile () {
                 id="standard-basic"
                 label="Description"
                 inputProps={{
-                  maxlength: CHARACTER_LIMIT_DESCRIPTION
+                  maxLength: CHARACTER_LIMIT_DESCRIPTION
                 }}
                 value={dish.description}
                 helperText={`${dish.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-                style={{"min-width": "55vw"}}
+                style={{"minWidth": "55vw"}}
                 multiline
                 rowsMax="10"
                 variant="filled"
                 onChange={handleChangeTextArea('description')}
-                InputProps={{ classes: { input: styles.someTextField } }}
+                InputProps={{ classes: { input: styles.someTextField.toString(), } }}
               />
           </FadeIn>
           </Grid>
@@ -482,16 +482,16 @@ function Profile () {
                 id="standard-basic"
                 label="Recipe"
                 inputProps={{
-                  maxlength: CHARACTER_LIMIT_RECIPE
+                  maxLength: CHARACTER_LIMIT_RECIPE
                 }}
                 value={dish.recipe}
                 helperText={`${dish.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-                style={{"min-width": "55vw"}}
+                style={{"minWidth": "55vw"}}
                 multiline
                 rowsMax="10"
                 variant="filled"
                 onChange={handleChangeTextArea('recipe')}
-                InputProps={{ classes: { input: styles.someTextField } }}
+                InputProps={{ classes: { input: styles.someTextField.toString(), } }}
               />
             </FadeIn>
           </Grid>

@@ -115,7 +115,7 @@ export default function Dashboard () {
               key={index}
               in={checked}
               // enter={checked ? easeObject.enter(setTimeout, trigger) : ''}
-              exit={ !checked ? easeObject.exit(setTimeout, trigger) : '' }
+              exit={ !checked ? easeObject.exit(setTimeout, trigger) : true }
               style={{ transformOrigin: "0 0 0",}} // style={{ transformOrigin: "0 0 0", transform: "", translate:  "" }}
               {...(checked ? { timeout: (index+1)*(transitionTime) } : {timeout: index*transitionTime*fadeInFadeOutCoefficent})}
             >
