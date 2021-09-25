@@ -79,7 +79,7 @@ describe('createUser suite', () => {
     expect(res.status).toHaveBeenCalledWith(400);
 
     const userWithoutLastname = mockUser;
-    userWithoutFirstname.lastName = '';
+    userWithoutLastname.lastName = '';
     req.body = {
       ...userWithoutLastname,
     };
@@ -88,7 +88,7 @@ describe('createUser suite', () => {
     expect(res.status).toHaveBeenCalledWith(400);
 
     const userWithoutEmail = mockUser;
-    userWithoutFirstname.email = '';
+    userWithoutEmail.email = '';
     req.body = {
       ...userWithoutEmail,
     };
@@ -97,7 +97,7 @@ describe('createUser suite', () => {
     expect(res.status).toHaveBeenCalledWith(400);
 
     const userWithoutPassword = mockUser;
-    userWithoutFirstname.password = '';
+    userWithoutPassword.password = '';
     req.body = {
       ...userWithoutPassword,
     };
