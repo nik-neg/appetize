@@ -66,7 +66,7 @@ describe('createUser suite', () => {
     const {
       firstName, lastName, email, password,
     } = User;
-    let mockUser = {
+    const mockUser = {
       firstName, lastName, email, password,
     };
     const userWithoutFirstname = mockUser;
@@ -119,8 +119,7 @@ describe('createUser suite', () => {
       ...mockUser,
     };
     User.findOne.mockResolvedValue(undefined);
-    const simulatedHash = Array.from(password).reverse().join('');
-    const hash = await bcryptjs.hash.mockResolvedValue(simulatedHash);
+    const hash = await bcryptjs.hash(password);
     expect(password).not.toBe(hash);
     const newUser = { _id: 123456789, _doc: { mockUser } };
     let createdUser = await User.create.mockResolvedValue(newUser);
