@@ -66,7 +66,7 @@ describe('createUser suite', () => {
     const {
       firstName, lastName, email, password,
     } = User;
-    let mockUser = {
+    const mockUser = {
       firstName, lastName, email, password,
     };
     const userWithoutFirstname = mockUser;
@@ -107,7 +107,7 @@ describe('createUser suite', () => {
 
     expect(res.status).toHaveBeenCalledTimes(4);
   });
-  test('createUser returns 201 and returns user and jwt token', async () => {
+  test('createUser returns 201 and user and jwt token', async () => {
     const { req, res } = setup();
     const {
       firstName, lastName, email, password,
@@ -119,8 +119,7 @@ describe('createUser suite', () => {
       ...mockUser,
     };
     User.findOne.mockResolvedValue(undefined);
-    const simulatedHash = Array.from(password).reverse().join('');
-    const hash = await bcryptjs.hash.mockResolvedValue(simulatedHash);
+    const hash = await bcryptjs.hash(password);
     expect(password).not.toBe(hash);
     const newUser = { _id: 123456789, _doc: { mockUser } };
     let createdUser = await User.create.mockResolvedValue(newUser);
