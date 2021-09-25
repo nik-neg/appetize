@@ -107,7 +107,7 @@ describe('createUser suite', () => {
 
     expect(res.status).toHaveBeenCalledTimes(4);
   });
-  test('createUser returns 201 and returns user and jwt token', async () => {
+  test('createUser returns 201 and user and jwt token', async () => {
     const { req, res } = setup();
     const {
       firstName, lastName, email, password,
