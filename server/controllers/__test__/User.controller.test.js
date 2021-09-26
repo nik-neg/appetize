@@ -56,12 +56,12 @@ describe('createUser suite', () => {
     req.body = {
       ...mockUser,
     };
-    User.findOne.mockResolvedValue(req.body);
+    await User.findOne.mockResolvedValue(req.body);
     await userController.createUser(req, res);
     expect(res.status).toHaveBeenCalledWith(409);
     expect(res.status).toHaveBeenCalledTimes(1);
   });
-  test('createUser throws 400, because input is empty', async () => {
+  test('createUser throws 400, because input is invalid', async () => {
     const { req, res } = setup();
     const {
       firstName, lastName, email, password,
@@ -74,7 +74,7 @@ describe('createUser suite', () => {
     req.body = {
       ...userWithoutFirstname,
     };
-    User.findOne.mockResolvedValue(undefined);
+    await User.findOne.mockResolvedValue(undefined);
     await userController.createUser(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -83,7 +83,7 @@ describe('createUser suite', () => {
     req.body = {
       ...userWithoutLastname,
     };
-    User.findOne.mockResolvedValue(undefined);
+    await User.findOne.mockResolvedValue(undefined);
     await userController.createUser(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -92,7 +92,7 @@ describe('createUser suite', () => {
     req.body = {
       ...userWithoutEmail,
     };
-    User.findOne.mockResolvedValue(undefined);
+    await User.findOne.mockResolvedValue(undefined);
     await userController.createUser(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -101,7 +101,7 @@ describe('createUser suite', () => {
     req.body = {
       ...userWithoutPassword,
     };
-    User.findOne.mockResolvedValue(undefined);
+    await User.findOne.mockResolvedValue(undefined);
     await userController.createUser(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
 
@@ -118,7 +118,7 @@ describe('createUser suite', () => {
     req.body = {
       ...mockUser,
     };
-    User.findOne.mockResolvedValue(undefined);
+    await User.findOne.mockResolvedValue(undefined);
     const hash = await bcryptjs.hash(password);
     expect(password).not.toBe(hash);
     const newUser = { _id: 123456789, _doc: { mockUser } };
@@ -132,6 +132,56 @@ describe('createUser suite', () => {
     const userWithoutPassword = _.omit(newUser._doc, ['password']);
     await userController.createUser(req, res);
     expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledWith({ user: userWithoutPassword, accessToken });
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('loginUser suite', () => {
+  test('loginUser throws 401, because user email or password is incorrect', async () => {
+    const { req, res } = setup();
+    const {
+      email, hashedPassword,
+    } = User;
+    await User.findOne.mockResolvedValue(null); // user not found
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(401);
+    const mockUser = {
+      email, password: hashedPassword,
+    };
+    req.body = {
+      ...mockUser, wrongPassword: '123456789',
+    };
+    let user = await User.findOne.mockResolvedValue(req.body);
+    user = await user();
+    await bcryptjs.compare(user.wrongPassword, user.password);
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.status).toHaveBeenCalledTimes(2);
+    expect(res.send).toHaveBeenCalledTimes(2);
+  });
+
+  test('loginUser returns 201 and user and jwt token', async () => {
+    const { req, res } = setup();
+    const {
+      _id, email, password, hashedPassword,
+    } = User;
+    const mockUser = {
+      _id, email, password: hashedPassword,
+    };
+    req.body = {
+      email, password,
+    };
+    let user = await User.findOne.mockResolvedValue(mockUser);
+    user = await user();
+    await bcryptjs.compare(password, user.password);
+    const userId = _id;
+    const accessToken = jwt.sign({ id: userId }, SECRET_KEY);
+    expect(userId).not.toBe(accessToken);
+    const userWithoutPassword = _.omit(mockUser, ['password']);
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledWith({ user: userWithoutPassword, accessToken });
     expect(res.send).toHaveBeenCalledTimes(1);
