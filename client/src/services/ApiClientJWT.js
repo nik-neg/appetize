@@ -2,7 +2,7 @@ const baseUrl = 'http://localhost:3001';
 
 const apiServiceJWT = {};
 
-apiServiceJWT.register = (user) => {
+apiServiceJWT.register = async (user) => {
   return fetch(`${baseUrl}/register`, {
     method: 'POST',
     credentials: 'include',
@@ -15,7 +15,7 @@ apiServiceJWT.register = (user) => {
     .catch((err) => console.log(err));
 };
 
-apiServiceJWT.loginUser = (user) => {
+apiServiceJWT.loginUser = async (user) => {
   return fetch(`${baseUrl}/login`, {
     method: 'POST',
     credentials: 'include',
@@ -28,7 +28,7 @@ apiServiceJWT.loginUser = (user) => {
     .catch((err) => console.log(err));
 };
 
-apiServiceJWT.getProfile = (accessToken) => {
+apiServiceJWT.getProfile = async (accessToken) => {
   return fetch(`${baseUrl}/profile`,
     {
       method: 'GET',
@@ -44,8 +44,20 @@ apiServiceJWT.getProfile = (accessToken) => {
     .catch((err) => console.log(err));
 }
 
-apiServiceJWT.logout = async () => {
-  localStorage.removeItem('accessToken');
+apiServiceJWT.logout = async (accessToken) => {
+  return fetch(`${baseUrl}/logout`,
+  {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors', // TODO: check
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+  .then((data) => data.json())
+  .then((data) => data)
+  .catch((err) => console.log(err));
 };
 
 export default apiServiceJWT;

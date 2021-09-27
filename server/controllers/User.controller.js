@@ -54,12 +54,12 @@ module.exports.loginUser = async (req, res) => {
   } catch (error) {
     res
       .status(401)
-      .send({ error: '401', message: 'Username or password is incorrect' });
+      .send({ error: '401', message: 'email or password is incorrect' });
   }
 };
 
 module.exports.logoutUser = async (req, res) => {
-  res.end();
+  res.status(200).send({});
 };
 
 module.exports.showProfile = async (req, res) => {

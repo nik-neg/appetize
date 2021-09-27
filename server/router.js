@@ -8,7 +8,7 @@ const publishController = require('./controllers/Publish.controller');
 
 router.post('/register', userController.createUser);
 router.post('/login', userController.loginUser);
-router.post('/logout', userController.logoutUser); // optional auth for jwt blocklist?
+router.post('/logout', auth, userController.logoutUser); // optional auth for jwt blocklist?
 router.get('/profile', auth, userController.showProfile);
 router.put('/profile/:id', userController.setZipCode);
 

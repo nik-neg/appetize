@@ -75,7 +75,8 @@ export const uploadImageBeforePublish = createAsyncThunk(
 export const logoutUser =  createAsyncThunk(
   'userData/logoutUser',
   async () => {
-    await apiServiceJWT.logout();
+    const accessToken = localStorage.getItem('accessToken');
+    await apiServiceJWT.logout(accessToken);
     return initialState;
   }
 );
@@ -130,9 +131,13 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [fetchUserDataFromDB.fulfilled]: (state, action) => {
-      const { user, accessToken } = action.payload;
+      const { user, accessToken, error, message } = action.payload;
       localStorage.setItem('accessToken', accessToken);
-      state.userData = user;
+      if (user) {
+        state.userData = user;
+      } else {
+        state.userData = {error, message};
+      }
       state.isAuthenticated = true;
       state.loading = false;
     },
@@ -204,11 +209,17 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [uploadImageBeforePublish.pending]: (state, action) => {
       state.loading = true;
     },
+    // eslint-disable-next-line no-unused-vars
     [logoutUser.fulfilled]: (state, action) => {
-      state.isAuthenticated = false;
+      localStorage.removeItem('accessToken');
       state.userData = action.payload.userData;
-      state.dishesInRadius = [];
+      state.dishesInRadius = action.payload.dishesInRadius;
+      state.searchData = action.payload.searchData;
+      state.clearDishTextRequest = action.payload.clearDishTextRequest; // TODO: refactor to request obj.
+      state.newDishesRequest = action.payload.newDishesRequest;
+      state.allDishesDeletedRequest = action.payload.allDishesDeletedRequest;
       state.chosenImageDate = '';
+      state.isAuthenticated = false;
       state.loading = false;
     },
     // eslint-disable-next-line no-unused-vars

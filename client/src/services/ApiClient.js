@@ -1,6 +1,6 @@
 const baseUrl = 'http://localhost:3001';
 
-const registerUser = (user) =>
+const registerUser = async (user) =>
   fetch(`${baseUrl}/register`,
     {
       method: 'POST',
@@ -11,7 +11,7 @@ const registerUser = (user) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const loginUser = (user) =>
+const loginUser = async (user) =>
   fetch(`${baseUrl}/login`,
     {
       method: 'POST',
@@ -44,7 +44,7 @@ const uploadImage = async (id, data, chosenImageDate, imageURL) => {
     .catch((err) => console.log(err));
 };
 
-const removeUnusedImagesFromDB = (id) =>
+const removeUnusedImagesFromDB = async (id) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/remove-images`)
   return fetch(url,
@@ -57,7 +57,7 @@ const removeUnusedImagesFromDB = (id) =>
   .catch((err) => console.log(err));
 }
 
-const confirmZipCode = (id, zipCode) =>
+const confirmZipCode = async (id, zipCode) =>
   fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'PUT',
@@ -68,7 +68,7 @@ const confirmZipCode = (id, zipCode) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const publishToDashBoard = (id, data) =>
+const publishToDashBoard = async (id, data) =>
   fetch(`${baseUrl}/profile/${id}/dashboard`,
     {
       method: 'POST',
@@ -79,7 +79,7 @@ const publishToDashBoard = (id, data) =>
     .then((imageData) => imageData)
     .catch((err) => console.log(err));
 
-const getDishesInRadius = (id, radius, cookedOrdered, pageNumber) =>
+const getDishesInRadius = async (id, radius, cookedOrdered, pageNumber) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
   url.search = new URLSearchParams({
@@ -98,7 +98,7 @@ const getDishesInRadius = (id, radius, cookedOrdered, pageNumber) =>
   .catch((err) => console.log(err));
 }
 
-const voteDish = (id, dailyTreatsID, upDownVote) =>
+const voteDish = async (id, dailyTreatsID, upDownVote) =>
   fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
     {
       method: 'PATCH',
@@ -108,7 +108,7 @@ const voteDish = (id, dailyTreatsID, upDownVote) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
-const deleteDish = (id, dailyTreatID) =>
+const deleteDish = async (id, dailyTreatID) =>
   fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`,
   {
     method: 'DELETE',
