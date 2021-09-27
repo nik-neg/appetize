@@ -4,7 +4,7 @@
   "description": "sever for the appetize application",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "nik-neg (Alexander Genkin)",
   "license": "ISC",

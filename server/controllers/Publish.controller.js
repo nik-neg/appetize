@@ -76,7 +76,7 @@ module.exports.removeDish = async (req, res) => {
   }
 };
 
-const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => {
+const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => { // TODO: put into helpers?
   // eslint-disable-next-line no-plusplus
   const ALL_DISHES = 'ALL_DISHES';
   const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
