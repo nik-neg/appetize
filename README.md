@@ -17,7 +17,7 @@ A simple voting system enables to vote for favourite dishes.
  </td><td>
  
  <div align="center">
-  <a href="https://zipcodebase.com/">Zip Code API</a>
+  <a href="https://zipcodebase.com/" width="40" height="40">Zip Code API</a>
  </div>
 </td></tr> </table> 
 
