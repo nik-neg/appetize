@@ -34,5 +34,3 @@ app.use(cors(corsConfig))
     console.log(e);
   }
 })();
-
-// module.exports = app;
