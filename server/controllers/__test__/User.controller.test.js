@@ -254,3 +254,51 @@ describe('showProfile suite', () => {
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('setZipCode suite', () => {
+  test('setZipCode returns 400', async () => {
+    const { req, res } = setup();
+    const {
+      _id, email, password, hashedPassword,
+    } = User;
+    const mockUser = {
+      _doc: {
+        _id, email, password: hashedPassword,
+      },
+    };
+    req.params = { id: mockUser._doc.id };
+    req.body = { zipCode: '123456' };
+
+    await User.findOne.mockResolvedValue(null);
+    await userController.setZipCode(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+
+  test('setZipCode returns 200', async () => {
+    const { req, res } = setup();
+    const {
+      _id, email, password, hashedPassword,
+    } = User;
+    const mockUser = {
+      _doc: {
+        _id, email, password: hashedPassword,
+      },
+    };
+    req.params = { id: mockUser._doc.id };
+    req.body = { zipCode: '123456' };
+
+    let user = await User.findOne.mockResolvedValue(mockUser);
+    user = await user();
+    user.zipCode = req.body.zipCode;
+    user.save = jest.fn();
+    await user.save.mockResolvedValue(user);
+    const userWithoutPassword = _.omit(user._doc, ['password']);
+    await userController.setZipCode(req, res);
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledWith(userWithoutPassword);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+});

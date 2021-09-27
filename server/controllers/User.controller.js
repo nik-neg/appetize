@@ -36,7 +36,7 @@ module.exports.createUser = async (req, res) => {
     const accessToken = jwt.sign({ _id }, SECRET_KEY);
     res.status(201).send({ user: _.omit(user._doc, ['password']), accessToken });
   } catch (error) {
-    res.status(400).send({ error, message: 'Could not create user' });
+    res.status(400).send({ error: '400', message: 'Could not create user' });
   }
 };
 
@@ -86,7 +86,6 @@ module.exports.setZipCode = async (req, res) => {
     await user.save();
     res.status(201).send(_.omit(user._doc, ['password']));
   } catch (err) {
-    console.log(err);
-    res.send(err);
+    res.status(400).send({ error: '400', message: 'could not update zip code' });
   }
 };
