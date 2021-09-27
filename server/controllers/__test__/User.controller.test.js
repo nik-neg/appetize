@@ -187,3 +187,35 @@ describe('loginUser suite', () => {
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('logoutUser suite', () => {
+  test('logoutUser returns 200 and an empty object', async () => {
+    const { req, res } = setup();
+    const {
+      _id, email, password, hashedPassword,
+    } = User;
+    const mockUser = {
+      _id, email, password: hashedPassword,
+    };
+    req.user = mockUser;
+    await userController.logoutUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledWith({});
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('logoutUser returns 400', async () => {
+    const { req, res } = setup();
+    const {
+      _id, email, password, hashedPassword,
+    } = User;
+    const mockUser = {
+      _id, email, password: hashedPassword,
+    };
+    req.user = null;
+    await userController.logoutUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+});

@@ -59,7 +59,11 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.logoutUser = async (req, res) => {
-  res.status(200).send({});
+  if (req.user) {
+    res.status(200).send({});
+  } else {
+    res.status(400).send({ error: '400', message: 'user not in request' });
+  }
 };
 
 module.exports.showProfile = async (req, res) => {
