@@ -8,18 +8,18 @@ A simple voting system enables to vote for favourite dishes.
 `Hint`: Next planned steps are to make the app more robust in functionality and performance, add CI / CD pipeline with Travis, add tests with Jest and Cypress.
 
 <table>
-<tr><th>Tech Stack</th>/tr>
+<tr><th>Tech Stack</th></tr>
 <tr><td>
 
  <sub> React </sub> |<sub>  Redux <sub>| <sub> Material-UI </sub> | <sub> Node.js </sub> | <sub> Express </sub> | <sub> MongoDB </sub> | <sub> Mongoose </sub> |  <sub> JavaScript </sub> |  <sub> Jest </sub>  | <sub> Docker </sub>  | <sub> Travis </sub>  | 
 |--|--|--|--|--|--|--|--|--|--|--
-[<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/react.svg" alt="drawing" width="50" height="50"/>](https://reactjs.org/) | [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="50" height="50"/>](https://redux.js.org) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/material-ui.svg" alt="drawing" width="50" height="50"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/nodejs.svg" alt="drawing" width="50" height="50"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/express.svg" alt="drawing" width="50" height="50"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongodb.svg" alt="drawing" width="50" height="50"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongoose.png" alt="drawing" width="50" height="50"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/javascript.svg" alt="drawing" width="50" height="50"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/jest.svg" alt="drawing" width="50" height="50"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/docker.svg" alt="drawing" width="50" height="50"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/travis.svg" alt="drawing" width="50" height="50"/>](https://www.travis-ci.com/)  |
+[<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/react.svg" alt="drawing" width="40" height="40"/>](https://reactjs.org/) | [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/>](https://redux.js.org) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/material-ui.svg" alt="drawing" width="40" height="40"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/nodejs.svg" alt="drawing" width="40" height="40"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/express.svg" alt="drawing" width="40" height="40"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongodb.svg" alt="drawing" width="40" height="40"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/mongoose.png" alt="drawing" width="40" height="40"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/javascript.svg" alt="drawing" width="40" height="40"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/jest.svg" alt="drawing" width="40" height="40"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/docker.svg" alt="drawing" width="40" height="40"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/travis.svg" alt="drawing" width="40" height="40"/>](https://www.travis-ci.com/)  |
  </td><td>
  
 </td></tr> </table> 
  
-<div align="center">
- <a href="https://zipcodebase.com/">Zip Code API</a>
+<div>
+ <a href="https://zipcodebase.com/"> -> Zip Code API</a>
 </div>
 
 # Login/Register page
