@@ -107,7 +107,7 @@ describe('createUser suite', () => {
 
     expect(res.status).toHaveBeenCalledTimes(4);
   });
-  test('createUser returns 201 and user and jwt token', async () => {
+  test('createUser returns 201, user without password and jwt token', async () => {
     const { req, res } = setup();
     const {
       firstName, lastName, email, password,
@@ -162,7 +162,7 @@ describe('loginUser suite', () => {
     expect(res.send).toHaveBeenCalledTimes(2);
   });
 
-  test('loginUser returns 201 and user and jwt token', async () => {
+  test('loginUser returns 201, user without password and jwt token', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
@@ -276,7 +276,7 @@ describe('setZipCode suite', () => {
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 
-  test('setZipCode returns 200 and the user', async () => {
+  test('setZipCode returns 200 and the user without password ', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
