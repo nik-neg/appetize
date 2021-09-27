@@ -67,12 +67,12 @@ module.exports.logoutUser = async (req, res) => {
 };
 
 module.exports.showProfile = async (req, res) => {
-  // eslint-disable-next-line no-underscore-dangle
-  const userInfo = ({ ...req.user })._doc;
-  try {
+  if (req.user) {
+    // eslint-disable-next-line no-underscore-dangle
+    const userInfo = ({ ...req.user })._doc;
     res.status(200).send(userInfo);
-  } catch (err) {
-    res.status(404).send({ err, message: 'Resource not found' });
+  } else {
+    res.status(400).send({ error: '400', message: 'user not in request' });
   }
 };
 
