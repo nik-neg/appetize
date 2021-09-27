@@ -276,7 +276,7 @@ describe('setZipCode suite', () => {
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 
-  test('setZipCode returns 200', async () => {
+  test('setZipCode returns 200 and the user', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
