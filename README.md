@@ -1,4 +1,4 @@
-# Appetize
+# Appetize [![Build Status](https://app.travis-ci.com/nik-neg/Appetize.svg?branch=main)](https://app.travis-ci.com/nik-neg/Appetize)
 Initial project started @Codeworks: 1 week (21.04.21-28.04.21) Solo Project
 
 Appetize is a full responsive social media application for local food, where user can upload their image from the filesystem,
