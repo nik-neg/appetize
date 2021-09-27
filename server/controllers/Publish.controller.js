@@ -64,7 +64,7 @@ module.exports.removeDish = async (req, res) => {
     await DailyTreat.deleteOne({ _id: dailyTreatID });
     // remove from dailyFood list in user
     const user = await User.findOne({ _id: id });
-    // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line
     user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
     await user.save();
     // remove from files and chunks
@@ -76,7 +76,8 @@ module.exports.removeDish = async (req, res) => {
   }
 };
 
-const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => { // TODO: put into helpers?
+// TODO: put into helpers?
+const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => {
   // eslint-disable-next-line no-plusplus
   const ALL_DISHES = 'ALL_DISHES';
   const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered

@@ -4,7 +4,12 @@
   "description": "sever for the appetize application",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "jest-environment-node",
+    "collectCoverageFrom": ["controllers/*.js", "middleware/*", "helpers/*"]
   },
   "author": "nik-neg (Alexander Genkin)",
   "license": "ISC",
