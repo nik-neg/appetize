@@ -40,17 +40,12 @@ module.exports.publishDish = async (req, res) => {
     dailyTreat.recipe = recipe;
     dailyTreat.votes = 0;
     dailyTreat.created = new Date().getTime();
-
-    // save to db
-    const dailyTreatSaveResponse = await dailyTreat.save();
-    // eslint-disable-next-line no-underscore-dangle
     dailyTreat.imageUrl = imageUrl;
-    await dailyTreat.save();
-    if (dailyTreatSaveResponse) {
-      // eslint-disable-next-line no-underscore-dangle
-      user.dailyFood.push(dailyTreatSaveResponse._id);
-      await user.save();
-    }
+
+    const dailyTreatSaveResponse = await dailyTreat.save();
+    const { _id } = dailyTreatSaveResponse;
+    user.dailyFood.push(_id);
+    await user.save();
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
     res.status(500).send({ error: '500', message: 'Could not save daily treat - Internal server error' });
