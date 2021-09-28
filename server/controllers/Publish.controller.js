@@ -76,44 +76,44 @@ module.exports.removeDish = async (req, res) => {
   }
 };
 
-// TODO: put into helpers?
-const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => {
-  // eslint-disable-next-line no-plusplus
-  const ALL_DISHES = 'ALL_DISHES';
-  const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-    ? ALL_DISHES : cookedOrdered.cooked;
-    // TODO: how to handle imbalanced data ?
-  const queryObject = {};
-  if (cookedOrderedParam !== ALL_DISHES) {
-    queryObject.cookedNotOrdered = cookedOrderedParam;
-  }
+// // TODO: put into helpers?
+// const helperFindDishesInDB = async (req, res, zipCodesInRadius, cookedOrdered, pageNumber) => {
+//   // eslint-disable-next-line no-plusplus
+//   const ALL_DISHES = 'ALL_DISHES';
+//   const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+//     ? ALL_DISHES : cookedOrdered.cooked;
+//     // TODO: how to handle imbalanced data ?
+//   const queryObject = {};
+//   if (cookedOrderedParam !== ALL_DISHES) {
+//     queryObject.cookedNotOrdered = cookedOrderedParam;
+//   }
 
-  const zipCodesInRadiusWithOutCity = zipCodesInRadius.map((zipCodeData) => zipCodeData.zipCode);
-  queryObject.zipCode = zipCodesInRadiusWithOutCity;
-  // pagination
-  const PAGE_SIZE = 4;
-  const skip = (pageNumber - 1) * PAGE_SIZE;
-  let dailyTreats = [];
-  try {
-    dailyTreats = await DailyTreat.find(queryObject)
-      .skip(skip)
-      .limit(PAGE_SIZE);
+//   const zipCodesInRadiusWithOutCity = zipCodesInRadius.map((zipCodeData) => zipCodeData.zipCode);
+//   queryObject.zipCode = zipCodesInRadiusWithOutCity;
+//   // pagination
+//   const PAGE_SIZE = 4;
+//   const skip = (pageNumber - 1) * PAGE_SIZE;
+//   let dailyTreats = [];
+//   try {
+//     dailyTreats = await DailyTreat.find(queryObject)
+//       .skip(skip)
+//       .limit(PAGE_SIZE);
 
-    const zipCodeCityObject = {};
-    zipCodesInRadius.forEach((zipCodeCity) => {
-      zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
-    });
-    // get existing zip codes from db
-    dailyTreats = dailyTreats.map((dailyTreat) => {
-      // eslint-disable-next-line max-len
-      const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode]};
-      return dailyTreatWithCity;
-    });
-  } catch (e) {
-    console.log(e);
-  }
-  res.send(dailyTreats);
-};
+//     const zipCodeCityObject = {};
+//     zipCodesInRadius.forEach((zipCodeCity) => {
+//       zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
+//     });
+//     // get existing zip codes from db
+//     dailyTreats = dailyTreats.map((dailyTreat) => {
+//       // eslint-disable-next-line max-len
+//       const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode]};
+//       return dailyTreatWithCity;
+//     });
+//   } catch (e) {
+//     console.log(e);
+//   }
+//   res.send(dailyTreats);
+// };
 
 module.exports.checkDishesInRadius = async (req, res) => {
   const {
@@ -145,7 +145,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
         if (!response.data.results.error) {
           const zipCodesInRadius = response.data.results.map((element) => (
             { zipCode: element.code, city: element.city }));
-          helperFindDishesInDB(res, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
+          helper.findDishesInDB(req, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
         }
       })
       .catch((error) => {
