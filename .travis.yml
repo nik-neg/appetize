@@ -5,6 +5,9 @@ cache:
   yarn: true
   directories:
     - node_modules
+before_install: cd ./client
+install:
+  - npm install
 before_install: cd ./server
 install:
   - npm install
