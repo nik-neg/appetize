@@ -44,7 +44,7 @@ const setup = () => { // test object factory
   return { req, res };
 };
 
-describe('createUser suite', () => {
+describe('createUser method', () => {
   test('createUser throws 409, because user already exists', async () => {
     const { req, res } = setup();
     const {
@@ -138,7 +138,7 @@ describe('createUser suite', () => {
   });
 });
 
-describe('loginUser suite', () => {
+describe('loginUser method', () => {
   test('loginUser throws 401, because user email or password is incorrect', async () => {
     const { req, res } = setup();
     const {
@@ -188,7 +188,7 @@ describe('loginUser suite', () => {
   });
 });
 
-describe('logoutUser suite', () => {
+describe('logoutUser method', () => {
   test('logoutUser returns 400', async () => {
     const { req, res } = setup();
     const {
@@ -220,7 +220,7 @@ describe('logoutUser suite', () => {
   });
 });
 
-describe('showProfile suite', () => {
+describe('showProfile method', () => {
   test('showProfile returns 400', async () => {
     const { req, res } = setup();
     const {
@@ -255,7 +255,7 @@ describe('showProfile suite', () => {
   });
 });
 
-describe('setZipCode suite', () => {
+describe('setZipCode method', () => {
   test('setZipCode returns 400', async () => {
     const { req, res } = setup();
     const {
