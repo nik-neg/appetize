@@ -27,21 +27,21 @@ module.exports.publishDish = async (req, res) => {
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
   // create dish to publish
-
-  const dailyTreat = await DailyTreat.create({
-    userID: id,
-    creatorName: firstName,
-    likedByUserID: [],
-    zipCode: userZipCode,
-    cookedNotOrdered,
-  });
-  dailyTreat.title = title;
-  dailyTreat.description = description;
-  dailyTreat.recipe = recipe;
-  dailyTreat.votes = 0;
-  dailyTreat.created = new Date().getTime();
-  // save to db
   try {
+    const dailyTreat = await DailyTreat.create({
+      userID: id,
+      creatorName: firstName,
+      likedByUserID: [],
+      zipCode: userZipCode,
+      cookedNotOrdered,
+    });
+    dailyTreat.title = title;
+    dailyTreat.description = description;
+    dailyTreat.recipe = recipe;
+    dailyTreat.votes = 0;
+    dailyTreat.created = new Date().getTime();
+
+    // save to db
     const dailyTreatSaveResponse = await dailyTreat.save();
     // eslint-disable-next-line no-underscore-dangle
     dailyTreat.imageUrl = imageUrl;

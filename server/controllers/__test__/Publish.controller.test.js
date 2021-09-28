@@ -52,14 +52,34 @@ describe('publishDish method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
-  test('publishDish throws 400, because user not found', async () => {
+  test('publishDish throws 500, because of internal server error', async () => {
     const { req, res } = setup();
     req.params = { id: 123 };
     const mockErr = new Error('ERROR');
     await User.findOne.mockRejectedValue(mockErr);
     await publishController.publishDish(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.send).toHaveBeenCalledTimes(1);
+
+    const {
+      firstName, lastName, email, password,
+    } = User;
+    const mockUser = {
+      firstName, lastName, email, password,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    req.body = {
+      title: 'title',
+      description: 'description',
+      recipe: 'recipe',
+      firstName: 'firstName',
+      cookedNotOrdered: true,
+      chosenImageDate: new Date().getTime(),
+      userZipCode: '12345',
+    };
+    await DailyTreat.create.mockRejectedValue(mockErr);
+    await publishController.publishDish(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(2);
+    expect(res.send).toHaveBeenCalledTimes(2);
   });
 });
