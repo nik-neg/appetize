@@ -9,6 +9,6 @@ before_install: cd ./client
 install:
   - npm install
 script:
-  - cd ./server
+  - cd ../server
   - npm install
   - yarn test
