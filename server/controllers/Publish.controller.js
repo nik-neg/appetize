@@ -27,30 +27,25 @@ module.exports.publishDish = async (req, res) => {
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
   // create dish to publish
-
-  const dailyTreat = await DailyTreat.create({
-    userID: id,
-    creatorName: firstName,
-    likedByUserID: [],
-    zipCode: userZipCode,
-    cookedNotOrdered,
-  });
-  dailyTreat.title = title;
-  dailyTreat.description = description;
-  dailyTreat.recipe = recipe;
-  dailyTreat.votes = 0;
-  dailyTreat.created = new Date().getTime();
-  // save to db
   try {
-    const dailyTreatSaveResponse = await dailyTreat.save();
-    // eslint-disable-next-line no-underscore-dangle
+    const dailyTreat = await DailyTreat.create({
+      userID: id,
+      creatorName: firstName,
+      likedByUserID: [],
+      zipCode: userZipCode,
+      cookedNotOrdered,
+    });
+    dailyTreat.title = title;
+    dailyTreat.description = description;
+    dailyTreat.recipe = recipe;
+    dailyTreat.votes = 0;
+    dailyTreat.created = new Date().getTime();
     dailyTreat.imageUrl = imageUrl;
-    await dailyTreat.save();
-    if (dailyTreatSaveResponse) {
-      // eslint-disable-next-line no-underscore-dangle
-      user.dailyFood.push(dailyTreatSaveResponse._id);
-      await user.save();
-    }
+
+    const dailyTreatSaveResponse = await dailyTreat.save();
+    const { _id } = dailyTreatSaveResponse;
+    user.dailyFood.push(_id);
+    await user.save();
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
     res.status(500).send({ error: '500', message: 'Could not save daily treat - Internal server error' });
