@@ -6,7 +6,7 @@ const _ = require('lodash');
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 
-const userController = require('../Publish.controller');
+const publishController = require('../Publish.controller');
 
 jest.mock('../../models/User');
 jest.mock('../../models/DailyTreat');
@@ -44,10 +44,22 @@ const setup = () => { // test object factory
 
 describe('publishDish method', () => {
   test('publishDish throws 400, because user not found', async () => {
-
+    const { req, res } = setup();
+    req.params = { id: 123 };
+    await User.findOne.mockResolvedValue(null);
+    await publishController.publishDish(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
   });
-  test('createUser throws 500, because of internal server error', async () => {
-
+  test('publishDish throws 400, because user not found', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123 };
+    const mockErr = new Error('ERROR');
+    await User.findOne.mockRejectedValue(mockErr);
+    await publishController.publishDish(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
   });
-
 });

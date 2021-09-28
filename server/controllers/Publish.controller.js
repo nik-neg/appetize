@@ -9,6 +9,19 @@ const helper = require('../helpers/db.helpers');
 
 module.exports.publishDish = async (req, res) => {
   const { id } = req.params;
+  let user;
+  try {
+    user = await User.findOne({
+      _id: id,
+    });
+    if (!user) {
+      res.status(400).send({ error: '400', message: 'Could not find user' });
+      return;
+    }
+  } catch (e) {
+    res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
+    return;
+  }
   const {
     title, description, recipe, firstName, cookedNotOrdered, chosenImageDate, userZipCode,
   } = req.body;
@@ -22,7 +35,6 @@ module.exports.publishDish = async (req, res) => {
     zipCode: userZipCode,
     cookedNotOrdered,
   });
-
   dailyTreat.title = title;
   dailyTreat.description = description;
   dailyTreat.recipe = recipe;
@@ -35,14 +47,6 @@ module.exports.publishDish = async (req, res) => {
     dailyTreat.imageUrl = imageUrl;
     await dailyTreat.save();
     if (dailyTreatSaveResponse) {
-      let user;
-      try {
-        user = await User.findOne({
-          _id: id,
-        });
-      } catch (e) {
-        res.status(400).send({ error: '400', message: 'Could not find user' });
-      }
       // eslint-disable-next-line no-underscore-dangle
       user.dailyFood.push(dailyTreatSaveResponse._id);
       await user.save();
