@@ -10,25 +10,18 @@ const helper = require('../helpers/db.helpers');
 module.exports.publishDish = async (req, res) => {
   const { id } = req.params;
   const {
-    title, description, recipe, firstName, cookedNotOrdered, chosenImageDate,
+    title, description, recipe, firstName, cookedNotOrdered, chosenImageDate, userZipCode,
   } = req.body;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
   // create dish to publish
-  const dailyTreat = new DailyTreat();
-  dailyTreat.userID = id;
-  dailyTreat.creatorName = firstName;
-  dailyTreat.likedByUserID = [];
-  dailyTreat.cookedNotOrdered = cookedNotOrdered;
-  // get user for zip code
-  let user;
-  try {
-    user = await User.findOne({
-      _id: id,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-  dailyTreat.zipCode = user.zipCode ? user.zipCode : '10000'; // default zip code, change ?
+
+  const dailyTreat = await DailyTreat.create({
+    userID: id,
+    creatorName: firstName,
+    likedByUserID: [],
+    zipCode: userZipCode,
+    cookedNotOrdered,
+  });
 
   dailyTreat.title = title;
   dailyTreat.description = description;
@@ -42,13 +35,21 @@ module.exports.publishDish = async (req, res) => {
     dailyTreat.imageUrl = imageUrl;
     await dailyTreat.save();
     if (dailyTreatSaveResponse) {
+      let user;
+      try {
+        user = await User.findOne({
+          _id: id,
+        });
+      } catch (e) {
+        res.status(400).send({ error: '400', message: 'Could not find user' });
+      }
       // eslint-disable-next-line no-underscore-dangle
       user.dailyFood.push(dailyTreatSaveResponse._id);
       await user.save();
     }
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
-    console.log(e);
+    res.status(500).send({ error: '500', message: 'Could not save daily treat - Internal server error' });
   }
 };
 

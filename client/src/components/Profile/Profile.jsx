@@ -190,9 +190,11 @@ function Profile () {
     const chosenImageDate = store.getState().user.chosenImageDate;
     if(event.target.checked) {
       const firstName = userData.firstName;
+      const userZipCode = store.getState().user.userData.zipCode;
       const publishObject = {
         ...dish,
         firstName,
+        userZipCode,
         cookedNotOrdered: cookedOrdered.cooked === true ? true : false,
         chosenImageDate
       };
