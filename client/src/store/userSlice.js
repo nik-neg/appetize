@@ -21,18 +21,18 @@ const initialState = {
   isAuthenticated: false,
 };
 
-export const fetchUserDataFromDB = createAsyncThunk(
-  'userData/fetchUserDataFromDB',
-  async (input) => {
-    const response =  await apiServiceJWT.loginUser(input);
-    return response;
-  }
-);
-
 export const createUserAndSafeToDB = createAsyncThunk(
   'userData/createUser',
   async (input) => {
     const response  = await apiServiceJWT.register(input);
+    return response;
+  }
+);
+
+export const fetchUserDataFromDB = createAsyncThunk(
+  'userData/fetchUserDataFromDB',
+  async (input) => {
+    const response =  await apiServiceJWT.loginUser(input);
     return response;
   }
 );
