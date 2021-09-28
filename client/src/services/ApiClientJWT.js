@@ -16,7 +16,6 @@ apiServiceJWT.register = async (user) => {
 };
 
 apiServiceJWT.loginUser = async (user) => {
-  console.log('loginUser', user)
   return fetch(`${baseUrl}/login`, {
     method: 'POST',
     credentials: 'include',

@@ -22,7 +22,7 @@ module.exports.removeImageData = (regex, deleteOptionForFiles, res) => {
   }
 };
 
-module.exports.findDishesInD = async (
+module.exports.findDishesInDB = async (
   req, res, zipCodesInRadius, cookedOrdered, pageNumber,
 ) => {
   // eslint-disable-next-line no-plusplus

@@ -41,7 +41,6 @@ module.exports.createUser = async (req, res) => {
 };
 
 module.exports.loginUser = async (req, res) => {
-  console.log('LOGIN')
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -68,7 +67,6 @@ module.exports.logoutUser = async (req, res) => {
 };
 
 module.exports.showProfile = async (req, res) => {
-  console.log('SHOW PROFILE', req.user)
   if (req.user) {
     // eslint-disable-next-line no-underscore-dangle
     const userInfo = ({ ...req.user })._doc;
