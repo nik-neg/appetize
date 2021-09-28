@@ -81,7 +81,7 @@ export default function RegisterLogin () {
       const user = { firstName, lastName, email, password, };
       await asyncWrapper(dispatch, createUserAndSafeToDB, user);
       userData = store.getState().user.userData;
-      if(userData?.error === '409' ) { // TODO: or 400?
+      if(userData?.error === '409' || userData?.error === '400') {
         setInput((prevState) => {
           return {
             ...prevState,
