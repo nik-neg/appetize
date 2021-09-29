@@ -2,24 +2,16 @@ const mongoose = require('mongoose');
 
 const DailyTreat = require('../models/DailyTreat');
 
-module.exports.removeImageData = (regex, deleteOptionForFiles, res) => {
+module.exports.removeImageData = async (regex, deleteOptionForFiles) => {
   const { connection } = mongoose;
-  try {
-    connection.db.collection('fs.files', (err, collection) => {
-      collection.find({ filename: { $regex: regex } }).toArray((err, data) => {
-        if (err) console.log(err);
-        const filesIDArray = data.map((entry) => entry._id);
-        filesIDArray.forEach((fileId) => {
-          connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
-        });
-        connection.db.collection('fs.files')[deleteOptionForFiles]({ filename: { $regex: regex } });
-      });
-    });
-    if (res) res.status(200).send({});
-  } catch (err) {
-    console.log(err);
-    if (res) res.status(500).send();
-  }
+  const collection = connection.db.collection('fs.files');
+  const data = await collection.find({ filename: { $regex: regex } }).toArray();
+  const filesIDArray = data.map((entry) => entry._id);
+  filesIDArray.forEach((fileId) => {
+    connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
+  });
+  const result = await connection.db.collection('fs.files')[deleteOptionForFiles]({ filename: { $regex: regex } });
+  return result.deletedCount > 0;
 };
 
 module.exports.findDishesInDB = async (
