@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const axios = require('axios');
 const _ = require('lodash');
+const mongoose = require('mongoose');
 
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
@@ -14,6 +15,7 @@ jest.mock('../../models/DailyTreat');
 jest.mock('../../helpers/db.helpers');
 jest.mock('axios');
 jest.mock('lodash');
+jest.mock('mongoose');
 
 beforeEach(() => {
   User.findOne = jest.fn();
@@ -21,7 +23,7 @@ beforeEach(() => {
   DailyTreat.findOne = jest.fn();
   DailyTreat.deleteOne = jest.fn();
   helper.removeImageData = jest.fn();
-  helper.removeImageData = jest.fn();
+  helper.findDishesInDB = jest.fn();
 });
 
 const setup = () => { // test object factory
@@ -147,7 +149,7 @@ describe('publishDish method', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.send).toHaveBeenCalledTimes(1);
     });
-    test('removeDish throws 500, because of internal server error, while removing buffered images', async () => {
+    test('removeDish, helper.removeImageData throws 500, because of internal server error, while removing buffered images', async () => {
       const { req, res } = setup();
       req.params = { id: 123, dailyTreatID: 123456789 };
       const { id, dailyTreatID } = req.params;
@@ -178,5 +180,36 @@ describe('publishDish method', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.send).toHaveBeenCalledTimes(1);
     });
+  });
+  test('removeDish returns 200, removes daily treat, updates the user relation, and clean up buffered images', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123, dailyTreatID: 123456789 };
+    const { id, dailyTreatID } = req.params;
+    const mockedDailyTreat = {
+      _id: 123456789,
+      userID: req.params.id,
+      imageUrl: `http://localhost:3001/profile/${id}/download?created=${new Date().getTime()}`,
+    };
+    let createdDailyTreat = await DailyTreat.findOne.mockResolvedValue(mockedDailyTreat);
+    createdDailyTreat = await createdDailyTreat();
+    let createdTime = Array.from(createdDailyTreat.imageUrl).reverse();
+    const cutIndex = createdTime.indexOf('=');
+    createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+    await DailyTreat.deleteOne({ _id: dailyTreatID });
+    const mockUser = {
+      _id: id, dailyFood: [id, id + 1, id + 2, id + 3],
+    };
+    let foundUser = await User.findOne.mockResolvedValue(mockUser);
+    foundUser = await foundUser();
+    foundUser.dailyFood = foundUser.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
+    expect(foundUser.dailyFood).not.toContain(dailyTreatID);
+    foundUser.save = jest.fn();
+    await foundUser.save.mockResolvedValue(mockUser);
+    const excludeDeletePattern = new RegExp(`${id}/${createdTime}`); // regex statement left for the flow
+    helper.removeImageData.mockResolvedValue(true);
+    await publishController.removeDish(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
   });
 });

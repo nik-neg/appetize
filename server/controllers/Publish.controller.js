@@ -69,9 +69,10 @@ module.exports.removeDish = async (req, res) => {
     await user.save();
     // remove from files and chunks
     const excludeDeletePattern = new RegExp(`${id}/${createdTime}`);
-    await helper.removeImageData(excludeDeletePattern, 'deleteOne', res);
+    const result = await helper.removeImageData(excludeDeletePattern, 'deleteOne');
+    if (result) res.status(200).send({ message: 'Buffered images removed' });
   } catch (e) {
-    res.status(500).send({ error: '500', message: 'Could not remove daily treat - Internal server error' });
+    res.status(500).send({ error: '500', message: 'Could not remove daily treat or buffered images - Internal server error' });
   }
 };
 
