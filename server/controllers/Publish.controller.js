@@ -73,7 +73,7 @@ module.exports.removeDish = async (req, res) => {
     if (result) {
       res.status(200).send({ message: 'Buffered images removed' });
     } else {
-      res.status(409).send({ message: 'Buffered could not be removed' });
+      res.status(409).send({ message: 'Buffered images could not be removed' });
     }
   } catch (e) {
     res.status(500).send({ error: '500', message: 'Could not remove daily treat or buffered images - Internal server error' });
