@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const DailyTreat = require('../models/DailyTreat');
 
-module.exports.removeImageData = (regex, deleteOptionForFiles, res) => {
+module.exports.removeImageData = async (regex, deleteOptionForFiles, res) => {
   const { connection } = mongoose;
   try {
     connection.db.collection('fs.files', (err, collection) => {
@@ -15,10 +15,9 @@ module.exports.removeImageData = (regex, deleteOptionForFiles, res) => {
         connection.db.collection('fs.files')[deleteOptionForFiles]({ filename: { $regex: regex } });
       });
     });
-    if (res) res.status(200).send({});
+    if (res) res.status(200).send({ message: 'Buffered images removed' });
   } catch (err) {
-    console.log(err);
-    if (res) res.status(500).send();
+    if (res) res.status(500).send({ error: '500', message: 'Could not remove buffered images - Internal server error' });
   }
 };
 
