@@ -15,12 +15,10 @@ module.exports.publishDish = async (req, res) => {
       _id: id,
     });
     if (!user) {
-      res.status(400).send({ error: '400', message: 'Could not find user' });
-      return;
+      return res.status(400).send({ error: '400', message: 'Could not find user' });
     }
   } catch (e) {
-    res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
-    return;
+    return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
   const {
     title, description, recipe, firstName, cookedNotOrdered, chosenImageDate, userZipCode,
@@ -91,17 +89,11 @@ module.exports.checkDishesInRadius = async (req, res) => {
     user = await User.findOne({
       _id: id,
     });
+    if (!user) return res.status(409).send({ error: '409', message: 'User doesn\'t exist' });
   } catch (e) {
-    console.log(e);
+    return res.status(500).send({ error: '500', message: 'Could not remove daily treat or buffered images - Internal server error' });
   }
-  let zipCode;
-  if (user) {
-    zipCode = user.zipCode;
-  } else {
-    return res
-      .status(409)
-      .send({ error: '409', message: 'User doesn\'t exist' });
-  }
+  const { zipCode } = user;
   if (zipCode) {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
     axios

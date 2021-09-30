@@ -243,4 +243,36 @@ describe('publishDish method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
+
+  test('checkDishesInRadius returns 500, because of interal server error', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockErr = new Error('ERROR');
+    await User.findOne.mockRejectedValue(mockErr);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('checkDishesInRadius returns 409, because user could not be found', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    await User.findOne.mockResolvedValue(null);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
 });
