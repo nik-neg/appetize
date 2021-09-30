@@ -100,7 +100,14 @@ module.exports.checkDishesInRadius = async (req, res) => {
     if (!response.data.results.error) {
       const zipCodesInRadius = response.data.results.map((element) => (
         { zipCode: element.code, city: element.city }));
-      helper.findDishesInDB(req, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
+      try {
+        const dailyTreats = await helper.findDishesInDB(
+          zipCodesInRadius, parsedCookedOrdered, pageNumber,
+        );
+        return res.status(200).send(dailyTreats);
+      } catch (e) {
+        return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });
+      }
     } else {
       return res.status(404).send({ error: '404', message: 'API doesn\'t respond with data.' });
     }
