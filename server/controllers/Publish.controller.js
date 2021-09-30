@@ -96,22 +96,14 @@ module.exports.checkDishesInRadius = async (req, res) => {
   const { zipCode } = user;
   if (zipCode) {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
-    axios
-      .get(url)
-      .then((response) => {
-        if (!response.data.results.error) {
-          const zipCodesInRadius = response.data.results.map((element) => (
-            { zipCode: element.code, city: element.city }));
-          helper.findDishesInDB(req, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
-        }
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      })
-      .then(() => {
-        // always executed
-      });
+    const response = await axios.get(url);
+    if (!response.data.results.error) {
+      const zipCodesInRadius = response.data.results.map((element) => (
+        { zipCode: element.code, city: element.city }));
+      helper.findDishesInDB(req, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
+    } else {
+      return res.status(404).send({ error: '404', message: 'API doesn\'t respond with data.' });
+    }
   } else {
     return res.status(409).send({ error: '409', message: 'Zip code doesn\'t exist' });
   }

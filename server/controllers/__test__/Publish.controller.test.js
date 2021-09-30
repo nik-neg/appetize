@@ -282,7 +282,30 @@ describe('publishDish method', () => {
     expect(res.status).toHaveBeenCalledTimes(2);
     expect(res.send).toHaveBeenCalledTimes(2);
   });
-  // test('checkDishesInRadius returns 409, because user could not be found', async () => {
-
-  // });
+  test('checkDishesInRadius returns 404, because the api doesnt respond with data', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockUser = {
+      _id: id, zipCode: 12345,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    const response = {
+      data: {
+        results: {
+          error: 'ERROR',
+        },
+      },
+    };
+    await axios.get.mockResolvedValue(response);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
 });
