@@ -206,7 +206,7 @@ describe('publishDish method', () => {
     foundUser.save = jest.fn();
     await foundUser.save.mockResolvedValue(mockUser);
     const excludeDeletePattern = new RegExp(`${id}/${createdTime}`); // regex statement left for the flow
-    helper.removeImageData.mockResolvedValue(false);
+    await helper.removeImageData.mockResolvedValue(false);
     await publishController.removeDish(req, res);
     expect(res.status).toHaveBeenCalledWith(409);
     expect(res.status).toHaveBeenCalledTimes(1);
@@ -237,8 +237,139 @@ describe('publishDish method', () => {
     foundUser.save = jest.fn();
     await foundUser.save.mockResolvedValue(mockUser);
     const excludeDeletePattern = new RegExp(`${id}/${createdTime}`); // regex statement left for the flow
-    helper.removeImageData.mockResolvedValue(true);
+    await helper.removeImageData.mockResolvedValue(true);
     await publishController.removeDish(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+
+  test('checkDishesInRadius returns 500, because of interal server error', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockErr = new Error('ERROR');
+    await User.findOne.mockRejectedValue(mockErr);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('checkDishesInRadius returns 409, because user could not be found, or user doest not have a zip code', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    await User.findOne.mockResolvedValue(null);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+
+    const mockUser = {
+      _id: id,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.status).toHaveBeenCalledTimes(2);
+    expect(res.send).toHaveBeenCalledTimes(2);
+  });
+  test('checkDishesInRadius returns 404, because the api doesnt respond with data', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockUser = {
+      _id: id, zipCode: 12345,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    const response = {
+      data: {
+        results: {
+          error: 'ERROR',
+        },
+      },
+    };
+    await axios.get.mockResolvedValue(response);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('checkDishesInRadius, findDishesInDB returns 500, daily treats couldn\'t be accessed within the db', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockUser = {
+      _id: id, zipCode: 12345,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    const response = {
+      data: {
+        results: [{
+          code: 12345,
+          city: 'test city',
+        },
+        {
+          code: 12345,
+          city: 'test city 2',
+        }],
+      },
+    };
+    await axios.get.mockResolvedValue(response);
+    const mockErr = new Error('ERROR');
+    await helper.findDishesInDB.mockRejectedValue(mockErr);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('checkDishesInRadius returns 200 and the daily treats in radius', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockUser = {
+      _id: id, zipCode: 12345,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    const response = {
+      data: {
+        results: [{
+          code: 12345,
+          city: 'test city',
+        },
+        {
+          code: 12345,
+          city: 'test city 2',
+        }],
+      },
+    };
+    await axios.get.mockResolvedValue(response);
+    const dailyTreats = [{ _id: 123 }, { _id: 456 }];
+    await helper.findDishesInDB.mockResolvedValue(dailyTreats);
+    await publishController.checkDishesInRadius(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);

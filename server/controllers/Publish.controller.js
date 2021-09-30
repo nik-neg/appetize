@@ -15,12 +15,10 @@ module.exports.publishDish = async (req, res) => {
       _id: id,
     });
     if (!user) {
-      res.status(400).send({ error: '400', message: 'Could not find user' });
-      return;
+      return res.status(400).send({ error: '400', message: 'Could not find user' });
     }
   } catch (e) {
-    res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
-    return;
+    return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
   const {
     title, description, recipe, firstName, cookedNotOrdered, chosenImageDate, userZipCode,
@@ -91,35 +89,30 @@ module.exports.checkDishesInRadius = async (req, res) => {
     user = await User.findOne({
       _id: id,
     });
+    if (!user) return res.status(409).send({ error: '409', message: 'User doesn\'t exist' });
   } catch (e) {
-    console.log(e);
+    return res.status(500).send({ error: '500', message: 'Could not remove daily treat or buffered images - Internal server error' });
   }
-  let zipCode;
-  if (user) {
-    zipCode = user.zipCode;
-  } else {
-    return res
-      .status(409)
-      .send({ error: '409', message: 'User doesn\'t exist' });
-  }
+  const { zipCode } = user;
   if (zipCode) {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
-    axios
-      .get(url)
-      .then((response) => {
-        if (!response.data.results.error) {
-          const zipCodesInRadius = response.data.results.map((element) => (
-            { zipCode: element.code, city: element.city }));
-          helper.findDishesInDB(req, res, zipCodesInRadius, parsedCookedOrdered, pageNumber);
-        }
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      })
-      .then(() => {
-        // always executed
-      });
+    const response = await axios.get(url);
+    if (!response.data.results.error) {
+      const zipCodesInRadius = response.data.results.map((element) => (
+        { zipCode: element.code, city: element.city }));
+      try {
+        const dailyTreats = await helper.findDishesInDB(
+          zipCodesInRadius, parsedCookedOrdered, pageNumber,
+        );
+        return res.status(200).send(dailyTreats);
+      } catch (e) {
+        return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });
+      }
+    } else {
+      return res.status(404).send({ error: '404', message: 'API doesn\'t respond with data.' });
+    }
+  } else {
+    return res.status(409).send({ error: '409', message: 'Zip code doesn\'t exist' });
   }
 };
 

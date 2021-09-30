@@ -14,9 +14,7 @@ module.exports.removeImageData = async (regex, deleteOptionForFiles) => {
   return result.deletedCount > 0;
 };
 
-module.exports.findDishesInDB = async (
-  req, res, zipCodesInRadius, cookedOrdered, pageNumber,
-) => {
+module.exports.findDishesInDB = async (zipCodesInRadius, cookedOrdered, pageNumber) => {
   // eslint-disable-next-line no-plusplus
   const ALL_DISHES = 'ALL_DISHES';
   const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
@@ -33,23 +31,19 @@ module.exports.findDishesInDB = async (
   const PAGE_SIZE = 4;
   const skip = (pageNumber - 1) * PAGE_SIZE;
   let dailyTreats = [];
-  try {
-    dailyTreats = await DailyTreat.find(queryObject)
-      .skip(skip)
-      .limit(PAGE_SIZE);
+  dailyTreats = await DailyTreat.find(queryObject)
+    .skip(skip)
+    .limit(PAGE_SIZE);
 
-    const zipCodeCityObject = {};
-    zipCodesInRadius.forEach((zipCodeCity) => {
-      zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
-    });
-    // get existing zip codes from db
-    dailyTreats = dailyTreats.map((dailyTreat) => {
-      // eslint-disable-next-line max-len
-      const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode]};
-      return dailyTreatWithCity;
-    });
-  } catch (e) {
-    console.log(e);
-  }
-  res.send(dailyTreats);
+  const zipCodeCityObject = {};
+  zipCodesInRadius.forEach((zipCodeCity) => {
+    zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
+  });
+  // get existing zip codes from db
+  dailyTreats = dailyTreats.map((dailyTreat) => {
+    // eslint-disable-next-line max-len
+    const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode]};
+    return dailyTreatWithCity;
+  });
+  return dailyTreats;
 };
