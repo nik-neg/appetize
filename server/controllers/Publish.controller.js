@@ -112,6 +112,8 @@ module.exports.checkDishesInRadius = async (req, res) => {
       .then(() => {
         // always executed
       });
+  } else {
+    return res.status(409).send({ error: '409', message: 'Zip code doesn\'t exist' });
   }
 };
 

@@ -272,7 +272,17 @@ describe('publishDish method', () => {
     await User.findOne.mockResolvedValue(null);
     await publishController.checkDishesInRadius(req, res);
     expect(res.status).toHaveBeenCalledWith(409);
-    expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.send).toHaveBeenCalledTimes(1);
+
+    const mockUser = {
+      _id: id,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.status).toHaveBeenCalledTimes(2);
+    expect(res.send).toHaveBeenCalledTimes(2);
   });
+  // test('checkDishesInRadius returns 409, because user could not be found', async () => {
+
+  // });
 });

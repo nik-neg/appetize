@@ -51,5 +51,5 @@ module.exports.findDishesInDB = async (
   } catch (e) {
     console.log(e);
   }
-  res.send(dailyTreats);
+  res.status(200).send(dailyTreats);
 };
