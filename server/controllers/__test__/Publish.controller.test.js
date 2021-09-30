@@ -341,4 +341,37 @@ describe('publishDish method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
+  test('checkDishesInRadius returns 200 and the daily treats in radius', async () => {
+    const { req, res } = setup();
+    req.query = {
+      id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+    };
+    const {
+      id, radius, cookedOrdered, pageNumber,
+    } = req.query;
+    const parsedCookedOrdered = JSON.parse(cookedOrdered);
+    const mockUser = {
+      _id: id, zipCode: 12345,
+    };
+    await User.findOne.mockResolvedValue(mockUser);
+    const response = {
+      data: {
+        results: [{
+          code: 12345,
+          city: 'test city',
+        },
+        {
+          code: 12345,
+          city: 'test city 2',
+        }],
+      },
+    };
+    await axios.get.mockResolvedValue(response);
+    const dailyTreats = [{ _id: 123 }, { _id: 456 }];
+    await helper.findDishesInDB.mockResolvedValue(dailyTreats);
+    await publishController.checkDishesInRadius(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
 });
