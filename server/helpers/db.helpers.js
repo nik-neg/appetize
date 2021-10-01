@@ -3,14 +3,17 @@ const mongoose = require('mongoose');
 const DailyTreat = require('../models/DailyTreat');
 
 module.exports.removeImageData = async (regex, deleteOptionForFiles) => {
+  if (!(regex && deleteOptionForFiles)) return false;
   const { connection } = mongoose;
-  const collection = connection.db.collection('fs.files');
-  const data = await collection.find({ filename: { $regex: regex } }).toArray();
+  const filesCollection = connection.db.collection('fs.files');
+  const chunksCollection = connection.db.collection('fs.chunks');
+  let data = filesCollection.find({ filename: { $regex: regex } });
+  data = await data.toArray();
   const filesIDArray = data.map((entry) => entry._id);
   filesIDArray.forEach((fileId) => {
-    connection.db.collection('fs.chunks').deleteOne({ files_id: fileId });
+    chunksCollection.deleteOne({ files_id: fileId });
   });
-  const result = await connection.db.collection('fs.files')[deleteOptionForFiles]({ filename: { $regex: regex } });
+  const result = await filesCollection[deleteOptionForFiles]({ filename: { $regex: regex } });
   return result.deletedCount > 0;
 };
 
