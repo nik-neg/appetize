@@ -7,6 +7,7 @@ const User = {
   hashedPassword: Array.from('password').reverse().join(''),
   findOne: async () => {},
   create: async () => {},
+  findOneAndUpdate: async () => {},
 };
 
 module.exports = User;
