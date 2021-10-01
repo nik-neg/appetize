@@ -3,6 +3,7 @@ const DailyTreat = {
   findOne: async () => {},
   deleteOne: async () => {},
   find: async () => {},
+  findOneAndUpdate: async () => {},
 };
 
 module.exports = DailyTreat;

@@ -1,6 +1,8 @@
 /* eslint-disable no-plusplus */
 const axios = require('axios');
 
+const _ = require('lodash');
+
 const User = require('../models/User');
 
 const DailyTreat = require('../models/DailyTreat');
@@ -118,50 +120,51 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
 module.exports.upDownVote = async (req, res) => {
   const { id, dailyTreatID, upDown } = req.params;
+  const upVoteStatement = {
+    dailyTreat: { $inc: { votes: 1 }, $push: { likedByUserID: id } },
+    user: { $push: { liked: dailyTreatID } },
+  };
+  const downVoteStatement = {
+    dailyTreat: { $inc: { votes: -1 }, $pull: { likedByUserID: id } },
+    user: { $pull: { liked: dailyTreatID } },
+  };
+  let dailyTreat;
+  let user;
   try {
     if (upDown === 'up') {
       // like dish
-      await DailyTreat.updateOne(
+      dailyTreat = await DailyTreat.findOneAndUpdate(
         {
           _id: dailyTreatID,
           userID: { $ne: id },
         },
-        { $inc: { votes: 1 }, $push: { likedByUserID: id } },
+        upVoteStatement.dailyTreat,
         { new: true },
       );
-      await User.updateOne(
+      user = await User.findOneAndUpdate(
         { _id: id },
-        { $push: { liked: dailyTreatID } },
+        upVoteStatement.user,
         { new: true },
       );
     } else {
       // unlike dish
-      await DailyTreat.updateOne(
+      dailyTreat = await DailyTreat.findOneAndUpdate(
         {
           _id: dailyTreatID,
           userID: { $ne: id },
         },
-        { $inc: { votes: -1 }, $pull: { likedByUserID: id } },
+        downVoteStatement.dailyTreat,
         { new: true },
       );
-      await User.updateOne(
+      user = await User.findOneAndUpdate(
         { _id: id },
-        { $pull: { liked: dailyTreatID } },
+        downVoteStatement.user,
         { new: true },
       );
     }
-    // get updated votes for the related user
-    let dailyTreat;
-    let user;
-    try {
-      dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
-      user = await User.findOne({ _id: id });
-      user.password = null; // TODO: lodash omit
-      res.send({ user, dailyTreat });
-    } catch (e) {
-      console.log(e);
-    }
+    user = _.omit(user, ['password']);
+    return res.status(200).send({ user, dailyTreat });
   } catch (e) {
-    console.log(e);
+    return res.status(500).send({ error: '500', message: 'Could not up/down vote daily treat - Internal server error' });
   }
 };
