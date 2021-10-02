@@ -2,7 +2,9 @@ const DailyTreat = {
   create: async () => {},
   findOne: async () => {},
   deleteOne: async () => {},
-  find: async () => {},
+  find: () => DailyTreat,
+  skip: () => DailyTreat,
+  limit: () => {},
   findOneAndUpdate: async () => {},
 };
 

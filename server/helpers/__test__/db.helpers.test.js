@@ -13,6 +13,7 @@ beforeEach(() => {
   mongoose.connection.db.collection.find.toArray.map = jest.fn();
   mongoose.connection.db.collection.deleteOne = jest.fn();
   mongoose.connection.db.collection.deleteMany = jest.fn();
+  DailyTreat.limit = jest.fn();
 });
 
 describe('helpers methods', () => {
@@ -56,7 +57,96 @@ describe('helpers methods', () => {
     res = await helper.removeImageData(excludeDeletePattern, deleteOptionForFiles);
     expect(res).toBe(true);
   });
-  test('findDishesInDB method', async () => {
+  test('findDishesInDB method return empty array due to invalid parameters', async () => {
+    let res = await helper.findDishesInDB({}, {});
+    expect(res).toEqual([]);
+    res = await helper.findDishesInDB({});
+    expect(res).toEqual([]);
+    res = await helper.findDishesInDB();
+    expect(res).toEqual([]);
+  });
+  test('findDishesInDB method return an array with daily treat info and city names', async () => {
+    const zipCodesInRadius = [
+      { zipCode: 12345, city: 'Amsterdam' },
+      { zipCode: 23456, city: 'Berlin' },
+      { zipCode: 34567, city: 'Chigago' },
+    ];
+    let cookedOrdered = {
+      cooked: true,
+      ordered: true,
+    };
+    const ALL_DISHES = 'ALL_DISHES';
+    let cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+      ? ALL_DISHES : cookedOrdered.cooked;
+    let queryObject = {};
+    if (cookedOrderedParam !== ALL_DISHES) {
+      queryObject.cookedNotOrdered = cookedOrderedParam;
+    }
+    expect(queryObject).toEqual({});
 
+    cookedOrdered = {
+      cooked: false,
+      ordered: false,
+    };
+    cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+      ? ALL_DISHES : cookedOrdered.cooked;
+    queryObject = {};
+    if (cookedOrderedParam !== ALL_DISHES) {
+      queryObject.cookedNotOrdered = cookedOrderedParam;
+    }
+    expect(queryObject).toEqual({});
+    cookedOrdered = {
+      cooked: true,
+      ordered: false,
+    };
+    cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+      ? ALL_DISHES : cookedOrdered.cooked;
+    queryObject = {};
+    if (cookedOrderedParam !== ALL_DISHES) {
+      queryObject.cookedNotOrdered = cookedOrderedParam;
+    }
+    expect(queryObject.cookedNotOrdered).toEqual(true);
+    cookedOrdered = {
+      cooked: false,
+      ordered: true,
+    };
+    cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
+      ? ALL_DISHES : cookedOrdered.cooked;
+    queryObject = {};
+    if (cookedOrderedParam !== ALL_DISHES) {
+      queryObject.cookedNotOrdered = cookedOrderedParam;
+    }
+    expect(queryObject.cookedNotOrdered).toEqual(false);
+
+    const pageNumber = 1;
+    const mockedDailyTreats = [
+      {
+        _doc: {
+          _id: 123, title: 'Pasta', userID: 1,
+        },
+        zipCode: '12345',
+      },
+      {
+        _doc: {
+          _id: 456, title: 'Pizza', userID: 2,
+        },
+        zipCode: '23456',
+      },
+    ];
+    let dailyTreats = await DailyTreat.find();
+    dailyTreats = dailyTreats.skip();
+    dailyTreats = dailyTreats.limit.mockResolvedValue(mockedDailyTreats);
+    dailyTreats = await dailyTreats();
+    const zipCodeCityObject = {};
+    zipCodesInRadius.forEach((zipCodeCity) => {
+      zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
+    });
+    dailyTreats = dailyTreats.map((dailyTreat) => {
+      // eslint-disable-next-line max-len
+      const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode] };
+      return dailyTreatWithCity;
+    });
+    res = await helper.findDishesInDB(zipCodesInRadius, cookedOrdered, pageNumber);
+    expect(res).toEqual(dailyTreats);
   });
 });
