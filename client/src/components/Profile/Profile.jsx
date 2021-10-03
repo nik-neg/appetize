@@ -99,7 +99,7 @@ function Profile () {
 
   const [open, setOpen] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
-  const [imagePath, setImagePath] = useState(``);
+  const [imagePath, setImagePath] = useState('');
   const [imagePathForAvarar, setImagePathForAvatar] = useState('');
 
   const CHARACTER_LIMIT_TITLE = 20;

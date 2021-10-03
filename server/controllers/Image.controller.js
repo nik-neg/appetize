@@ -33,18 +33,18 @@ module.exports.retrieveImage = async (req, res) => {
   const gfs = gridfs(connection.db);
   const { created } = req.query;
   const filename = `${req.params.id}/${created}`;
-  gfs.files.findOne({
-    filename,
-  }, (err, file) => {
-    if (err || !file) {
-      res.send('File Not Found');
-    } else {
-      const readstream = gfs.createReadStream({
-        filename,
-      });
-      readstream.pipe(res);
+  try {
+    const result = await gfs.files.findOne({ filename });
+    if (!result) {
+      return res.status(500).send({ error: '500', message: 'Could not open the file - Internal server error' });
     }
-  });
+    const readStream = gfs.createReadStream({
+      filename,
+    });
+    readStream.pipe(res);
+  } catch (err) {
+    return res.status(500).send({ error: '500', message: 'Could not find the file - Internal server error' });
+  }
 };
 
 module.exports.removeImages = async (req, res) => {

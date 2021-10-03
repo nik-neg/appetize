@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
-
+const mongoose = require('mongoose');
 const _ = require('lodash');
+const gridfs = require('gridfs-stream');
 const imageController = require('../Image.controller');
 
 const User = require('../../models/User');
@@ -10,6 +11,8 @@ const DailyTreat = require('../../models/DailyTreat');
 jest.mock('../../models/User');
 jest.mock('../../models/DailyTreat');
 jest.mock('lodash');
+jest.mock('gridfs-stream');
+jest.mock('mongoose');
 
 beforeEach(() => {
   User.findOne = jest.fn();
@@ -81,5 +84,56 @@ describe('saveImage method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledWith({ userData });
     expect(res.send).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('retrieveImage method', () => {
+  test('retrieveImage returns 500, because of interal server error', async () => {
+    const { req, res } = setup();
+    req.query = { created: new Date().getTime() };
+    req.params = { id: 123456789 };
+    const mockErr = new Error('ERROR');
+    gridfs.mongo = mongoose.mongo;
+    const { connection } = mongoose;
+    const gfs = gridfs(connection.db);
+    gfs.files.findOne = jest.fn();
+    await gfs.files.findOne.mockRejectedValue(mockErr);
+    await imageController.retrieveImage(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+
+    await gfs.files.findOne.mockResolvedValue(null);
+    await imageController.retrieveImage(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(2);
+    expect(res.send).toHaveBeenCalledTimes(2);
+  });
+  test('retrieveImage the buffered data, because of successfull stream', async () => {
+    const { req, res } = setup();
+    req.query = { created: new Date().getTime() };
+    req.params = { id: 123456789 };
+    gridfs.mongo = mongoose.mongo;
+    const { connection } = mongoose;
+    const gfs = gridfs(connection.db);
+    gfs.files.findOne = jest.fn();
+    await gfs.files.findOne.mockResolvedValue('somefile');
+    let mockedStream = gfs.createReadStream();
+    mockedStream = await mockedStream();
+    mockedStream.pipe(res);
+
+    const helloWorld = 'helloworld';
+    const end = new Promise((resolve, reject) => {
+      mockedStream.on('end', () => resolve(mockedStream.read(helloWorld.length)));
+      mockedStream.on('error', reject);
+    });
+    let streamDataOnEnd;
+    (async () => {
+      streamDataOnEnd = await end;
+    })();
+
+    mockedStream.emit('close');
+    mockedStream.emit('end');
+
+    await imageController.retrieveImage(req, res);
+    expect(streamDataOnEnd.toString()).toEqual(helloWorld);
   });
 });
