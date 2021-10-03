@@ -2,33 +2,28 @@ const mongoose = require('mongoose');
 
 const gridfs = require('gridfs-stream');
 
+const _ = require('lodash');
+
 const User = require('../models/User');
 
 const DailyTreat = require('../models/DailyTreat');
 
 const helper = require('../helpers/db.helpers');
 
-module.exports.saveImage = async (req, res) => { // TODO: return date information
+module.exports.saveImage = async (req, res) => {
+  const { id } = req.params;
+  const { imageURL } = req.query;
   try {
-    if (!req.file || req.file.length <= 0) {
-      return res.send('You must select at least 1 file.');
-    }
-    const { id } = req.params;
-    const { imageURL } = req.query;
     if (imageURL) {
-      const userData = await User.findOne({ _id: id });
+      let userData = await User.findOne({ _id: id });
       userData.avatarImageUrl = imageURL;
-      await userData.save();
-      userData.password = null;
-      res.status(201).send({ userData });
+      userData = await userData.save();
+      userData = _.omit(userData, ['password']);
+      return res.status(201).send({ userData });
     }
-    res.status(201).send();
-  } catch (error) {
-    console.log(error);
-    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
-      return res.send('Too many files to upload.');
-    }
-    return res.send(`Error when trying upload many files: ${error}`);
+    return res.status(201).send();
+  } catch (err) {
+    return res.status(500).send({ error: '500', message: 'Could not set the image url for the user - Internal server error' });
   }
 };
 
@@ -69,5 +64,6 @@ module.exports.removeImages = async (req, res) => {
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
   const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  helper.removeImageData(excludeDeletePattern, 'deleteMany', res);
+  const result = helper.removeImageData(excludeDeletePattern, 'deleteMany');
+  // TODO: return res with result
 };
