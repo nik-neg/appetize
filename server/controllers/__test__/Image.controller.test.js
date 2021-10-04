@@ -140,3 +140,17 @@ describe('retrieveImage method', () => {
     expect(res.status).toHaveBeenCalledTimes(2);
   });
 });
+
+describe('removeImages method', () => {
+  test('removeImages returns 500, because of interal server error', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789 };
+    const mockErr = new Error('ERROR');
+    DailyTreat.find = jest.fn();
+    await DailyTreat.find.mockRejectedValue(mockErr);
+    await imageController.removeImages(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+});

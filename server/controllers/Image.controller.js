@@ -57,7 +57,12 @@ module.exports.retrieveImage = async (req, res) => {
 
 module.exports.removeImages = async (req, res) => {
   const { id } = req.params;
-  const dailyTreats = await DailyTreat.find({ userID: id });
+  let dailyTreats;
+  try {
+    dailyTreats = await DailyTreat.find({ userID: id });
+  } catch (err) {
+    return res.status(500).send({ error: '500', message: 'Could not find the daily treat - Internal server error' });
+  }
   const createdDateArray = dailyTreats.map((dailyTreat) => {
     let createdTime = Array.from(dailyTreat.imageUrl).reverse();
     const cutIndex = createdTime.indexOf('=');
@@ -72,6 +77,5 @@ module.exports.removeImages = async (req, res) => {
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
   const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  const result = helper.removeImageData(excludeDeletePattern, 'deleteMany');
-  // TODO: return res with result
+  await helper.removeImageData(excludeDeletePattern, 'deleteMany');
 };
