@@ -107,7 +107,7 @@ describe('retrieveImage method', () => {
     expect(res.status).toHaveBeenCalledTimes(2);
     expect(res.send).toHaveBeenCalledTimes(2);
   });
-  test('retrieveImage the buffered data, because of successfull stream', async () => {
+  test('retrieveImage returns the buffered data, because of successful stream', async () => {
     const { req, res } = setup();
     req.query = { created: new Date().getTime() };
     req.params = { id: 123456789 };
@@ -122,7 +122,8 @@ describe('retrieveImage method', () => {
 
     const helloWorld = 'helloworld';
     const end = new Promise((resolve, reject) => {
-      mockedStream.on('end', () => resolve(mockedStream.read(helloWorld.length)));
+      // additional explicit setting of status for test of successful stream
+      mockedStream.on('end', () => resolve([mockedStream.read(helloWorld.length), res.status(200)]));
       mockedStream.on('error', reject);
     });
     let streamDataOnEnd;
@@ -134,6 +135,8 @@ describe('retrieveImage method', () => {
     mockedStream.emit('end');
 
     await imageController.retrieveImage(req, res);
-    expect(streamDataOnEnd.toString()).toEqual(helloWorld);
+    expect(streamDataOnEnd[0].toString()).toEqual(helloWorld);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(2);
   });
 });

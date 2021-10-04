@@ -42,6 +42,14 @@ module.exports.retrieveImage = async (req, res) => {
       filename,
     });
     readStream.pipe(res);
+    // additional explicit setting of status for test of successful stream
+    const end = new Promise((resolve, reject) => {
+      readStream.on('end', () => resolve(res.status(200)));
+      readStream.on('error', reject);
+    });
+    (async () => {
+      await end;
+    })();
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find the file - Internal server error' });
   }
