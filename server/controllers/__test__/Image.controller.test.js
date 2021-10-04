@@ -4,18 +4,22 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const gridfs = require('gridfs-stream');
 const imageController = require('../Image.controller');
+const helper = require('../../helpers/db.helpers');
 
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 
 jest.mock('../../models/User');
 jest.mock('../../models/DailyTreat');
+jest.mock('../../helpers/db.helpers');
 jest.mock('lodash');
 jest.mock('gridfs-stream');
 jest.mock('mongoose');
 
 beforeEach(() => {
   User.findOne = jest.fn();
+  DailyTreat.find = jest.fn();
+  helper.removeImageData = jest.fn();
 });
 
 const setup = () => { // test object factory
@@ -107,7 +111,7 @@ describe('retrieveImage method', () => {
     expect(res.status).toHaveBeenCalledTimes(2);
     expect(res.send).toHaveBeenCalledTimes(2);
   });
-  test('retrieveImage the buffered data, because of successfull stream', async () => {
+  test('retrieveImage returns the buffered data, because of successful stream', async () => {
     const { req, res } = setup();
     req.query = { created: new Date().getTime() };
     req.params = { id: 123456789 };
@@ -122,7 +126,8 @@ describe('retrieveImage method', () => {
 
     const helloWorld = 'helloworld';
     const end = new Promise((resolve, reject) => {
-      mockedStream.on('end', () => resolve(mockedStream.read(helloWorld.length)));
+      // additional explicit setting of status for test of successful stream
+      mockedStream.on('end', () => resolve([mockedStream.read(helloWorld.length), res.status(200)]));
       mockedStream.on('error', reject);
     });
     let streamDataOnEnd;
@@ -134,6 +139,45 @@ describe('retrieveImage method', () => {
     mockedStream.emit('end');
 
     await imageController.retrieveImage(req, res);
-    expect(streamDataOnEnd.toString()).toEqual(helloWorld);
+    expect(streamDataOnEnd[0].toString()).toEqual(helloWorld);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('removeImages method', () => {
+  test('removeImages returns 500, because of interal server error', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789 };
+    const mockErr = new Error('ERROR');
+    await DailyTreat.find.mockRejectedValue(mockErr);
+    await imageController.removeImages(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('removeImages, returns 500, because of interal server error inside the helper function', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789 };
+    let foundDailyTreats = await DailyTreat.find.mockResolvedValue([]);
+    foundDailyTreats = await foundDailyTreats();
+    let deleteOperationResult = await helper.removeImageData.mockResolvedValue({});
+    deleteOperationResult = await deleteOperationResult();
+    await imageController.removeImages(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('removeImages, returns 200, because the deletion operation could be done', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789 };
+    let foundDailyTreats = await DailyTreat.find.mockResolvedValue([]);
+    foundDailyTreats = await foundDailyTreats();
+    let deleteOperationResult = await helper.removeImageData.mockResolvedValue({ deletedCount: 3 });
+    deleteOperationResult = await deleteOperationResult();
+    await imageController.removeImages(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
   });
 });

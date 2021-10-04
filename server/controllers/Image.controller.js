@@ -42,6 +42,14 @@ module.exports.retrieveImage = async (req, res) => {
       filename,
     });
     readStream.pipe(res);
+    // additional explicit setting of status for test of successful stream
+    const end = new Promise((resolve, reject) => {
+      readStream.on('end', () => resolve(res.status(200)));
+      readStream.on('error', reject);
+    });
+    (async () => {
+      await end;
+    })();
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find the file - Internal server error' });
   }
@@ -49,7 +57,12 @@ module.exports.retrieveImage = async (req, res) => {
 
 module.exports.removeImages = async (req, res) => {
   const { id } = req.params;
-  const dailyTreats = await DailyTreat.find({ userID: id });
+  let dailyTreats;
+  try {
+    dailyTreats = await DailyTreat.find({ userID: id });
+  } catch (err) {
+    return res.status(500).send({ error: '500', message: 'Could not find the daily treat - Internal server error' });
+  }
   const createdDateArray = dailyTreats.map((dailyTreat) => {
     let createdTime = Array.from(dailyTreat.imageUrl).reverse();
     const cutIndex = createdTime.indexOf('=');
@@ -64,6 +77,9 @@ module.exports.removeImages = async (req, res) => {
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
   const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  const result = helper.removeImageData(excludeDeletePattern, 'deleteMany');
-  // TODO: return res with result
+  const result = await helper.removeImageData(excludeDeletePattern, 'deleteMany');
+  if (result.deletedCount) {
+    return res.status(200).send();
+  }
+  return res.status(500).send({ error: '500', message: 'Could not delete the daily treats - Internal server error' });
 };
