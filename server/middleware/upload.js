@@ -8,12 +8,12 @@ const url = process.env.USE_DOCKER === '1' ? process.env.DOCKER_DB_URL : process
 const storage = new GridFsStorage({
   url,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
-  file: (req, file) => {
+  file: async (req, file) => {
     const { id } = req.params;
     const { imageURL } = req.query;
     if (imageURL) {
       const excludeDeletePattern = new RegExp(`^${id}/[0-9]*_avatar$`);
-      helper.removeImageData(excludeDeletePattern, 'deleteOne');
+      await helper.removeImageData(excludeDeletePattern, 'deleteOne');
     }
     const match = ['image/png', 'image/jpeg']; // /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/
 

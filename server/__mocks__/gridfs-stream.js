@@ -25,9 +25,11 @@ const mockReadStream = jest.fn().mockImplementation(() => {
   return readable;
 });
 
-module.exports = (connectionDb) => ({
+const mockGridFsObject = {
   files: {
-    findOne: (filenameObject) => 'not null',
+    findOne: (filenameObject) => jest.fn(),
   },
   createReadStream: () => mockReadStream,
-});
+};
+
+module.exports = () => mockGridFsObject;

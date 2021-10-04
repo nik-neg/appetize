@@ -19,6 +19,10 @@ jest.mock('mongoose');
 beforeEach(() => {
   User.findOne = jest.fn();
   DailyTreat.find = jest.fn();
+  // gridfs.mongo = mongoose.mongo;
+  // const { connection } = mongoose;
+  // gfs = gridfs(connection.db);
+  // gfs.files.findOne = jest.fn();
   helper.removeImageData = jest.fn();
 });
 
@@ -159,10 +163,8 @@ describe('removeImages method', () => {
   test('removeImages, returns 500, because of interal server error inside the helper function', async () => {
     const { req, res } = setup();
     req.params = { id: 123456789 };
-    let foundDailyTreats = await DailyTreat.find.mockResolvedValue([]);
-    foundDailyTreats = await foundDailyTreats();
-    let deleteOperationResult = await helper.removeImageData.mockResolvedValue({});
-    deleteOperationResult = await deleteOperationResult();
+    await DailyTreat.find.mockResolvedValue([]);
+    await helper.removeImageData.mockResolvedValue({});
     await imageController.removeImages(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.status).toHaveBeenCalledTimes(1);
@@ -171,10 +173,8 @@ describe('removeImages method', () => {
   test('removeImages, returns 200, because the deletion operation could be done', async () => {
     const { req, res } = setup();
     req.params = { id: 123456789 };
-    let foundDailyTreats = await DailyTreat.find.mockResolvedValue([]);
-    foundDailyTreats = await foundDailyTreats();
-    let deleteOperationResult = await helper.removeImageData.mockResolvedValue({ deletedCount: 3 });
-    deleteOperationResult = await deleteOperationResult();
+    await DailyTreat.find.mockResolvedValue([]);
+    await helper.removeImageData.mockResolvedValue({ deletedCount: 3 });
     await imageController.removeImages(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.status).toHaveBeenCalledTimes(1);

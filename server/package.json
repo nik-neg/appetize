@@ -9,7 +9,7 @@
   },
   "jest": {
     "testEnvironment": "jest-environment-node",
-    "collectCoverageFrom": ["controllers/*.js", "middleware/*", "helpers/*"]
+    "collectCoverageFrom": ["controllers/*.js", "middleware/auth.js", "helpers/*"]
   },
   "author": "nik-neg (Alexander Genkin)",
   "license": "ISC",
