@@ -4,18 +4,22 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const gridfs = require('gridfs-stream');
 const imageController = require('../Image.controller');
+const helper = require('../../helpers/db.helpers');
 
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 
 jest.mock('../../models/User');
 jest.mock('../../models/DailyTreat');
+jest.mock('../../helpers/db.helpers');
 jest.mock('lodash');
 jest.mock('gridfs-stream');
 jest.mock('mongoose');
 
 beforeEach(() => {
   User.findOne = jest.fn();
+  DailyTreat.find = jest.fn();
+  helper.removeImageData = jest.fn();
 });
 
 const setup = () => { // test object factory
@@ -146,10 +150,33 @@ describe('removeImages method', () => {
     const { req, res } = setup();
     req.params = { id: 123456789 };
     const mockErr = new Error('ERROR');
-    DailyTreat.find = jest.fn();
     await DailyTreat.find.mockRejectedValue(mockErr);
     await imageController.removeImages(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('removeImages, returns 500, because of interal server error inside the helper function', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789 };
+    let foundDailyTreats = await DailyTreat.find.mockResolvedValue([]);
+    foundDailyTreats = await foundDailyTreats();
+    let deleteOperationResult = await helper.removeImageData.mockResolvedValue({});
+    deleteOperationResult = await deleteOperationResult();
+    await imageController.removeImages(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('removeImages, returns 200, because the deletion operation could be done', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789 };
+    let foundDailyTreats = await DailyTreat.find.mockResolvedValue([]);
+    foundDailyTreats = await foundDailyTreats();
+    let deleteOperationResult = await helper.removeImageData.mockResolvedValue({ deletedCount: 3 });
+    deleteOperationResult = await deleteOperationResult();
+    await imageController.removeImages(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });

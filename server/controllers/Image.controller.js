@@ -77,5 +77,9 @@ module.exports.removeImages = async (req, res) => {
   notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
 
   const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  await helper.removeImageData(excludeDeletePattern, 'deleteMany');
+  const result = await helper.removeImageData(excludeDeletePattern, 'deleteMany');
+  if (result.deletedCount) {
+    return res.status(200).send();
+  }
+  return res.status(500).send({ error: '500', message: 'Could not delete the daily treats - Internal server error' });
 };
