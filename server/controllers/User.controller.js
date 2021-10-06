@@ -21,7 +21,7 @@ module.exports.createUser = async (req, res) => {
       .send({ error: '409', message: 'User already exists' });
   }
   try {
-    const invalidInput = firstName === '' || lastName === '' || email === '' || password === '';
+    const invalidInput = !firstName || !lastName || !email || !password;
     if (invalidInput) throw new Error();
     const hash = await bcrypt.hash(password, saltRounds);
     try {
