@@ -51,3 +51,15 @@ module.exports.findDishesInDB = async (zipCodesInRadius, cookedOrdered, pageNumb
   });
   return dailyTreats;
 };
+
+module.exports.initDBUrl = () => {
+  let url;
+  if (process.env.TEST_DB === '1') {
+    url = process.env.TEST_DB_URL;
+  } else if (process.env.USE_DOCKER === '1') {
+    url = process.env.TEST_DB_URL;
+  } else {
+    url = process.env.DB_URL;
+  }
+  return url;
+};

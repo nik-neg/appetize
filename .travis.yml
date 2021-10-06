@@ -5,6 +5,8 @@ cache:
   yarn: true
   directories:
     - node_modules
+services:
+  - mongodb
 before_install: cd ./client
 install:
   - npm install

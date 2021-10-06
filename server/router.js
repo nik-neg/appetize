@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const upload = require('./middleware/upload');
+const upload = require('./middleware/upload'); // TODO: added jest --forceExit to remove binding
 const auth = require('./middleware/auth');
 const userController = require('./controllers/User.controller');
 
