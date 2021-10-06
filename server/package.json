@@ -4,12 +4,16 @@
   "description": "sever for the appetize application",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --coverage --verbose --forceExit",
     "test:watch": "jest --watch"
   },
   "jest": {
     "testEnvironment": "jest-environment-node",
-    "collectCoverageFrom": ["controllers/*.js", "middleware/auth.js", "helpers/*"]
+    "collectCoverageFrom": [
+      "controllers/*.js",
+      "middleware/auth.js",
+      "helpers/*"
+    ]
   },
   "author": "nik-neg (Alexander Genkin)",
   "license": "ISC",
@@ -43,6 +47,7 @@
     "redux-saga": "1.1.3",
     "redux-thunk": "2.3.0",
     "rxjs": "7.0.0",
-    "socket.io": "^4.0.1"
+    "socket.io": "^4.0.1",
+    "supertest": "^6.1.6"
   }
 }

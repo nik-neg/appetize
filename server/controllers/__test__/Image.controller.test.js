@@ -19,10 +19,6 @@ jest.mock('mongoose');
 beforeEach(() => {
   User.findOne = jest.fn();
   DailyTreat.find = jest.fn();
-  // gridfs.mongo = mongoose.mongo;
-  // const { connection } = mongoose;
-  // gfs = gridfs(connection.db);
-  // gfs.files.findOne = jest.fn();
   helper.removeImageData = jest.fn();
 });
 
