@@ -31,7 +31,7 @@ afterEach(async () => {
 });
 
 describe('Integration test of user controller', () => {
-  test('Should save user to database', async () => {
+  test('Should save user to database and return 201', async () => {
     await request.post('/register')
       .send({
         firstname: 'firstname',
