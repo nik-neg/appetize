@@ -30,13 +30,13 @@ afterEach(async () => {
   await db.mongoose.disconnect();
 });
 
-describe('Integration test of user controller', () => {
+describe('Integration test of user controller - createUser', () => {
   test('Should save user to database and return 201', async () => {
     await request.post('/register')
       .send({
         firstname: 'firstname',
         lastName: 'lastName',
-        email: 'testing@gmail.com',
+        email: 'testing@test.com',
         password: 'password',
       })
       .expect(201);
@@ -46,7 +46,7 @@ describe('Integration test of user controller', () => {
       .send({
         firstname: 'firstname',
         lastName: 'lastName',
-        email: 'testing@gmail.com',
+        email: 'testing@test.com',
         password: 'password',
       })
       .expect(201);
@@ -55,7 +55,7 @@ describe('Integration test of user controller', () => {
       .send({
         firstname: 'firstname',
         lastName: 'lastName',
-        email: 'testing@gmail.com',
+        email: 'testing@test.com',
         password: 'password',
       })
       .expect(409);

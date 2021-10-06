@@ -61,6 +61,31 @@ describe('createUser method', () => {
     expect(res.status).toHaveBeenCalledWith(409);
     expect(res.status).toHaveBeenCalledTimes(1);
   });
+  test('createUser throws 500, because user could not be created', async () => {
+    const { req, res } = setup();
+    const {
+      firstName, lastName, email, password,
+    } = User;
+    const mockUser = {
+      firstName, lastName, email, password,
+    };
+    req.body = {
+      ...mockUser,
+    };
+    const mockErr = new Error('ERROR');
+    await User.findOne.mockResolvedValue(null);
+    await User.create.mockRejectedValue(mockErr);
+    await userController.createUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+
+    let createdUser = await User.create.mockResolvedValue({ _id: 123456789, ...mockUser });
+    createdUser = await createdUser();
+    createdUser.save = jest.fn();
+    await createdUser.save.mockRejectedValue(mockErr);
+    await userController.createUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(2);
+  });
   test('createUser throws 400, because input is invalid', async () => {
     const { req, res } = setup();
     const {

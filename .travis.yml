@@ -5,7 +5,7 @@ cache:
   yarn: true
   directories:
     - node_modules
-services:
+services: # https://docs.travis-ci.com/user/database-setup/
   - mongodb
 before_install: cd ./client
 install:
