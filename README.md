@@ -37,7 +37,7 @@ A simple voting system enables to vote for favourite dishes.
 # Responsive design
  Profile page             |  Published local food
 :-------------------------:|:-------------------------:
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food_responsive.png) |  ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/4_area_food_responsive.png)
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/3_favourite_food_responsive.png) |  ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/4_area_food_responsive.png)
 
 # Demo:
 https://youtu.be/_8mGjuWzNS0
