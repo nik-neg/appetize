@@ -23,25 +23,25 @@ module.exports.createUser = async (req, res) => {
   try {
     const invalidInput = !firstName || !lastName || !email || !password;
     if (invalidInput) throw new Error();
-    const hash = await bcrypt.hash(password, saltRounds);
-    try {
-      const newUser = await User.create({
-        firstName,
-        lastName,
-        email,
-        password: hash,
-        created: new Date(),
-      });
-      user = await newUser.save();
-    } catch (err) {
-      return res.status(500).send({ error: '500', message: 'Could not create user - Internal server error' });
-    }
-    const { _id } = user;
-    const accessToken = jwt.sign({ _id }, SECRET_KEY);
-    return res.status(201).send({ user: _.omit(user._doc, ['password']), accessToken });
   } catch (error) {
-    return res.status(400).send({ error: '400', message: 'Could not create user' });
+    return res.status(400).send({ error: '400', message: 'Could not create user - Internal server error' });
   }
+  try {
+    const hash = await bcrypt.hash(password, saltRounds);
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hash,
+      created: new Date(),
+    });
+    user = await newUser.save();
+  } catch (err) {
+    return res.status(500).send({ error: '500', message: 'Could not create user - Internal server error' });
+  }
+  const { _id } = user;
+  const accessToken = jwt.sign({ _id }, SECRET_KEY);
+  return res.status(201).send({ user: _.omit(user._doc, ['password']), accessToken });
 };
 
 module.exports.loginUser = async (req, res) => {
