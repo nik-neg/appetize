@@ -46,14 +46,12 @@ describe('authMiddleware method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
-  test('authMiddleware returns 500, because of internal server error', async () => {
+  test('authMiddleware returns 401, because of malformed jwt token', async () => {
     const { req, res } = setup();
     req.headers = { authorization: 'first token' };
-    jwt.verify.mockResolvedValue('some token');
-    const mockErr = new Error('ERROR');
-    await User.findOne.mockRejectedValue(mockErr);
+    jwt.verify.mockRejectedValue('some token');
     await authMiddleware(req, res, () => {});
-    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledWith(401);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
@@ -64,6 +62,17 @@ describe('authMiddleware method', () => {
     await User.findOne.mockResolvedValue(null);
     await authMiddleware(req, res, () => {});
     expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('authMiddleware returns 500, because of internal server error', async () => {
+    const { req, res } = setup();
+    req.headers = { authorization: 'first token' };
+    jwt.verify.mockResolvedValue('some token');
+    const mockErr = new Error('ERROR');
+    await User.findOne.mockRejectedValue(mockErr);
+    await authMiddleware(req, res, () => {});
+    expect(res.status).toHaveBeenCalledWith(500);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });

@@ -8,14 +8,20 @@ const authMiddleware = async (req, res, next) => {
   const authHeaders = req.headers.authorization;
   if (!authHeaders) return res.status(403).send();
   const token = authHeaders.split(' ')[1];
-  const { _id } = jwt.verify(token, SECRET_KEY);
+  let userId;
+  try {
+    const { _id } = jwt.verify(token, SECRET_KEY);
+    userId = _id;
+  } catch (err) {
+    return res.status(401).send({ error: '401', message: 'Could not verify token - jwt malformed' });
+  }
   let user;
   try {
-    user = await User.findOne({ _id });
+    user = await User.findOne({ _id: userId });
+    if (!user) res.status(401).send({ error: '401', message: 'Could not find user - unauthorized' });
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
-  if (!user) return res.status(401).send();
   user = _.omit(user, ['password']);
   req.user = user;
   next();

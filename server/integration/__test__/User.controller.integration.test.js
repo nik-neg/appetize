@@ -9,6 +9,7 @@ const db = require('../../models/db');
 const startServer = require('../index');
 
 jest.unmock('mongoose');
+jest.unmock('jsonwebtoken');
 jest.unmock('../../models/User');
 
 let resolvedServer;
@@ -164,7 +165,7 @@ describe('integration test of user controller - loginUser', () => {
       .expect(401);
   });
   test('should return 200, because email and password are correct', async () => {
-    await request.post('/register') // better to create via register then to create and hash password here
+    const createResult = await request.post('/register')
       .send({
         firstName: 'firstName',
         lastName: 'lastName',
@@ -172,11 +173,157 @@ describe('integration test of user controller - loginUser', () => {
         password: 'password',
       })
       .expect(201);
-    await request.post('/login')
+
+    const { body: { accessToken } } = createResult;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout') // then logout
+      .set(headers)
+      .send()
+      .expect(200, {});
+
+    await request.post('/login') // then login
       .send({
         email: 'testing@test.com',
         password: 'password',
       })
       .expect(200);
+  });
+});
+describe('integration test of user controller - logoutUser', () => {
+  test('should return 403, because user is not authorized', async () => {
+    await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    await request.post('/logout')
+      .send()
+      .expect(403);
+  });
+  test('should return 401, because of malformed authentication token', async () => {
+    await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const accessToken = 'some wrong or malformed token';
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout')
+      .set(headers)
+      .send()
+      .expect(401);
+  });
+  test('should return 401, because user could not be found, e.g. deleted user', async () => {
+    await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const accessToken = 'some wrong or malformed token';
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await User.deleteOne({ email: 'testing@test.com' });
+    await request.post('/logout')
+      .set(headers)
+      .send()
+      .expect(401);
+  });
+  test('should return 500, because of internal server error', async () => {
+    const res = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const { body: { accessToken } } = res;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    sandbox.stub(User, 'findOne').throws(Error('User.create'));
+    await request.post('/logout')
+      .set(headers)
+      .send()
+      .expect(500);
+  });
+  test('should return 200 and an empty object due to authenticated logout after register', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const { body: { accessToken } } = createResult;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout')
+      .set(headers)
+      .send()
+      .expect(200, {});
+  });
+  test('should return 200 and an empty object due to authenticated logout after login', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    let { body: { accessToken } } = createResult;
+    let headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout')
+      .set(headers)
+      .send()
+      .expect(200, {});
+
+    const loginResult = await request.post('/login')
+      .send({
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(200);
+
+    accessToken = loginResult.body.accessToken;
+    headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout')
+      .set(headers)
+      .send()
+      .expect(200, {});
   });
 });
