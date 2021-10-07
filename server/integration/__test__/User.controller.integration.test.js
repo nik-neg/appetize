@@ -121,3 +121,62 @@ describe('integration test of user controller - createUser', () => {
     expect(user._id).toBeTruthy();
   });
 });
+describe('integration test of user controller - loginUser', () => {
+  test('should return 400, because email or password is not provided', async () => {
+    await request.post('/login')
+      .send({
+        email: '',
+        password: 'password',
+      })
+      .expect(400);
+  });
+  test('should return 400, because email or password is not provided', async () => {
+    await request.post('/login')
+      .send({
+        email: 'testing@test.com',
+        password: '',
+      })
+      .expect(400);
+  });
+  test('should return 500, because of internal server error', async () => {
+    sandbox.stub(User, 'findOne').throws(Error('User.create'));
+    await request.post('/login')
+      .send({
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(500);
+  });
+  test('should return 401, because of wrong password', async () => {
+    await request.post('/register') // better to create via register then to create and hash password here
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    await request.post('/login')
+      .send({
+        email: 'testing@test.com',
+        password: 'wrongPassword',
+      })
+      .expect(401);
+  });
+  test('should return 200, because email and password are correct', async () => {
+    await request.post('/register') // better to create via register then to create and hash password here
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    await request.post('/login')
+      .send({
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(200);
+  });
+});

@@ -81,7 +81,7 @@ export default function RegisterLogin () {
       const user = { firstName, lastName, email, password, };
       await asyncWrapper(dispatch, createUserAndSafeToDB, user);
       userData = store.getState().user.userData;
-      if(userData?.error === '409' || userData?.error === '400') {
+      if(userData?.error) {
         setInput((prevState) => {
           return {
             ...prevState,
@@ -99,8 +99,8 @@ export default function RegisterLogin () {
       const loginCredentials = { email, password, };
       await asyncWrapper(dispatch, fetchUserDataFromDB, loginCredentials);
       userData = store.getState().user.userData;
-      if(userData?.error === '401' ) {
-        setInput((prevState) => { // TODO: refactor reset state ?
+      if(userData?.error) {
+        setInput((prevState) => {
           return {
             ...prevState,
             email: '',

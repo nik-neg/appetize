@@ -23,40 +23,63 @@ module.exports.createUser = async (req, res) => {
   try {
     const invalidInput = !firstName || !lastName || !email || !password;
     if (invalidInput) throw new Error();
-    const hash = await bcrypt.hash(password, saltRounds);
-    try {
-      const newUser = await User.create({
-        firstName,
-        lastName,
-        email,
-        password: hash,
-        created: new Date(),
-      });
-      user = await newUser.save();
-    } catch (err) {
-      return res.status(500).send({ error: '500', message: 'Could not create user - Internal server error' });
-    }
-    const { _id } = user;
-    const accessToken = jwt.sign({ _id }, SECRET_KEY);
-    return res.status(201).send({ user: _.omit(user._doc, ['password']), accessToken });
   } catch (error) {
-    return res.status(400).send({ error: '400', message: 'Could not create user' });
+    return res
+      .status(400)
+      .send({ error: '400', message: 'please provide credentials' });
   }
+  try {
+    const hash = await bcrypt.hash(password, saltRounds);
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hash,
+      created: new Date(),
+    });
+    user = await newUser.save();
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ error: '500', message: 'Could not create user - Internal server error' });
+  }
+  const { _id } = user;
+  const accessToken = jwt.sign({ _id }, SECRET_KEY);
+  return res
+    .status(201)
+    .send({ user: _.omit(user._doc, ['password']), accessToken });
 };
 
 module.exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({
+    const invalidInput = !email || !password;
+    if (invalidInput) throw new Error();
+  } catch (error) {
+    return res
+      .status(400)
+      .send({ error: '400', message: 'please provide login credentials' });
+  }
+  let user;
+  try {
+    user = await User.findOne({
       email,
     });
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ error: '500', message: 'Could not find user - Internal server error' });
+  }
+  try {
     const checkedPassword = await bcrypt.compare(password, user.password);
     if (!checkedPassword) throw new Error();
     const { _id } = user;
     const accessToken = jwt.sign({ _id }, SECRET_KEY);
-    res.status(200).send({ user: _.omit(user._doc, ['password']), accessToken });
+    return res
+      .status(200)
+      .send({ user: _.omit(user._doc, ['password']), accessToken });
   } catch (error) {
-    res
+    return res
       .status(401)
       .send({ error: '401', message: 'email or password is incorrect' });
   }
