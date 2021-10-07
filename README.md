@@ -13,7 +13,7 @@ A simple voting system enables to vote for favourite dishes.
 
  <sub> React </sub> |<sub>  Redux <sub>| <sub> Material-UI </sub> | <sub> Node.js </sub> | <sub> Express </sub> | <sub> MongoDB </sub> | <sub> Mongoose </sub> |  <sub> JavaScript </sub> |  <sub> Jest </sub>  | <sub> Docker </sub>  | <sub> Travis </sub> 
 |--|--|--|--|--|--|--|--|--|--|--
-[<img src="https://github.com/nik-neg/appetize/blob/main/techstack_images/react.svg" alt="drawing" width="40" height="40"/>](https://reactjs.org/) | [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/>](https://redux.js.org) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/material-ui.svg" alt="drawing" width="40" height="40"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/nodejs.svg" alt="drawing" width="40" height="40"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/express.svg" alt="drawing" width="40" height="40"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongodb.svg" alt="drawing" width="40" height="40"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongoose.png" alt="drawing" width="40" height="40"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/javascript.svg" alt="drawing" width="40" height="40"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/jest.svg" alt="drawing" width="40" height="40"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/docker.svg" alt="drawing" width="40" height="40"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/travis.svg" alt="drawing" width="40" height="40"/>](https://www.travis-ci.com/)
+[<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/react.svg" alt="drawing" width="40" height="40"/>](https://reactjs.org/) | [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/>](https://redux.js.org) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/material-ui.svg" alt="drawing" width="40" height="40"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/nodejs.svg" alt="drawing" width="40" height="40"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/express.svg" alt="drawing" width="40" height="40"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongodb.svg" alt="drawing" width="40" height="40"/>](https://www.mongodb.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongoose.png" alt="drawing" width="40" height="40"/>](https://mongoosejs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/javascript.svg" alt="drawing" width="40" height="40"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/jest.svg" alt="drawing" width="40" height="40"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/docker.svg" alt="drawing" width="40" height="40"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/travis.svg" alt="drawing" width="40" height="40"/>](https://www.travis-ci.com/)
 </td></tr>
 
 </table> 
@@ -23,21 +23,21 @@ A simple voting system enables to vote for favourite dishes.
 </div>
 
 # Login/Register page
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/1_login.png)
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/1_login.png)
 
 # Upload with preview
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/2_dropzone_preview.png)
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/2_dropzone_preview.png)
 
 # Profile page
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food.png)
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/3_favourite_food.png)
 
 # Published local food
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food.png)
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/4_area_food.png)
  
 # Responsive design
  Profile page             |  Published local food
 :-------------------------:|:-------------------------:
-![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food_responsive.png) |  ![alt text](https://github.com/nik-neg/Appetize/blob/main/images/4_area_food_responsive.png)
+![alt text](https://github.com/nik-neg/Appetize/blob/main/images/3_favourite_food_responsive.png) |  ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/4_area_food_responsive.png)
 
 # Demo:
 https://youtu.be/_8mGjuWzNS0
