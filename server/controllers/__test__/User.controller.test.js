@@ -164,17 +164,57 @@ describe('createUser method', () => {
 });
 
 describe('loginUser method', () => {
+  test('loginUser throws 400, because user email or password is not provided', async () => {
+    const { req, res } = setup();
+    let mockUser = {
+      email: '', password: '123456789',
+    };
+    req.body = {
+      ...mockUser,
+    };
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+
+    mockUser = {
+      email: 'testing@test.com', password: '',
+    };
+    req.body = {
+      ...mockUser,
+    };
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledTimes(2);
+    expect(res.send).toHaveBeenCalledTimes(2);
+  });
+  test('loginUser throws 500, because of internal server error', async () => {
+    const { req, res } = setup();
+    const mockUser = {
+      email: 'testing@test.com', password: '123456789',
+    };
+    req.body = {
+      ...mockUser,
+    };
+    const mockErr = new Error('ERROR');
+    await User.findOne.mockRejectedValue(mockErr);
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+  });
   test('loginUser throws 401, because user email or password is incorrect', async () => {
     const { req, res } = setup();
     const {
       email, hashedPassword,
     } = User;
-    await User.findOne.mockResolvedValue(null); // user not found
-    await userController.loginUser(req, res);
-    expect(res.status).toHaveBeenCalledWith(401);
     const mockUser = {
       email, password: hashedPassword,
     };
+    req.body = {
+      ...mockUser,
+    };
+    await User.findOne.mockResolvedValue(null); // user not found
+    await userController.loginUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(401);
+
     req.body = {
       ...mockUser, wrongPassword: '123456789',
     };
