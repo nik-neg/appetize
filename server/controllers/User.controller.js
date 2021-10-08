@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
@@ -95,7 +96,6 @@ module.exports.logoutUser = async (req, res) => {
 
 module.exports.showProfile = async (req, res) => {
   if (req.user) {
-    // eslint-disable-next-line no-underscore-dangle
     const userInfo = ({ ...req.user })._doc;
     res.status(200).send(userInfo);
   } else {
@@ -107,12 +107,18 @@ module.exports.setZipCode = async (req, res) => {
   const { id } = req.params;
   const { zipCode } = req.body;
 
+  let user;
   try {
-    const user = await User.findOne({ _id: id });
+    user = await User.findOne({ _id: id });
+  } catch (err) {
+    return res.status(500).send({ error: '500', message: 'could not find user - Internal server error' });
+  }
+
+  try {
     user.zipCode = zipCode;
     await user.save();
-    res.status(201).send(_.omit(user._doc, ['password']));
+    return res.status(201).send(_.omit(user._doc, ['password']));
   } catch (err) {
-    res.status(400).send({ error: '400', message: 'could not update zip code' });
+    return res.status(400).send({ error: '400', message: 'could not find user in database' });
   }
 };
