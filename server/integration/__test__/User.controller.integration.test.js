@@ -142,7 +142,7 @@ describe('integration test of user controller - loginUser', () => {
       .expect(400);
   });
   test('should return 500, because of internal server error', async () => {
-    sandbox.stub(User, 'findOne').throws(Error('User.create'));
+    sandbox.stub(User, 'findOne').throws(Error('User.findOne'));
     await request.post('/login')
       .send({
         email: 'testing@test.com',
@@ -265,7 +265,7 @@ describe('integration test of user controller - logoutUser', () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     };
-    sandbox.stub(User, 'findOne').throws(Error('User.create'));
+    sandbox.stub(User, 'findOne').throws(Error('User.findOne'));
     await request.post('/logout')
       .set(headers)
       .send()
@@ -445,5 +445,83 @@ describe('integration test of user controller - showProfile', () => {
       .set(headers)
       .send()
       .expect(200);
+  });
+});
+
+describe('integration test of user controller - setZipCode', () => {
+  test('should return 500, because of internal server error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { _id } = createResult.body.user;
+    sandbox.stub(User, 'findOne').throws(Error('User.findOne'));
+    await request.put(`/profile/${_id}`)
+      .send()
+      .expect(500);
+  });
+  test('should return 400, because user could not be found', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { _id } = createResult.body.user;
+    sandbox.stub(User, 'findOne').returns(null);
+    await request.put(`/profile/${_id}`)
+      .send()
+      .expect(400);
+  });
+  test('should return 201, because user could update the zip code, after register', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { _id } = createResult.body.user;
+    await request.put(`/profile/${_id}`)
+      .send({ zipCode: 12345 })
+      .expect(201);
+  });
+  test('should return 201, because user could update the zip code, after login', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const { accessToken } = createResult.body;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout') // then logout
+      .set(headers)
+      .send()
+      .expect(200, {});
+
+    await request.post('/login') // then login
+      .send({
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(200);
+    const { _id } = createResult.body.user;
+    await request.put(`/profile/${_id}`)
+      .send({ zipCode: 12345 })
+      .expect(201);
   });
 });

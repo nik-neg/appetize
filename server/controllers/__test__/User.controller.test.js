@@ -321,7 +321,26 @@ describe('showProfile method', () => {
 });
 
 describe('setZipCode method', () => {
-  test('setZipCode returns 400', async () => {
+  test('setZipCode returns 500, because of internal server error', async () => {
+    const { req, res } = setup();
+    const {
+      _id, email, password, hashedPassword,
+    } = User;
+    const mockUser = {
+      _doc: {
+        _id, email, password: hashedPassword,
+      },
+    };
+    req.params = { id: mockUser._doc.id };
+    req.body = { zipCode: '123456' };
+
+    await User.findOne.mockRejectedValue(null);
+    await userController.setZipCode(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('setZipCode returns 400, because user could not be found in database', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
