@@ -3,6 +3,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-undef */
 const supertest = require('supertest');
+const _ = require('lodash');
 const sinon = require('sinon');
 const User = require('../../models/User');
 const db = require('../../models/db');
@@ -10,6 +11,7 @@ const startServer = require('../index');
 
 jest.unmock('mongoose');
 jest.unmock('jsonwebtoken');
+jest.unmock('lodash');
 jest.unmock('../../models/User');
 
 let resolvedServer;
@@ -325,5 +327,123 @@ describe('integration test of user controller - logoutUser', () => {
       .set(headers)
       .send()
       .expect(200, {});
+  });
+});
+
+describe('integration test of user controller - showProfile', () => {
+  test('should return 400, because user is not present in request after register', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const { body: { accessToken } } = createResult;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+
+    sandbox.stub(_, 'omit').returns(null); // mocking error with omit or transmission
+    await request.get('/profile')
+      .set(headers)
+      .send()
+      .expect(400);
+  });
+  test('should return 200, because user is present in request after register', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const { body: { accessToken } } = createResult;
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.get('/profile')
+      .set(headers)
+      .send()
+      .expect(200);
+  });
+  test('should return 400, because user is not present in request after login', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    let { accessToken } = createResult.body;
+    let headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout') // then logout
+      .set(headers)
+      .send()
+      .expect(200, {});
+
+    const loginResult = await request.post('/login') // then login
+      .send({
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(200);
+    accessToken = loginResult.body.accessToken;
+    headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    sandbox.stub(_, 'omit').returns(null); // mocking error with omit or transmission
+    await request.get('/profile')
+      .set(headers)
+      .send()
+      .expect(400);
+  });
+  test('should return 200, because user is present in request after login', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    let { accessToken } = createResult.body;
+    let headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.post('/logout') // then logout
+      .set(headers)
+      .send()
+      .expect(200, {});
+
+    const loginResult = await request.post('/login') // then login
+      .send({
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(200);
+    accessToken = loginResult.body.accessToken;
+    headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    await request.get('/profile')
+      .set(headers)
+      .send()
+      .expect(200);
   });
 });

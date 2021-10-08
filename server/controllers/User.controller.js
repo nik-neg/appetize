@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
@@ -95,7 +96,6 @@ module.exports.logoutUser = async (req, res) => {
 
 module.exports.showProfile = async (req, res) => {
   if (req.user) {
-    // eslint-disable-next-line no-underscore-dangle
     const userInfo = ({ ...req.user })._doc;
     res.status(200).send(userInfo);
   } else {
