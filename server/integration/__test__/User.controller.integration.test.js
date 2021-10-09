@@ -7,7 +7,7 @@ const _ = require('lodash');
 const sinon = require('sinon');
 const User = require('../../models/User');
 const db = require('../../models/db');
-const startServer = require('../index');
+const startServer = require('../integrationServer');
 
 jest.unmock('mongoose');
 jest.unmock('jsonwebtoken');
@@ -34,8 +34,8 @@ beforeEach(() => startServer()
   }));
 
 afterEach(async () => {
-  resolvedServer.close();
-  sandbox.restore();
+  if (resolvedServer) resolvedServer.close();
+  if (sandbox) sandbox.restore();
   await removeAllCollections();
   await db.mongoose.disconnect();
 });
