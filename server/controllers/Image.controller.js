@@ -12,7 +12,7 @@ const helper = require('../helpers/db.helpers');
 
 module.exports.saveImage = async (req, res) => {
   const { id } = req.params;
-  const { imageURL } = req.query;
+  const { imageURL } = req.query; // for avatar image
   try {
     if (imageURL) {
       let userData = await User.findOne({ _id: id });

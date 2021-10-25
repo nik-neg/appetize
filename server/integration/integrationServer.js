@@ -23,12 +23,12 @@ async function startServer() {
     }
   })();
 
-  let PORT = process.env.SERVER_PORT;
-  // PORT = +PORT + Math.ceil(Math.random() * 30000);
+  const PORT = process.env.SERVER_PORT;
   return new Promise((resolve) => {
     const server = app.listen(PORT, () => {
       resolve({ server, app });
     });
+    // resolve({ app }); // hint: supertest chooses the port
   });
 }
 

@@ -26,11 +26,10 @@ async function removeAllCollections() {
     await collection.deleteMany();
   }
 }
-
+// hint: --runInBand or --maxWorkers=1 resolves port already in use issue
 let sandbox;
 beforeEach(() => startServer()
   .then(({ server, app }) => {
-    if (resolvedServer) resolvedServer.close();
     resolvedServer = server;
     request = supertest(app);
     sandbox = sinon.createSandbox();
@@ -107,5 +106,118 @@ describe('integration test of publish controller - publishDish', () => {
     await request.post(`/profile/${_id}/dashboard`)
       .send()
       .expect(201);
+  });
+});
+
+describe('integration test of publish controller - removeDish', () => {
+  test('should return 500, because of internal server error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+
+    sandbox.stub(DailyTreat, 'findOne').throws(Error('DailyTreat.findOne'));
+    await request.delete(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .expect(500);
+  });
+  test('should return 500, because of internal server error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+
+    sandbox.stub(DailyTreat, 'deleteOne').throws(Error('DailyTreat.deleteOne'));
+    await request.delete(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .expect(500);
+  });
+  test('should return 500, because of internal server error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+
+    sandbox.stub(User, 'findOne').throws(Error('User.findOne'));
+    await request.delete(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .expect(500);
+  });
+  test('should return 409, because image could not be remvoved', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+
+    sandbox.stub(helper, 'removeImageData').returns(null);
+    await request.delete(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .expect(409);
+  });
+  test('should return 200, because image could be removed', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+
+    // TODO: upload image or test middleware isolated?
+
+    // then publish daily treat
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send({ chosenImageDate: new Date().getTime() })
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+
+    // then remove daily treat with image
+    sandbox.stub(helper, 'removeImageData').returns(true);
+    await request.delete(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .expect(200);
   });
 });
