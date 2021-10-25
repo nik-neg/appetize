@@ -28,6 +28,7 @@ async function removeAllCollections() {
 let sandbox;
 beforeEach(() => startServer()
   .then(({ server, app }) => {
+    if (resolvedServer) resolvedServer.close();
     resolvedServer = server;
     request = supertest(app);
     sandbox = sinon.createSandbox();

@@ -23,7 +23,8 @@ async function startServer() {
     }
   })();
 
-  const PORT = process.env.SERVER_PORT;
+  let PORT = process.env.SERVER_PORT;
+  // PORT = +PORT + Math.ceil(Math.random() * 30000);
   return new Promise((resolve) => {
     const server = app.listen(PORT, () => {
       resolve({ server, app });

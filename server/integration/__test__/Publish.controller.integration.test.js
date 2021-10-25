@@ -8,6 +8,7 @@ const sinon = require('sinon');
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 const db = require('../../models/db');
+const helper = require('../../helpers/db.helpers');
 const startServer = require('../integrationServer');
 
 jest.unmock('mongoose');
@@ -29,6 +30,7 @@ async function removeAllCollections() {
 let sandbox;
 beforeEach(() => startServer()
   .then(({ server, app }) => {
+    if (resolvedServer) resolvedServer.close();
     resolvedServer = server;
     request = supertest(app);
     sandbox = sinon.createSandbox();
@@ -91,7 +93,7 @@ describe('integration test of publish controller - publishDish', () => {
       .send()
       .expect(500);
   });
-  test('should return 201, because of internal server error', async () => {
+  test('should return 201, because no error occured', async () => {
     const createResult = await request.post('/register')
       .send({
         firstName: 'firstName',
