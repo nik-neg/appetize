@@ -28,6 +28,7 @@ async function startServer() {
     const server = app.listen(PORT, () => {
       resolve({ server, app });
     });
+    // resolve({ app }); // hint: supertest chooses the port
   });
 }
 

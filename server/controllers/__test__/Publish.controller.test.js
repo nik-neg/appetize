@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
