@@ -81,24 +81,30 @@ module.exports.removeDish = async (req, res) => {
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
+  // hint: detailed error handling for integration test
   const {
     id, radius, cookedOrdered, pageNumber,
   } = req.query;
   const parsedCookedOrdered = JSON.parse(cookedOrdered);
   let user;
   try {
-    // get zip code of user
+    // get zip code from user
     user = await User.findOne({
       _id: id,
     });
     if (!user) return res.status(409).send({ error: '409', message: 'User doesn\'t exist' });
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not remove daily treat or buffered images - Internal server error' });
+    return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
   const { zipCode } = user;
   if (zipCode) {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
-    const response = await axios.get(url);
+    let response;
+    try {
+      response = await axios.get(url);
+    } catch (e) {
+      return res.status(500).send({ error: '500', message: 'Axios connectivity - Internal server error' });
+    }
     if (!response.data.results.error) {
       const zipCodesInRadius = response.data.results.map((element) => (
         { zipCode: element.code, city: element.city }));

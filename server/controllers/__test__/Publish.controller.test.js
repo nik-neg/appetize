@@ -263,6 +263,38 @@ describe('publishDish method', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.send).toHaveBeenCalledTimes(1);
     });
+    test('checkDishesInRadius returns 500, because axios has errored during the request', async () => {
+      const { req, res } = setup();
+      req.query = {
+        id: 123456789, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      };
+      const {
+        id, radius, cookedOrdered, pageNumber,
+      } = req.query;
+      const parsedCookedOrdered = JSON.parse(cookedOrdered);
+      const mockUser = {
+        _id: id, zipCode: 12345,
+      };
+      await User.findOne.mockResolvedValue(mockUser);
+      const response = {
+        data: {
+          results: [{
+            code: 12345,
+            city: 'test city',
+          },
+          {
+            code: 12345,
+            city: 'test city 2',
+          }],
+        },
+      };
+      const mockErr = new Error('ERROR');
+      await axios.get.mockRejectedValue(mockErr);
+      await publishController.checkDishesInRadius(req, res);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.send).toHaveBeenCalledTimes(1);
+    });
     test('checkDishesInRadius returns 409, because user could not be found, or user doest not have a zip code', async () => {
       const { req, res } = setup();
       req.query = {

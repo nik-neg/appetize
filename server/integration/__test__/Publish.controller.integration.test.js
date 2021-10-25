@@ -5,6 +5,7 @@
 const supertest = require('supertest');
 const _ = require('lodash');
 const sinon = require('sinon');
+const axios = require('axios');
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 const db = require('../../models/db');
@@ -15,6 +16,7 @@ jest.unmock('mongoose');
 jest.unmock('jsonwebtoken');
 jest.unmock('lodash');
 jest.unmock('../../models/User');
+jest.unmock('axios');
 
 let resolvedServer;
 let request;
@@ -218,6 +220,121 @@ describe('integration test of publish controller - removeDish', () => {
     sandbox.stub(helper, 'removeImageData').returns(true);
     await request.delete(`/profile/${_id}/dashboard/${dailyTreatID}`)
       .send()
+      .expect(200);
+  });
+});
+
+describe('integration test of publish controller - checkDishesInRadius', () => {
+  test('should return 500, because of internal server error', async () => {
+    sandbox.stub(User, 'findOne').throws(Error('User.findOne'));
+    const id = 123;
+    await request.get(`/profile/${id}/dashboard`)
+      .send()
+      .query({
+        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      })
+      .expect(500);
+  });
+  test('should return 409, because user could not be found', async () => {
+    sandbox.stub(User, 'findOne').returns(null);
+    const id = 123;
+    await request.get(`/profile/${id}/dashboard`)
+      .send()
+      .query({
+        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      })
+      .expect(409);
+  });
+  test('should return 409, because the user didn\'t set the zip code', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+
+    const cookedOrdered = JSON.stringify({ cooked: true, ordered: true });
+    await request.get(`/profile/${_id}/dashboard`)
+      .send()
+      .query({
+        id: _id, radius: 2, cookedOrdered, pageNumber: 1,
+      })
+      .expect(409);
+  });
+  test('should return 500, because axios has errored during the request', async () => {
+    sandbox.stub(axios, 'get').throws(Error('axios.get'));
+    const id = 123;
+    await request.get(`/profile/${id}/dashboard`)
+      .send()
+      .query({
+        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      })
+      .expect(500);
+  });
+  test('should return 404, because axios respond with an error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+
+    await request.put(`/profile/${_id}`)
+      .send({ zipCode: 10169 })
+      .expect(201);
+
+    sandbox.stub(helper, 'findDishesInDB').throws(Error('helper.findDishesInDB'));
+    sandbox.stub(axios, 'get').returns({ data: { results: { error: 'ERROR' } } });
+    const cookedOrdered = JSON.stringify({ cooked: true, ordered: true });
+    await request.get(`/profile/${_id}/dashboard`)
+      .send()
+      .query({
+        id: _id, radius: 2, cookedOrdered, pageNumber: 1,
+      })
+      .expect(404);
+  });
+  test('should return 500, because of internal server error in the helper method', async () => {
+    sandbox.stub(axios, 'get').returns({ data: { results: ['some data'] } });
+    sandbox.stub(helper, 'findDishesInDB').throws(Error('helper.findDishesInDB'));
+    const id = 123;
+    await request.get(`/profile/${id}/dashboard`)
+      .send()
+      .query({
+        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      })
+      .expect(500);
+  });
+  test('should return 200, because they are no errors with the api and database requests', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+
+    await request.put(`/profile/${_id}`)
+      .send({ zipCode: 10169 })
+      .expect(201);
+
+    sandbox.stub(axios, 'get').returns({ data: { results: ['some zip code data'] } });
+    sandbox.stub(helper, 'findDishesInDB').returns(['some daily treats data']);
+    await request.get(`/profile/${_id}/dashboard`)
+      .send()
+      .query({
+        id: _id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      })
       .expect(200);
   });
 });
