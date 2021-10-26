@@ -341,10 +341,25 @@ describe('integration test of publish controller - checkDishesInRadius', () => {
 
 describe('integration test of publish controller - upDownVote', () => {
   test('should return 500, because of internal server error', async () => {
-    await request.get(`/profile/:id/dashboard/:dailyTreatID`)
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+    sandbox.stub(DailyTreat, 'findOneAndUpdate').throws(Error('DailyTreat.findOneAndUpdate'));
+    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
       .send()
       .query({
-        id: _id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+        upDownVote: 'up',
       })
       .expect(500);
   });

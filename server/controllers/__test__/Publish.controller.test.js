@@ -415,7 +415,8 @@ describe('publishDish method', () => {
 describe('upDownVote method', () => {
   test('upDownVote returns 500, because of interal server error while voting', async () => {
     const { req, res } = setup();
-    req.params = { id: 123456789, dailyTreatID: 234567891, upDown: 'up' };
+    req.params = { id: 123456789, dailyTreatID: 234567891 };
+    req.query = { upDownVote: 'up' };
     const { id, dailyTreatID, upDown } = req.params;
     const mockErr = new Error('ERROR');
     await DailyTreat.findOneAndUpdate.mockRejectedValue(mockErr);
@@ -431,8 +432,9 @@ describe('upDownVote method', () => {
   });
   test('upDownVote returns 200, user without password and upvoted / downvoted dailytreat', async () => {
     const { req, res } = setup();
-    req.params = { id: 123456789, dailyTreatID: 234567891, upDown: 'up' };
-    const { id, dailyTreatID, upDown } = req.params;
+    req.params = { id: 123456789, dailyTreatID: 234567891 };
+    req.query = { upDownVote: 'up' };
+    const { id, dailyTreatID } = req.params;
     const initialVotes = 0;
     let mockDailyTreat = {
       _id: dailyTreatID, likedByUserID: [id], votes: initialVotes,
