@@ -140,9 +140,9 @@ module.exports.upDownVote = async (req, res) => {
   let user;
 
   try {
-    const ownDish = await DailyTreat.findOne({ _id: dailyTreatID });
-    if (ownDish && ownDish.userID == id) {
-      return res.status(409).send({ error: '409', message: 'User cannot vote for his own dish!' });
+    const dailyTreatToCheck = await DailyTreat.findOne({ _id: dailyTreatID });
+    if ((dailyTreatToCheck && dailyTreatToCheck.userID == id) || (dailyTreatToCheck.votes === 0 && upDownVote !== 'up')) {
+      return res.status(409).send({ error: '409', message: 'User cannot vote for this dish!' });
     }
   } catch (e) {
     return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });

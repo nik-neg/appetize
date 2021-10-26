@@ -421,16 +421,22 @@ describe('integration test of publish controller - upDownVote', () => {
       .send()
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
-    sandbox.stub(DailyTreat, 'findOneAndUpdate').throws(Error('DailyTreat.findOneAndUpdate'));
     createResult = await request.post('/register')
       .send({
         firstName: 'dish vote user',
         lastName: 'lastName',
-        email: 'testing123@test.com',
+        email: 'otheruser@test.com',
         password: 'password',
       })
       .expect(201);
     _id = createResult.body.user._id;
+    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .query({
+        upDownVote: 'up',
+      })
+      .expect(200);
+    sandbox.stub(DailyTreat, 'findOneAndUpdate').throws(Error('DailyTreat.findOneAndUpdate'));
     await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
       .send()
       .query({
@@ -453,6 +459,21 @@ describe('integration test of publish controller - upDownVote', () => {
       .send()
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
+    createResult = await request.post('/register')
+      .send({
+        firstName: 'dish vote user',
+        lastName: 'lastName',
+        email: 'otheruser@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    _id = createResult.body.user._id;
+    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .query({
+        upDownVote: 'up',
+      })
+      .expect(200);
     sandbox.stub(User, 'findOneAndUpdate').throws(Error('User.findOneAndUpdate'));
     createResult = await request.post('/register')
       .send({
@@ -469,6 +490,58 @@ describe('integration test of publish controller - upDownVote', () => {
         upDownVote: 'down',
       })
       .expect(500);
+  });
+  test('should return 500, because of internal server error, while checking if user is allowed to make the vote', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+    sandbox.stub(DailyTreat, 'findOne').throws(Error('DailyTreat.findOne'));
+    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .query({
+        upDownVote: 'up',
+      })
+      .expect(500);
+  });
+  test('should return 409, because should not be able to vote for his own dish', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'dish create user',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
+      .send()
+      .expect(201);
+    const dailyTreatID = dailyTreat.body._id;
+    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .query({
+        upDownVote: 'up',
+      })
+      .expect(409);
+    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
+      .send()
+      .query({
+        upDownVote: 'down',
+      })
+      .expect(409);
   });
   test('should return 200, because upvote dish request succeeded', async () => {
     let createResult = await request.post('/register')
@@ -564,34 +637,5 @@ describe('integration test of publish controller - upDownVote', () => {
     expect(updatedLikedByUserIdArray).not.toContain(_id);
     updatedUserLikedArray = [...updatedUser.liked.map((el) => el.toString())];
     expect(updatedUserLikedArray).not.toContain(dailyTreatID);
-  });
-  test('should return 409, because should not be able to vote for his own dish', async () => {
-    const createResult = await request.post('/register')
-      .send({
-        firstName: 'dish create user',
-        lastName: 'lastName',
-        email: 'testing@test.com',
-        password: 'password',
-      })
-      .expect(201);
-
-    const { body: { user } } = createResult;
-    const { _id } = user;
-    const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
-      .expect(201);
-    const dailyTreatID = dailyTreat.body._id;
-    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
-      .send()
-      .query({
-        upDownVote: 'up',
-      })
-      .expect(409);
-    await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
-      .send()
-      .query({
-        upDownVote: 'down',
-      })
-      .expect(409);
   });
 });

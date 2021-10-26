@@ -439,11 +439,26 @@ describe('upDownVote method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
+  test('upDownVote returns 409, because user is not allowed to make a down vote for a zero voted dish', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789, dailyTreatID: 234567891 };
+    const { id, dailyTreatID } = req.params;
+    const initialVotes = 0;
+    req.query = { upDownVote: 'down' };
+    const mockDailyTreat = {
+      _id: dailyTreatID, userID: req.params.id, likedByUserID: [id], votes: initialVotes,
+    };
+    await DailyTreat.findOne.mockResolvedValue(mockDailyTreat);
+    await publishController.upDownVote(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
   test('upDownVote returns 500, because of interal server error while voting', async () => {
     const { req, res } = setup();
     req.params = { id: 123456789, dailyTreatID: 234567891 };
     req.query = { upDownVote: 'up' };
-    const { id, dailyTreatID, upDown } = req.params;
+    const { id, dailyTreatID } = req.params;
     const mockErr = new Error('ERROR');
     await DailyTreat.findOneAndUpdate.mockRejectedValue(mockErr);
     await publishController.upDownVote(req, res);
@@ -461,25 +476,39 @@ describe('upDownVote method', () => {
     req.params = { id: 123456789, dailyTreatID: 234567891 };
     req.query = { upDownVote: 'up' };
     const { id, dailyTreatID } = req.params;
-    const initialVotes = 0;
+    let initialVotes = 0;
     let mockDailyTreat = {
-      _id: dailyTreatID, likedByUserID: [id], votes: initialVotes,
+      _id: dailyTreatID, userID: 987654321, likedByUserID: [id], votes: initialVotes,
     };
     let mockUser = {
       _id: id, liked: [dailyTreatID], password: 'some unhashed pw',
     };
+    await DailyTreat.findOne.mockResolvedValue(mockDailyTreat);
     mockDailyTreat = await DailyTreat.findOneAndUpdate.mockResolvedValue(mockDailyTreat);
     mockDailyTreat = await mockDailyTreat();
     mockUser = await User.findOneAndUpdate.mockResolvedValue(mockUser);
     mockUser = await mockUser();
-    const userWithoutPassword = _.omit(mockUser, ['password']);
+    let userWithoutPassword = _.omit(mockUser, ['password']);
     await publishController.upDownVote(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
+    mockDailyTreat.votes += 1;
     expect(res.send).toHaveBeenCalledWith({ user: userWithoutPassword, dailyTreat: mockDailyTreat });
 
-    req.params = { id: 123456789, dailyTreatID: 234567891, upDown: 'down' };
+    req.query = { upDownVote: 'down' };
+    initialVotes = 1;
+    mockDailyTreat = {
+      _id: dailyTreatID, userID: 987654321, likedByUserID: [id], votes: initialVotes,
+    };
+    await DailyTreat.findOne.mockResolvedValue(mockDailyTreat);
+    mockDailyTreat = await DailyTreat.findOneAndUpdate.mockResolvedValue(mockDailyTreat);
+    mockDailyTreat = await mockDailyTreat();
+    mockUser = await User.findOneAndUpdate.mockResolvedValue(mockUser);
+    mockUser = await mockUser();
+    userWithoutPassword = _.omit(mockUser, ['password']);
+    await DailyTreat.findOne.mockResolvedValue(mockDailyTreat);
     await publishController.upDownVote(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
+    mockDailyTreat.votes -= 1;
     expect(res.send).toHaveBeenCalledWith({ user: userWithoutPassword, dailyTreat: mockDailyTreat });
     expect(res.status).toHaveBeenCalledTimes(2);
     expect(res.send).toHaveBeenCalledTimes(2);
