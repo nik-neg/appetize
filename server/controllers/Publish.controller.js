@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-plusplus */
 const axios = require('axios');
 
@@ -137,6 +138,16 @@ module.exports.upDownVote = async (req, res) => {
   };
   let dailyTreat;
   let user;
+
+  try {
+    const ownDish = await DailyTreat.findOne({ _id: dailyTreatID });
+    if (ownDish && ownDish.userID == id) {
+      return res.status(409).send({ error: '409', message: 'User cannot vote for his own dish!' });
+    }
+  } catch (e) {
+    return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });
+  }
+
   try {
     if (upDownVote === 'up') {
       // like dish
