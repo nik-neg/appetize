@@ -341,6 +341,11 @@ describe('integration test of publish controller - checkDishesInRadius', () => {
 
 describe('integration test of publish controller - upDownVote', () => {
   test('should return 500, because of internal server error', async () => {
-
+    await request.get(`/profile/:id/dashboard/:dailyTreatID`)
+      .send()
+      .query({
+        id: _id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+      })
+      .expect(500);
   });
 });
