@@ -141,7 +141,7 @@ module.exports.upDownVote = async (req, res) => {
 
   try {
     const dailyTreatToCheck = await DailyTreat.findOne({ _id: dailyTreatID });
-    if ((dailyTreatToCheck && dailyTreatToCheck.userID == id) || (dailyTreatToCheck.votes === 0 && upDownVote !== 'up')) {
+    if (dailyTreatToCheck && ((dailyTreatToCheck.userID == id) || (dailyTreatToCheck.votes === 0 && upDownVote !== 'up'))) {
       return res.status(409).send({ error: '409', message: 'User cannot vote for this dish!' });
     }
   } catch (e) {
