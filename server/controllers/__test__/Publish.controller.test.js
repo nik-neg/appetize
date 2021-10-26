@@ -413,6 +413,32 @@ describe('publishDish method', () => {
 });
 
 describe('upDownVote method', () => {
+  test('upDownVote returns 500, because of internal server error while checking if user is allowed to make the vote', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789, dailyTreatID: 234567891 };
+    req.query = { upDownVote: 'up' };
+    const mockErr = new Error('ERROR');
+    await DailyTreat.findOne.mockRejectedValue(mockErr);
+    await publishController.upDownVote(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('upDownVote returns 409, because user is not allowed to make the vote for his own dish', async () => {
+    const { req, res } = setup();
+    req.params = { id: 123456789, dailyTreatID: 234567891 };
+    const { id, dailyTreatID } = req.params;
+    const initialVotes = 0;
+    req.query = { upDownVote: 'up' };
+    const mockDailyTreat = {
+      _id: dailyTreatID, userID: req.params.id, likedByUserID: [id], votes: initialVotes,
+    };
+    await DailyTreat.findOne.mockResolvedValue(mockDailyTreat);
+    await publishController.upDownVote(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
   test('upDownVote returns 500, because of interal server error while voting', async () => {
     const { req, res } = setup();
     req.params = { id: 123456789, dailyTreatID: 234567891 };
