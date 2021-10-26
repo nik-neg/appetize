@@ -80,7 +80,7 @@ module.exports.removeDish = async (req, res) => {
   }
 };
 
-module.exports.checkDishesInRadius = async (req, res) => {
+module.exports.checkDishesInRadius = async (req, res) => { // TODO: refactor?
   // hint: detailed error handling for integration test
   const {
     id, radius, cookedOrdered, pageNumber,
@@ -125,7 +125,8 @@ module.exports.checkDishesInRadius = async (req, res) => {
 };
 
 module.exports.upDownVote = async (req, res) => {
-  const { id, dailyTreatID, upDown } = req.params;
+  const { id, dailyTreatID } = req.params;
+  const { upDownVote } = req.query;
   const upVoteStatement = {
     dailyTreat: { $inc: { votes: 1 }, $push: { likedByUserID: id } },
     user: { $push: { liked: dailyTreatID } },
@@ -137,7 +138,7 @@ module.exports.upDownVote = async (req, res) => {
   let dailyTreat;
   let user;
   try {
-    if (upDown === 'up') {
+    if (upDownVote === 'up') {
       // like dish
       dailyTreat = await DailyTreat.findOneAndUpdate(
         {

@@ -98,15 +98,22 @@ const getDishesInRadius = async (id, radius, cookedOrdered, pageNumber) =>
   .catch((err) => console.log(err));
 }
 
-const voteDish = async (id, dailyTreatsID, upDownVote) =>
-  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}/${upDownVote}`,
-    {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-    })
-    .then((data) => data.json())
-    .then((data) => data)
-    .catch((err) => console.log(err));
+const voteDish = async (id, dailyTreatsID, upDownVote) => {
+  let url = new URL(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}`)
+  url.search = new URLSearchParams({
+    upDownVote
+  })
+  return fetch(
+    url,
+  {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then((data) => data.json())
+  .then((data) => data)
+  .catch((err) => console.log(err));
+}
+
 
 const deleteDish = async (id, dailyTreatID) =>
   fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`,

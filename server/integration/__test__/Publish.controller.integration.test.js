@@ -338,3 +338,9 @@ describe('integration test of publish controller - checkDishesInRadius', () => {
       .expect(200);
   });
 });
+
+describe('integration test of publish controller - upDownVote', () => {
+  test('should return 500, because of internal server error', async () => {
+
+  });
+});
