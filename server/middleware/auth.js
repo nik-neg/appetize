@@ -18,7 +18,7 @@ const authMiddleware = async (req, res, next) => {
   let user;
   try {
     user = await User.findOne({ _id: userId });
-    if (!user) res.status(401).send({ error: '401', message: 'Could not find user - unauthorized' });
+    if (!user) return res.status(401).send({ error: '401', message: 'Could not find user - unauthorized' });
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }

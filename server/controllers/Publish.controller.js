@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-plusplus */
 const axios = require('axios');
 
@@ -80,25 +81,31 @@ module.exports.removeDish = async (req, res) => {
   }
 };
 
-module.exports.checkDishesInRadius = async (req, res) => {
+module.exports.checkDishesInRadius = async (req, res) => { // TODO: refactor?
+  // hint: detailed error handling for integration test
   const {
     id, radius, cookedOrdered, pageNumber,
   } = req.query;
   const parsedCookedOrdered = JSON.parse(cookedOrdered);
   let user;
   try {
-    // get zip code of user
+    // get zip code from user
     user = await User.findOne({
       _id: id,
     });
     if (!user) return res.status(409).send({ error: '409', message: 'User doesn\'t exist' });
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not remove daily treat or buffered images - Internal server error' });
+    return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
   const { zipCode } = user;
   if (zipCode) {
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
-    const response = await axios.get(url);
+    let response;
+    try {
+      response = await axios.get(url);
+    } catch (e) {
+      return res.status(500).send({ error: '500', message: 'Axios connectivity - Internal server error' });
+    }
     if (!response.data.results.error) {
       const zipCodesInRadius = response.data.results.map((element) => (
         { zipCode: element.code, city: element.city }));
@@ -119,7 +126,8 @@ module.exports.checkDishesInRadius = async (req, res) => {
 };
 
 module.exports.upDownVote = async (req, res) => {
-  const { id, dailyTreatID, upDown } = req.params;
+  const { id, dailyTreatID } = req.params;
+  const { upDownVote } = req.query;
   const upVoteStatement = {
     dailyTreat: { $inc: { votes: 1 }, $push: { likedByUserID: id } },
     user: { $push: { liked: dailyTreatID } },
@@ -130,8 +138,18 @@ module.exports.upDownVote = async (req, res) => {
   };
   let dailyTreat;
   let user;
+
   try {
-    if (upDown === 'up') {
+    const dailyTreatToCheck = await DailyTreat.findOne({ _id: dailyTreatID });
+    if ((dailyTreatToCheck && dailyTreatToCheck.userID == id) || (dailyTreatToCheck.votes === 0 && upDownVote !== 'up')) {
+      return res.status(409).send({ error: '409', message: 'User cannot vote for this dish!' });
+    }
+  } catch (e) {
+    return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });
+  }
+
+  try {
+    if (upDownVote === 'up') {
       // like dish
       dailyTreat = await DailyTreat.findOneAndUpdate(
         {
