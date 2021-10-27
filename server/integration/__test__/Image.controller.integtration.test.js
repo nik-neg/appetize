@@ -5,6 +5,7 @@
 /* eslint-disable no-undef */
 const supertest = require('supertest');
 const _ = require('lodash');
+const FormData = require('form-data');
 const sinon = require('sinon');
 const mongoose = require('mongoose');
 const gridfs = require('gridfs-stream');
@@ -12,9 +13,14 @@ const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 const db = require('../../models/db');
 const helper = require('../../helpers/db.helpers');
+// const upload = require('../../middleware/upload');
 const startServer = require('../integrationServer');
 
+// jest.mock('./../../middleware/upload', () => jest.fn((req, res, next) => next()));
+
 jest.unmock('mongoose');
+jest.unmock('gridfs-stream');
+jest.unmock('../../helpers/db.helpers');
 jest.unmock('jsonwebtoken');
 jest.unmock('lodash');
 jest.unmock('../../models/User');
@@ -76,9 +82,10 @@ describe('integration test of image controller - saveImage', () => {
       .expect(201);
     const { body: { user } } = createResult;
     const { _id } = user;
-    await request.post(`/profile/${_id}/upload`)
+    const id = _id;
+    await request.post(`/profile/${id}/upload`)
       .send()
-      .query({ imageURL: undefined })
+      .query({ imageURL: undefined, created: new Date().getTime() })
       .expect(201);
   });
   test('should return 201 and update the avatar url, because no error occured and the middleware saved the image', async () => {
@@ -92,12 +99,12 @@ describe('integration test of image controller - saveImage', () => {
       .expect(201);
     const { body: { user } } = createResult;
     const { _id } = user;
-
+    const id = _id;
     const baseUrl = 'http://localhost:3001';
     const chosenImageDate = new Date().getTime();
-    let imageURL = `${baseUrl}/profile/${_id}/download?created=`;
+    let imageURL = `${baseUrl}/profile/${id}/download?created=`;
     imageURL += chosenImageDate.toString() + '_avatar';
-    await request.post(`/profile/${_id}/upload`)
+    await request.post(`/profile/${id}/upload`)
       .send()
       .query({ imageURL })
       .expect(201);
@@ -117,6 +124,7 @@ describe('integration test of image controller - saveImage', () => {
       const { body: { user } } = createResult;
       const { _id } = user;
 
+      sandbox.stub(helper, 'findImageFile').throws(Error('helper.findImageFile'));
       await request.get(`/profile/${_id}/download`)
         .send()
         .query()
@@ -134,10 +142,7 @@ describe('integration test of image controller - saveImage', () => {
       const { body: { user } } = createResult;
       const { _id } = user;
 
-      gridfs.mongo = mongoose.mongo;
-      const { connection } = mongoose;
-      const gfs = gridfs(connection.db);
-      sandbox.stub(gfs.files, 'findOne').returns(null);
+      sandbox.stub(helper, 'findImageFile').returns(null);
       await request.get(`/profile/${_id}/download`)
         .send()
         .query()

@@ -34,7 +34,7 @@ module.exports.retrieveImage = async (req, res) => {
     gridfs.mongo = mongoose.mongo;
     const { connection } = mongoose;
     const gfs = gridfs(connection.db);
-    const result = await gfs.files.findOne({ filename });
+    const result = await helper.findImageFile(gfs, filename);
     if (!result) {
       return res.status(404).send({ error: '404', message: 'Could not find the file' });
     }

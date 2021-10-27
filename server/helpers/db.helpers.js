@@ -63,3 +63,8 @@ module.exports.initDBUrl = () => {
   }
   return url;
 };
+
+module.exports.findImageFile = async (gfs, filename) => {
+  const result = await gfs.files.findOne({ filename });
+  return result;
+};
