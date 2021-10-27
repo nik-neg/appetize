@@ -28,15 +28,15 @@ module.exports.saveImage = async (req, res) => {
 };
 
 module.exports.retrieveImage = async (req, res) => {
-  gridfs.mongo = mongoose.mongo;
-  const { connection } = mongoose;
-  const gfs = gridfs(connection.db);
   const { created } = req.query;
   const filename = `${req.params.id}/${created}`;
   try {
+    gridfs.mongo = mongoose.mongo;
+    const { connection } = mongoose;
+    const gfs = gridfs(connection.db);
     const result = await gfs.files.findOne({ filename });
     if (!result) {
-      return res.status(500).send({ error: '500', message: 'Could not open the file - Internal server error' });
+      return res.status(404).send({ error: '404', message: 'Could not find the file' });
     }
     const readStream = gfs.createReadStream({
       filename,

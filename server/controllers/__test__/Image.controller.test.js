@@ -104,12 +104,23 @@ describe('retrieveImage method', () => {
     await gfs.files.findOne.mockRejectedValue(mockErr);
     await imageController.retrieveImage(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('retrieveImage returns 404, because image could not be found', async () => {
+    const { req, res } = setup();
+    req.query = { created: new Date().getTime() };
+    req.params = { id: 123456789 };
+    gridfs.mongo = mongoose.mongo;
+    const { connection } = mongoose;
+    const gfs = gridfs(connection.db);
+    gfs.files.findOne = jest.fn();
 
     await gfs.files.findOne.mockResolvedValue(null);
     await imageController.retrieveImage(req, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.status).toHaveBeenCalledTimes(2);
-    expect(res.send).toHaveBeenCalledTimes(2);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
   });
   test('retrieveImage returns the buffered data, because of successful stream', async () => {
     const { req, res } = setup();

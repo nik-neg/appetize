@@ -6,6 +6,8 @@
 const supertest = require('supertest');
 const _ = require('lodash');
 const sinon = require('sinon');
+const mongoose = require('mongoose');
+const gridfs = require('gridfs-stream');
 const User = require('../../models/User');
 const DailyTreat = require('../../models/DailyTreat');
 const db = require('../../models/db');
@@ -101,5 +103,45 @@ describe('integration test of image controller - saveImage', () => {
       .expect(201);
     const updatedUser = await User.findOne({ _id });
     expect(updatedUser.avatarImageUrl).toBe(imageURL);
+  });
+  describe('integration test of image controller - retrieveImage', () => {
+    test('should return 500, because of internal server error', async () => {
+      const createResult = await request.post('/register')
+        .send({
+          firstName: 'firstName',
+          lastName: 'lastName',
+          email: 'testing@test.com',
+          password: 'password',
+        })
+        .expect(201);
+      const { body: { user } } = createResult;
+      const { _id } = user;
+
+      await request.get(`/profile/${_id}/download`)
+        .send()
+        .query()
+        .expect(500);
+    });
+    test('should return 404, because image could not be found', async () => {
+      const createResult = await request.post('/register')
+        .send({
+          firstName: 'firstName',
+          lastName: 'lastName',
+          email: 'testing@test.com',
+          password: 'password',
+        })
+        .expect(201);
+      const { body: { user } } = createResult;
+      const { _id } = user;
+
+      gridfs.mongo = mongoose.mongo;
+      const { connection } = mongoose;
+      const gfs = gridfs(connection.db);
+      sandbox.stub(gfs.files, 'findOne').returns(null);
+      await request.get(`/profile/${_id}/download`)
+        .send()
+        .query()
+        .expect(404);
+    });
   });
 });
