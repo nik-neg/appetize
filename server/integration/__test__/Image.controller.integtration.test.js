@@ -82,8 +82,7 @@ describe('integration test of image controller - saveImage', () => {
       .expect(201);
     const { body: { user } } = createResult;
     const { _id } = user;
-    const id = _id;
-    await request.post(`/profile/${id}/upload`)
+    await request.post(`/profile/${_id}/upload`)
       .send()
       .query({ imageURL: undefined, created: new Date().getTime() })
       .expect(201);
@@ -99,54 +98,70 @@ describe('integration test of image controller - saveImage', () => {
       .expect(201);
     const { body: { user } } = createResult;
     const { _id } = user;
-    const id = _id;
     const baseUrl = 'http://localhost:3001';
     const chosenImageDate = new Date().getTime();
-    let imageURL = `${baseUrl}/profile/${id}/download?created=`;
+    let imageURL = `${baseUrl}/profile/${_id}/download?created=`;
     imageURL += chosenImageDate.toString() + '_avatar';
-    await request.post(`/profile/${id}/upload`)
+    await request.post(`/profile/${_id}/upload`)
       .send()
       .query({ imageURL })
       .expect(201);
     const updatedUser = await User.findOne({ _id });
     expect(updatedUser.avatarImageUrl).toBe(imageURL);
   });
-  describe('integration test of image controller - retrieveImage', () => {
-    test('should return 500, because of internal server error', async () => {
-      const createResult = await request.post('/register')
-        .send({
-          firstName: 'firstName',
-          lastName: 'lastName',
-          email: 'testing@test.com',
-          password: 'password',
-        })
-        .expect(201);
-      const { body: { user } } = createResult;
-      const { _id } = user;
+});
+describe('integration test of image controller - retrieveImage', () => {
+  test('should return 500, because of internal server error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
 
-      sandbox.stub(helper, 'findImageFile').throws(Error('helper.findImageFile'));
-      await request.get(`/profile/${_id}/download`)
-        .send()
-        .query()
-        .expect(500);
-    });
-    test('should return 404, because image could not be found', async () => {
-      const createResult = await request.post('/register')
-        .send({
-          firstName: 'firstName',
-          lastName: 'lastName',
-          email: 'testing@test.com',
-          password: 'password',
-        })
-        .expect(201);
-      const { body: { user } } = createResult;
-      const { _id } = user;
+    sandbox.stub(helper, 'findImageFile').throws(Error('helper.findImageFile'));
+    await request.get(`/profile/${_id}/download`)
+      .send()
+      .query()
+      .expect(500);
+  });
+  test('should return 404, because image could not be found', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
 
-      sandbox.stub(helper, 'findImageFile').returns(null);
-      await request.get(`/profile/${_id}/download`)
-        .send()
-        .query()
-        .expect(404);
-    });
+    sandbox.stub(helper, 'findImageFile').returns(null);
+    await request.get(`/profile/${_id}/download`)
+      .send()
+      .query()
+      .expect(404);
+  });
+});
+describe('integration test of image controller - removeImages', () => {
+  test('should return 500, because of internal server error', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    sandbox.stub(DailyTreat, 'find').throws(Error('DailyTreat.find'));
+    await request.delete(`/profile/${_id}/remove-images`)
+      .expect(500);
   });
 });

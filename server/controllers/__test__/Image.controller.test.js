@@ -160,16 +160,6 @@ describe('removeImages method', () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
-  test('removeImages, returns 500, because of interal server error inside the helper function', async () => {
-    const { req, res } = setup();
-    req.params = { id: 123456789 };
-    await DailyTreat.find.mockResolvedValue([]);
-    await helper.removeImageData.mockResolvedValue({});
-    await imageController.removeImages(req, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.send).toHaveBeenCalledTimes(1);
-  });
   test('removeImages, returns 200, because the deletion operation could be done', async () => {
     const { req, res } = setup();
     req.params = { id: 123456789 };

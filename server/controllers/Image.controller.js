@@ -58,28 +58,26 @@ module.exports.retrieveImage = async (req, res) => {
 module.exports.removeImages = async (req, res) => {
   const { id } = req.params;
   let dailyTreats;
+  let result;
   try {
     dailyTreats = await DailyTreat.find({ userID: id });
+    const createdDateArray = dailyTreats.map((dailyTreat) => {
+      let createdTime = Array.from(dailyTreat.imageUrl).reverse();
+      const cutIndex = createdTime.indexOf('=');
+      createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+      return createdTime;
+    });
+    let notMatchingDatesString = '';
+    createdDateArray.forEach((date) => {
+      notMatchingDatesString += `${date}|`;
+    });
+    notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
+    const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
+    result = await helper.removeImageData(excludeDeletePattern, 'deleteMany');
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find the daily treat - Internal server error' });
   }
-  const createdDateArray = dailyTreats.map((dailyTreat) => {
-    let createdTime = Array.from(dailyTreat.imageUrl).reverse();
-    const cutIndex = createdTime.indexOf('=');
-    createdTime = createdTime.slice(0, cutIndex).reverse().join('');
-    return createdTime;
-  });
-
-  let notMatchingDatesString = '';
-  createdDateArray.forEach((date) => {
-    notMatchingDatesString += `${date}|`;
-  });
-  notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
-
-  const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  const result = await helper.removeImageData(excludeDeletePattern, 'deleteMany');
   if (result.deletedCount) {
     return res.status(200).send();
   }
-  return res.status(500).send({ error: '500', message: 'Could not delete the daily treats - Internal server error' });
 };
