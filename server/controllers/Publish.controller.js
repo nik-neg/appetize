@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-plusplus */
 const axios = require('axios');
@@ -65,7 +66,6 @@ module.exports.removeDish = async (req, res) => {
     await DailyTreat.deleteOne({ _id: dailyTreatID });
     // remove from dailyFood list in user
     const user = await User.findOne({ _id: id });
-    // eslint-disable-next-line
     user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
     await user.save();
     // remove from files and chunks
