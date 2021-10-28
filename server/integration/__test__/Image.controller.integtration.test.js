@@ -164,4 +164,34 @@ describe('integration test of image controller - removeImages', () => {
     await request.delete(`/profile/${_id}/remove-images`)
       .expect(500);
   });
+  test('should return 500, because of internal server error in the helper method', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    sandbox.stub(helper, 'removeImageData').throws(Error('helper.removeImageData'));
+    await request.delete(`/profile/${_id}/remove-images`)
+      .expect(500);
+  });
+  test('should return 200, because request succeeded', async () => {
+    const createResult = await request.post('/register')
+      .send({
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'testing@test.com',
+        password: 'password',
+      })
+      .expect(201);
+    const { body: { user } } = createResult;
+    const { _id } = user;
+    sandbox.stub(helper, 'removeImageData').returns({ deletedCount: 1 });
+    await request.delete(`/profile/${_id}/remove-images`)
+      .expect(200);
+  });
 });
