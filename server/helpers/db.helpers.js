@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
 const DailyTreat = require('../models/DailyTreat');
@@ -19,7 +20,6 @@ module.exports.removeImageData = async (regex, deleteOptionForFiles) => {
 
 module.exports.findDishesInDB = async (zipCodesInRadius, cookedOrdered, pageNumber) => {
   if (!(zipCodesInRadius && cookedOrdered && pageNumber)) return [];
-  // eslint-disable-next-line no-plusplus
   const ALL_DISHES = 'ALL_DISHES';
   const cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
     ? ALL_DISHES : cookedOrdered.cooked;
@@ -45,7 +45,6 @@ module.exports.findDishesInDB = async (zipCodesInRadius, cookedOrdered, pageNumb
   });
   // get existing zip codes from db
   dailyTreats = dailyTreats.map((dailyTreat) => {
-    // eslint-disable-next-line max-len
     const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode] };
     return dailyTreatWithCity;
   });
@@ -62,4 +61,9 @@ module.exports.initDBUrl = () => {
     url = process.env.DB_URL;
   }
   return url;
+};
+
+module.exports.findImageFile = async (gfs, filename) => {
+  const result = await gfs.files.findOne({ filename });
+  return result;
 };

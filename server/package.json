@@ -50,5 +50,10 @@
     "sinon": "^11.1.2",
     "socket.io": "^4.0.1",
     "supertest": "^6.1.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

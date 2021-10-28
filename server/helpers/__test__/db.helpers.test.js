@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
@@ -142,7 +143,6 @@ describe('helpers methods', () => {
       zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
     });
     dailyTreats = dailyTreats.map((dailyTreat) => {
-      // eslint-disable-next-line max-len
       const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode] };
       return dailyTreatWithCity;
     });

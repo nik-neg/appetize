@@ -97,19 +97,23 @@ describe('retrieveImage method', () => {
     req.query = { created: new Date().getTime() };
     req.params = { id: 123456789 };
     const mockErr = new Error('ERROR');
-    gridfs.mongo = mongoose.mongo;
-    const { connection } = mongoose;
-    const gfs = gridfs(connection.db);
-    gfs.files.findOne = jest.fn();
-    await gfs.files.findOne.mockRejectedValue(mockErr);
+    helper.findImageFile = jest.fn();
+    await helper.findImageFile.mockRejectedValue(mockErr);
     await imageController.retrieveImage(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
-
-    await gfs.files.findOne.mockResolvedValue(null);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
+  });
+  test('retrieveImage returns 404, because image could not be found', async () => {
+    const { req, res } = setup();
+    req.query = { created: new Date().getTime() };
+    req.params = { id: 123456789 };
+    helper.findImageFile = jest.fn();
+    await helper.findImageFile.mockResolvedValue(null);
     await imageController.retrieveImage(req, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.status).toHaveBeenCalledTimes(2);
-    expect(res.send).toHaveBeenCalledTimes(2);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.send).toHaveBeenCalledTimes(1);
   });
   test('retrieveImage returns the buffered data, because of successful stream', async () => {
     const { req, res } = setup();
@@ -118,8 +122,8 @@ describe('retrieveImage method', () => {
     gridfs.mongo = mongoose.mongo;
     const { connection } = mongoose;
     const gfs = gridfs(connection.db);
-    gfs.files.findOne = jest.fn();
-    await gfs.files.findOne.mockResolvedValue('somefile');
+    helper.findImageFile = jest.fn();
+    await helper.findImageFile.mockRejectedValue('somefile');
     let mockedStream = gfs.createReadStream();
     mockedStream = await mockedStream();
     mockedStream.pipe(res);
@@ -151,16 +155,6 @@ describe('removeImages method', () => {
     req.params = { id: 123456789 };
     const mockErr = new Error('ERROR');
     await DailyTreat.find.mockRejectedValue(mockErr);
-    await imageController.removeImages(req, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.status).toHaveBeenCalledTimes(1);
-    expect(res.send).toHaveBeenCalledTimes(1);
-  });
-  test('removeImages, returns 500, because of interal server error inside the helper function', async () => {
-    const { req, res } = setup();
-    req.params = { id: 123456789 };
-    await DailyTreat.find.mockResolvedValue([]);
-    await helper.removeImageData.mockResolvedValue({});
     await imageController.removeImages(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.status).toHaveBeenCalledTimes(1);

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiClient from '../services/ApiClient';
 import apiServiceJWT from '../services/ApiClientJWT';
@@ -126,7 +127,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.isAuthenticated = true;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [createUserAndSafeToDB.pending]: (state, action) => {
       state.loading = true;
     },
@@ -141,7 +141,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.isAuthenticated = true;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [fetchUserDataFromDB.pending]: (state, action) => {
       state.loading = true;
     },
@@ -149,7 +148,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.userData = action.payload;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [updateUserZipCode.pending]: (state, action) => {
       state.loading = true;
     },
@@ -168,34 +166,27 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.allDishesDeletedRequest = false;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [getDishesInRadius.pending]: (state, action) => {
       state.loading = true;
     },
-    // eslint-disable-next-line no-unused-vars
     [clearDishesInStoreRequest.fulfilled]: (state, action) => {
       state.newDishesRequest += 1;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [clearDishesInStoreRequest.pending]: (state, action) => {
       state.loading = true;
     },
-    // eslint-disable-next-line no-unused-vars
     [allDishesDeletedRequest.fulfilled]: (state, action) => {
       state.allDishesDeletedRequest = action.payload;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [allDishesDeletedRequest.pending]: (state, action) => {
       state.loading = true;
     },
-    // eslint-disable-next-line no-unused-vars
     [clearDishTextRequest.fulfilled]: (state, action) => {
       state.clearDishTextRequest += 1;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [clearDishTextRequest.pending]: (state, action) => {
       state.loading = true;
     },
@@ -205,11 +196,9 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       if (chosenImageDate) state.chosenImageDate = chosenImageDate;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [uploadImageBeforePublish.pending]: (state, action) => {
       state.loading = true;
     },
-    // eslint-disable-next-line no-unused-vars
     [logoutUser.fulfilled]: (state, action) => {
       localStorage.removeItem('accessToken');
       state.userData = action.payload.userData;
@@ -222,7 +211,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.isAuthenticated = false;
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [logoutUser.pending]: (state, action) => {
       state.loading = true;
     },
@@ -232,7 +220,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
         .sort((a,b) =>  b.votes - a.votes);
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [deleteDish.pending]: (state, action) => {
       state.loading = true;
     },
@@ -245,7 +232,6 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.dishesInRadius.sort((a,b) =>  b.votes - a.votes);
       state.loading = false;
     },
-    // eslint-disable-next-line no-unused-vars
     [upDownVote.pending]: (state, action) => {
       state.loading = true;
     },

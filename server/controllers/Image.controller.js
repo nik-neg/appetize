@@ -28,21 +28,22 @@ module.exports.saveImage = async (req, res) => {
 };
 
 module.exports.retrieveImage = async (req, res) => {
-  gridfs.mongo = mongoose.mongo;
-  const { connection } = mongoose;
-  const gfs = gridfs(connection.db);
   const { created } = req.query;
   const filename = `${req.params.id}/${created}`;
   try {
-    const result = await gfs.files.findOne({ filename });
+    gridfs.mongo = mongoose.mongo;
+    const { connection } = mongoose;
+    const gfs = gridfs(connection.db);
+    const result = await helper.findImageFile(gfs, filename);
     if (!result) {
-      return res.status(500).send({ error: '500', message: 'Could not open the file - Internal server error' });
+      return res.status(404).send({ error: '404', message: 'Could not find the file' });
     }
     const readStream = gfs.createReadStream({
       filename,
     });
     readStream.pipe(res);
     // additional explicit setting of status for test of successful stream
+    // TODO: wrap in func ?
     const end = new Promise((resolve, reject) => {
       readStream.on('end', () => resolve(res.status(200)));
       readStream.on('error', reject);
@@ -50,6 +51,7 @@ module.exports.retrieveImage = async (req, res) => {
     (async () => {
       await end;
     })();
+    // TODO: wrap in func ?
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find the file - Internal server error' });
   }
@@ -58,28 +60,26 @@ module.exports.retrieveImage = async (req, res) => {
 module.exports.removeImages = async (req, res) => {
   const { id } = req.params;
   let dailyTreats;
+  let result;
   try {
     dailyTreats = await DailyTreat.find({ userID: id });
+    const createdDateArray = dailyTreats.map((dailyTreat) => {
+      let createdTime = Array.from(dailyTreat.imageUrl).reverse();
+      const cutIndex = createdTime.indexOf('=');
+      createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+      return createdTime;
+    });
+    let notMatchingDatesString = '';
+    createdDateArray.forEach((date) => {
+      notMatchingDatesString += `${date}|`;
+    });
+    notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
+    const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
+    result = await helper.removeImageData(excludeDeletePattern, 'deleteMany');
   } catch (err) {
     return res.status(500).send({ error: '500', message: 'Could not find the daily treat - Internal server error' });
   }
-  const createdDateArray = dailyTreats.map((dailyTreat) => {
-    let createdTime = Array.from(dailyTreat.imageUrl).reverse();
-    const cutIndex = createdTime.indexOf('=');
-    createdTime = createdTime.slice(0, cutIndex).reverse().join('');
-    return createdTime;
-  });
-
-  let notMatchingDatesString = '';
-  createdDateArray.forEach((date) => {
-    notMatchingDatesString += `${date}|`;
-  });
-  notMatchingDatesString = notMatchingDatesString.substring(0, notMatchingDatesString.length - 1);
-
-  const excludeDeletePattern = new RegExp(`^(?!.+(${notMatchingDatesString}|avatar)$)${id}.*`);
-  const result = await helper.removeImageData(excludeDeletePattern, 'deleteMany');
   if (result.deletedCount) {
     return res.status(200).send();
   }
-  return res.status(500).send({ error: '500', message: 'Could not delete the daily treats - Internal server error' });
 };
