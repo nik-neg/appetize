@@ -293,7 +293,6 @@ describe('integration test of publish controller - checkDishesInRadius', () => {
       .send({ zipCode: 10169 })
       .expect(201);
 
-    sandbox.stub(helper, 'findDishesInDB').throws(Error('helper.findDishesInDB'));
     sandbox.stub(axios, 'get').returns({ data: { results: { error: 'ERROR' } } });
     const cookedOrdered = JSON.stringify({ cooked: true, ordered: true });
     await request.get(`/profile/${_id}/dashboard`)

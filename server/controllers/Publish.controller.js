@@ -94,34 +94,21 @@ module.exports.checkDishesInRadius = async (req, res) => { // TODO: refactor?
       _id: id,
     });
     if (!user) return res.status(409).send({ error: '409', message: 'User doesn\'t exist' });
-  } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
-  }
-  const { zipCode } = user;
-  if (zipCode) {
+    const { zipCode } = user;
+    if (!zipCode) return res.status(409).send({ error: '409', message: 'Zip code doesn\'t exist' });
     const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
-    let response;
-    try {
-      response = await axios.get(url);
-    } catch (e) {
-      return res.status(500).send({ error: '500', message: 'Axios connectivity - Internal server error' });
-    }
-    if (!response.data.results.error) {
-      const zipCodesInRadius = response.data.results.map((element) => (
-        { zipCode: element.code, city: element.city }));
-      try {
-        const dailyTreats = await helper.findDishesInDB(
-          zipCodesInRadius, parsedCookedOrdered, pageNumber,
-        );
-        return res.status(200).send(dailyTreats);
-      } catch (e) {
-        return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });
-      }
-    } else {
+    const response = await axios.get(url);
+    if (response.data.results.error) {
       return res.status(404).send({ error: '404', message: 'API doesn\'t respond with data.' });
     }
-  } else {
-    return res.status(409).send({ error: '409', message: 'Zip code doesn\'t exist' });
+    const zipCodesInRadius = response.data.results.map((element) => (
+      { zipCode: element.code, city: element.city }));
+    const dailyTreats = await helper.findDishesInDB(
+      zipCodesInRadius, parsedCookedOrdered, pageNumber,
+    );
+    return res.status(200).send(dailyTreats);
+  } catch (e) {
+    return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });
   }
 };
 
