@@ -10,8 +10,6 @@ const router = require('./router');
 
 const db = require('./models/db');
 
-process.setMaxListeners(0);
-
 require('dotenv').config();
 
 const corsConfig = {
