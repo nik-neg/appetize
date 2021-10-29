@@ -6,6 +6,7 @@ A simple voting system enables to vote for favourite dishes.
 
 `Hint`: Next planned steps are to make the app more robust in functionality and performance, add CI / CD pipeline with Travis, add tests with Jest, Supertest and Cypress.
 
+<div align="center">
 <table>
 <tr><th>Tech Stack</th></tr>
 <tr><td>
@@ -21,6 +22,7 @@ A simple voting system enables to vote for favourite dishes.
 [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongoose.png" alt="drawing" width="40" height="40"/>](https://mongoosejs.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/javascript.svg" alt="drawing" width="40" height="40"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/jest.svg" alt="drawing" width="40" height="40"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/docker.svg" alt="drawing" width="40" height="40"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/travis.svg" alt="drawing" width="40" height="40"/>](https://www.travis-ci.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/cypress.svg" alt="drawing" width="40" height="40"/>](https://www.cypress.io/)
 </td></tr>
 </table> 
+</div>
  
 <div>
  <a href="https://zipcodebase.com/"> -> Zip Code API</a>
