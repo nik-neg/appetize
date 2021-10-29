@@ -9,6 +9,7 @@ services: # https://docs.travis-ci.com/user/database-setup/
   - mongodb
 before_install: cd ./client
 install:
+  - npm install -g npm@3.10.7 # downgrade to resolve build error
   - npm install
 script:
   - cd ../server

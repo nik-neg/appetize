@@ -25,7 +25,7 @@ app.use(cors(corsConfig))
 
 (async () => {
   try {
-    await db.connect();
+    await db.connect(process.env.E2E_TEST !== '0' ? process.env.E2E_DB : undefined);
     const PORT = process.env.SERVER_PORT;
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
