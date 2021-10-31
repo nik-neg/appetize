@@ -312,6 +312,7 @@ function Profile () {
                 <Button
                   variant="contained"
                   color="primary"
+                  id="logout-button"
                   startIcon={<ExitToAppIcon />}
                   style={logOutButtonStyle}
                   onClick={handleLogout}
@@ -580,6 +581,7 @@ function Profile () {
                 <Button
                   variant="contained"
                   color="primary"
+                  id="logout-button"
                   startIcon={<ExitToAppIcon />}
                   style={logOutButtonStyle}
                   onClick={handleLogout}

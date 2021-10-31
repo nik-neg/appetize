@@ -24,5 +24,8 @@ describe('E2e test - register/login page', () => {
     cy.get('#register-login').click()
     cy.url().should('include', '/profile')
 
+    cy.get('#logout-button').click();
+    cy.url().should('not.include', '/profile')
+
   })
 })
