@@ -206,7 +206,7 @@ export default function RegisterLogin () {
               />
             </Grid>
             <Grid item xs={12}>
-            <label>{input.error}</label>
+            <label id="register-login-error" value={input.error}>{input.error}</label>
             </Grid>
           </Grid>
           <Button
@@ -222,7 +222,7 @@ export default function RegisterLogin () {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2" onClick={handleLoginByUser}>
+              <Link href="#" variant="body2" id="switch-user-link" onClick={handleLoginByUser}>
                 {input.isUserMessage}
               </Link>
             </Grid>
