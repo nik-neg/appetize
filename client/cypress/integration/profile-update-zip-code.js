@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // ./node_modules/.bin/cypress open
 
-describe('E2e test - register/login page', () => {
+describe('E2e test - profile page', () => {
   beforeEach(() => {
     cy.exec('mongo appetizeDB_E2E_TEST --eval "db.dropDatabase()"');
   })

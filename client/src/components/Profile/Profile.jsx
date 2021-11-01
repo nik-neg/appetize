@@ -83,7 +83,7 @@ function Profile () {
   const [userData, setUserData] = useState({
     _id: '',
     firstName: '',
-    hasUpdatedZipCode: store.getState().user.userData.zipCode !== undefined ? true: false,
+    hasUpdatedZipCode: store.getState().user.userData.zipCode !== undefined ? true : false,
     notUpdatedZipCodeMessage: 'Please update the zip code'
   })
 
@@ -280,6 +280,7 @@ function Profile () {
             <div className="button-box">
               <Box component="span" display="block" >
                 <Button
+                id="daily-treat-upload-button"
                 variant="contained"
                 color="primary"
                 onClick={() => setOpen(true)}
