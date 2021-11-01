@@ -83,7 +83,7 @@ function Profile () {
   const [userData, setUserData] = useState({
     _id: '',
     firstName: '',
-    hasUpdatedZipCode: false,
+    hasUpdatedZipCode: store.getState().user.userData.zipCode !== undefined ? true: false,
     notUpdatedZipCodeMessage: 'Please update the zip code'
   })
 
@@ -134,10 +134,6 @@ function Profile () {
       if (userInfo.err) {
         history.push('/');
       } else {
-        let hasUpdatedZipCode = false;
-        if(userInfo.zipCode) {
-          hasUpdatedZipCode = true;
-        }
         let { firstName, _id } = userInfo;
         firstName = firstName && firstName[0].toUpperCase() + firstName.slice(1);
         setImagePathForAvatar(store.getState().user.userData.avatarImageUrl);
@@ -145,7 +141,6 @@ function Profile () {
           ...prevValue,
           _id,
           firstName,
-          hasUpdatedZipCode,
         }));
       }
     }
@@ -254,7 +249,7 @@ function Profile () {
             </IconButton>
             </div>
             <TextField
-              id="standard-basic"
+              id="zip-code-field"
               label="ZIP CODE"
               inputProps={{
                 maxLength: CHARACTER_LIMIT_ZIP_CODE
@@ -266,11 +261,12 @@ function Profile () {
               onChange={handleChangeZipCode}
               InputProps={{ classes: { input: styles.someTextField.toString() } }}
             />
-            <div>
+            <div id="update-zip-code-message">
             { !userData.hasUpdatedZipCode ? userData.notUpdatedZipCodeMessage : ''}
             </div>
             <div className="button-box">
               <Button
+                id="save-zip-code-button"
                 variant="contained"
                 color="primary"
                 size="small"
