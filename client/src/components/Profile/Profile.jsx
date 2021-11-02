@@ -432,7 +432,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <Image
               src={imagePath}
-              imageStyle={{ width:"72.5%", height:"100%", "border-radius": "5%"}}
+              imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "5%"}}
               style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "22%", "padding": "150px"}}
             />
           </Grid>

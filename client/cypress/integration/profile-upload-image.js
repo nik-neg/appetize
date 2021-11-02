@@ -1,11 +1,6 @@
 /* eslint-disable no-undef */
 // ./node_modules/.bin/cypress open
 
-// https://docs.cypress.io/guides/references/best-practices#Selecting-Elements
-// https://www.npmjs.com/package/cypress-react-selector
-// https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/file-upload-react
-// https://github.com/abramenal/cypress-file-upload
-
 describe('E2e test - profile page', () => {
   beforeEach(() => {
     cy.exec('mongo appetizeDB_E2E_TEST --eval "db.dropDatabase()"');
@@ -53,7 +48,20 @@ describe('E2e test - profile page', () => {
     .should('eq', '')
 
     cy.get('#daily-treat-upload-button').click()
-    cy.get('.MuiDropzoneArea-root').click()
+    const fileName = 'ramen.png';
+    cy.fixture(fileName)
+        .then(Cypress.Blob.base64StringToBlob)
+        .then((fileContent) => {
+        cy.get('input[accept="image/*"]').attachFile(
+          {fileContent, fileName, mimeType: 'image/png'},{ subjectType: 'drag-n-drop' })
+        })
+
+    // assert preview
+
+    // assert successful message
+
+    cy.contains('submit').click()
+
 
   })
 

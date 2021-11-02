@@ -10,7 +10,7 @@ const storage = new GridFsStorage({
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: async (req, file) => {
     const { id } = req.params;
-    const { imageURL } = req.query;
+    const { imageURL, created } = req.query;
     if (imageURL) {
       const excludeDeletePattern = new RegExp(`^${id}/[0-9]*_avatar$`);
       await helper.removeImageData(excludeDeletePattern, 'deleteOne');
@@ -18,13 +18,12 @@ const storage = new GridFsStorage({
     const match = ['image/png', 'image/jpeg']; // /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/
 
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${req.params.id}/${req.query.created}`;
+      const filename = `${req.params.id}/${created}`;
       return filename;
     }
-
     return {
       bucketName: 'fs',
-      filename: `${req.params.id}/${req.query.created}`,
+      filename: `${req.params.id}/${created}`,
     };
   },
 });
