@@ -57,12 +57,13 @@ describe('E2e test - profile page', () => {
         })
 
     // assert preview
+    cy.get('.MuiDropzonePreviewList-image').should('be.visible')
 
     // assert successful message
-
+    cy.get('.MuiDropzoneSnackbar-successAlert').should('be.visible')
+    cy.get('.MuiSnackbarContent-message').invoke('text').then((text) => {
+      expect(text).equal('File ramen.png successfully added.')
+    });
     cy.contains('submit').click()
-
-
   })
-
 })
