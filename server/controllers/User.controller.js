@@ -27,7 +27,7 @@ module.exports.createUser = async (req, res) => {
   } catch (error) {
     return res
       .status(400)
-      .send({ error: '400', message: 'please provide credentials' });
+      .send({ error: '400', message: 'Please provide credentials' });
   }
   try {
     const hash = await bcrypt.hash(password, saltRounds);
@@ -59,7 +59,7 @@ module.exports.loginUser = async (req, res) => {
   } catch (error) {
     return res
       .status(400)
-      .send({ error: '400', message: 'please provide login credentials' });
+      .send({ error: '400', message: 'Please provide login credentials' });
   }
   let user;
   try {
@@ -106,6 +106,8 @@ module.exports.showProfile = async (req, res) => {
 module.exports.setZipCode = async (req, res) => {
   const { id } = req.params;
   const { zipCode } = req.body;
+
+  // TODO: apply check for zipCode
 
   let user;
   try {

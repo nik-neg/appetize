@@ -83,7 +83,7 @@ function Profile () {
   const [userData, setUserData] = useState({
     _id: '',
     firstName: '',
-    hasUpdatedZipCode: store.getState().user.userData.zipCode !== undefined ? true: false,
+    hasUpdatedZipCode: store.getState().user.userData.zipCode !== undefined ? true : false,
     notUpdatedZipCodeMessage: 'Please update the zip code'
   })
 
@@ -237,7 +237,7 @@ function Profile () {
             <div>
               <DropZone
                 setOpen={setOpenAvatar}
-                open={openAvatar}
+                open={userData.hasUpdatedZipCode ? openAvatar : null}
                 setImagePath={setImagePathForAvatar}
                 avatar={true}
               />
@@ -280,6 +280,7 @@ function Profile () {
             <div className="button-box">
               <Box component="span" display="block" >
                 <Button
+                id="daily-treat-upload-button"
                 variant="contained"
                 color="primary"
                 onClick={() => setOpen(true)}
@@ -322,7 +323,7 @@ function Profile () {
                   { imagePath.length > 0 ?
                     <FadeIn delay={1500} transitionDuration={1000}>
                       <TextField
-                        id="standard-basic"
+                        id="dish-title"
                         label="Title"
                         inputProps={{
                           maxLength: CHARACTER_LIMIT_TITLE
@@ -342,7 +343,7 @@ function Profile () {
                   { imagePath.length > 0 ?
                     <FadeIn delay={2500} transitionDuration={1000}>
                       <TextField
-                        id="standard-basic"
+                        id="dish-description"
                         label="Description"
                         inputProps={{
                           maxLength: CHARACTER_LIMIT_DESCRIPTION
@@ -363,7 +364,7 @@ function Profile () {
                     { imagePath.length > 0 ?
                       <FadeIn delay={3500} transitionDuration={1000}>
                         <TextField
-                          id="standard-basic"
+                          id="dish-recipe"
                           label="Recipe"
                           inputProps={{
                             maxLength: CHARACTER_LIMIT_RECIPE
@@ -390,6 +391,8 @@ function Profile () {
                                         icon={<FavoriteBorder />}
                                         checkedIcon={<Favorite/>}
                                         checked={cookedOrdered.published}
+                                        name='publish'
+                                        value={cookedOrdered.published}
                                       />}
                               label="Publish"
                             />
@@ -402,6 +405,7 @@ function Profile () {
                                         checkedIcon={<Favorite/>}
                                         checked={cookedOrdered.cooked}
                                         name='cooked'
+                                        value={cookedOrdered.cooked}
                                       />}
                               label="Coocked"
                             />
@@ -431,7 +435,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <Image
               src={imagePath}
-              imageStyle={{ width:"72.5%", height:"100%", "border-radius": "5%"}}
+              imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "5%"}}
               style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "22%", "padding": "150px"}}
             />
           </Grid>
@@ -441,7 +445,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <FadeIn delay={1500} transitionDuration={1000}>
               <TextField
-                id="standard-basic"
+                id="dish-title"
                 label="Title"
                 inputProps={{
                   maxLength: CHARACTER_LIMIT_TITLE
@@ -459,7 +463,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <FadeIn delay={2500} transitionDuration={1000}>
               <TextField
-                id="standard-basic"
+                id="dish-description"
                 label="Description"
                 inputProps={{
                   maxLength: CHARACTER_LIMIT_DESCRIPTION
@@ -478,7 +482,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <FadeIn delay={3500} transitionDuration={1000}>
               <TextField
-                id="standard-basic"
+                id="dish-recipe"
                 label="Recipe"
                 inputProps={{
                   maxLength: CHARACTER_LIMIT_RECIPE
@@ -503,6 +507,8 @@ function Profile () {
                             icon={<FavoriteBorder />}
                             checkedIcon={<Favorite/>}
                             checked={cookedOrdered.published}
+                            name='publish'
+                            value={cookedOrdered.published}
                           />}
                   label="Publish"
                 />
@@ -513,6 +519,7 @@ function Profile () {
                             checkedIcon={<Favorite/>}
                             checked={cookedOrdered.cooked}
                             name='cooked'
+                            value={cookedOrdered.cooked}
                           />}
                   label="Coocked"
                 />
@@ -538,7 +545,7 @@ function Profile () {
         </Grid>
         <DropZone
           setOpen={setOpen}
-          open={open}
+          open={userData.hasUpdatedZipCode ? open : null}
           setImagePath={setImagePath}
         />
         <Hidden only={['xs', 'sm', 'md']}>

@@ -68,7 +68,7 @@ export default function LocalDishesParameter () {
                 onChange={handleCookedOrdered}
                 label='Cooked'
                 checked={cookedOrdered.cooked}
-                name="cooked"
+                name="search-cooked"
                 color="primary"
               />
             }
@@ -82,7 +82,7 @@ export default function LocalDishesParameter () {
               onChange={handleCookedOrdered}
               label='Ordered'
               checked={cookedOrdered.ordered}
-              name='ordered'
+              name='search-ordered'
               color="primary"
             />
           }

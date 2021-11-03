@@ -215,6 +215,7 @@ export default function RegisterLogin () {
             variant="contained"
             color="primary"
             id="register-login"
+            label="register-login"
             className={classes.submit}
             onClick={handleRegisterOrLogin}
           >

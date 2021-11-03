@@ -58,6 +58,25 @@ describe('E2e test - register/login page', () => {
     .then(text => text)
     .should('eq', 'User already exists')
   })
+  it('Fail to register the user because of not sufficient login credentials', () => {
+    cy.visit('http://localhost:3000')
+
+    cy.get('#email')
+    .type('test@email.com')
+    .should('have.value', 'test@email.com')
+
+    cy.get('#password')
+    .type('secret123')
+    .should('have.value', 'secret123')
+
+    cy.get('#register-login').click()
+    cy.url().should('not.include', '/profile')
+
+    cy.get('#register-login-error')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Please provide credentials')
+  })
 })
 
 describe('E2e test - register/login page', () => {
@@ -79,5 +98,20 @@ describe('E2e test - register/login page', () => {
 
     cy.get('#logout-button').click();
     cy.url().should('not.include', '/profile')
+  })
+  it('Fails to login the user because of not sufficient login credentials', () => {
+    cy.visit('http://localhost:3000')
+
+    cy.get('#switch-user-link').click()
+
+    cy.get('#password')
+    .type('secret123')
+    .should('have.value', 'secret123')
+
+    cy.get('#register-login').click()
+    cy.get('#register-login-error')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Please provide login credentials')
   })
 })
