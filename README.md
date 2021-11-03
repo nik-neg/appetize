@@ -54,12 +54,13 @@ get your `API KEY` at `https://zipcodebase.com` and put it into the .env file of
  
 with Docker:
  - set `USE_DOCKER` environmental variable in the .env file in the server folder to `1`
- - set environmental variable like `TEST_*` to `0`
+ - set environmental variable like in the .env file `TEST_*` to `0`
  - run `docker-compose build` in the root folder, where the docker compose file is
  - run `docker-compose up` in the root folder, where the docker compose file is
 
 or follow these steps...
-
+- set `USE_DOCKER` environmental variable in the .env file in the server folder to `0`
+- set environmental variable in the .env file like `TEST_*` to `0
 - run `npm i` in the server & client folder
 - run the mongodb server, e.g. `sudo mongod`
 - run `nodemon index.js` in the server folder
