@@ -323,7 +323,7 @@ function Profile () {
                   { imagePath.length > 0 ?
                     <FadeIn delay={1500} transitionDuration={1000}>
                       <TextField
-                        id="standard-basic"
+                        id="dish-title"
                         label="Title"
                         inputProps={{
                           maxLength: CHARACTER_LIMIT_TITLE
@@ -343,7 +343,7 @@ function Profile () {
                   { imagePath.length > 0 ?
                     <FadeIn delay={2500} transitionDuration={1000}>
                       <TextField
-                        id="standard-basic"
+                        id="dish-description"
                         label="Description"
                         inputProps={{
                           maxLength: CHARACTER_LIMIT_DESCRIPTION
@@ -364,7 +364,7 @@ function Profile () {
                     { imagePath.length > 0 ?
                       <FadeIn delay={3500} transitionDuration={1000}>
                         <TextField
-                          id="standard-basic"
+                          id="dish-recipe"
                           label="Recipe"
                           inputProps={{
                             maxLength: CHARACTER_LIMIT_RECIPE
@@ -391,6 +391,8 @@ function Profile () {
                                         icon={<FavoriteBorder />}
                                         checkedIcon={<Favorite/>}
                                         checked={cookedOrdered.published}
+                                        name='publish'
+                                        value={cookedOrdered.published}
                                       />}
                               label="Publish"
                             />
@@ -403,6 +405,7 @@ function Profile () {
                                         checkedIcon={<Favorite/>}
                                         checked={cookedOrdered.cooked}
                                         name='cooked'
+                                        value={cookedOrdered.cooked}
                                       />}
                               label="Coocked"
                             />
@@ -442,7 +445,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <FadeIn delay={1500} transitionDuration={1000}>
               <TextField
-                id="standard-basic"
+                id="dish-title"
                 label="Title"
                 inputProps={{
                   maxLength: CHARACTER_LIMIT_TITLE
@@ -460,7 +463,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <FadeIn delay={2500} transitionDuration={1000}>
               <TextField
-                id="standard-basic"
+                id="dish-description"
                 label="Description"
                 inputProps={{
                   maxLength: CHARACTER_LIMIT_DESCRIPTION
@@ -479,7 +482,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <FadeIn delay={3500} transitionDuration={1000}>
               <TextField
-                id="standard-basic"
+                id="dish-recipe"
                 label="Recipe"
                 inputProps={{
                   maxLength: CHARACTER_LIMIT_RECIPE
@@ -504,6 +507,8 @@ function Profile () {
                             icon={<FavoriteBorder />}
                             checkedIcon={<Favorite/>}
                             checked={cookedOrdered.published}
+                            name='publish'
+                            value={cookedOrdered.published}
                           />}
                   label="Publish"
                 />
@@ -514,6 +519,7 @@ function Profile () {
                             checkedIcon={<Favorite/>}
                             checked={cookedOrdered.cooked}
                             name='cooked'
+                            value={cookedOrdered.cooked}
                           />}
                   label="Coocked"
                 />

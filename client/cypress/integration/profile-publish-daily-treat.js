@@ -65,5 +65,34 @@ describe('E2e test - profile page', () => {
       expect(text).equal('File ramen.png successfully added.')
     });
     cy.contains('submit').click()
+
+    cy.get('#dish-title')
+    .type('Ramen')
+    .should('have.value', 'Ramen')
+
+    cy.get('#dish-description')
+    .type('Home cooked with love :)')
+    .should('have.value', 'Home cooked with love :)')
+
+    cy.get('#dish-recipe')
+    .type('Noodles, mushrooms, nori, egg, onions, shoyu soup.')
+    .should('have.value', 'Noodles, mushrooms, nori, egg, onions, shoyu soup.')
+
+    cy.get('input[name="cooked"]').check()
+    cy.get('input[name="cooked"]').should('have.value', 'true')
+    cy.wait(2500)
+    cy.get('input[name="publish"]').check()
+    cy.get('input[name="publish"]').should('have.value', 'true')
+
+    cy.get('#dish-title')
+    .should('have.value', '')
+
+    cy.get('#dish-description')
+    .should('have.value', '')
+
+    cy.get('#dish-recipe')
+    .should('have.value', '')
+
+    cy.get('input[name="publish"]').should('have.value', 'false')
   })
 })
