@@ -237,7 +237,7 @@ function Profile () {
             <div>
               <DropZone
                 setOpen={setOpenAvatar}
-                open={openAvatar}
+                open={userData.hasUpdatedZipCode ? openAvatar : null}
                 setImagePath={setImagePathForAvatar}
                 avatar={true}
               />
@@ -545,7 +545,7 @@ function Profile () {
         </Grid>
         <DropZone
           setOpen={setOpen}
-          open={open}
+          open={userData.hasUpdatedZipCode ? open : null}
           setImagePath={setImagePath}
         />
         <Hidden only={['xs', 'sm', 'md']}>

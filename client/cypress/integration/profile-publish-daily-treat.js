@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // ./node_modules/.bin/cypress open
 
-describe('E2e test - profile page', () => {
+describe('E2e test - profile page, publish daily treat', () => {
   beforeEach(() => {
     cy.exec('mongo appetizeDB_E2E_TEST --eval "db.dropDatabase()"');
   })
@@ -48,6 +48,8 @@ describe('E2e test - profile page', () => {
     .should('eq', '')
 
     cy.get('#daily-treat-upload-button').click()
+    cy.get('.MuiDialog-scrollPaper').should('exist');
+
     const fileName = 'ramen.png';
     cy.fixture(fileName)
         .then(Cypress.Blob.base64StringToBlob)
@@ -62,7 +64,7 @@ describe('E2e test - profile page', () => {
     // assert successful message
     cy.get('.MuiDropzoneSnackbar-successAlert').should('be.visible')
     cy.get('.MuiSnackbarContent-message').invoke('text').then((text) => {
-      expect(text).equal('File ramen.png successfully added.')
+      expect(text).equal(`File ${fileName} successfully added.`)
     });
     cy.contains('submit').click()
 

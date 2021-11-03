@@ -107,6 +107,8 @@ module.exports.setZipCode = async (req, res) => {
   const { id } = req.params;
   const { zipCode } = req.body;
 
+  // TODO: apply check for zipCode
+
   let user;
   try {
     user = await User.findOne({ _id: id });
