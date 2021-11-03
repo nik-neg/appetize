@@ -53,7 +53,7 @@ module.exports.findDishesInDB = async (zipCodesInRadius, cookedOrdered, pageNumb
 
 module.exports.initDBUrl = () => {
   let url;
-  if (process.env.E2E_TEST === '1') {
+  if (process.env.TEST_E2E === '1') {
     url = process.env.E2E_DB;
   } else if (process.env.TEST_DB === '1') {
     url = process.env.TEST_DB_URL;
