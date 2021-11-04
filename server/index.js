@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const router = require('./router');
 
 const db = require('./models/db');
+const helper = require('./helpers/db.helpers');
 
 require('dotenv').config();
 
@@ -25,7 +26,8 @@ app.use(cors(corsConfig))
 
 (async () => {
   try {
-    await db.connect(process.env.E2E_TEST !== '0' ? process.env.E2E_DB : undefined);
+    const url = helper.initDBUrl();
+    await db.connect(url);
     const PORT = process.env.SERVER_PORT;
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);

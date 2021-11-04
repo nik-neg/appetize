@@ -114,7 +114,7 @@ export default function RecipeReviewCard(props) {
     <Card className={classes.root} >
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
+          <Avatar aria-label="recipe" className={classes.avatar} id={`dish-votes-${props.index}`}>
             {props.votes}
           </Avatar>
         }
