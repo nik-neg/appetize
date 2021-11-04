@@ -93,6 +93,7 @@ export default function LocalDishesParameter () {
       <div className="row">
         <div className="col">
           <Button
+            id="dishes-in-radius-button"
             variant="contained"
             color="primary"
             startIcon={<SearchIcon />}
