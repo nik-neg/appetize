@@ -32,7 +32,7 @@ export default function LocalDishesParameter () {
           cookedOrdered: JSON.stringify(cookedOrdered),
           pageNumber: initialPageNumber,
         }))
-      }, 1600);
+      }, 1750);
 
     } catch(e) {
       console.log(e);
@@ -65,11 +65,13 @@ export default function LocalDishesParameter () {
           <FormControlLabel
             control={
               <Checkbox
+                id='local-dishes-parameter-cooked'
                 onChange={handleCookedOrdered}
                 label='Cooked'
                 checked={cookedOrdered.cooked}
-                name="search-cooked"
+                name="cooked"
                 color="primary"
+                value={cookedOrdered.cooked}
               />
             }
           label="cooked"
@@ -79,11 +81,13 @@ export default function LocalDishesParameter () {
         <FormControlLabel
           control={
             <Checkbox
+              id='local-dishes-parameter-ordered'
               onChange={handleCookedOrdered}
               label='Ordered'
               checked={cookedOrdered.ordered}
-              name='search-ordered'
+              name='ordered'
               color="primary"
+              value={cookedOrdered.ordered}
             />
           }
           label="ordered"

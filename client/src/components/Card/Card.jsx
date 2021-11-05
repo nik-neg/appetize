@@ -147,8 +147,9 @@ export default function RecipeReviewCard(props) {
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
+          id={`dish-expand-${props.index}`}
         >
-          <ExpandMoreIcon />
+          <ExpandMoreIcon/>
         </IconButton>
 
         { props.userID === props.dishUserID

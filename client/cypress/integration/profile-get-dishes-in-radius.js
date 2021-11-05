@@ -9,9 +9,10 @@ describe('E2e test - profile page, publish daily treat', () => {
     cy.visit('http://localhost:3000')
 
     // first create first user
+    const firstName = 'Ann';
     cy.get('#firstName')
-    .type('Ann')
-    .should('have.value', 'Ann')
+    .type(firstName)
+    .should('have.value', firstName)
 
     cy.get('#lastName')
     .type('Appetize')
@@ -75,9 +76,10 @@ describe('E2e test - profile page, publish daily treat', () => {
     .type('Home cooked with love :)')
     .should('have.value', 'Home cooked with love :)')
 
+    const recipe = 'Noodles, mushrooms, nori, egg, onions, shoyu soup.';
     cy.get('#dish-recipe')
-    .type('Noodles, mushrooms, nori, egg, onions, shoyu soup.')
-    .should('have.value', 'Noodles, mushrooms, nori, egg, onions, shoyu soup.')
+    .type(recipe)
+    .should('have.value', recipe)
 
     cy.get('input[name="cooked"]').check()
     cy.get('input[name="cooked"]').should('have.value', 'true')
@@ -109,9 +111,15 @@ describe('E2e test - profile page, publish daily treat', () => {
     .invoke('text')
     .then(text => text)
     .should('eq', 'Home cooked with love :)')
+
+    // check expand functionality
+    cy.get('#dish-expand-0').click()
+    cy.get('.MuiCollapse-wrapperInner').contains(firstName)
+    cy.get('.MuiCollapse-wrapperInner').contains(recipe)
+    cy.get('#dish-expand-0').click()
   })
 
-  it('Get dishes in radius of different users', () => {
+  it.only('Get dishes in radius of different users with parameters', () => {
     cy.visit('http://localhost:3000')
 
     // first create first user
@@ -155,7 +163,7 @@ describe('E2e test - profile page, publish daily treat', () => {
     cy.get('#daily-treat-upload-button').click()
     cy.get('.MuiDialog-scrollPaper').should('exist');
 
-    let fileName = 'ramen.png';
+    let fileName = 'sushi.png';
     cy.fixture(fileName)
         .then(Cypress.Blob.base64StringToBlob)
         .then((fileContent) => {
@@ -174,19 +182,19 @@ describe('E2e test - profile page, publish daily treat', () => {
     cy.contains('submit').click()
 
     cy.get('#dish-title')
-    .type('Ramen')
-    .should('have.value', 'Ramen')
+    .type('Sushi')
+    .should('have.value', 'Sushi')
 
     cy.get('#dish-description')
-    .type('Home cooked with love :)')
-    .should('have.value', 'Home cooked with love :)')
+    .type('Nice and delicious ;)')
+    .should('have.value', 'Nice and delicious ;)')
 
     cy.get('#dish-recipe')
-    .type('Noodles, mushrooms, nori, egg, onions, shoyu soup.')
-    .should('have.value', 'Noodles, mushrooms, nori, egg, onions, shoyu soup.')
+    .type('Sushi hunter next to the beach')
+    .should('have.value', 'Sushi hunter next to the beach')
 
-    cy.get('input[name="cooked"]').check()
-    cy.get('input[name="cooked"]').should('have.value', 'true')
+    cy.get('input[name="ordered"]').check()
+    cy.get('input[name="ordered"]').should('have.value', 'true')
     cy.wait(2500)
     cy.get('input[name="publish"]').check()
     cy.get('input[name="publish"]').should('have.value', 'true')
@@ -296,16 +304,17 @@ describe('E2e test - profile page, publish daily treat', () => {
     cy.get('input[name="publish"]').should('have.value', 'false')
 
     cy.get('#dishes-in-radius-button').click()
+    cy.wait(2500)
     cy.get('.cards-position').should('exist');
     cy.get('.card-box').should('have.length', 2);
 
     // check dish data
-    cy.get('#dish-title-0').contains('Ramen')
+    cy.get('#dish-title-0').contains('Sushi')
 
     cy.get('#dish-description-0')
     .invoke('text')
     .then(text => text)
-    .should('eq', 'Home cooked with love :)')
+    .should('eq', 'Nice and delicious ;)')
 
     // check dish data
     cy.get('#dish-title-1').contains('Pizza')
@@ -314,5 +323,36 @@ describe('E2e test - profile page, publish daily treat', () => {
     .invoke('text')
     .then(text => text)
     .should('eq', 'Grandmother\'s recipe')
+
+    // cooked, ordered searches
+    // deselect ordered
+    cy.get('#local-dishes-parameter-ordered').click()
+    cy.get('#dishes-in-radius-button').click()
+    cy.wait(2500)
+    cy.get('.cards-position').should('exist');
+    cy.get('.card-box').should('have.length', 1);
+    // check dish data
+    cy.get('#dish-title-0').contains('Pizza')
+
+    cy.get('#dish-description-0')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Grandmother\'s recipe')
+
+    // deselect cooked
+    cy.get('#local-dishes-parameter-cooked').click()
+    // select ordered
+    cy.get('#local-dishes-parameter-ordered').click()
+    cy.get('#dishes-in-radius-button').click()
+    cy.wait(2500)
+    cy.get('.cards-position').should('exist');
+    cy.get('.card-box').should('have.length', 1);
+    // check dish data
+    cy.get('#dish-title-0').contains('Sushi')
+
+    cy.get('#dish-description-0')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Nice and delicious ;)')
   })
 })

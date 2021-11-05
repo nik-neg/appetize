@@ -418,6 +418,7 @@ function Profile () {
                                         checkedIcon={<Favorite/>}
                                         checked={cookedOrdered.ordered}
                                         name="ordered"
+                                        value={cookedOrdered.ordered}
                                       />}
                               label="Ordered"
                             />
@@ -530,6 +531,7 @@ function Profile () {
                             checkedIcon={<Favorite/>}
                             checked={cookedOrdered.ordered}
                             name="ordered"
+                            value={cookedOrdered.ordered}
                           />}
                   label="Ordered"
                 />
