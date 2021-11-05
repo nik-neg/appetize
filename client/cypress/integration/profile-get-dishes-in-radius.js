@@ -103,6 +103,12 @@ describe('E2e test - profile page, publish daily treat', () => {
     cy.get('.like[style="color: rgb(255, 0, 0);"]').should('exist');
 
     // check dish data
+    cy.get('#dish-title-0').contains('Ramen')
+
+    cy.get('#dish-description-0')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Home cooked with love :)')
   })
 
   it('Get dishes in radius of different users', () => {
@@ -292,5 +298,21 @@ describe('E2e test - profile page, publish daily treat', () => {
     cy.get('#dishes-in-radius-button').click()
     cy.get('.cards-position').should('exist');
     cy.get('.card-box').should('have.length', 2);
+
+    // check dish data
+    cy.get('#dish-title-0').contains('Ramen')
+
+    cy.get('#dish-description-0')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Home cooked with love :)')
+
+    // check dish data
+    cy.get('#dish-title-1').contains('Pizza')
+
+    cy.get('#dish-description-1')
+    .invoke('text')
+    .then(text => text)
+    .should('eq', 'Grandmother\'s recipe')
   })
 })
