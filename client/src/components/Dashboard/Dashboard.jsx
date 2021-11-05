@@ -71,8 +71,8 @@ export default function Dashboard () {
       ...searchData
     }));
   }
-  const numberOfImages = 4;
-  const transitionTime = 1500;
+  const numberOfImages = useSelector((state) => state.user.dishesInRadius.length);
+  const transitionTime = 1600;
   let fadeInFadeOutCoefficent = 0.4;
   const transitionTimeForArrowButton = transitionTime * (mouthWateringDishes.length/numberOfImages);
   const [trigger, setTrigger] = useState(false);
@@ -117,7 +117,7 @@ export default function Dashboard () {
               // enter={checked ? easeObject.enter(setTimeout, trigger) : ''}
               exit={ !checked ? easeObject.exit(setTimeout, trigger) : true }
               style={{ transformOrigin: "0 0 0",}} // style={{ transformOrigin: "0 0 0", transform: "", translate:  "" }}
-              {...(checked ? { timeout: (index+1)*(transitionTime) } : {timeout: index*transitionTime*fadeInFadeOutCoefficent})}
+              {...(checked ? { timeout: (index+1)*(transitionTime) } : { timeout: index*transitionTime*fadeInFadeOutCoefficent })}
             >
               <Box m={2}>
                 <Card

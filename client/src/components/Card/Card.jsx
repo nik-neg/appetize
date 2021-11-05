@@ -118,6 +118,7 @@ export default function RecipeReviewCard(props) {
             {props.votes}
           </Avatar>
         }
+        id={`dish-title-${props.index}`}
         title={props.title}
         subheader={moment(+props.created).format("MMMM Do, YYYY")}
         style={{'textAlign': 'left'}}
@@ -127,7 +128,7 @@ export default function RecipeReviewCard(props) {
         image={props.imageUrl}
         title={props.title}
       />
-      <CardContent>
+      <CardContent id={`dish-description-${props.index}`}>
         <Typography variant="body2" color="textSecondary" component="p">
           {props.description}
         </Typography>
@@ -146,8 +147,9 @@ export default function RecipeReviewCard(props) {
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
+          id={`dish-expand-${props.index}`}
         >
-          <ExpandMoreIcon />
+          <ExpandMoreIcon/>
         </IconButton>
 
         { props.userID === props.dishUserID
