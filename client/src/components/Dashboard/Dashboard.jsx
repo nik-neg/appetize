@@ -51,7 +51,7 @@ export default function Dashboard () {
     }, transitionTime);
   }, [request]);
 
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(store.getState().user.initialProfileRender);
 
   const nextPage = true;
   const handleClick = async (nextPage) => {

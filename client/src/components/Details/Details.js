@@ -1,21 +1,25 @@
 // import { store } from '../../store/index';
 import { useState } from 'react';
-import { useSelector } from 'react-redux'; // useDispatch
+import { useSelector, useDispatch } from 'react-redux'; // useDispatch
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Image from 'material-ui-image'
 import history from '../../history';
+import { backToProfileRequest } from '../../store/userSlice';
 
 export default function Details ({ match }) {
   const dishes = [...useSelector((state) => state.user.dishesInRadius)];
   const [dish, setDish] = useState(...dishes.filter((dish) => dish._id === match.params.dishId));
   const user = useSelector((state) => state.user.userData);
-  console.log(dish, user._id, dish.userID)
+
   const updateDish = async () => {
     setDish(dish); // TODO: add title, description,  recipe update
   }
 
+  const dispatch = useDispatch();
+
   const handleBack = async () => {
+    await dispatch(backToProfileRequest());
     history.push('/profile')
   }
   // TODO: add votes
