@@ -583,17 +583,17 @@ function Profile () {
             </div>
           </Grid>
           <div className="logout-small-devices">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  id="logout-button"
-                  startIcon={<ExitToAppIcon />}
-                  style={logOutButtonStyle}
-                  onClick={handleLogout}
-                  >
-                  Logout
-                </Button>
-              </div>
+            <Button
+              variant="contained"
+              color="primary"
+              id="logout-button"
+              startIcon={<ExitToAppIcon />}
+              style={logOutButtonStyle}
+              onClick={handleLogout}
+              >
+              Logout
+            </Button>
+          </div>
         </Hidden>
       </FadeIn>
     </div>
