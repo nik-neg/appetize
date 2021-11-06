@@ -27,32 +27,24 @@ export default function Details ({ match }) {
   return (
     <div>
     <Grid container spacing={2}>
-      <Grid item xs={12} md={12} lg={12}>
-        <h1 className='dish-publisher'>
-          {`${dish.creatorName} from ${dish.city}`}
-        </h1>
+      <Grid item xs={12} md={12} lg={12}  className='dish-publisher'>
+        {`${dish.creatorName} from ${dish.city}`}
       </Grid>
-      <Grid item xs={12} md={12} lg={12}>
-        <h1 className='dish-title'>
-          {`${dish.title}`}
-        </h1>
+      <Grid item xs={12} md={12} lg={12} className='dish-title'>
+        {`${dish.title}`}
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <Image
           src={dish.imageUrl}
-          imageStyle={{ width:"58%", height:"80%", "borderRadius": "5%"}}
-          style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "15%"}}
+          imageStyle={{ width:"58%", height:"100%", "borderRadius": "2.5%"}}
+          style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "10%"}}
         />
       </Grid>
-      <Grid item xs={12} md={12} lg={12}>
-        <h2 className='dish-description'>
-          {`${dish.description}`}
-        </h2>
+      <Grid item xs={12} md={12} lg={12} className='dish-description'>
+        {`${dish.description}`}
       </Grid>
-      <Grid item xs={12} md={12} lg={12}>
-        <h2 className='dish-recipe'>
-          {`${dish.recipe}`}
-        </h2>
+      <Grid item xs={12} md={12} lg={12} className='dish-recipe'>
+        {`${dish.recipe}`}
       </Grid>
       { user._id == dish.userID
         ?
