@@ -14,6 +14,7 @@ import history from '../../history';
 import { useDispatch } from 'react-redux';
 import { fetchUserDataFromDB, createUserAndSafeToDB } from '../../store/userSlice';
 import { store } from '../../store/index';
+import './RegisterLogin.scss';
 
 function Copyright() {
   return (
@@ -142,9 +143,7 @@ export default function RegisterLogin () {
           src={Logo}
         >
         </Avatar>
-        <Typography component="h1" variant="h3" style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>
-          Appetize
-        </Typography>
+        <div className="appName">Appetize</div>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             {!input.isUser ?

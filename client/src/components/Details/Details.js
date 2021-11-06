@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Image from 'material-ui-image'
 import history from '../../history';
 import { backToProfileRequest } from '../../store/userSlice';
+import './Details.scss';
 
 export default function Details ({ match }) {
   const dishes = [...useSelector((state) => state.user.dishesInRadius)];
@@ -27,29 +28,29 @@ export default function Details ({ match }) {
     <div>
     <Grid container spacing={2}>
       <Grid item xs={12} md={12} lg={12}>
-        <h1>
+        <h1 className='dish-publisher'>
           {`${dish.creatorName} from ${dish.city}`}
         </h1>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        <h1>
+        <h1 className='dish-title'>
           {`${dish.title}`}
         </h1>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <Image
           src={dish.imageUrl}
-          imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "5%"}}
-          style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "22.5%", "padding": "15%"}}
+          imageStyle={{ width:"58%", height:"80%", "borderRadius": "5%"}}
+          style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "15%"}}
         />
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        <h2>
+        <h2 className='dish-description'>
           {`${dish.description}`}
         </h2>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
-        <h2>
+        <h2 className='dish-recipe'>
           {`${dish.recipe}`}
         </h2>
       </Grid>
