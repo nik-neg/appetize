@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './index.css';
+import './DropZone.scss';
 import { DropzoneDialogBase } from 'material-ui-dropzone';
 import IconButton from '@material-ui/core/IconButton';
 import { useSelector, useDispatch } from 'react-redux';

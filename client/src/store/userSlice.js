@@ -17,6 +17,7 @@ const initialState = {
   clearDishTextRequest: 0,
   newDishesRequest: 0,
   allDishesDeletedRequest: false,
+  initialProfileRender: true,
   chosenImageDate: '',
   loading: false,
   isAuthenticated: false,
@@ -112,6 +113,13 @@ export const allDishesDeletedRequest = createAsyncThunk(
   }
 );
 
+export const backToProfileRequest = createAsyncThunk(
+  'state/backToProfileRequest',
+  async () => {
+    return false;
+  }
+);
+
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
   initialState,
@@ -170,7 +178,7 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [clearDishesInStoreRequest.fulfilled]: (state, action) => {
-      state.newDishesRequest += 1;
+      state.newDishesRequest += action.payload;
       state.loading = false;
     },
     [clearDishesInStoreRequest.pending]: (state, action) => {
@@ -233,6 +241,13 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = false;
     },
     [upDownVote.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [backToProfileRequest.fulfilled]: (state, action) => {
+      state.initialProfileRender = action.payload;
+      state.loading = false;
+    },
+    [backToProfileRequest.pending]: (state, action) => {
       state.loading = true;
     },
   }

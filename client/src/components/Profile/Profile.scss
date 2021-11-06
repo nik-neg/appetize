@@ -1,3 +1,8 @@
+@import '../../styles/utils/variables';
+.user {
+  font-family: $font-dish-publisher;
+  font-size: 3rem;
+}
 .avatar-box {
   display: flex;
   justify-content: center;

@@ -15,6 +15,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import StarsIcon from '@material-ui/icons/Stars';
 import DeleteIcon from '@material-ui/icons/Delete';
+import history from '../../history';
 
 import moment from 'moment';
 
@@ -110,6 +111,10 @@ export default function RecipeReviewCard(props) {
     }
   }
 
+  const handleDishClick = async () => {
+    history.push(`/details/${props.dishID}`)
+  }
+
   return (
     <Card className={classes.root} >
       <CardHeader
@@ -124,9 +129,11 @@ export default function RecipeReviewCard(props) {
         style={{'textAlign': 'left'}}
       />
       <CardMedia
-        className={classes.media}
+        id={`dish-image-${props.index}`}
+        className={`dish-image ${classes.media}`}
         image={props.imageUrl}
         title={props.title}
+        onClick={handleDishClick}
       />
       <CardContent id={`dish-description-${props.index}`}>
         <Typography variant="body2" color="textSecondary" component="p">

@@ -1,0 +1,22 @@
+@import '../../styles/utils/variables';
+
+.dish-publisher {
+  font-family: $font-dish-publisher;
+  font-size: 5rem;
+}
+
+.dish-title {
+  font-family: $font-dish-text;
+  font-size: 5rem;
+}
+
+.dish-description {
+  font-family: $font-dish-text;
+  font-size: 3rem;
+}
+
+.dish-recipe {
+  font-family: $font-dish-text;
+  font-size: 3rem;
+}
+

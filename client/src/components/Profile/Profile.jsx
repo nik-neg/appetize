@@ -26,7 +26,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 import { useDispatch, useSelector} from 'react-redux';
 import { updateUserZipCode, logoutUser } from '../../store/userSlice';
-import './index.css'
+import './Profile.scss'
 import { store } from '../../store/index';
 import history from '../../history';
 
@@ -230,7 +230,7 @@ function Profile () {
           alignItems="flex-start"
         >
           <Grid item lg={4} sm={12} xs={12} >
-            <h1>{userData.firstName}</h1>
+            <h1 className="user">{userData.firstName}</h1>
             <div className="avatar-box">
                 <Avatar alt="No Avatar" src={imagePathForAvarar} className={classesAvatar.large} style={{ height: '8rem', width: '8rem' }} />
             </div>
@@ -583,17 +583,17 @@ function Profile () {
             </div>
           </Grid>
           <div className="logout-small-devices">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  id="logout-button"
-                  startIcon={<ExitToAppIcon />}
-                  style={logOutButtonStyle}
-                  onClick={handleLogout}
-                  >
-                  Logout
-                </Button>
-              </div>
+            <Button
+              variant="contained"
+              color="primary"
+              id="logout-button"
+              startIcon={<ExitToAppIcon />}
+              style={logOutButtonStyle}
+              onClick={handleLogout}
+              >
+              Logout
+            </Button>
+          </div>
         </Hidden>
       </FadeIn>
     </div>

@@ -1,4 +1,4 @@
-import './index.css'
+import './LocalDishesParameter.scss'
 import { useState } from 'react';
 import Slider from '../Slider/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
