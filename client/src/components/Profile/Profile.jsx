@@ -297,7 +297,7 @@ function Profile () {
             { imagePath.length > 0 ?
               <Image
                 src={imagePath}
-                imageStyle={{"borderRadius": "12.5%"}} // 500 to 300 proportion => 5/8, 3/8 => 80 % / (5/8) => x => x * (3/8)
+                imageStyle={{"borderRadius": "2.5%"}}
                 style={{"backgroundColor": "inherit", "marginTop": "17.5%","padding": "150px"}}
               />
             : ''}
@@ -436,7 +436,7 @@ function Profile () {
           <Grid item sm={12} xs={12}>
             <Image
               src={imagePath}
-              imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "5%"}}
+              imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "2.5%"}}
               style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "22%", "padding": "150px"}}
             />
           </Grid>
