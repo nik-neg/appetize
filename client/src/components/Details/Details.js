@@ -8,7 +8,8 @@ import { backToProfileRequest, updateDailyTreat } from '../../store/userSlice';
 import './Details.scss';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import TextareaAutosize from '@mui/core/TextareaAutosize';
+import { TextField } from '@material-ui/core';
+import FadeIn from 'react-fade-in';
 import ApiClient from '../../services/ApiClient';
 
 export default function Details ({ match }) {
@@ -20,8 +21,7 @@ export default function Details ({ match }) {
   const updateDish = async () => {
     if (editable) {
       const updatedDailyTreat = await ApiClient.updateDish(user._id, dish._id, { dishText, cookedOrdered })
-      console.log(updatedDailyTreat)
-      await dispatch(updateDailyTreat(updatedDailyTreat));
+      dispatch(updateDailyTreat(updatedDailyTreat));
     }
     setEditable(!editable);
     setDish((prevValue) => ({
@@ -82,132 +82,155 @@ export default function Details ({ match }) {
     return limit;
   }
   return (
-    <div>
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={12} lg={12}  className='dish-publisher'>
-        {`${dish.creatorName} from ${dish.city}`}
-      </Grid>
-      <Grid item xs={12} md={12} lg={12} className='dish-title'>
-        { !editable
-        ?
-          <div contentEditable={editable}>
-            {`${dishText.title}`}
-          </div>
-        :
-          <TextareaAutosize
-            aria-label="empty textarea"
-            value={dishText.title}
-            style={{ height: '3vw', width: '20vw' }}
-            onChange={handleChangeText(title)}
+    <FadeIn delay={950} transitionDuration={1750}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={12} lg={12}  className='dish-publisher'>
+          {`${dish.creatorName} from ${dish.city}`}
+        </Grid>
+        <Grid item xs={12} md={12} lg={12} className='dish-title'>
+          { !editable
+          ?
+            <div contentEditable={editable}>
+              {`${dishText.title}`}
+            </div>
+          :
+            <TextField
+              id="dish-title"
+              label="Title"
+              inputProps={{
+                maxLength: CHARACTER_LIMIT_TITLE
+              }}
+              value={dishText.title}
+              helperText={`${dishText.title.length}/${CHARACTER_LIMIT_TITLE}`}
+              style={{ height: '3vw', width: '20vw' }}
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChangeText(title)}
+            />
+          }
+        </Grid>
+        <Grid item xs={12} md={12} lg={12}>
+          <Image
+            src={dish.imageUrl}
+            imageStyle={{ width:"58%", height:"100%", "borderRadius": "2.5%"}}
+            style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "10%"}}
           />
-        }
-      </Grid>
-      <Grid item xs={12} md={12} lg={12}>
-        <Image
-          src={dish.imageUrl}
-          imageStyle={{ width:"58%", height:"100%", "borderRadius": "2.5%"}}
-          style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "10%"}}
-        />
-      </Grid>
-      <Grid item xs={12} md={12} lg={12} className='dish-description'>
-        <div className="row">
-          <div className="col">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  id='local-dishes-parameter-cooked'
-                  onChange={handleCookedOrdered}
-                  label='Cooked'
-                  checked={cookedOrdered.cooked}
-                  name="cooked"
-                  color="primary"
-                  value={cookedOrdered.cooked}
-                />
-              }
-            label="cooked"
-          />
-          </div>
-          <div className="col">
-          <FormControlLabel
-            control={
-              <Checkbox
-                id='local-dishes-parameter-ordered'
-                onChange={handleCookedOrdered}
-                label='Ordered'
-                checked={cookedOrdered.ordered}
-                name='ordered'
-                color="primary"
-                value={cookedOrdered.ordered}
+        </Grid>
+        { user._id == dish.userID
+          ?
+          <Grid item xs={12} md={12} lg={12}>
+            <div className="row">
+              <div className="col">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id='local-dishes-parameter-cooked'
+                      onChange={handleCookedOrdered}
+                      label='Cooked'
+                      checked={cookedOrdered.cooked}
+                      name="cooked"
+                      color="primary"
+                      value={cookedOrdered.cooked}
+                    />
+                  }
+                label="cooked"
               />
-            }
-            label="ordered"
-          />
-          </div>
-        </div>
-      </Grid>
-      <Grid item xs={12} md={12} lg={12} className='dish-description'>
-      { !editable
-        ?
-        <div contentEditable={editable} >
-          {`${dishText.description}`}
-        </div>
-        :
-          <TextareaAutosize
-            aria-label="empty textarea"
-            value={dishText.description}
-            style={{ height: '3vw', width: '40vw' }}
-            onChange={handleChangeText(description)}
-          />
-      }
-      </Grid>
-      <Grid item xs={12} md={12} lg={12} className='dish-recipe'>
-      { !editable
-        ?
-        <div contentEditable={editable} >
-          {`${dishText.recipe}`}
-        </div>
-        :
-        <TextareaAutosize
-          aria-label="empty textarea"
-          style={{ height: '3vw', width: '40vw' }}
-          value={dishText.recipe}
-          onChange={handleChangeText(recipe)}
-        />
-      }
-      </Grid>
+              </div>
+              <div className="col">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id='local-dishes-parameter-ordered'
+                    onChange={handleCookedOrdered}
+                    label='Ordered'
+                    checked={cookedOrdered.ordered}
+                    name='ordered'
+                    color="primary"
+                    value={cookedOrdered.ordered}
+                  />
+                }
+                label="ordered"
+              />
+              </div>
+            </div>
+          </Grid>
+        : ''}
+        <Grid item xs={12} md={12} lg={12} className='dish-description'>
+        { !editable
+          ?
+            <div contentEditable={editable} >
+              {`${dishText.description}`}
+            </div>
+          :
+            <TextField
+              id="dish-description"
+              label="Description"
+              inputProps={{
+                maxLength: CHARACTER_LIMIT_DESCRIPTION
+              }}
+              value={dishText.description}
+              helperText={`${dishText.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
+              style={{ height: '3vw', width: '40vw' }}
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChangeText(description)}
+            />
+        }
+        </Grid>
+        <Grid item xs={12} md={12} lg={12} className='dish-recipe'>
+        { !editable
+          ?
+            <div contentEditable={editable} >
+              {`${dishText.recipe}`}
+            </div>
+          :
+            <TextField
+              id="dish-recipe"
+              label="Recipe"
+              inputProps={{
+                maxLength: CHARACTER_LIMIT_RECIPE
+              }}
+              value={dishText.recipe}
+              helperText={`${dishText.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+              style={{ height: '3vw', width: '40vw' }}
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChangeText(recipe)}
+            />
+        }
+        </Grid>
 
-      { user._id == dish.userID
-        ?
+        { user._id == dish.userID
+          ?
+          <Grid item xs={12} md={12} lg={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              id="update-button"
+              className="button"
+              // startIcon={<ExitToAppIcon />}
+              // style={logOutButtonStyle}
+              onClick={updateDish}
+              >
+              { !editable ? 'Update' : 'Confirm' }
+            </Button>
+          </Grid>
+          : ''
+        }
         <Grid item xs={12} md={12} lg={12}>
           <Button
             variant="contained"
             color="primary"
-            id="update-button"
+            id="logout-button"
             className="button"
             // startIcon={<ExitToAppIcon />}
             // style={logOutButtonStyle}
-            onClick={updateDish}
+            onClick={handleBack}
             >
-            { !editable ? 'Update' : 'Confirm' }
+            Back
           </Button>
         </Grid>
-        : ''
-      }
-      <Grid item xs={12} md={12} lg={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          id="logout-button"
-          className="button"
-          // startIcon={<ExitToAppIcon />}
-          // style={logOutButtonStyle}
-          onClick={handleBack}
-          >
-          Back
-        </Button>
       </Grid>
-    </Grid>
-    </div>
-
+      </FadeIn>
   );
 }
