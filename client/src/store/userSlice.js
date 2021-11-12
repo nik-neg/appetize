@@ -119,6 +119,12 @@ export const backToProfileRequest = createAsyncThunk(
     return false;
   }
 );
+export const updateDailyTreat = createAsyncThunk(
+  'state/updateDailyTreat',
+  async (dailyTreat) => {
+    return dailyTreat;
+  }
+);
 
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
@@ -248,6 +254,17 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = false;
     },
     [backToProfileRequest.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [updateDailyTreat.fulfilled]: (state, action) => {
+      const dailyTreat = action.payload;
+      const { _id } = dailyTreat;
+      const index = state.dishesInRadius.findIndex((dish) => dish._id === _id);
+      state.dishesInRadius[index] = dailyTreat;
+      state.dishesInRadius.sort((a,b) =>  b.votes - a.votes);
+      state.loading = false;
+    },
+    [updateDailyTreat.pending]: (state, action) => {
       state.loading = true;
     },
   }

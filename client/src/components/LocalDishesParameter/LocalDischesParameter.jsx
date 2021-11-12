@@ -43,15 +43,15 @@ export default function LocalDishesParameter () {
   const [cookedOrdered, setCoockedOrdered] = useState({
     cooked: true,
     ordered: true
-  })
+  });
   const handleCookedOrdered = async (event) => {
     const { name, checked } = event.target;
     setCoockedOrdered((prevValue) => ({
       ...prevValue,
       [name]: checked
 
-    }))
-  }
+    }));
+  };
 
   return (
     <div className="container">

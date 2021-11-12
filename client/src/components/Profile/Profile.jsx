@@ -155,7 +155,7 @@ function Profile () {
   const handleChangeZipCode = (event) => {
     setZipCode(event.target.value);
   }
-  const handleChangeTextArea = name => (event) => {
+  const handleChangeTextArea = (name) => (event) => {
     setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
   }
 
@@ -173,10 +173,8 @@ function Profile () {
   const handleCookedOrdered = async (event) => {
     event.preventDefault();
     const { name, checked } = event.target;
-    setCoockedOrdered((prevValue) => ({
-      [name === 'cooked' ? prevValue['ordered'] : prevValue['cooked']]: false,
+    setCoockedOrdered(() => ({
       [name]: checked
-
     }))
   }
 

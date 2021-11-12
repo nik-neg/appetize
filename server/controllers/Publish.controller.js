@@ -173,3 +173,22 @@ module.exports.upDownVote = async (req, res) => {
     return res.status(500).send({ error: '500', message: 'Could not up/down vote daily treat - Internal server error' });
   }
 };
+
+module.exports.updateDish = async (req, res) => {
+  const { dishText, cookedOrdered } = req.body;
+  const { dailyTreatsID } = req.query;
+  let updatedDailyTreat;
+  try {
+    updatedDailyTreat = await DailyTreat.findOneAndUpdate(
+      {
+        _id: dailyTreatsID,
+      },
+      { ...dishText, cookedNotOrdered: cookedOrdered.cooked },
+      { new: true },
+    );
+  } catch (e) {
+    return res.status(500).send({ error: '500', message: 'Could not update daily treat - Internal server error' });
+  }
+
+  return res.status(200).send(updatedDailyTreat);
+};
