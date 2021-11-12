@@ -9,6 +9,8 @@ import './Details.scss';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextareaAutosize from '@mui/core/TextareaAutosize';
+import ApiClient from '../../services/ApiClient';
+import { updateDailyTreat } from '../../store/userSlice';
 
 export default function Details ({ match }) {
   const dishes = [...useSelector((state) => state.user.dishesInRadius)];
@@ -17,7 +19,13 @@ export default function Details ({ match }) {
 
   const [editable, setEditable] = useState(false);
   const updateDish = async () => {
+    if (editable) {
+      const updatedDailyTreat = await ApiClient.updateDish(user._id, dish._id, { dishText, cookedOrdered })
+      console.log(updatedDailyTreat)
+      await dispatch(updateDailyTreat(updatedDailyTreat));
+    }
     setEditable(!editable);
+    // TODO: update store (optional?)
     setDish((prevValue) => ({
       ...prevValue,
       ...dishText,
