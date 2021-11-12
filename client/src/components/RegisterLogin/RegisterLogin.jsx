@@ -19,7 +19,7 @@ import './RegisterLogin.scss';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {'All rights reserved - Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
         Appetize
       </Link>

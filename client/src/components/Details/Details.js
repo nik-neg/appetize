@@ -52,7 +52,8 @@ export default function Details ({ match }) {
             <Button
               variant="contained"
               color="primary"
-              id="logout-button"
+              id="update-button"
+              className="button"
               // startIcon={<ExitToAppIcon />}
               // style={logOutButtonStyle}
               onClick={updateDish}
@@ -67,6 +68,7 @@ export default function Details ({ match }) {
           variant="contained"
           color="primary"
           id="logout-button"
+          className="button"
           // startIcon={<ExitToAppIcon />}
           // style={logOutButtonStyle}
           onClick={handleBack}
