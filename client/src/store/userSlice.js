@@ -260,7 +260,8 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       const dailyTreat = action.payload;
       const { _id } = dailyTreat;
       const index = state.dishesInRadius.findIndex((dish) => dish._id === _id);
-      state.dishesInRadius[index] = dailyTreat;
+      const dish = state.dishesInRadius[index];
+      state.dishesInRadius[index] = {...dish,...dailyTreat };
       state.dishesInRadius.sort((a,b) =>  b.votes - a.votes);
       state.loading = false;
     },
