@@ -8,14 +8,20 @@ import { backToProfileRequest } from '../../store/userSlice';
 import './Details.scss';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import TextareaAutosize from '@mui/core/TextareaAutosize';
 
 export default function Details ({ match }) {
   const dishes = [...useSelector((state) => state.user.dishesInRadius)];
   const [dish, setDish] = useState(...dishes.filter((dish) => dish._id === match.params.dishId));
   const user = useSelector((state) => state.user.userData);
 
+  const [editable, setEditable] = useState(false);
   const updateDish = async () => {
-    setDish(dish); // TODO: add title, description,  recipe update
+    setEditable(!editable);
+    setDish((prevValue) => ({
+      ...prevValue,
+      ...dishText,
+    }));
   }
 
   const dispatch = useDispatch();
@@ -35,9 +41,40 @@ export default function Details ({ match }) {
     setCoockedOrdered(() => ({
       [name === 'cooked' ? 'ordered' : 'cooked'] : false,
       [name]: checked
-    }))
+    }));
+  };
+  const CHARACTER_LIMIT_TITLE = 20;
+  const CHARACTER_LIMIT_DESCRIPTION = 140;
+  const CHARACTER_LIMIT_RECIPE = 500;
+
+  const title = 'title';
+  const description = 'description';
+  const recipe = 'recipe';
+
+  const initialDishTextState = {
+    title: dish.title,
+    description: dish.description,
+    recipe: dish.recipe,
   }
-  // TODO: add votes
+  const [dishText, setDishText] = useState({
+    ...initialDishTextState,
+  });
+  const handleChangeText = (name) => (event) => {
+    const limit = handleCharacterLimit(name);
+    setDishText((prevValue) => ({ ...prevValue, [name]: event.target.value.slice(0, limit) }));
+  }
+  const handleCharacterLimit = (name) => {
+    let limit;
+    switch(name) {
+      case title: limit = CHARACTER_LIMIT_TITLE;
+        break;
+      case description: limit = CHARACTER_LIMIT_DESCRIPTION;
+        break;
+      case recipe: limit = CHARACTER_LIMIT_RECIPE;
+        break;
+    }
+    return limit;
+  }
   return (
     <div>
     <Grid container spacing={2}>
@@ -45,7 +82,19 @@ export default function Details ({ match }) {
         {`${dish.creatorName} from ${dish.city}`}
       </Grid>
       <Grid item xs={12} md={12} lg={12} className='dish-title'>
-        {`${dish.title}`}
+        { !editable
+        ?
+          <div contentEditable={editable}>
+            {`${dishText.title}`}
+          </div>
+        :
+          <TextareaAutosize
+            aria-label="empty textarea"
+            value={dishText.title}
+            style={{ height: '3vw', width: '20vw' }}
+            onChange={handleChangeText(title)}
+          />
+        }
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <Image
@@ -91,27 +140,51 @@ export default function Details ({ match }) {
         </div>
       </Grid>
       <Grid item xs={12} md={12} lg={12} className='dish-description'>
-        {`${dish.description}`}
+      { !editable
+        ?
+        <div contentEditable={editable} >
+          {`${dishText.description}`}
+        </div>
+        :
+          <TextareaAutosize
+            aria-label="empty textarea"
+            value={dishText.description}
+            style={{ height: '3vw', width: '40vw' }}
+            onChange={handleChangeText(description)}
+          />
+      }
       </Grid>
       <Grid item xs={12} md={12} lg={12} className='dish-recipe'>
-        {`${dish.recipe}`}
+      { !editable
+        ?
+        <div contentEditable={editable} >
+          {`${dishText.recipe}`}
+        </div>
+        :
+        <TextareaAutosize
+          aria-label="empty textarea"
+          style={{ height: '3vw', width: '40vw' }}
+          value={dishText.recipe}
+          onChange={handleChangeText(recipe)}
+        />
+      }
       </Grid>
 
       { user._id == dish.userID
         ?
-          <Grid item xs={12} md={12} lg={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              id="update-button"
-              className="button"
-              // startIcon={<ExitToAppIcon />}
-              // style={logOutButtonStyle}
-              onClick={updateDish}
-              >
-              Update
-            </Button>
-          </Grid>
+        <Grid item xs={12} md={12} lg={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            id="update-button"
+            className="button"
+            // startIcon={<ExitToAppIcon />}
+            // style={logOutButtonStyle}
+            onClick={updateDish}
+            >
+            { !editable ? 'Update' : 'Confirm' }
+          </Button>
+        </Grid>
         : ''
       }
       <Grid item xs={12} md={12} lg={12}>

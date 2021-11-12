@@ -155,7 +155,7 @@ function Profile () {
   const handleChangeZipCode = (event) => {
     setZipCode(event.target.value);
   }
-  const handleChangeTextArea = name => (event) => {
+  const handleChangeTextArea = (name) => (event) => {
     setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
   }
 
