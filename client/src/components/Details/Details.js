@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; // useDispatch
+import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Image from 'material-ui-image'
 import history from '../../history';
-import { backToProfileRequest } from '../../store/userSlice';
+import { backToProfileRequest, updateDailyTreat } from '../../store/userSlice';
 import './Details.scss';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextareaAutosize from '@mui/core/TextareaAutosize';
 import ApiClient from '../../services/ApiClient';
-import { updateDailyTreat } from '../../store/userSlice';
 
 export default function Details ({ match }) {
   const dishes = [...useSelector((state) => state.user.dishesInRadius)];
@@ -25,7 +24,6 @@ export default function Details ({ match }) {
       await dispatch(updateDailyTreat(updatedDailyTreat));
     }
     setEditable(!editable);
-    // TODO: update store (optional?)
     setDish((prevValue) => ({
       ...prevValue,
       ...dishText,
