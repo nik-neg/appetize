@@ -374,61 +374,60 @@ function Profile () {
                           rowsMax="10"
                           variant="filled"
                           onChange={handleChangeTextArea('recipe')}
-                          InputProps={{ classes: { input: styles.someTextField.toString(), } }}
+                          InputProps={{ classes: { input: styles.someTextField.toString() } }}
                         />
                       </FadeIn>
                       : ''}
                   </Grid>
                 { imagePath.length > 0 ?
-                      <FadeIn delay={4500} transitionDuration={1000}>
-                        <div className="publish-button-row">
-                          <div className="publish-button-col">
-                            <FormControlLabel
-                              control={<Checkbox
-                                        onChange={handlePublish}
-                                        icon={<FavoriteBorder />}
-                                        checkedIcon={<Favorite/>}
-                                        checked={cookedOrdered.published}
-                                        name='publish'
-                                        value={cookedOrdered.published}
-                                      />}
-                              label="Publish"
-                            />
-                          </div>
-                          <div className="publish-button-col">
-                            <FormControlLabel
-                              control={<Checkbox
-                                        onChange={handleCookedOrdered}
-                                        icon={<FavoriteBorder />}
-                                        checkedIcon={<Favorite/>}
-                                        checked={cookedOrdered.cooked}
-                                        name='cooked'
-                                        value={cookedOrdered.cooked}
-                                      />}
-                              label="Coocked"
-                            />
-                          </div>
-                          <div className="publish-button-col">
-                            <FormControlLabel
-                              control={<Checkbox
-                                        onChange={handleCookedOrdered}
-                                        icon={<FavoriteBorder />}
-                                        checkedIcon={<Favorite/>}
-                                        checked={cookedOrdered.ordered}
-                                        name="ordered"
-                                        value={cookedOrdered.ordered}
-                                      />}
-                              label="Ordered"
-                            />
-                          </div>
+                    <FadeIn delay={4500} transitionDuration={1000}>
+                      <div className="publish-button-row">
+                        <div className="publish-button-col">
+                          <FormControlLabel
+                            control={<Checkbox
+                                      onChange={handlePublish}
+                                      icon={<FavoriteBorder />}
+                                      checkedIcon={<Favorite/>}
+                                      checked={cookedOrdered.published}
+                                      name='publish'
+                                      value={cookedOrdered.published}
+                                    />}
+                            label="Publish"
+                          />
                         </div>
-                      </FadeIn>
-                    : ''}
-                    </Grid>
+                        <div className="publish-button-col">
+                          <FormControlLabel
+                            control={<Checkbox
+                                      onChange={handleCookedOrdered}
+                                      icon={<FavoriteBorder />}
+                                      checkedIcon={<Favorite/>}
+                                      checked={cookedOrdered.cooked}
+                                      name='cooked'
+                                      value={cookedOrdered.cooked}
+                                    />}
+                            label="Coocked"
+                          />
+                        </div>
+                        <div className="publish-button-col">
+                          <FormControlLabel
+                            control={<Checkbox
+                                      onChange={handleCookedOrdered}
+                                      icon={<FavoriteBorder />}
+                                      checkedIcon={<Favorite/>}
+                                      checked={cookedOrdered.ordered}
+                                      name="ordered"
+                                      value={cookedOrdered.ordered}
+                                    />}
+                            label="Ordered"
+                          />
+                        </div>
+                      </div>
+                    </FadeIn>
+                  : ''}
                   </Grid>
                 </Grid>
-              </Hidden>
-
+              </Grid>
+            </Hidden>
         <Hidden lgUp>
         { imagePath.length > 0 ?
           <Grid item sm={12} xs={12}>

@@ -49,6 +49,15 @@ export default function Details ({ match }) {
       [name]: checked
     }));
   };
+
+  const styles = {
+    someTextField: {
+      minHeight: 420,
+      minWidth: 800,
+      paddingTop: "10%"
+    }
+  };
+
   const CHARACTER_LIMIT_TITLE = 20;
   const CHARACTER_LIMIT_DESCRIPTION = 140;
   const CHARACTER_LIMIT_RECIPE = 500;
@@ -66,20 +75,7 @@ export default function Details ({ match }) {
     ...initialDishTextState,
   });
   const handleChangeText = (name) => (event) => {
-    const limit = handleCharacterLimit(name);
-    setDishText((prevValue) => ({ ...prevValue, [name]: event.target.value.slice(0, limit) }));
-  }
-  const handleCharacterLimit = (name) => {
-    let limit;
-    switch(name) {
-      case title: limit = CHARACTER_LIMIT_TITLE;
-        break;
-      case description: limit = CHARACTER_LIMIT_DESCRIPTION;
-        break;
-      case recipe: limit = CHARACTER_LIMIT_RECIPE;
-        break;
-    }
-    return limit;
+    setDishText((prevValue) => ({ ...prevValue, [name]: event.target.value }));
   }
   return (
     <FadeIn delay={950} transitionDuration={1750}>
@@ -87,34 +83,83 @@ export default function Details ({ match }) {
         <Grid item xs={12} md={12} lg={12}  className='dish-publisher'>
           {`${dish.creatorName} from ${dish.city}`}
         </Grid>
-        <Grid item xs={12} md={12} lg={12} className='dish-title'>
+        <Grid item sm={12} xs={12}>
           { !editable
-          ?
-            <div contentEditable={editable}>
-              {`${dishText.title}`}
-            </div>
-          :
+            ?
+              <div className="dish-title">
+                {`${dishText.title}`}
+              </div>
+            :
             <TextField
-              id="dish-title"
+              id="dish-title-change"
               label="Title"
               inputProps={{
                 maxLength: CHARACTER_LIMIT_TITLE
               }}
               value={dishText.title}
               helperText={`${dishText.title.length}/${CHARACTER_LIMIT_TITLE}`}
-              style={{ height: '3vw', width: '20vw' }}
+              style={{"minWidth": "20vw"}}
               rowsMax="10"
               variant="filled"
               onChange={handleChangeText(title)}
+              InputProps={{ classes: { input: styles.someTextField.toString() } }}
             />
           }
         </Grid>
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item sm={12} xs={12}>
           <Image
             src={dish.imageUrl}
-            imageStyle={{ width:"58%", height:"100%", "borderRadius": "2.5%"}}
-            style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "10%"}}
+            imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "2.5%"}}
+            style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "21.5%", "padding": "10%"}}
           />
+        </Grid>
+        <Grid item sm={12} xs={12}>
+        { !editable
+          ?
+            <div className="dish-description">
+              {`${dishText.description}`}
+            </div>
+          :
+            <TextField
+              id="dish-description-change"
+              label="Description"
+              inputProps={{
+                maxLength: CHARACTER_LIMIT_DESCRIPTION
+              }}
+              value={dishText.description}
+              helperText={`${dishText.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
+              style={{"minWidth": "55vw"}}
+              multiline
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChangeText(description)}
+              InputProps={{ classes: { input: styles.someTextField.toString(), } }}
+            />
+        }
+        </Grid>
+        <Grid item sm={12} xs={12}>
+          { !editable
+            ?
+              <div className="dish-recipe">
+                {`${dishText.recipe}`}
+              </div>
+            :
+            <TextField
+              id="dish-recipe"
+              label="Recipe"
+              inputProps={{
+                maxLength: CHARACTER_LIMIT_RECIPE
+              }}
+              value={dishText.recipe}
+              helperText={`${dishText.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
+              style={{"minWidth": "55vw"}}
+              multiline
+              rowsMax="10"
+              variant="filled"
+              onChange={handleChangeText(recipe)}
+              InputProps={{ classes: { input: styles.someTextField.toString(), } }}
+            />
+          }
         </Grid>
         { user._id == dish.userID
           ?
@@ -155,65 +200,18 @@ export default function Details ({ match }) {
             </div>
           </Grid>
         : ''}
-        <Grid item xs={12} md={12} lg={12} className='dish-description'>
-        { !editable
-          ?
-            <div contentEditable={editable} >
-              {`${dishText.description}`}
-            </div>
-          :
-            <TextField
-              id="dish-description"
-              label="Description"
-              inputProps={{
-                maxLength: CHARACTER_LIMIT_DESCRIPTION
-              }}
-              value={dishText.description}
-              helperText={`${dishText.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-              style={{ height: '3vw', width: '40vw' }}
-              rowsMax="10"
-              variant="filled"
-              onChange={handleChangeText(description)}
-            />
-        }
-        </Grid>
-        <Grid item xs={12} md={12} lg={12} className='dish-recipe'>
-        { !editable
-          ?
-            <div contentEditable={editable} >
-              {`${dishText.recipe}`}
-            </div>
-          :
-            <TextField
-              id="dish-recipe"
-              label="Recipe"
-              inputProps={{
-                maxLength: CHARACTER_LIMIT_RECIPE
-              }}
-              value={dishText.recipe}
-              helperText={`${dishText.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-              style={{ height: '3vw', width: '40vw' }}
-              rowsMax="10"
-              variant="filled"
-              onChange={handleChangeText(recipe)}
-            />
-        }
-        </Grid>
-
         { user._id == dish.userID
           ?
           <Grid item xs={12} md={12} lg={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              id="update-button"
-              className="button"
-              // startIcon={<ExitToAppIcon />}
-              // style={logOutButtonStyle}
-              onClick={updateDish}
-              >
-              { !editable ? 'Update' : 'Confirm' }
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                id="update-button"
+                className="button"
+                onClick={updateDish}
+                >
+                { !editable ? 'Update' : 'Confirm' }
+              </Button>
           </Grid>
           : ''
         }
@@ -221,16 +219,14 @@ export default function Details ({ match }) {
           <Button
             variant="contained"
             color="primary"
-            id="logout-button"
+            id="back-button"
             className="button"
-            // startIcon={<ExitToAppIcon />}
-            // style={logOutButtonStyle}
             onClick={handleBack}
             >
             Back
           </Button>
         </Grid>
       </Grid>
-      </FadeIn>
+    </FadeIn>
   );
 }
