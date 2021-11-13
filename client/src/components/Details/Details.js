@@ -109,8 +109,8 @@ export default function Details ({ match }) {
         <Grid item sm={12} xs={12}>
           <Image
             src={dish.imageUrl}
-            imageStyle={{ width:"72.5%", height:"100%", "borderRadius": "2.5%"}}
-            style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "21.5%", "padding": "10%"}}
+            imageStyle={{ width:"57.5%", height:"100%", "borderRadius": "2.5%"}}
+            style={{"backgroundColor": "inherit", "marginTop": "0%", "marginLeft": "30%", "padding": "10%"}}
           />
         </Grid>
         <Grid item sm={12} xs={12}>
@@ -128,7 +128,7 @@ export default function Details ({ match }) {
               }}
               value={dishText.description}
               helperText={`${dishText.description.length}/${CHARACTER_LIMIT_DESCRIPTION}`}
-              style={{"minWidth": "55vw"}}
+              style={{"minWidth": "40vw"}}
               multiline
               rowsMax="10"
               variant="filled"
@@ -152,7 +152,7 @@ export default function Details ({ match }) {
               }}
               value={dishText.recipe}
               helperText={`${dishText.recipe.length}/${CHARACTER_LIMIT_RECIPE}`}
-              style={{"minWidth": "55vw"}}
+              style={{"minWidth": "40vw"}}
               multiline
               rowsMax="10"
               variant="filled"
