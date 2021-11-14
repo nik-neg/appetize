@@ -75,18 +75,19 @@ const publishToDashBoard = async (id, data) =>
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-    .then((imageData) => imageData)
-    .then((imageData) => imageData)
+    .then((dailyTreatData) => dailyTreatData)
+    .then((dailyTreatData) => dailyTreatData)
     .catch((err) => console.log(err));
 
-const getDishesInRadius = async (id, radius, cookedOrdered, pageNumber) =>
+const getDishesInRadius = async (id, radius, cookedOrdered, pageNumber, geoLocationPolygon) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
   url.search = new URLSearchParams({
     id,
     radius,
     cookedOrdered,
-    pageNumber
+    pageNumber,
+    geoLocationPolygon
   })
   return fetch(url,
   {

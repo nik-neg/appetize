@@ -54,7 +54,7 @@ export default function Dashboard () {
   const [checked, setChecked] = useState(store.getState().user.initialProfileRender);
 
   const nextPage = true;
-  const handleClick = async (nextPage) => {
+  const handleArrowClick = async (nextPage) => {
     if (nextPage === false && searchData.pageNumber === 1) return;
     // TODO: set info for user that there are no more images ?
     setChecked(!checked);
@@ -100,7 +100,7 @@ export default function Dashboard () {
       {checked
       ?  <div className="arrow-box">
           <FadeIn delay={transitionTimeForArrowButton} transitionDuration={1000}>
-            <IconButton aria-label="backward" onClick={() => handleClick(!nextPage)}>
+            <IconButton aria-label="backward" onClick={() => handleArrowClick(!nextPage)}>
                 <ArrowBackIosIcon />
             </IconButton>
           </FadeIn>
@@ -146,7 +146,7 @@ export default function Dashboard () {
         {checked
       ?  <div className="arrow-box">
           <FadeIn delay={transitionTimeForArrowButton} transitionDuration={1000}>
-            <IconButton aria-label="forward" onClick={() => handleClick(nextPage)}>
+            <IconButton aria-label="forward" onClick={() => handleArrowClick(nextPage)}>
                 <ArrowForwardIosIcon />
             </IconButton>
           </FadeIn>

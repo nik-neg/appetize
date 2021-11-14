@@ -7,8 +7,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getDishesInRadius, clearDishesInStoreRequest } from '../../store/userSlice';
+import { getDishesInRadius, clearDishesInStoreRequest, getGeoLocation } from '../../store/userSlice';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import clientHelper from '../../helpers/clientHelper';
+
+import { store } from '../../store/index';
 
 export default function LocalDishesParameter () {
 
@@ -18,19 +21,32 @@ export default function LocalDishesParameter () {
 
   const initialPageNumber = 1;
 
+  // for geo point
+  const success = async (pos) => {
+    var crd = pos.coords;
+    const { latitude, longitude, accuracy } = crd;
+
+    const geoLocationPolygon = clientHelper.calculatePolygon({ latitude, longitude, accuracy });
+    console.log('geoLocationPolygon success', geoLocationPolygon)
+    dispatch(getGeoLocation(geoLocationPolygon));
+  }
+  // for geo point
+
   const handleRadiusSearch = async () => {
-    // TODO: pop up window to choose paramters, e.g. alert
     if (!cookedOrdered.cooked && !cookedOrdered.ordered || !userDataClone.zipCode) {
       return;
     }
+    clientHelper.getGeoLocation(success);
     try {
       dispatch(clearDishesInStoreRequest());
       setTimeout(() => {
+        const geoLocationPolygon = store.getState().user.searchData.geoLocationPolygon;
         dispatch(getDishesInRadius({
           id: userDataClone._id,
           radius,
           cookedOrdered: JSON.stringify(cookedOrdered),
           pageNumber: initialPageNumber,
+          geoLocationPolygon: JSON.stringify(geoLocationPolygon),
         }))
       }, 1750);
 

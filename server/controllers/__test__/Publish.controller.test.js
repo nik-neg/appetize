@@ -52,7 +52,7 @@ const setup = () => { // test object factory
   return { req, res };
 };
 
-describe('publishDish method', () => {
+describe.skip('publishDish method', () => {
   test('publishDish throws 400, because user not found', async () => {
     const { req, res } = setup();
     req.params = { id: 123 };
@@ -246,7 +246,7 @@ describe('publishDish method', () => {
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 
-  describe('checkDishesInRadius method', () => {
+  describe.skip('checkDishesInRadius method', () => {
     test('checkDishesInRadius returns 500, because of interal server error', async () => {
       const { req, res } = setup();
       req.query = {

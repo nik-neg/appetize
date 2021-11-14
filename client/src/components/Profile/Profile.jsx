@@ -39,6 +39,8 @@ import apiServiceJWT from '../../services/ApiClientJWT';
 import IconButton from '@material-ui/core/IconButton';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 
+import clientHelper from '../../helpers/clientHelper';
+
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -55,7 +57,6 @@ const useStylesAvatar = makeStyles((theme) => ({
     height: theme.spacing(7),
   },
 }));
-
 
 const useStylesGrid = makeStyles((theme) => ({
   root: {
@@ -176,7 +177,22 @@ function Profile () {
     setCoockedOrdered(() => ({
       [name]: checked
     }))
+    await clientHelper.getGeoLocation(success);
   }
+
+  // for geo point
+  const [geoPoint, setGeoPoint] = useState({
+    latitude: 0.0,
+    longitude: 0.0,
+    accuracy: 0.0,
+  });
+
+  const success = async (pos) => {
+    var crd = pos.coords;
+    const { latitude, longitude, accuracy } = crd;
+    setGeoPoint({ latitude, longitude, accuracy, });
+  }
+  // for geo point
 
   const handlePublish = async (event) => {
     const userId = userData._id;
@@ -189,7 +205,8 @@ function Profile () {
         firstName,
         userZipCode,
         cookedNotOrdered: cookedOrdered.cooked === true ? true : false,
-        chosenImageDate
+        chosenImageDate,
+        geoPoint
       };
       setDish(dishTextInitialState);
       const {cooked, ordered } = cookedOrderedInitialState;

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
@@ -68,4 +69,43 @@ module.exports.initDBUrl = () => {
 module.exports.findImageFile = async (gfs, filename) => {
   const result = await gfs.files.findOne({ filename });
   return result;
+};
+
+module.exports.calculateDistance = async (lat1, lon1, lat2, lon2) => {
+  const earthRadius = 6371e3; // metres
+  const phi1 = (lat1 * Math.PI) / 180; // φ, λ in radians
+  const phi2 = (lat2 * Math.PI) / 180;
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+  const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2)
+            + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = earthRadius * c; // in metres
+  return distance;
+};
+
+module.exports.calculatePolygon = (latitude, longitude, accuracy) => {
+  const earthRadius = 6371e3;
+  const polygon = [];
+
+  const dLat = accuracy / earthRadius;
+  const dLon = accuracy / (earthRadius * Math.cos((Math.PI * latitude) / 180));
+  // right up
+  let newLatitude = latitude + (dLat * 180) / Math.PI;
+  let newLongitude = longitude + (dLon * 180) / Math.PI;
+  polygon.push([newLatitude, newLongitude]);
+  // left up
+  newLatitude = latitude + (dLat * 180) / Math.PI;
+  newLongitude = longitude - (dLon * 180) / Math.PI;
+  polygon.push([newLatitude, newLongitude]);
+  // right down
+  newLatitude = latitude - (dLat * 180) / Math.PI;
+  newLongitude = longitude + (dLon * 180) / Math.PI;
+  polygon.push([newLatitude, newLongitude]);
+  // left down
+  newLatitude = latitude - (dLat * 180) / Math.PI;
+  newLongitude = longitude - (dLon * 180) / Math.PI;
+  polygon.push([newLatitude, newLongitude]);
+  return polygon;
 };

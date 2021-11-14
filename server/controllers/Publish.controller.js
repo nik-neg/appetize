@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-shadow */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-plusplus */
@@ -25,8 +26,9 @@ module.exports.publishDish = async (req, res) => {
     return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
   const {
-    title, description, recipe, firstName, cookedNotOrdered, chosenImageDate, userZipCode,
+    title, description, recipe, firstName, userZipCode, cookedNotOrdered, chosenImageDate, geoPoint,
   } = req.body;
+  const { latitude, longitude, accuracy } = geoPoint;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
   // create dish to publish
   try {
@@ -36,6 +38,7 @@ module.exports.publishDish = async (req, res) => {
       likedByUserID: [],
       zipCode: userZipCode,
       cookedNotOrdered,
+      geoPoint: { type: 'Point', coordinates: [parseFloat(latitude), parseFloat(longitude)] },
     });
     dailyTreat.title = title;
     dailyTreat.description = description;
@@ -81,31 +84,33 @@ module.exports.removeDish = async (req, res) => {
   }
 };
 
-module.exports.checkDishesInRadius = async (req, res) => { // TODO: refactor?
+module.exports.checkDishesInRadius = async (req, res) => {
   // hint: detailed error handling for integration test
   const {
-    id, radius, cookedOrdered, pageNumber,
+    id, radius, cookedOrdered, pageNumber, geoLocationPolygon,
   } = req.query;
   const parsedCookedOrdered = JSON.parse(cookedOrdered);
-  let user;
+  let parsedGeoLocation = JSON.parse(geoLocationPolygon);
+  parsedGeoLocation = parsedGeoLocation.map((arr) => arr.map((el) => +el));
+  const adjustedPolygon = [];
+  adjustedPolygon.push(parsedGeoLocation[parsedGeoLocation.length - 1]); // to close polygon loop
+  const triangleHeadLongitude = (parsedGeoLocation[0][1] + parsedGeoLocation[1][1]) / 2;
+  adjustedPolygon.push([parsedGeoLocation[0][0], triangleHeadLongitude]); // for triangle head
+  adjustedPolygon.push(parsedGeoLocation[2]);
+  adjustedPolygon.push(parsedGeoLocation[3]);
+  const polygon = {
+    type: 'Polygon',
+    coordinates: [adjustedPolygon],
+  };
   try {
-    // get zip code from user
-    user = await User.findOne({
-      _id: id,
-    });
-    if (!user) return res.status(409).send({ error: '409', message: 'User doesn\'t exist' });
-    const { zipCode } = user;
-    if (!zipCode) return res.status(409).send({ error: '409', message: 'Zip code doesn\'t exist' });
-    const url = `https://app.zipcodebase.com/api/v1/radius?apikey=${process.env.API_KEY}&code=${zipCode}&radius=${radius}&country=de`;
-    const response = await axios.get(url);
-    if (response.data.results.error) {
-      return res.status(404).send({ error: '404', message: 'API doesn\'t respond with data.' });
+    const cookedOrderedFilter = parsedCookedOrdered.cooked === parsedCookedOrdered.ordered;
+    let dailyTreats;
+    if (cookedOrderedFilter) {
+      dailyTreats = await DailyTreat.find().where('geoPoint').within(polygon);
+    } else {
+      dailyTreats = await DailyTreat.find({ cookedNotOrdered: parsedCookedOrdered.cooked }).where('geoPoint').within(polygon);
     }
-    const zipCodesInRadius = response.data.results.map((element) => (
-      { zipCode: element.code, city: element.city }));
-    const dailyTreats = await helper.findDishesInDB(
-      zipCodesInRadius, parsedCookedOrdered, pageNumber,
-    );
+
     return res.status(200).send(dailyTreats);
   } catch (e) {
     return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });

@@ -13,6 +13,7 @@ const initialState = {
       cooked: true,
       ordered: true
     },
+    geoLocationPolygon: [],
   },
   clearDishTextRequest: 0,
   newDishesRequest: 0,
@@ -56,8 +57,8 @@ export const clearDishesInStoreRequest = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   'dishesInRadius/getDishesInRadius',
-  async ({ id, radius, cookedOrdered, pageNumber}) => {
-    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber);
+  async ({ id, radius, cookedOrdered, pageNumber, geoLocationPolygon}) => {
+    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber, geoLocationPolygon);
     return { dishesInRadius, radius, cookedOrdered, pageNumber };
   }
 );
@@ -123,6 +124,12 @@ export const updateDailyTreat = createAsyncThunk(
   'state/updateDailyTreat',
   async (dailyTreat) => {
     return dailyTreat;
+  }
+);
+export const getGeoLocation = createAsyncThunk(
+  'state/getGeoLocation',
+  async (geoLocationPolygon) => {
+    return geoLocationPolygon;
   }
 );
 
@@ -266,6 +273,13 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = false;
     },
     [updateDailyTreat.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getGeoLocation.fulfilled]: (state, action) => {
+      state.searchData.geoLocationPolygon = action.payload;
+      state.loading = false;
+    },
+    [getGeoLocation.pending]: (state, action) => {
       state.loading = true;
     },
   }
