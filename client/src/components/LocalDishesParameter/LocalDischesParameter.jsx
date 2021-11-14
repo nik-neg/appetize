@@ -27,7 +27,7 @@ export default function LocalDishesParameter () {
     const { latitude, longitude, accuracy } = crd;
 
     const geoLocationPolygon = clientHelper.calculatePolygon({ latitude, longitude, accuracy });
-    console.log('geoLocationPolygon success', geoLocationPolygon)
+    console.log('accuracy', accuracy)
     dispatch(getGeoLocation(geoLocationPolygon));
   }
   // for geo point

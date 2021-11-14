@@ -92,15 +92,10 @@ module.exports.checkDishesInRadius = async (req, res) => {
   const parsedCookedOrdered = JSON.parse(cookedOrdered);
   let parsedGeoLocation = JSON.parse(geoLocationPolygon);
   parsedGeoLocation = parsedGeoLocation.map((arr) => arr.map((el) => +el));
-  const adjustedPolygon = [];
-  adjustedPolygon.push(parsedGeoLocation[parsedGeoLocation.length - 1]); // to close polygon loop
-  const triangleHeadLongitude = (parsedGeoLocation[0][1] + parsedGeoLocation[1][1]) / 2;
-  adjustedPolygon.push([parsedGeoLocation[0][0], triangleHeadLongitude]); // for triangle head
-  adjustedPolygon.push(parsedGeoLocation[2]);
-  adjustedPolygon.push(parsedGeoLocation[3]);
+  parsedGeoLocation.push(parsedGeoLocation[0]); // close square polygon loop
   const polygon = {
     type: 'Polygon',
-    coordinates: [adjustedPolygon],
+    coordinates: [parsedGeoLocation],
   };
   try {
     const cookedOrderedFilter = parsedCookedOrdered.cooked === parsedCookedOrdered.ordered;
@@ -110,7 +105,6 @@ module.exports.checkDishesInRadius = async (req, res) => {
     } else {
       dailyTreats = await DailyTreat.find({ cookedNotOrdered: parsedCookedOrdered.cooked }).where('geoPoint').within(polygon);
     }
-
     return res.status(200).send(dailyTreats);
   } catch (e) {
     return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });

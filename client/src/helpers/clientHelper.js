@@ -25,13 +25,13 @@ const calculatePolygon = ({ latitude, longitude, accuracy }) => {
   newLatitude = latitude + (dLat * 180) / Math.PI;
   newLongitude = longitude - (dLon * 180) / Math.PI;
   polygon.push([newLatitude, newLongitude]);
-  // right down
-  newLatitude = latitude - (dLat * 180) / Math.PI;
-  newLongitude = longitude + (dLon * 180) / Math.PI;
-  polygon.push([newLatitude, newLongitude]);
   // left down
   newLatitude = latitude - (dLat * 180) / Math.PI;
   newLongitude = longitude - (dLon * 180) / Math.PI;
+  polygon.push([newLatitude, newLongitude]);
+  // right down
+  newLatitude = latitude - (dLat * 180) / Math.PI;
+  newLongitude = longitude + (dLon * 180) / Math.PI;
   polygon.push([newLatitude, newLongitude]);
   return polygon;
 };
