@@ -87,9 +87,9 @@ module.exports.removeDish = async (req, res) => {
 module.exports.checkDishesInRadius = async (req, res) => {
   // hint: detailed error handling for integration test
   const {
-    id, radius, cookedOrdered, pageNumber, geoLocationPolygon,
+    id, radius, filter, pageNumber, geoLocationPolygon,
   } = req.query;
-  const parsedCookedOrdered = JSON.parse(cookedOrdered);
+  const parsedFilter = JSON.parse(filter);
   let parsedGeoLocation = JSON.parse(geoLocationPolygon);
   parsedGeoLocation = parsedGeoLocation.map((arr) => arr.map((el) => +el));
   const polygon = {
@@ -97,12 +97,21 @@ module.exports.checkDishesInRadius = async (req, res) => {
     coordinates: [parsedGeoLocation],
   };
   try {
-    const cookedOrderedFilter = parsedCookedOrdered.cooked === parsedCookedOrdered.ordered;
+    const cookedOrderedFilter = parsedFilter.cooked === parsedFilter.ordered;
     const queryObject = {};
     if (!cookedOrderedFilter) {
-      queryObject.cookedNotOrdered = parsedCookedOrdered.cooked,
+      queryObject.cookedNotOrdered = parsedFilter.cooked;
     }
-    const dailyTreats = await DailyTreat.find(queryObject).where('geoPoint').within(polygon);
+    if (parsedFilter.own === true) {
+      queryObject.userID = id;
+    }
+    const PAGE_SIZE = 4;
+    const skip = (pageNumber - 1) * PAGE_SIZE;
+    const dailyTreats = await DailyTreat.find(queryObject)
+      .where('geoPoint')
+      .within(polygon)
+      .skip(skip)
+      .limit(PAGE_SIZE);
     return res.status(200).send(dailyTreats);
   } catch (e) {
     return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });

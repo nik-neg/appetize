@@ -9,9 +9,10 @@ const initialState = {
   searchData: {
     pageNumber: 1,
     radius: 0,
-    cookedOrdered: {
+    filter: {
       cooked: true,
-      ordered: true
+      ordered: true,
+      own: true,
     },
     geoLocationPolygon: [],
   },
@@ -57,9 +58,9 @@ export const clearDishesInStoreRequest = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   'dishesInRadius/getDishesInRadius',
-  async ({ id, radius, cookedOrdered, pageNumber, geoLocationPolygon}) => {
-    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber, geoLocationPolygon);
-    return { dishesInRadius, radius, cookedOrdered, pageNumber };
+  async ({ id, radius, filter, pageNumber, geoLocationPolygon}) => {
+    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, filter, pageNumber, geoLocationPolygon);
+    return { dishesInRadius, radius, filter, pageNumber, geoLocationPolygon };
   }
 );
 
@@ -173,8 +174,8 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = true;
     },
     [getDishesInRadius.fulfilled]: (state, action) => {
-      const { dishesInRadius, radius, cookedOrdered, pageNumber } = action.payload;
-      const newSearchData = { radius, cookedOrdered, pageNumber };
+      const { dishesInRadius, radius, filter, pageNumber, geoLocationPolygon } = action.payload;
+      const newSearchData = { radius, filter, pageNumber, geoLocationPolygon };
       if (dishesInRadius.length > 0) {
         state.dishesInRadius = dishesInRadius.sort((a,b) =>  b.votes - a.votes);
         state.searchData = newSearchData;

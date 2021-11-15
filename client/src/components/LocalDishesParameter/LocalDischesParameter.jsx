@@ -24,16 +24,15 @@ export default function LocalDishesParameter () {
   // for geo point
   const success = async (pos) => {
     var crd = pos.coords;
-    const { latitude, longitude, accuracy } = crd;
+    const { latitude, longitude, } = crd; // accuracy
 
-    const geoLocationPolygon = clientHelper.calculatePolygon({ latitude, longitude, accuracy });
-    console.log('accuracy', accuracy)
+    const geoLocationPolygon = clientHelper.calculatePolygon({ latitude, longitude, radius });
     dispatch(getGeoLocation(geoLocationPolygon));
   }
   // for geo point
 
   const handleRadiusSearch = async () => {
-    if (!cookedOrdered.cooked && !cookedOrdered.ordered || !userDataClone.zipCode) {
+    if (!filter.cooked && !filter.ordered || !userDataClone.zipCode) {
       return;
     }
     clientHelper.getGeoLocation(success);
@@ -44,7 +43,7 @@ export default function LocalDishesParameter () {
         dispatch(getDishesInRadius({
           id: userDataClone._id,
           radius,
-          cookedOrdered: JSON.stringify(cookedOrdered),
+          filter: JSON.stringify(filter),
           pageNumber: initialPageNumber,
           geoLocationPolygon: JSON.stringify(geoLocationPolygon),
         }))
@@ -56,13 +55,14 @@ export default function LocalDishesParameter () {
   }
 
   const upLoadButtonStyle = {maxWidth: '230px', maxHeight: '40px', minWidth: '230px', minHeight: '40px'};
-  const [cookedOrdered, setCoockedOrdered] = useState({
+  const [filter, setFilter] = useState({
     cooked: true,
-    ordered: true
+    ordered: true,
+    own: true,
   });
-  const handleCookedOrdered = async (event) => {
+  const handleFilter = async (event) => {
     const { name, checked } = event.target;
-    setCoockedOrdered((prevValue) => ({
+    setFilter((prevValue) => ({
       ...prevValue,
       [name]: checked
 
@@ -82,12 +82,12 @@ export default function LocalDishesParameter () {
             control={
               <Checkbox
                 id='local-dishes-parameter-cooked'
-                onChange={handleCookedOrdered}
+                onChange={handleFilter}
                 label='Cooked'
-                checked={cookedOrdered.cooked}
+                checked={filter.cooked}
                 name="cooked"
                 color="primary"
-                value={cookedOrdered.cooked}
+                value={filter.cooked}
               />
             }
           label="cooked"
@@ -98,15 +98,31 @@ export default function LocalDishesParameter () {
           control={
             <Checkbox
               id='local-dishes-parameter-ordered'
-              onChange={handleCookedOrdered}
+              onChange={handleFilter}
               label='Ordered'
-              checked={cookedOrdered.ordered}
+              checked={filter.ordered}
               name='ordered'
               color="primary"
-              value={cookedOrdered.ordered}
+              value={filter.ordered}
             />
           }
           label="ordered"
+        />
+        </div>
+        <div className="col">
+        <FormControlLabel
+          control={
+            <Checkbox
+              id='local-dishes-parameter-own'
+              onChange={handleFilter}
+              label='Own'
+              checked={filter.own}
+              name='own'
+              color="primary"
+              value={filter.own}
+            />
+          }
+          label="own"
         />
         </div>
       </div>

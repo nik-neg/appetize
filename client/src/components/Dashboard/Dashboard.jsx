@@ -34,11 +34,14 @@ export default function Dashboard () {
     // check if all dishes in the next page are deleted, then go one page back
     if (allDishesDeletedRequest) {
       if (searchData.pageNumber > 1) {
-        searchData.pageNumber -=1;
+        searchData.pageNumber -= 1;
       }
       dispatch(getDishesInRadius({
         id: userData._id,
-        ...searchData
+        radius: searchData.radius,
+        filter: JSON.stringify(searchData.filter),
+        pageNumber: searchData.pageNumber,
+        geoLocationPolygon: JSON.stringify(searchData.geoLocationPolygon),
       }));
     }
   }, [allDishesDeletedRequest]);
@@ -63,12 +66,16 @@ export default function Dashboard () {
       searchData.pageNumber += 1;
     } else {
       searchData.pageNumber = searchData.pageNumber > 0
-      ? searchData.pageNumber  - 1
+      ? searchData.pageNumber - 1
       : 1;
     }
+    searchData.geoLocationPolygon = store.getState().user.searchData.geoLocationPolygon;
     dispatch(getDishesInRadius({
       id: userData._id,
-      ...searchData
+      radius: searchData.radius,
+      filter: searchData.filter,
+      pageNumber: searchData.pageNumber,
+      geoLocationPolygon: searchData.geoLocationPolygon,
     }));
   }
   const numberOfImages = useSelector((state) => state.user.dishesInRadius.length);

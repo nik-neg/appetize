@@ -79,13 +79,13 @@ const publishToDashBoard = async (id, data) =>
     .then((dailyTreatData) => dailyTreatData)
     .catch((err) => console.log(err));
 
-const getDishesInRadius = async (id, radius, cookedOrdered, pageNumber, geoLocationPolygon) =>
+const getDishesInRadius = async (id, radius, filter, pageNumber, geoLocationPolygon) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
   url.search = new URLSearchParams({
     id,
     radius,
-    cookedOrdered,
+    filter,
     pageNumber,
     geoLocationPolygon
   })
