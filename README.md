@@ -23,10 +23,6 @@ A simple voting system enables to vote for favourite dishes.
 </td></tr>
 </table> 
 </div>
- 
-<div>
- <a href="https://zipcodebase.com/"> -> Zip Code API</a>
-</div>
 
 # Login/Register page
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/1_login.png)
