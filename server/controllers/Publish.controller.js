@@ -85,9 +85,8 @@ module.exports.removeDish = async (req, res) => {
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
-  // hint: detailed error handling for integration test
   const {
-    id, radius, filter, pageNumber, geoLocationPolygon,
+    id, filter, pageNumber, geoLocationPolygon,
   } = req.query;
   const parsedFilter = JSON.parse(filter);
   let parsedGeoLocation = JSON.parse(geoLocationPolygon);

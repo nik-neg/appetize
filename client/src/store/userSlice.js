@@ -59,7 +59,7 @@ export const clearDishesInStoreRequest = createAsyncThunk(
 export const getDishesInRadius = createAsyncThunk(
   'dishesInRadius/getDishesInRadius',
   async ({ id, radius, filter, pageNumber, geoLocationPolygon}) => {
-    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, filter, pageNumber, geoLocationPolygon);
+    const dishesInRadius =  await ApiClient.getDishesInRadius(id, filter, pageNumber, geoLocationPolygon);
     return { dishesInRadius, radius, filter, pageNumber, geoLocationPolygon };
   }
 );
