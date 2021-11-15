@@ -33,6 +33,7 @@ const calculatePolygon = ({ latitude, longitude, accuracy }) => {
   newLatitude = latitude - (dLat * 180) / Math.PI;
   newLongitude = longitude + (dLon * 180) / Math.PI;
   polygon.push([newLatitude, newLongitude]);
+  polygon.push(polygon[0]); // close square polygon loop
   return polygon;
 };
 

@@ -92,7 +92,6 @@ module.exports.checkDishesInRadius = async (req, res) => {
   const parsedCookedOrdered = JSON.parse(cookedOrdered);
   let parsedGeoLocation = JSON.parse(geoLocationPolygon);
   parsedGeoLocation = parsedGeoLocation.map((arr) => arr.map((el) => +el));
-  parsedGeoLocation.push(parsedGeoLocation[0]); // close square polygon loop
   const polygon = {
     type: 'Polygon',
     coordinates: [parsedGeoLocation],
