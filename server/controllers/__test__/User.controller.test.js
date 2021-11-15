@@ -321,7 +321,7 @@ describe('showProfile method', () => {
   });
 });
 
-describe('setZipCode method', () => {
+describe.skip('setZipCode method', () => {
   test('setZipCode returns 500, because of internal server error', async () => {
     const { req, res } = setup();
     const {
