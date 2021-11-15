@@ -81,7 +81,7 @@ export default function Dashboard () {
   const numberOfImages = useSelector((state) => state.user.dishesInRadius.length);
   const transitionTime = 1600;
   let fadeInFadeOutCoefficent = 0.4;
-  const transitionTimeForArrowButton = transitionTime * (mouthWateringDishes.length/numberOfImages);
+  const transitionTimeForArrowButton = transitionTime * (mouthWateringDishes.length / numberOfImages);
   const [trigger, setTrigger] = useState(false);
   const easeObject = {
     // enter:  (func, triggerValue) => {
@@ -137,7 +137,6 @@ export default function Dashboard () {
                   dishUserID={dish.userID}
                   creatorName={dish.creatorName}
                   dishID={dish._id}
-                  zipCode={dish.zipCode}
                   title={dish.title}
                   description={dish.description}
                   recipe={dish.recipe}

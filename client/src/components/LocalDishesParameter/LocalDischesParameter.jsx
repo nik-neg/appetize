@@ -24,15 +24,15 @@ export default function LocalDishesParameter () {
   // for geo point
   const success = async (pos) => {
     var crd = pos.coords;
-    const { latitude, longitude, } = crd; // accuracy
+    const { latitude, longitude, } = crd;
 
-    const geoLocationPolygon = clientHelper.calculatePolygon({ latitude, longitude, radius });
+    const geoLocationPolygon = clientHelper.calculatePolygon({ latitude, longitude, }, radius);
     dispatch(getGeoLocation(geoLocationPolygon));
   }
   // for geo point
 
   const handleRadiusSearch = async () => {
-    if (!filter.cooked && !filter.ordered || !userDataClone.zipCode) {
+    if (!filter.cooked && !filter.ordered || !userDataClone.city) {
       return;
     }
     clientHelper.getGeoLocation(success);

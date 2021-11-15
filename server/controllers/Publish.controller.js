@@ -26,7 +26,7 @@ module.exports.publishDish = async (req, res) => {
     return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
   }
   const {
-    title, description, recipe, firstName, userZipCode, cookedNotOrdered, chosenImageDate, geoPoint,
+    title, description, recipe, firstName, city, cookedNotOrdered, chosenImageDate, geoPoint,
   } = req.body;
   const { latitude, longitude, accuracy } = geoPoint;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
@@ -36,7 +36,7 @@ module.exports.publishDish = async (req, res) => {
       userID: id,
       creatorName: firstName,
       likedByUserID: [],
-      zipCode: userZipCode,
+      city,
       cookedNotOrdered,
       geoPoint: { type: 'Point', coordinates: [parseFloat(latitude), parseFloat(longitude)] },
     });

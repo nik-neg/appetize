@@ -11,7 +11,7 @@ const UserSchema = new db.mongoose.Schema({
   },
   password: String,
   dailyFood: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'DailyTreat' }],
-  zipCode: Number,
+  city: String,
   liked: [{ type: db.mongoose.Schema.Types.ObjectId, ref: 'DailyTreat' }],
   created: Date,
   updated: Date,

@@ -57,12 +57,12 @@ const removeUnusedImagesFromDB = async (id) =>
   .catch((err) => console.log(err));
 }
 
-const confirmZipCode = async (id, zipCode) =>
+const confirmCity = async (id, city) =>
   fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(zipCode),
+      body: JSON.stringify(city),
     })
     .then((data) => data.json())
     .then((userData) => userData)
@@ -146,7 +146,7 @@ export default {
   registerUser,
   uploadImage,
   removeUnusedImagesFromDB,
-  confirmZipCode,
+  confirmCity,
   publishToDashBoard,
   getDishesInRadius,
   voteDish,

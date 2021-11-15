@@ -11,12 +11,12 @@ const getGeoLocation = (success) => {
   navigator.geolocation.getCurrentPosition(success, error, options);
 };
 
-const calculatePolygon = ({ latitude, longitude, radius }) => {
+const calculatePolygon = ({ latitude, longitude, }, distance ) => {
   const earthRadius = 6371e3;
   const polygon = [];
   const kmTometers = 1000;
-  const dLat = (radius*kmTometers) / earthRadius;
-  const dLon = (radius*kmTometers) / (earthRadius * Math.cos((Math.PI * latitude) / 180));
+  const dLat = (distance * kmTometers) / earthRadius;
+  const dLon = (distance * kmTometers) / (earthRadius * Math.cos((Math.PI * latitude) / 180));
   // right up
   let newLatitude = latitude + (dLat * 180) / Math.PI;
   let newLongitude = longitude + (dLon * 180) / Math.PI;

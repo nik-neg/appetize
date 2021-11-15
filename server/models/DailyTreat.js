@@ -4,14 +4,14 @@ const PointSchema = require('./Point');
 const DailyTreatSchema = new db.mongoose.Schema({
   userID: { type: db.mongoose.Schema.Types.ObjectId, ref: 'User' },
   creatorName: String,
-  zipCode: String,
+  city: String,
   title: String,
   description: String,
   recipe: String,
   imageUrl: String,
   geoPoint: {
     type: PointSchema,
-    // index: '2dsphere',
+    index: '2dsphere',
     required: true,
   },
   votes: Number,

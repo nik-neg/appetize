@@ -41,10 +41,10 @@ export const fetchUserDataFromDB = createAsyncThunk(
   }
 );
 
-export const updateUserZipCode = createAsyncThunk(
-  'userData/updateUserZipCode',
-  async ({id, zipCode}) => {
-    const response =  await ApiClient.confirmZipCode(id, { zipCode });
+export const updateCity = createAsyncThunk(
+  'userData/updateCity',
+  async ({id, city}) => {
+    const response =  await ApiClient.confirmCity(id, { city });
     return response;
   }
 );
@@ -166,11 +166,11 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [fetchUserDataFromDB.pending]: (state, action) => {
       state.loading = true;
     },
-    [updateUserZipCode.fulfilled]: (state, action) => {
+    [updateCity.fulfilled]: (state, action) => {
       state.userData = action.payload;
       state.loading = false;
     },
-    [updateUserZipCode.pending]: (state, action) => {
+    [updateCity.pending]: (state, action) => {
       state.loading = true;
     },
     [getDishesInRadius.fulfilled]: (state, action) => {
