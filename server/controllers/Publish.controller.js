@@ -98,12 +98,11 @@ module.exports.checkDishesInRadius = async (req, res) => {
   };
   try {
     const cookedOrderedFilter = parsedCookedOrdered.cooked === parsedCookedOrdered.ordered;
-    let dailyTreats;
-    if (cookedOrderedFilter) {
-      dailyTreats = await DailyTreat.find().where('geoPoint').within(polygon);
-    } else {
-      dailyTreats = await DailyTreat.find({ cookedNotOrdered: parsedCookedOrdered.cooked }).where('geoPoint').within(polygon);
+    const queryObject = {};
+    if (!cookedOrderedFilter) {
+      queryObject.cookedNotOrdered = parsedCookedOrdered.cooked,
     }
+    const dailyTreats = await DailyTreat.find(queryObject).where('geoPoint').within(polygon);
     return res.status(200).send(dailyTreats);
   } catch (e) {
     return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });
