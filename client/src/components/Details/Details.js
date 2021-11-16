@@ -33,7 +33,7 @@ export default function Details ({ match }) {
   const dispatch = useDispatch();
 
   const handleBack = async () => {
-    await dispatch(backToProfileRequest());
+    dispatch(backToProfileRequest());
     history.push('/profile')
   };
   const [cookedOrdered, setCoockedOrdered] = useState({

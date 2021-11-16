@@ -193,3 +193,13 @@ module.exports.updateDish = async (req, res) => {
 
   return res.status(200).send(updatedDailyTreat);
 };
+
+module.exports.readDish = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const dailyTreat = await DailyTreat.findOne({ _id: id });
+    return res.status(200).send(dailyTreat);
+  } catch (e) {
+    return res.status(500).send({ error: '500', message: 'Could not update daily treat - Internal server error' });
+  }
+};

@@ -115,6 +115,10 @@ export default function RecipeReviewCard(props) {
     history.push(`/details/${props.dishID}`)
   }
 
+  const handleShareDish = async () => {
+    history.push(`/details-shared/${props.dishID}`)
+  };
+
   return (
     <Card className={classes.root} >
       <CardHeader
@@ -144,7 +148,7 @@ export default function RecipeReviewCard(props) {
         <IconButton aria-label="add to favorites"  className="like" style={{ color: likeColorStatement}} onClick={handleLike}>
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="share" onClick={handleShareDish}>
           <ShareIcon />
         </IconButton>
         <IconButton

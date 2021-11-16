@@ -98,6 +98,19 @@ const getDishesInRadius = async (id, filter, pageNumber, geoLocationPolygon) =>
   .catch((err) => console.log(err));
 }
 
+const getDish = async (id) =>
+{
+  let url = new URL(`${baseUrl}/details/${id}`)
+  return fetch(url,
+  {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then((data) => data.json())
+  .then((data) => data)
+  .catch((err) => console.log(err));
+}
+
 const voteDish = async (id, dailyTreatsID, upDownVote) => {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}`)
   url.search = new URLSearchParams({
@@ -149,6 +162,7 @@ export default {
   confirmCity,
   publishToDashBoard,
   getDishesInRadius,
+  getDish,
   voteDish,
   deleteDish,
   updateDish
