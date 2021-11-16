@@ -20,7 +20,11 @@ module.exports.removeImageData = async (regex, deleteOptionForFiles) => {
 };
 
 module.exports.findDishesInDB = async (queryObject, polygon, toSkip, PAGE_SIZE) => {
-  if (!(queryObject && polygon && toSkip && PAGE_SIZE)) return [];
+  const undefinedCheck = queryObject === undefined
+  || polygon === undefined
+  || toSkip === undefined
+  || PAGE_SIZE === undefined;
+  if (undefinedCheck) return [];
   const dailyTreats = await DailyTreat.find(queryObject)
     .where('geoPoint')
     .within(polygon)
