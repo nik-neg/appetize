@@ -98,12 +98,12 @@ module.exports.checkDishesInRadius = async (req, res) => {
   try {
     const cookedOrderedFilter = parsedFilter.cooked === parsedFilter.ordered;
     const queryObject = {};
-    if (!cookedOrderedFilter) {
+    if (parsedFilter.own) {
+      queryObject.userID = id;
+    } else if (!cookedOrderedFilter) {
       queryObject.cookedNotOrdered = parsedFilter.cooked;
     }
-    if (parsedFilter.own === true) { // TODO: check
-      queryObject.userID = id;
-    }
+
     const PAGE_SIZE = 4;
     const skip = (pageNumber - 1) * PAGE_SIZE;
     const dailyTreats = await DailyTreat.find(queryObject)

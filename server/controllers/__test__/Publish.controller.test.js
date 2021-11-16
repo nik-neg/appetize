@@ -101,10 +101,11 @@ describe.skip('publishDish method', () => {
       firstName: 'firstName',
       cookedNotOrdered: true,
       chosenImageDate: new Date().getTime(),
-      userZipCode: '12345',
+      city: 'Berlin',
+      geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 },
     };
     const {
-      title, description, recipe, cookedNotOrdered, chosenImageDate, userZipCode,
+      title, description, recipe, cookedNotOrdered, chosenImageDate, city, geoPoint,
     } = req.body;
     const { id } = req.params;
     const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
@@ -113,7 +114,8 @@ describe.skip('publishDish method', () => {
       userID: req.params.id,
       creatorName: req.body.firstName,
       likedByUserID: [],
-      zipCode: userZipCode,
+      city,
+      geoPoint: { type: 'Point', coordinates: [parseFloat(latitude), parseFloat(longitude)] },
       cookedNotOrdered,
     };
     let createdDailyTreat = await DailyTreat.create.mockResolvedValue(mockedDailyTreat);
