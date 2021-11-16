@@ -36,6 +36,12 @@ A simple voting system enables to vote for favourite dishes.
 # Published local food
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/4_area_food.png)
  
+# Dish details
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/5_dish_details.png)
+ 
+# Dish update
+![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/6_edit_mode.png)
+ 
 # Responsive design
  Profile page             |  Published local food
 :-------------------------:|:-------------------------:
