@@ -321,8 +321,8 @@ describe('showProfile method', () => {
   });
 });
 
-describe('setZipCode method', () => {
-  test('setZipCode returns 500, because of internal server error', async () => {
+describe('setCity method', () => {
+  test('setCity returns 500, because of internal server error', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
@@ -333,15 +333,15 @@ describe('setZipCode method', () => {
       },
     };
     req.params = { id: mockUser._doc.id };
-    req.body = { zipCode: '123456' };
+    req.body = { city: 'Berlin' };
 
     await User.findOne.mockRejectedValue(null);
-    await userController.setZipCode(req, res);
+    await userController.setCity(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
-  test('setZipCode returns 400, because user could not be found in database', async () => {
+  test('setCity returns 400, because user could not be found in database', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
@@ -352,16 +352,16 @@ describe('setZipCode method', () => {
       },
     };
     req.params = { id: mockUser._doc.id };
-    req.body = { zipCode: '123456' };
+    req.body = { city: 'Berlin' };
 
     await User.findOne.mockResolvedValue(null);
-    await userController.setZipCode(req, res);
+    await userController.setCity(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 
-  test('setZipCode returns 200 and the user without password ', async () => { // to skip tests, use test.only
+  test('setCity returns 200 and the user without password ', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
@@ -372,15 +372,15 @@ describe('setZipCode method', () => {
       },
     };
     req.params = { id: mockUser._doc.id };
-    req.body = { zipCode: '123456' };
+    req.body = { city: 'Berlin' };
 
     let user = await User.findOne.mockResolvedValue(mockUser);
     user = await user();
-    user.zipCode = req.body.zipCode;
+    user.city = req.body.city;
     user.save = jest.fn();
     await user.save.mockResolvedValue(user);
     const userWithoutPassword = _.omit(user._doc, ['password']);
-    await userController.setZipCode(req, res);
+    await userController.setCity(req, res);
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.send).toHaveBeenCalledWith(userWithoutPassword);

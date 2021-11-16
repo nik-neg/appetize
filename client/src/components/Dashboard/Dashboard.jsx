@@ -34,11 +34,14 @@ export default function Dashboard () {
     // check if all dishes in the next page are deleted, then go one page back
     if (allDishesDeletedRequest) {
       if (searchData.pageNumber > 1) {
-        searchData.pageNumber -=1;
+        searchData.pageNumber -= 1;
       }
       dispatch(getDishesInRadius({
         id: userData._id,
-        ...searchData
+        radius: searchData.radius,
+        filter: JSON.stringify(searchData.filter),
+        pageNumber: searchData.pageNumber,
+        geoLocationPolygon: JSON.stringify(searchData.geoLocationPolygon),
       }));
     }
   }, [allDishesDeletedRequest]);
@@ -54,7 +57,7 @@ export default function Dashboard () {
   const [checked, setChecked] = useState(store.getState().user.initialProfileRender);
 
   const nextPage = true;
-  const handleClick = async (nextPage) => {
+  const handleArrowClick = async (nextPage) => {
     if (nextPage === false && searchData.pageNumber === 1) return;
     // TODO: set info for user that there are no more images ?
     setChecked(!checked);
@@ -63,18 +66,22 @@ export default function Dashboard () {
       searchData.pageNumber += 1;
     } else {
       searchData.pageNumber = searchData.pageNumber > 0
-      ? searchData.pageNumber  - 1
+      ? searchData.pageNumber - 1
       : 1;
     }
+    searchData.geoLocationPolygon = store.getState().user.searchData.geoLocationPolygon;
     dispatch(getDishesInRadius({
       id: userData._id,
-      ...searchData
+      radius: searchData.radius,
+      filter: searchData.filter,
+      pageNumber: searchData.pageNumber,
+      geoLocationPolygon: searchData.geoLocationPolygon,
     }));
   }
   const numberOfImages = useSelector((state) => state.user.dishesInRadius.length);
   const transitionTime = 1600;
   let fadeInFadeOutCoefficent = 0.4;
-  const transitionTimeForArrowButton = transitionTime * (mouthWateringDishes.length/numberOfImages);
+  const transitionTimeForArrowButton = transitionTime * (mouthWateringDishes.length / numberOfImages);
   const [trigger, setTrigger] = useState(false);
   const easeObject = {
     // enter:  (func, triggerValue) => {
@@ -100,7 +107,7 @@ export default function Dashboard () {
       {checked
       ?  <div className="arrow-box">
           <FadeIn delay={transitionTimeForArrowButton} transitionDuration={1000}>
-            <IconButton aria-label="backward" onClick={() => handleClick(!nextPage)}>
+            <IconButton aria-label="backward" onClick={() => handleArrowClick(!nextPage)}>
                 <ArrowBackIosIcon />
             </IconButton>
           </FadeIn>
@@ -130,7 +137,6 @@ export default function Dashboard () {
                   dishUserID={dish.userID}
                   creatorName={dish.creatorName}
                   dishID={dish._id}
-                  zipCode={dish.zipCode}
                   title={dish.title}
                   description={dish.description}
                   recipe={dish.recipe}
@@ -146,7 +152,7 @@ export default function Dashboard () {
         {checked
       ?  <div className="arrow-box">
           <FadeIn delay={transitionTimeForArrowButton} transitionDuration={1000}>
-            <IconButton aria-label="forward" onClick={() => handleClick(nextPage)}>
+            <IconButton aria-label="forward" onClick={() => handleArrowClick(nextPage)}>
                 <ArrowForwardIosIcon />
             </IconButton>
           </FadeIn>

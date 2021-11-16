@@ -93,7 +93,7 @@ describe('integration test of publish controller - publishDish', () => {
 
     const { _id } = user;
     await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(500);
   });
   test('should return 201, because no error occured', async () => {
@@ -108,7 +108,7 @@ describe('integration test of publish controller - publishDish', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
   });
 });
@@ -126,7 +126,7 @@ describe('integration test of publish controller - removeDish', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
 
@@ -147,7 +147,7 @@ describe('integration test of publish controller - removeDish', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
 
@@ -168,7 +168,7 @@ describe('integration test of publish controller - removeDish', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
 
@@ -189,7 +189,7 @@ describe('integration test of publish controller - removeDish', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
 
@@ -214,7 +214,7 @@ describe('integration test of publish controller - removeDish', () => {
 
     // then publish daily treat
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send({ chosenImageDate: new Date().getTime() })
+      .send({ chosenImageDate: new Date().getTime(), geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
 
@@ -227,89 +227,16 @@ describe('integration test of publish controller - removeDish', () => {
 });
 
 describe('integration test of publish controller - checkDishesInRadius', () => {
-  test('should return 500, because of internal server error', async () => {
-    sandbox.stub(User, 'findOne').throws(Error('User.findOne'));
-    const id = 123;
-    await request.get(`/profile/${id}/dashboard`)
-      .send()
-      .query({
-        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
-      })
-      .expect(500);
-  });
-  test('should return 409, because user could not be found', async () => {
-    sandbox.stub(User, 'findOne').returns(null);
-    const id = 123;
-    await request.get(`/profile/${id}/dashboard`)
-      .send()
-      .query({
-        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
-      })
-      .expect(409);
-  });
-  test('should return 409, because the user didn\'t set the zip code', async () => {
-    const createResult = await request.post('/register')
-      .send({
-        firstName: 'firstName',
-        lastName: 'lastName',
-        email: 'testing@test.com',
-        password: 'password',
-      })
-      .expect(201);
-    const { body: { user } } = createResult;
-    const { _id } = user;
-
-    const cookedOrdered = JSON.stringify({ cooked: true, ordered: true });
-    await request.get(`/profile/${_id}/dashboard`)
-      .send()
-      .query({
-        id: _id, radius: 2, cookedOrdered, pageNumber: 1,
-      })
-      .expect(409);
-  });
-  test('should return 500, because axios has errored during the request', async () => {
-    sandbox.stub(axios, 'get').throws(Error('axios.get'));
-    const id = 123;
-    await request.get(`/profile/${id}/dashboard`)
-      .send()
-      .query({
-        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
-      })
-      .expect(500);
-  });
-  test('should return 404, because axios respond with an error', async () => {
-    const createResult = await request.post('/register')
-      .send({
-        firstName: 'firstName',
-        lastName: 'lastName',
-        email: 'testing@test.com',
-        password: 'password',
-      })
-      .expect(201);
-    const { body: { user } } = createResult;
-    const { _id } = user;
-
-    await request.put(`/profile/${_id}`)
-      .send({ zipCode: 10169 })
-      .expect(201);
-
-    sandbox.stub(axios, 'get').returns({ data: { results: { error: 'ERROR' } } });
-    const cookedOrdered = JSON.stringify({ cooked: true, ordered: true });
-    await request.get(`/profile/${_id}/dashboard`)
-      .send()
-      .query({
-        id: _id, radius: 2, cookedOrdered, pageNumber: 1,
-      })
-      .expect(404);
-  });
   test('should return 500, because of internal server error in the helper method', async () => {
-    sandbox.stub(axios, 'get').returns({ data: { results: ['some data'] } });
     sandbox.stub(helper, 'findDishesInDB').throws(Error('helper.findDishesInDB'));
     const id = 123;
     await request.get(`/profile/${id}/dashboard`)
       .send()
       .query({
-        id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+        id,
+        filter: JSON.stringify({ cooked: true, ordered: true, own: true }),
+        pageNumber: 1,
+        geoLocationPolygon: JSON.stringify([[]]),
       })
       .expect(500);
   });
@@ -326,15 +253,18 @@ describe('integration test of publish controller - checkDishesInRadius', () => {
     const { _id } = user;
 
     await request.put(`/profile/${_id}`)
-      .send({ zipCode: 10169 })
+      .send({ city: 'Berlin' })
       .expect(201);
 
-    sandbox.stub(axios, 'get').returns({ data: { results: ['some zip code data'] } });
     sandbox.stub(helper, 'findDishesInDB').returns(['some daily treats data']);
+    const id = 123;
     await request.get(`/profile/${_id}/dashboard`)
       .send()
       .query({
-        id: _id, radius: 2, cookedOrdered: '{}', pageNumber: 1,
+        id,
+        filter: JSON.stringify({ cooked: true, ordered: true, own: true }),
+        pageNumber: 1,
+        geoLocationPolygon: JSON.stringify([[]]),
       })
       .expect(200);
   });
@@ -353,7 +283,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     let { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     sandbox.stub(DailyTreat, 'findOneAndUpdate').throws(Error('DailyTreat.findOneAndUpdate'));
@@ -385,7 +315,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     let { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     sandbox.stub(User, 'findOneAndUpdate').throws(Error('User.findOneAndUpdate'));
@@ -417,7 +347,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     let { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     createResult = await request.post('/register')
@@ -455,7 +385,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     let { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     createResult = await request.post('/register')
@@ -502,7 +432,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     sandbox.stub(DailyTreat, 'findOne').throws(Error('DailyTreat.findOne'));
@@ -526,7 +456,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     const { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     await request.patch(`/profile/${_id}/dashboard/${dailyTreatID}`)
@@ -555,7 +485,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     let { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     createResult = await request.post('/register')
@@ -595,7 +525,7 @@ describe('integration test of publish controller - upDownVote', () => {
     const { body: { user } } = createResult;
     let { _id } = user;
     const dailyTreat = await request.post(`/profile/${_id}/dashboard`)
-      .send()
+      .send({ geoPoint: { latitude: 52.0, longitude: 13.2, accuracy: 3000.0 } })
       .expect(201);
     const dailyTreatID = dailyTreat.body._id;
     createResult = await request.post('/register')

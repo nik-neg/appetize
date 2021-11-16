@@ -1,10 +1,10 @@
 # Appetize [![Build Status](https://app.travis-ci.com/nik-neg/Appetize.svg?branch=main)](https://app.travis-ci.com/nik-neg/Appetize)
 
 Appetize is a full responsive social media application for local food, where user can upload their image from the filesystem,
-add a title, description, and recipe and then publish it within their postal zip code area (currently only german postal zip codes are supported).
-A simple voting system enables to vote for favourite dishes. It's possible to update text / (cooked, ordered) attributes of a dish or remove it.
+add a title, description, and recipe and then publish it with geolocation API from Web API.
+A simple voting system enables to vote for favourite dishes.
 
-`Hint`: Next planned steps are to make the app more robust in functionality and performance, add CI / CD pipeline with Travis, add tests with Jest, Supertest and Cypress.
+`Hint`: Next planned steps are refactoring the test cases and go live 🤩.
 
 <div align="center">
 <table>
@@ -22,10 +22,6 @@ A simple voting system enables to vote for favourite dishes. It's possible to up
 [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongoose.png" alt="drawing" width="40" height="40"/>](https://mongoosejs.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/javascript.svg" alt="drawing" width="40" height="40"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/jest.svg" alt="drawing" width="40" height="40"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/docker.svg" alt="drawing" width="40" height="40"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/travis.svg" alt="drawing" width="40" height="40"/>](https://www.travis-ci.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/cypress.svg" alt="drawing" width="40" height="40"/>](https://www.cypress.io/)
 </td></tr>
 </table> 
-</div>
- 
-<div>
- <a href="https://zipcodebase.com/"> -> Zip Code API</a>
 </div>
 
 # Login/Register page
@@ -55,8 +51,6 @@ A simple voting system enables to vote for favourite dishes. It's possible to up
 https://youtu.be/_8mGjuWzNS0
 
 # Getting started
- 
-get your `API KEY` at `https://zipcodebase.com` and put it into the .env file of the server
  
 with Docker:
  - set `USE_DOCKER` environmental variable in the .env file in the server folder to `1`

@@ -103,12 +103,9 @@ module.exports.showProfile = async (req, res) => {
   }
 };
 
-module.exports.setZipCode = async (req, res) => {
+module.exports.setCity = async (req, res) => {
   const { id } = req.params;
-  const { zipCode } = req.body;
-
-  // TODO: apply check for zipCode
-
+  const { city } = req.body;
   let user;
   try {
     user = await User.findOne({ _id: id });
@@ -117,7 +114,7 @@ module.exports.setZipCode = async (req, res) => {
   }
 
   try {
-    user.zipCode = zipCode;
+    user.city = city;
     await user.save();
     return res.status(201).send(_.omit(user._doc, ['password']));
   } catch (err) {

@@ -16,7 +16,10 @@ const useStyles = makeStyles({
 
 export default function InputSlider(props) {
   const classes = useStyles();
-  const [value, setValue] = useState(1);
+  const maxValue = 50;
+  const minValue = 1;
+  const stepSize = 0.5;
+  const [value, setValue] = useState(minValue);
 
   const handleSliderChange = (event, newValue) => {
     if (newValue < minValue || newValue > maxValue) return;
@@ -31,14 +34,10 @@ export default function InputSlider(props) {
   const handleBlur = () => {
     if (value < 0) {
       setValue(0);
-    } else if (value > 100) {
-      setValue(100);
+    } else if (value > maxValue) {
+      setValue(maxValue);
     }
   };
-
-  const maxValue = 20;
-  const minValue = 0.5;
-  const stepSize = 0.1;
 
   return (
     <div className={classes.root}>

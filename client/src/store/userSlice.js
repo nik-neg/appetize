@@ -9,10 +9,12 @@ const initialState = {
   searchData: {
     pageNumber: 1,
     radius: 0,
-    cookedOrdered: {
+    filter: {
       cooked: true,
-      ordered: true
+      ordered: true,
+      own: true,
     },
+    geoLocationPolygon: [],
   },
   clearDishTextRequest: 0,
   newDishesRequest: 0,
@@ -39,10 +41,10 @@ export const fetchUserDataFromDB = createAsyncThunk(
   }
 );
 
-export const updateUserZipCode = createAsyncThunk(
-  'userData/updateUserZipCode',
-  async ({id, zipCode}) => {
-    const response =  await ApiClient.confirmZipCode(id, { zipCode });
+export const updateCity = createAsyncThunk(
+  'userData/updateCity',
+  async ({id, city}) => {
+    const response =  await ApiClient.confirmCity(id, { city });
     return response;
   }
 );
@@ -56,9 +58,9 @@ export const clearDishesInStoreRequest = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   'dishesInRadius/getDishesInRadius',
-  async ({ id, radius, cookedOrdered, pageNumber}) => {
-    const dishesInRadius =  await ApiClient.getDishesInRadius(id, radius, cookedOrdered, pageNumber);
-    return { dishesInRadius, radius, cookedOrdered, pageNumber };
+  async ({ id, radius, filter, pageNumber, geoLocationPolygon}) => {
+    const dishesInRadius =  await ApiClient.getDishesInRadius(id, filter, pageNumber, geoLocationPolygon);
+    return { dishesInRadius, radius, filter, pageNumber, geoLocationPolygon };
   }
 );
 
@@ -125,6 +127,12 @@ export const updateDailyTreat = createAsyncThunk(
     return dailyTreat;
   }
 );
+export const getGeoLocation = createAsyncThunk(
+  'state/getGeoLocation',
+  async (geoLocationPolygon) => {
+    return geoLocationPolygon;
+  }
+);
 
 export const userSlice = createSlice({ // TODO: refactor to more slices?
   name: 'userData',
@@ -158,16 +166,16 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
     [fetchUserDataFromDB.pending]: (state, action) => {
       state.loading = true;
     },
-    [updateUserZipCode.fulfilled]: (state, action) => {
+    [updateCity.fulfilled]: (state, action) => {
       state.userData = action.payload;
       state.loading = false;
     },
-    [updateUserZipCode.pending]: (state, action) => {
+    [updateCity.pending]: (state, action) => {
       state.loading = true;
     },
     [getDishesInRadius.fulfilled]: (state, action) => {
-      const { dishesInRadius, radius, cookedOrdered, pageNumber } = action.payload;
-      const newSearchData = { radius, cookedOrdered, pageNumber };
+      const { dishesInRadius, radius, filter, pageNumber, geoLocationPolygon } = action.payload;
+      const newSearchData = { radius, filter, pageNumber, geoLocationPolygon };
       if (dishesInRadius.length > 0) {
         state.dishesInRadius = dishesInRadius.sort((a,b) =>  b.votes - a.votes);
         state.searchData = newSearchData;
@@ -266,6 +274,13 @@ export const userSlice = createSlice({ // TODO: refactor to more slices?
       state.loading = false;
     },
     [updateDailyTreat.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getGeoLocation.fulfilled]: (state, action) => {
+      state.searchData.geoLocationPolygon = action.payload;
+      state.loading = false;
+    },
+    [getGeoLocation.pending]: (state, action) => {
       state.loading = true;
     },
   }

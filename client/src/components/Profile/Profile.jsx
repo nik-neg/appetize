@@ -25,7 +25,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import LocalDishesParameter from '../LocalDishesParameter/LocalDischesParameter';
 import { useDispatch, useSelector} from 'react-redux';
-import { updateUserZipCode, logoutUser } from '../../store/userSlice';
+import { updateCity, logoutUser } from '../../store/userSlice';
 import './Profile.scss'
 import { store } from '../../store/index';
 import history from '../../history';
@@ -38,6 +38,8 @@ import apiServiceJWT from '../../services/ApiClientJWT';
 
 import IconButton from '@material-ui/core/IconButton';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+
+import clientHelper from '../../helpers/clientHelper';
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -55,7 +57,6 @@ const useStylesAvatar = makeStyles((theme) => ({
     height: theme.spacing(7),
   },
 }));
-
 
 const useStylesGrid = makeStyles((theme) => ({
   root: {
@@ -77,14 +78,14 @@ const useStylesSaveButton = makeStyles((theme) => ({
 function Profile () {
   const classes = useStylesSaveButton();
 
-  const CHARACTER_LIMIT_ZIP_CODE = 10;
-  const [zipCode, setZipCode] = useState('');
+  const CHARACTER_LIMIT_CITY = 20;
+  const [city, setCity] = useState('');
 
   const [userData, setUserData] = useState({
     _id: '',
     firstName: '',
-    hasUpdatedZipCode: store.getState().user.userData.zipCode !== undefined ? true : false,
-    notUpdatedZipCodeMessage: 'Please update the zip code'
+    hasUpdatedCity: store.getState().user.userData.city !== undefined ? true : false,
+    notUpdatedCityText: 'Please update your city'
   })
 
   const cookedOrderedInitialState = {
@@ -152,20 +153,20 @@ function Profile () {
     setDish(dishTextInitialState)
   }, [clearDishTextRequest]);
 
-  const handleChangeZipCode = (event) => {
-    setZipCode(event.target.value);
+  const handleChangeCity = (event) => {
+    setCity(event.target.value);
   }
   const handleChangeTextArea = (name) => (event) => {
     setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
   }
 
-  const handleUpdateZipCode = async () => {
-    await asyncWrapper(dispatch, updateUserZipCode, { id: userData._id, zipCode });
-    setZipCode('');
-    if(!userData.hasUpdatedZipCode) {
+  const handleUpdateCity= async () => {
+    await asyncWrapper(dispatch, updateCity, { id: userData._id, city });
+    setCity('');
+    if(!userData.hasUpdatedCity) {
       setUserData((prevValue) => ({
         ...prevValue,
-        hasUpdatedZipCode: true,
+        hasUpdatedCity: true,
       }));
     }
   }
@@ -176,20 +177,36 @@ function Profile () {
     setCoockedOrdered(() => ({
       [name]: checked
     }))
+    clientHelper.getGeoLocation(success);
   }
+
+  // for geo point
+  const [geoPoint, setGeoPoint] = useState({
+    latitude: 0.0,
+    longitude: 0.0,
+    accuracy: 0.0,
+  });
+
+  const success = async (pos) => {
+    var crd = pos.coords;
+    const { latitude, longitude, accuracy } = crd;
+    setGeoPoint({ latitude, longitude, }, accuracy);
+  }
+  // for geo point
 
   const handlePublish = async (event) => {
     const userId = userData._id;
     const chosenImageDate = store.getState().user.chosenImageDate;
     if(event.target.checked) {
       const firstName = userData.firstName;
-      const userZipCode = store.getState().user.userData.zipCode;
+      const city = store.getState().user.userData.city;
       const publishObject = {
         ...dish,
         firstName,
-        userZipCode,
+        city,
         cookedNotOrdered: cookedOrdered.cooked === true ? true : false,
-        chosenImageDate
+        chosenImageDate,
+        geoPoint
       };
       setDish(dishTextInitialState);
       const {cooked, ordered } = cookedOrderedInitialState;
@@ -235,7 +252,7 @@ function Profile () {
             <div>
               <DropZone
                 setOpen={setOpenAvatar}
-                open={userData.hasUpdatedZipCode ? openAvatar : null}
+                open={userData.hasUpdatedCity ? openAvatar : null}
                 setImagePath={setImagePathForAvatar}
                 avatar={true}
               />
@@ -248,29 +265,29 @@ function Profile () {
             </div>
             <TextField
               id="zip-code-field"
-              label="ZIP CODE"
+              label="City"
               inputProps={{
-                maxLength: CHARACTER_LIMIT_ZIP_CODE
+                maxLength: CHARACTER_LIMIT_CITY
               }}
-              value={zipCode}
-              helperText={`${zipCode.length}/${CHARACTER_LIMIT_TITLE}`}
-              style={{"marginTop": "2.5%", "maxWidth": "6rem"}}
+              value={city}
+              helperText={`${city.length}/${CHARACTER_LIMIT_TITLE}`}
+              style={{"marginTop": "2.5%", "maxWidth": "6rem", "textAlign": "center", }}
               variant="filled"
-              onChange={handleChangeZipCode}
+              onChange={handleChangeCity}
               InputProps={{ classes: { input: styles.someTextField.toString() } }}
             />
             <div id="update-zip-code-message">
-            { !userData.hasUpdatedZipCode ? userData.notUpdatedZipCodeMessage : ''}
+            { !userData.hasUpdatedCity ? userData.notUpdatedCityText : ''}
             </div>
             <div className="button-box">
               <Button
-                id="save-zip-code-button"
+                id="save-city-button"
                 variant="contained"
                 color="primary"
                 size="small"
                 className={classes.button}
                 startIcon={<SaveIcon />}
-                onClick={handleUpdateZipCode}
+                onClick={handleUpdateCity}
               >
                 Save
               </Button>
@@ -544,7 +561,7 @@ function Profile () {
         </Grid>
         <DropZone
           setOpen={setOpen}
-          open={userData.hasUpdatedZipCode ? open : null}
+          open={userData.hasUpdatedCity ? open : null}
           setImagePath={setImagePath}
         />
         <Hidden only={['xs', 'sm', 'md']}>

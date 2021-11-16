@@ -10,7 +10,7 @@ router.post('/register', userController.createUser);
 router.post('/login', userController.loginUser);
 router.post('/logout', auth, userController.logoutUser); // optional auth for jwt blocklist?
 router.get('/profile', auth, userController.showProfile);
-router.put('/profile/:id', userController.setZipCode);
+router.put('/profile/:id', userController.setCity);
 
 router.post('/profile/:id/upload', upload, imageController.saveImage);
 router.get('/profile/:id/download', imageController.retrieveImage); // call with img tag

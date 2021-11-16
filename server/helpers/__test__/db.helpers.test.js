@@ -59,94 +59,39 @@ describe('helpers methods', () => {
     expect(res).toBe(true);
   });
   test('findDishesInDB method return empty array due to invalid parameters', async () => {
-    let res = await helper.findDishesInDB({}, {});
+    let res = await helper.findDishesInDB({}, [[]], 4);
     expect(res).toEqual([]);
-    res = await helper.findDishesInDB({});
+    res = await helper.findDishesInDB({}, [[]]);
     expect(res).toEqual([]);
     res = await helper.findDishesInDB();
     expect(res).toEqual([]);
   });
-  test('findDishesInDB method return an array with daily treat info and city names', async () => {
-    const zipCodesInRadius = [
-      { zipCode: 12345, city: 'Amsterdam' },
-      { zipCode: 23456, city: 'Berlin' },
-      { zipCode: 34567, city: 'Chigago' },
-    ];
-    let cookedOrdered = {
-      cooked: true,
-      ordered: true,
-    };
-    const ALL_DISHES = 'ALL_DISHES';
-    let cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-      ? ALL_DISHES : cookedOrdered.cooked;
-    let queryObject = {};
-    if (cookedOrderedParam !== ALL_DISHES) {
-      queryObject.cookedNotOrdered = cookedOrderedParam;
-    }
-    expect(queryObject).toEqual({});
-
-    cookedOrdered = {
-      cooked: false,
-      ordered: false,
-    };
-    cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-      ? ALL_DISHES : cookedOrdered.cooked;
-    queryObject = {};
-    if (cookedOrderedParam !== ALL_DISHES) {
-      queryObject.cookedNotOrdered = cookedOrderedParam;
-    }
-    expect(queryObject).toEqual({});
-    cookedOrdered = {
-      cooked: true,
-      ordered: false,
-    };
-    cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-      ? ALL_DISHES : cookedOrdered.cooked;
-    queryObject = {};
-    if (cookedOrderedParam !== ALL_DISHES) {
-      queryObject.cookedNotOrdered = cookedOrderedParam;
-    }
-    expect(queryObject.cookedNotOrdered).toEqual(true);
-    cookedOrdered = {
-      cooked: false,
-      ordered: true,
-    };
-    cookedOrderedParam = cookedOrdered.cooked === cookedOrdered.ordered
-      ? ALL_DISHES : cookedOrdered.cooked;
-    queryObject = {};
-    if (cookedOrderedParam !== ALL_DISHES) {
-      queryObject.cookedNotOrdered = cookedOrderedParam;
-    }
-    expect(queryObject.cookedNotOrdered).toEqual(false);
-
-    const pageNumber = 1;
+  test('findDishesInDB method return an array with daily treat info', async () => {
     const mockedDailyTreats = [
       {
         _doc: {
-          _id: 123, title: 'Pasta', userID: 1,
+          _id: 123, title: 'Pasta', userID: 1, city: 'Berlin',
         },
-        zipCode: '12345',
+
       },
       {
         _doc: {
-          _id: 456, title: 'Pizza', userID: 2,
+          _id: 456, title: 'Pizza', userID: 2, zipCode: 'Berlin',
         },
-        zipCode: '23456',
       },
     ];
-    let dailyTreats = await DailyTreat.find();
+    let dailyTreats = DailyTreat.find();
+    dailyTreats = dailyTreats.where();
+    dailyTreats = dailyTreats.within();
     dailyTreats = dailyTreats.skip();
     dailyTreats = dailyTreats.limit.mockResolvedValue(mockedDailyTreats);
     dailyTreats = await dailyTreats();
-    const zipCodeCityObject = {};
-    zipCodesInRadius.forEach((zipCodeCity) => {
-      zipCodeCityObject[zipCodeCity.zipCode] = zipCodeCity.city;
-    });
-    dailyTreats = dailyTreats.map((dailyTreat) => {
-      const dailyTreatWithCity = { ...dailyTreat._doc, city: zipCodeCityObject[dailyTreat.zipCode] };
-      return dailyTreatWithCity;
-    });
-    res = await helper.findDishesInDB(zipCodesInRadius, cookedOrdered, pageNumber);
+
+    const queryObject = { cooked: true, ordered: true, own: true };
+    const polygon = [[]];
+    const toSkip = 4;
+    const PAGE_SIZE = 4;
+    res = await helper.findDishesInDB(queryObject, polygon, toSkip, PAGE_SIZE);
     expect(res).toEqual(dailyTreats);
   });
 });

@@ -57,12 +57,12 @@ const removeUnusedImagesFromDB = async (id) =>
   .catch((err) => console.log(err));
 }
 
-const confirmZipCode = async (id, zipCode) =>
+const confirmCity = async (id, city) =>
   fetch(`${baseUrl}/profile/${id}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(zipCode),
+      body: JSON.stringify(city),
     })
     .then((data) => data.json())
     .then((userData) => userData)
@@ -75,18 +75,18 @@ const publishToDashBoard = async (id, data) =>
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-    .then((imageData) => imageData)
-    .then((imageData) => imageData)
+    .then((dailyTreatData) => dailyTreatData)
+    .then((dailyTreatData) => dailyTreatData)
     .catch((err) => console.log(err));
 
-const getDishesInRadius = async (id, radius, cookedOrdered, pageNumber) =>
+const getDishesInRadius = async (id, filter, pageNumber, geoLocationPolygon) =>
 {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
   url.search = new URLSearchParams({
     id,
-    radius,
-    cookedOrdered,
-    pageNumber
+    filter,
+    pageNumber,
+    geoLocationPolygon
   })
   return fetch(url,
   {
@@ -146,7 +146,7 @@ export default {
   registerUser,
   uploadImage,
   removeUnusedImagesFromDB,
-  confirmZipCode,
+  confirmCity,
   publishToDashBoard,
   getDishesInRadius,
   voteDish,
