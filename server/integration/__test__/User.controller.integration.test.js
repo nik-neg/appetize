@@ -490,7 +490,7 @@ describe('integration test of user controller - setZipCode', () => {
       .expect(201);
     const { _id } = createResult.body.user;
     await request.put(`/profile/${_id}`)
-      .send({ zipCode: 12345 })
+      .send({ city: 'Berlin' })
       .expect(201);
   });
   test('should return 201, because user could update the zip code, after login', async () => {
@@ -521,7 +521,7 @@ describe('integration test of user controller - setZipCode', () => {
       .expect(200);
     const { _id } = createResult.body.user;
     await request.put(`/profile/${_id}`)
-      .send({ zipCode: 12345 })
+      .send({ city: 'Berlin' })
       .expect(201);
   });
 });
