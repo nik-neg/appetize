@@ -18,6 +18,7 @@ router.delete('/profile/:id/remove-images', imageController.removeImages);
 
 router.post('/profile/:id/dashboard', publishController.publishDish);
 router.get('/profile/:id/dashboard', publishController.checkDishesInRadius);
+router.get('/details/:id', publishController.readDish);
 router.patch('/profile/:id/dashboard/:dailyTreatID', publishController.upDownVote);
 router.patch('/profile/:id/dashboard', publishController.updateDish);
 router.delete('/profile/:id/dashboard/:dailyTreatID', publishController.removeDish);
