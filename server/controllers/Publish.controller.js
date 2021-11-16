@@ -106,11 +106,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
     const PAGE_SIZE = 4;
     const skip = (pageNumber - 1) * PAGE_SIZE;
-    const dailyTreats = await DailyTreat.find(queryObject)
-      .where('geoPoint')
-      .within(polygon)
-      .skip(skip)
-      .limit(PAGE_SIZE);
+    const dailyTreats = await helper.findDishesInDB(queryObject, polygon, skip, PAGE_SIZE);
     return res.status(200).send(dailyTreats);
   } catch (e) {
     return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });

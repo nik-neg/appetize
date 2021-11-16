@@ -58,7 +58,7 @@ describe('helpers methods', () => {
     res = await helper.removeImageData(excludeDeletePattern, deleteOptionForFiles);
     expect(res).toBe(true);
   });
-  test('findDishesInDB method return empty array due to invalid parameters', async () => {
+  test.skip('findDishesInDB method return empty array due to invalid parameters', async () => {
     let res = await helper.findDishesInDB({}, {});
     expect(res).toEqual([]);
     res = await helper.findDishesInDB({});
@@ -66,7 +66,7 @@ describe('helpers methods', () => {
     res = await helper.findDishesInDB();
     expect(res).toEqual([]);
   });
-  test('findDishesInDB method return an array with daily treat info and city names', async () => {
+  test.skip('findDishesInDB method return an array with daily treat info and city names', async () => {
     const zipCodesInRadius = [
       { zipCode: 12345, city: 'Amsterdam' },
       { zipCode: 23456, city: 'Berlin' },
