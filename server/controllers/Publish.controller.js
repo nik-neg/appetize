@@ -101,7 +101,7 @@ module.exports.checkDishesInRadius = async (req, res) => {
     if (!cookedOrderedFilter) {
       queryObject.cookedNotOrdered = parsedFilter.cooked;
     }
-    if (parsedFilter.own === true) {
+    if (parsedFilter.own === true) { // TODO: check
       queryObject.userID = id;
     }
     const PAGE_SIZE = 4;

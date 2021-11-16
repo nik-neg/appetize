@@ -14,9 +14,9 @@ const getGeoLocation = (success) => {
 const calculatePolygon = ({ latitude, longitude, }, distance ) => {
   const earthRadius = 6371e3;
   const polygon = [];
-  const kmTometers = 1000;
-  const dLat = (distance * kmTometers) / earthRadius;
-  const dLon = (distance * kmTometers) / (earthRadius * Math.cos((Math.PI * latitude) / 180));
+  const kmToMeters = 1000;
+  const dLat = (distance * kmToMeters) / earthRadius;
+  const dLon = (distance * kmToMeters) / (earthRadius * Math.cos((Math.PI * latitude) / 180));
   // right up
   let newLatitude = latitude + (dLat * 180) / Math.PI;
   let newLongitude = longitude + (dLon * 180) / Math.PI;
