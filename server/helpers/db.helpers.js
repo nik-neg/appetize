@@ -19,11 +19,12 @@ module.exports.removeImageData = async (regex, deleteOptionForFiles) => {
   return result.deletedCount > 0;
 };
 
-module.exports.findDishesInDB = async (queryObject, polygon, skip, PAGE_SIZE) => {
+module.exports.findDishesInDB = async (queryObject, polygon, toSkip, PAGE_SIZE) => {
+  if (!(queryObject && polygon && toSkip && PAGE_SIZE)) return [];
   const dailyTreats = await DailyTreat.find(queryObject)
     .where('geoPoint')
     .within(polygon)
-    .skip(skip)
+    .skip(toSkip)
     .limit(PAGE_SIZE);
   return dailyTreats;
 };

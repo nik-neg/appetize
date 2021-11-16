@@ -361,7 +361,7 @@ describe('setCity method', () => {
     expect(res.send).toHaveBeenCalledTimes(1);
   });
 
-  test('setCity returns 200 and the user without password ', async () => { // to skip tests, use test.only
+  test('setCity returns 200 and the user without password ', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,
