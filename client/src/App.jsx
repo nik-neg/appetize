@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import {Route, Router, Switch  } from 'react-router-dom';
 import RegisterLogin from './components/RegisterLogin/RegisterLogin';
 import Profile from './components/Profile/Profile';
