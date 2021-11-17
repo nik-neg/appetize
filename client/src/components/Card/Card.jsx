@@ -116,7 +116,7 @@ export default function RecipeReviewCard(props) {
   }
 
   const handleShareDish = async () => {
-    navigator.clipboard.writeText(`${process.env.SERVER_URL}/details-shared/${props.dishID}`)
+    navigator.clipboard.writeText(`${process.env.CLIENT_URL}/details-shared/${props.dishID}`)
   };
 
   return (

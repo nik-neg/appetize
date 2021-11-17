@@ -198,8 +198,13 @@ module.exports.readDish = async (req, res) => {
   const { id } = req.params;
   try {
     const dailyTreat = await DailyTreat.findOne({ _id: id });
-    return res.status(200).send(dailyTreat);
+    const {
+      creatorName, city, cookedNotOrdered, title, description, recipe, imageUrl,
+    } = dailyTreat;
+    return res.status(200).send({
+      creatorName, city, cookedNotOrdered, title, description, recipe, imageUrl,
+    });
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not update daily treat - Internal server error' });
+    return res.status(500).send({ error: '500', message: 'Could not read daily treat - Internal server error' });
   }
 };
