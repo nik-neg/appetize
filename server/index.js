@@ -14,7 +14,7 @@ const helper = require('./helpers/db.helpers');
 require('dotenv').config();
 
 const corsConfig = {
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http://localhost:3002'],
   credentials: true,
 };
 
