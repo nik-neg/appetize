@@ -36,7 +36,7 @@
     "webpack-dev-server": "^4.5.0"
   },
   "scripts": {
-    "start": "webpack --open --config webpack.config.js",
+    "start": "webpack serve --open --config webpack.config.js",
     "dev": "webpack-dev-server",
     "build": "webpack --config webpack.config.js",
     "test": "react-scripts test",
