@@ -19,6 +19,6 @@ deploy:
   provider: heroku
   strategy: git
   api_key:
-    secure: $HEROKU-API-KEY
+    secure: HEROKU-API-KEY
     app: appetize-online
     on: production
