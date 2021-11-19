@@ -21,4 +21,4 @@ deploy:
   api_key:
     secure: $HEROKU_API_KEY
     app: appetize-online
-    on: production
+    #on: production
