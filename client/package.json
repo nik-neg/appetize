@@ -69,6 +69,7 @@
     "@babel/preset-react": "^7.16.0",
     "@testing-library/cypress": "^8.0.1",
     "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
     "cypress": "^8.7.0",
     "cypress-file-upload": "^5.0.8",
     "eslint": "^7.24.0",
