@@ -29,7 +29,7 @@ app.use(cors(corsConfig))
   try {
     const url = helper.initDBUrl();
     await db.connect(url);
-    const PORT = process.env.SERVER_PORT;
+    const { PORT } = process.env || 3001;
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
