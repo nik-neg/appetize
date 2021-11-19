@@ -16,6 +16,6 @@ script:
   - npm install
   - yarn test
 deploy:
-  provider: heroku
+  provider: heroku # test
   api_key:
     secure: "2da7bede-6bf1-42fd-aabc-5a03905fe5d3"
