@@ -1,2 +1,2 @@
 web: npm start
-bundle exec thin start -p $PORT
+bundle: exec thin start -p $PORT
