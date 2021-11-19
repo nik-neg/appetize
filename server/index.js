@@ -24,7 +24,7 @@ app.use(cors(corsConfig))
   .use(express.json())
   .use(router);
 
-// process.setMaxListeners(0);
+// TODO: check - process.setMaxListeners(0);
 (async () => {
   try {
     const url = helper.initDBUrl();
