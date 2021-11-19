@@ -19,12 +19,15 @@ module.exports = () => {
         compress: true,
         port: 3000,
       },
+      performance : {
+        hints : false
+      },
+      mode: 'development',
       entry: path.resolve(__dirname, 'src') + '/index.jsx',
       output: {
         path:path.resolve(__dirname, "dist"),
         filename: './bundle.js',
       },
-      mode: 'development',
       module: {
         rules: [
             {
