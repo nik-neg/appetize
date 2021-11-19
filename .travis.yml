@@ -17,7 +17,8 @@ script:
   - yarn test
 deploy:
   provider: heroku
+  strategy: git
   api_key:
-    secure: "2da7bede-6bf1-42fd-aabc-5a03905fe5d3"
+    secure: $HEROKU-API-KEY
     app: appetize-online
     on: production
