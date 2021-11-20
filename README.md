@@ -1,4 +1,4 @@
-# Appetize [![Build Status](https://app.travis-ci.com/nik-neg/Appetize.svg?branch=main)](https://app.travis-ci.com/nik-neg/Appetize)
+# Appetize ![example workflow](https://github.com/nik-neg/appetize/actions/workflows/github-actions.yml/badge.svg)
 
 Appetize is a full responsive social media application for local food, where user can upload their image from the filesystem,
 add a title, description, and recipe and then publish it with geolocation API from Web API.
@@ -11,7 +11,7 @@ A simple voting system enables to vote for favourite dishes.
 <tr><th>Tech Stack</th></tr>
 <tr><td>
 
- <sub> React </sub> |<sub>  Redux <sub>| <sub> Material-UI </sub> | <sub> Node.js </sub> | <sub> Express </sub> | <sub> MongoDB </sub> 
+ <sub> React </sub> |<sub>  Redux <sub>| <sub> Material-UI </sub> | <sub> Node.js </sub> | <sub> Express </sub> | <sub> MongoDB </sub>
 |--|--|--|--|--|--
 [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/react.svg" alt="drawing" width="40" height="40"/>](https://reactjs.org/) | [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/>](https://redux.js.org) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/material-ui.svg" alt="drawing" width="40" height="40"/>](https://material-ui.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/nodejs.svg" alt="drawing" width="40" height="40"/>](https://nodejs.org/en/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/express.svg" alt="drawing" width="40" height="40"/>](https://expressjs.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongodb.svg" alt="drawing" width="40" height="40"/>](https://www.mongodb.com/)
 </td></tr>
@@ -21,7 +21,7 @@ A simple voting system enables to vote for favourite dishes.
 |--|--|--|--|--|--
 [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/mongoose.png" alt="drawing" width="40" height="40"/>](https://mongoosejs.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/javascript.svg" alt="drawing" width="40" height="40"/>](https://www.javascript.com/) |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/jest.svg" alt="drawing" width="40" height="40"/>](https://jestjs.io/)  |  [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/docker.svg" alt="drawing" width="40" height="40"/>](https://www.docker.com/)  | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/travis.svg" alt="drawing" width="40" height="40"/>](https://www.travis-ci.com/) | [<img src="https://github.com/nik-neg/appetize/blob/main/.techstack_images/cypress.svg" alt="drawing" width="40" height="40"/>](https://www.cypress.io/)
 </td></tr>
-</table> 
+</table>
 </div>
 
 # Login/Register page
@@ -35,13 +35,13 @@ A simple voting system enables to vote for favourite dishes.
 
 # Published local food
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/4_area_food.png)
- 
+
 # Dish details
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/5_dish_details.png)
- 
+
 # Dish update
 ![alt text](https://github.com/nik-neg/Appetize/blob/main/.images/6_edit_mode.png)
- 
+
 # Responsive design
  Profile page             |  Published local food
 :-------------------------:|:-------------------------:
@@ -51,7 +51,7 @@ A simple voting system enables to vote for favourite dishes.
 https://youtu.be/_8mGjuWzNS0
 
 # Getting started
- 
+
 with Docker:
  - set `USE_DOCKER` environmental variable in the .env file in the server folder to `1`
  - set environmental variable like in the .env file `TEST_*` to `0`
