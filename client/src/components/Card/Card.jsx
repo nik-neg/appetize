@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -11,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import StarsIcon from '@material-ui/icons/Stars';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -26,7 +27,6 @@ import './index.scss';
 import { useDispatch } from 'react-redux';
 import { deleteDish, upDownVote, allDishesDeletedRequest} from '../../store/userSlice';
 import { store } from '../../store/index';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,7 +99,7 @@ export default function RecipeReviewCard(props) {
 
   const dispatch = useDispatch();
 
-  const handleDelete = async () => { // https://mui.com/components/dialogs/
+  const handleDelete = async () => {
     try {
       await asyncWrapper(dispatch, deleteDish, { userId: props.userID, dishId: props.dishID });
       const dishes = [...store.getState().user.dishesInRadius];
@@ -116,7 +116,7 @@ export default function RecipeReviewCard(props) {
   }
 
   const handleShareDish = async () => {
-    history.push(`/details-shared/${props.dishID}`)
+    navigator.clipboard.writeText(`${process.env.DETAILS_SHARED_MICROFRONTEND_URL}/details-shared/${props.dishID}`)
   };
 
   return (
@@ -149,7 +149,7 @@ export default function RecipeReviewCard(props) {
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share" onClick={handleShareDish}>
-          <ShareIcon />
+          <ContentCopyIcon />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {

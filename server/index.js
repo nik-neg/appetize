@@ -14,7 +14,7 @@ const helper = require('./helpers/db.helpers');
 require('dotenv').config();
 
 const corsConfig = {
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http://localhost:3002'],
   credentials: true,
 };
 
@@ -24,11 +24,12 @@ app.use(cors(corsConfig))
   .use(express.json())
   .use(router);
 
+// TODO: check - process.setMaxListeners(0);
 (async () => {
   try {
     const url = helper.initDBUrl();
     await db.connect(url);
-    const PORT = process.env.SERVER_PORT;
+    const { PORT } = process.env || 3001;
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });

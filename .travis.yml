@@ -15,3 +15,11 @@ script:
   - cd ../server
   - npm install
   - yarn test
+deploy:
+  provider: heroku
+  strategy: git
+  api_key:
+    secure: $HEROKU_API_KEY
+    app: appetize-online
+    on:
+      all_branches: true
