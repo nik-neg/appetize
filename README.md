@@ -1,4 +1,4 @@
-# Appetize [![test](https://github.com/nik-neg/Appetize/actions/workflows/test.yml/badge.svg)](https://github.com/nik-neg/Appetize/actions/workflows/test.yml)
+# Appetize [![Tests](https://github.com/nik-neg/Appetize/actions/workflows/test.yml/badge.svg)](https://github.com/nik-neg/Appetize/actions/workflows/test.yml)
 
 Appetize is a full responsive social media application for local food, where user can upload their image from the filesystem,
 add a title, description, and recipe and then publish it with geolocation API from Web API.
