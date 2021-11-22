@@ -2,6 +2,7 @@
 // const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'loading';
 
