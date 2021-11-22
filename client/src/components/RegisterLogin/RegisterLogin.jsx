@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { fetchUserDataFromDB, createUserAndSafeToDB } from '../../store/userSlice';
 import { store } from '../../store/index';
 import './RegisterLogin.scss';
+import bcrypt from 'bcryptjs';
 
 function Copyright() {
   return (
@@ -72,6 +73,7 @@ export default function RegisterLogin () {
     await dispatch(asyncFunc(data));
   }
 
+  const saltRounds = 10;
   const handleRegisterOrLogin = async (event) => {
     let userData;
     event.preventDefault();
@@ -79,7 +81,7 @@ export default function RegisterLogin () {
       const {
         firstName, lastName, email, password,
       } = input;
-      const user = { firstName, lastName, email, password, };
+      const user = { firstName, lastName, email, password: await bcrypt.hash(password, saltRounds), };
       await asyncWrapper(dispatch, createUserAndSafeToDB, user);
       userData = store.getState().user.userData;
       if(userData?.error) {

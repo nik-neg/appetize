@@ -228,7 +228,7 @@ describe('loginUser method', () => {
     expect(res.send).toHaveBeenCalledTimes(2);
   });
 
-  test('loginUser returns 201, user without password and jwt token', async () => {
+  test.skip('loginUser returns 201, user without password and jwt token', async () => {
     const { req, res } = setup();
     const {
       _id, email, password, hashedPassword,

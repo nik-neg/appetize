@@ -1,11 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'loading';
-
-const saltRounds = 10;
 
 const User = require('../models/User');
 
@@ -30,7 +28,7 @@ module.exports.createUser = async (req, res) => {
       .send({ error: '400', message: 'Please provide credentials' });
   }
   try {
-    const hash = await bcrypt.hash(password, saltRounds);
+    const hash = password;
     const newUser = await User.create({
       firstName,
       lastName,

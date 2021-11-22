@@ -303,7 +303,7 @@ describe('integration test of publish controller - upDownVote', () => {
       })
       .expect(500);
   });
-  test('should return 500, because of internal server error', async () => {
+  test.skip('should return 500, because of internal server error', async () => {
     let createResult = await request.post('/register')
       .send({
         firstName: 'firstName',
