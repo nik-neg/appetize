@@ -1,7 +1,7 @@
 name: Tests
 on:
   push:
-    branches: [ main, production, develop ]
+    branches: [ main, production, develop, cloud ]
   pull_request:
     branches: [ main ]
 
