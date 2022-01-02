@@ -60,7 +60,7 @@ with Docker:
 
 or follow these steps...
 - set `USE_DOCKER` environmental variable in the .env file in the server folder to `0`
-- set environmental variable in the .env file like `TEST_*` to `0
+- set environmental variable in the .env file like `TEST_*` to `0`
 - run `npm i` in the server & client folder
 - run the mongodb server, e.g. `sudo mongod`
 - run `nodemon index.js` in the server folder
