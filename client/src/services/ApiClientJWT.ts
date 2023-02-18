@@ -1,6 +1,13 @@
+import {IUser} from "./types";
+
 const baseUrl = 'http://localhost:3001';
 
-const apiServiceJWT = {};
+const apiServiceJWT = {
+  register: async (user: IUser) => {},
+  loginUser: async (user: IUser) => {},
+  getProfile: async (accessToken: string | null) => {},
+  logout: async (accessToken: string) => {},
+};
 
 apiServiceJWT.register = async (user) => {
   return fetch(`${baseUrl}/register`, {

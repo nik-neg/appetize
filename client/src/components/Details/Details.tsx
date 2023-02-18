@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {ChangeEvent, useState} from 'react';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
@@ -12,12 +12,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { TextField } from '@material-ui/core';
 import FadeIn from 'react-fade-in';
 import ApiClient from '../../services/ApiClient';
-import {IDetailsProps} from "./types";
+import {IDetailsProps, IDish} from "./types";
+import {selectDishes, selectUser} from "../../store/selectors";
 
 export const Details  = ({ route }: IDetailsProps): JSX.Element => {
-  const dishes = [...useSelector((state) => state.user.dishesInRadius)];
-  const [dish, setDish] = useState(...dishes.filter((dish) => dish._id === route.params.dishId));
-  const user = useSelector((state) => state.user.userData);
+  const dishes = [...selectDishes()];
+  const filteredDish = dishes.filter((dish) => dish._id === route.params.dishId);
+  const [dish, setDish] = useState<IDish>(filteredDish[0]);
+  const user = selectUser();
 
   const [editable, setEditable] = useState(false);
   const updateDish = async () => {
@@ -43,10 +45,10 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
     ordered: dish.cookedNotOrdered === false ? true : false,
   });
 
-  const handleCookedOrdered = async (event) => {
+  const handleCookedOrdered = async (event: any): Promise<void> => {
     event.preventDefault();
     const { name, checked } = event.target;
-    setCoockedOrdered(() => ({
+    setCoockedOrdered((): any => ({
       [name === 'cooked' ? 'ordered' : 'cooked'] : false,
       [name]: checked
     }));
@@ -76,7 +78,7 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
   const [dishText, setDishText] = useState({
     ...initialDishTextState,
   });
-  const handleChangeText = (name) => (event) => {
+  const handleChangeText = (name: string) => (event: any) => {
     setDishText((prevValue) => ({ ...prevValue, [name]: event.target.value }));
   }
   return (
@@ -173,7 +175,7 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
                     <Checkbox
                       id='local-dishes-parameter-cooked'
                       onChange={handleCookedOrdered}
-                      label='Cooked'
+                      //label='Cooked'
                       checked={cookedOrdered.cooked}
                       name="cooked"
                       color="primary"
@@ -189,7 +191,7 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
                   <Checkbox
                     id='local-dishes-parameter-ordered'
                     onChange={handleCookedOrdered}
-                    label='Ordered'
+                    //label='Ordered'
                     checked={cookedOrdered.ordered}
                     name='ordered'
                     color="primary"

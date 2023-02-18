@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -28,11 +28,7 @@ import { useDispatch, useSelector} from 'react-redux';
 import { updateCity, logoutUser } from '../../store/userSlice';
 import './Profile.scss'
 import { store } from '../../store/index';
-import history from '../../history';
-
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-const upLoadButtonStyle = { maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px' };
-const logOutButtonStyle = { maxWidth: '150px', maxHeight: '40px', minWidth: '150px', minHeight: '40px' };
+import {history} from '../../history';
 
 import apiServiceJWT from '../../services/ApiClientJWT';
 
@@ -40,6 +36,16 @@ import IconButton from '@material-ui/core/IconButton';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 
 import clientHelper from '../../helpers/clientHelper';
+
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {selectUser} from "../../store/selectors";
+import {IGeolocation} from "./types";
+import {CHARACTER_LIMIT_CITY} from "./constants";
+import React from 'react';
+
+
+const upLoadButtonStyle = { maxWidth: '200px', maxHeight: '40px', minWidth: '200px', minHeight: '40px' };
+const logOutButtonStyle = { maxWidth: '150px', maxHeight: '40px', minWidth: '150px', minHeight: '40px' };
 
 const useStylesAvatar = makeStyles((theme) => ({
   root: {
@@ -78,13 +84,14 @@ const useStylesSaveButton = makeStyles((theme) => ({
 function Profile () {
   const classes = useStylesSaveButton();
 
-  const CHARACTER_LIMIT_CITY = 20;
   const [city, setCity] = useState('');
+
+  const user = selectUser();
 
   const [userData, setUserData] = useState({
     _id: '',
     firstName: '',
-    hasUpdatedCity: store.getState().user.userData.city !== undefined ? true : false,
+    hasUpdatedCity: user?.city !== undefined ? true : false,
     notUpdatedCityText: 'Please update your city'
   })
 
@@ -124,13 +131,17 @@ function Profile () {
 
   const dispatch = useDispatch();
 
-  const asyncWrapper = async (dispatch, asyncFunc, data) => {
-    await dispatch(asyncFunc(data));
-  }
+  //const asyncWrapper = async (dispatch, asyncFunc, data) => {
+    //await dispatch(asyncFunc(data));
+  //}
+
+  const logoutUserInStore = useCallback(async () => {
+   await dispatch(logoutUser());
+  }, [] );
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    const getProfile = async (accessToken) => {
+    const getProfile = async (accessToken: string | null) => {
       const userInfo = await apiServiceJWT.getProfile(accessToken);
       if (userInfo.err) {
         history.push('/');
@@ -148,20 +159,27 @@ function Profile () {
     getProfile(accessToken);
   }, []);
 
-  let clearDishTextRequest = useSelector((state) => state.user.clearDishTextRequest);
+  let clearDishTextRequest = user?.clearDishTextRequest;
   useEffect(() => {
     setDish(dishTextInitialState)
   }, [clearDishTextRequest]);
 
-  const handleChangeCity = (event) => {
+  const handleChangeCity = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCity(event.target.value);
   }
-  const handleChangeTextArea = (name) => (event) => {
+  const handleChangeTextArea = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
   }
 
+  const updateCityInStore = useCallback(async (data: any) => {
+    await dispatch(updateCity(data));
+  }, [] );
+
   const handleUpdateCity= async () => {
-    await asyncWrapper(dispatch, updateCity, { id: userData._id, city });
+    //await asyncWrapper(dispatch, updateCity, { id: userData._id, city });
+    await updateCityInStore(updateCity({ id: userData._id, city }));
+
+
     setCity('');
     if(!userData.hasUpdatedCity) {
       setUserData((prevValue) => ({
@@ -171,10 +189,10 @@ function Profile () {
     }
   }
 
-  const handleCookedOrdered = async (event) => {
+  const handleCookedOrdered = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { name, checked } = event.target;
-    setCoockedOrdered(() => ({
+    setCoockedOrdered((): any => ({
       [name]: checked
     }))
     clientHelper.getGeoLocation(success);
@@ -187,14 +205,14 @@ function Profile () {
     accuracy: 0.0,
   });
 
-  const success = async (pos) => {
+  const success = async (pos: IGeolocation) => {
     var crd = pos.coords;
     const { latitude, longitude, accuracy } = crd;
-    setGeoPoint({ latitude, longitude, }, accuracy);
+    setGeoPoint({ latitude, longitude, accuracy});
   }
   // for geo point
 
-  const handlePublish = async (event) => {
+  const handlePublish = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const userId = userData._id;
     const chosenImageDate = store.getState().user.chosenImageDate;
     if(event.target.checked) {
@@ -230,7 +248,8 @@ function Profile () {
   }
 
   const handleLogout = async () => {
-    await asyncWrapper(dispatch, logoutUser);
+    //await asyncWrapper(dispatch, logoutUser);
+    await logoutUserInStore();
     history.push('/');
   }
 
