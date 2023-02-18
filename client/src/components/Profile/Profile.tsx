@@ -81,7 +81,7 @@ const useStylesSaveButton = makeStyles((theme) => ({
   },
 }));
 
-function Profile () {
+export const Profile = (): JSX.Element => {
   const classes = useStylesSaveButton();
 
   const [city, setCity] = useState('');

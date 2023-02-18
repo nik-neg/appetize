@@ -14,6 +14,14 @@ import FadeIn from 'react-fade-in';
 import ApiClient from '../../services/ApiClient';
 import {IDetailsProps, IDish} from "./types";
 import {selectDishes, selectUser} from "../../store/selectors";
+import {
+  CHARACTER_LIMIT_DESCRIPTION,
+  CHARACTER_LIMIT_RECIPE,
+  CHARACTER_LIMIT_TITLE,
+  DESCRIPTION,
+  RECIPE,
+  TITLE
+} from "./constants";
 
 export const Details  = ({ route }: IDetailsProps): JSX.Element => {
   const dishes = [...selectDishes()];
@@ -62,14 +70,6 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
     }
   };
 
-  const CHARACTER_LIMIT_TITLE = 20;
-  const CHARACTER_LIMIT_DESCRIPTION = 140;
-  const CHARACTER_LIMIT_RECIPE = 500;
-
-  const title = 'title';
-  const description = 'description';
-  const recipe = 'recipe';
-
   const initialDishTextState = {
     title: dish.title,
     description: dish.description,
@@ -105,7 +105,7 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
               style={{"minWidth": "20vw"}}
               rowsMax="10"
               variant="filled"
-              onChange={handleChangeText(title)}
+              onChange={handleChangeText(TITLE)}
               InputProps={{ classes: { input: styles.someTextField.toString() } }}
             />
           }
@@ -136,7 +136,7 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
               multiline
               rowsMax="10"
               variant="filled"
-              onChange={handleChangeText(description)}
+              onChange={handleChangeText(DESCRIPTION)}
               InputProps={{ classes: { input: styles.someTextField.toString(), } }}
             />
         }
@@ -160,7 +160,7 @@ export const Details  = ({ route }: IDetailsProps): JSX.Element => {
               multiline
               rowsMax="10"
               variant="filled"
-              onChange={handleChangeText(recipe)}
+              onChange={handleChangeText(RECIPE)}
               InputProps={{ classes: { input: styles.someTextField.toString(), } }}
             />
           }

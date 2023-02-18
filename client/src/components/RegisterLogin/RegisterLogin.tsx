@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useCallback, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,12 +10,17 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Logo from './logo.jpg';
-import history from '../../history';
+import {history} from '../../history';
 import { useDispatch } from 'react-redux';
 import { fetchUserDataFromDB, createUserAndSafeToDB } from '../../store/userSlice';
 import { store } from '../../store/index';
 import './RegisterLogin.scss';
 import bcrypt from 'bcryptjs';
+import {LOGIN_MESSAGE} from "./constants";
+import React from 'react';
+import {IUser} from "../../services/types";
+import {selectUser} from "../../store/selectors";
+import {ILoginCredentials} from "./types";
 
 function Copyright() {
   return (
@@ -51,8 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LOGIN_MESSAGE = { isUser: 'Already have an account? Sign in!', isNewUser: 'Please click here to register!' }
-export default function RegisterLogin () {
+export const RegisterLogin = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -69,21 +73,33 @@ export default function RegisterLogin () {
     error: '',
   });
 
-  const asyncWrapper = async (dispatch, asyncFunc, data) => {
-    await dispatch(asyncFunc(data));
-  }
+  // const asyncWrapper = async (dispatch, asyncFunc, data) => {
+  //   await dispatch(asyncFunc(data));
+  // }
+
+  const createUserAndSafeToDBCallback = useCallback((user: IUser) => createUserAndSafeToDB(user), []);
+
+  const fetchUserDataFromDBCallBack = useCallback((loginCredentials: ILoginCredentials) => fetchUserDataFromDB(loginCredentials), []);
+
+  const selectedUser = selectUser();
 
   const saltRounds = 10;
-  const handleRegisterOrLogin = async (event) => {
-    let userData;
+  const handleRegisterOrLogin = async (event: any) => {
     event.preventDefault();
+
+    const userData = selectedUser?.userData;
+
     if(!input.isUser) {
       const {
         firstName, lastName, email, password,
       } = input;
       const user = { firstName, lastName, email, password: await bcrypt.hash(password, saltRounds), };
-      await asyncWrapper(dispatch, createUserAndSafeToDB, user);
-      userData = store.getState().user.userData;
+      //await asyncWrapper(dispatch, createUserAndSafeToDB, user);
+
+      await createUserAndSafeToDBCallback(user);
+
+      // userData = store.getState().user.userData;
+
       if(userData?.error) {
         setInput((prevState) => {
           return {
@@ -100,8 +116,10 @@ export default function RegisterLogin () {
         email, password,
       } = input;
       const loginCredentials = { email, password, };
-      await asyncWrapper(dispatch, fetchUserDataFromDB, loginCredentials);
-      userData = store.getState().user.userData;
+
+      // await asyncWrapper(dispatch, fetchUserDataFromDB, loginCredentials);
+      await fetchUserDataFromDBCallBack(loginCredentials);
+
       if(userData?.error) {
         setInput((prevState) => {
           return {
@@ -117,7 +135,7 @@ export default function RegisterLogin () {
     }
   }
 
-  const handleLoginByUser = async (event) => {
+  const handleLoginByUser = async (event: any) => {
     event.preventDefault();
     setInput({
       email: '',
@@ -127,7 +145,7 @@ export default function RegisterLogin () {
     });
   }
 
-  const handleChange = async (event) => {
+  const handleChange = async (event: any) => {
     const { name, value } = event.target;
     setInput((prevInput) => ({
       ...prevInput,

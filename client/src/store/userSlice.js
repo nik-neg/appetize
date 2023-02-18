@@ -2,9 +2,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiClient from '../services/ApiClient';
 import apiServiceJWT from '../services/ApiClientJWT';
+import { IUserData } from '../types';
 
 const initialState = {
-  userData: {},
+  userData: IUserData,
   dishesInRadius: [],
   searchData: {
     pageNumber: 1,
