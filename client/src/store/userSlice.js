@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiClient from '../services/ApiClient';
 import apiServiceJWT from '../services/ApiClientJWT';

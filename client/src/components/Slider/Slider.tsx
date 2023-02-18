@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
-import Input from '@material-ui/core/Input';
+import { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
+import Input from "@material-ui/core/Input";
+import React from "react";
+import { IInputSliderProps } from "./types";
 
 const useStyles = makeStyles({
   root: {
@@ -14,21 +16,21 @@ const useStyles = makeStyles({
   },
 });
 
-export default function InputSlider(props) {
+export const InputSlider = (props: IInputSliderProps): JSX.Element => {
   const classes = useStyles();
   const maxValue = 50;
   const minValue = 1;
   const stepSize = 0.5;
   const [value, setValue] = useState(minValue);
 
-  const handleSliderChange = (event, newValue) => {
+  const handleSliderChange = (event: any, newValue: number) => {
     if (newValue < minValue || newValue > maxValue) return;
     setValue(newValue);
-    props.onSearch(newValue)
+    props.onSearch(newValue);
   };
 
-  const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+  const handleInputChange = (event: any) => {
+    setValue(event.target.value === "" ? "" : Number(event.target.value));
   };
 
   const handleBlur = () => {
@@ -47,7 +49,7 @@ export default function InputSlider(props) {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs>
           <Slider
-            value={typeof value === 'number' ? value : 0}
+            value={typeof value === "number" ? value : 0}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             max={maxValue}
@@ -66,12 +68,12 @@ export default function InputSlider(props) {
               step: stepSize,
               min: minValue,
               max: maxValue,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
+              type: "number",
+              "aria-labelledby": "input-slider",
             }}
           />
         </Grid>
       </Grid>
     </div>
   );
-}
+};
