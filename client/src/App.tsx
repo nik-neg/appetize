@@ -1,12 +1,15 @@
 import './App.scss';
-import {Route, Router, Switch } from 'react-router-dom';
+import React from 'react';
+import { Route, Router, Switch } from 'react-router-dom';
 import RegisterLogin from './components/RegisterLogin/RegisterLogin';
 import Profile from './components/Profile/Profile';
 import Details from './components/Details/Details';
 
-import history from './history';
+import { history } from './history';
 
-function App() {
+// https://www.sitepoint.com/how-to-migrate-a-react-app-to-typescript/
+
+export const App = (): JSX.Element => {
 
   return (
     <div className="App">

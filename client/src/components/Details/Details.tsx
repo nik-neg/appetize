@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Image from 'material-ui-image'
-import history from '../../history';
+import { history } from '../../history';
 import { backToProfileRequest, updateDailyTreat } from '../../store/userSlice';
 import './Details.scss';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -11,10 +12,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { TextField } from '@material-ui/core';
 import FadeIn from 'react-fade-in';
 import ApiClient from '../../services/ApiClient';
+import {IDetailsProps} from "./types";
 
-export default function Details ({ match }) {
+export const Details  = ({ route }: IDetailsProps): JSX.Element => {
   const dishes = [...useSelector((state) => state.user.dishesInRadius)];
-  const [dish, setDish] = useState(...dishes.filter((dish) => dish._id === match.params.dishId));
+  const [dish, setDish] = useState(...dishes.filter((dish) => dish._id === route.params.dishId));
   const user = useSelector((state) => state.user.userData);
 
   const [editable, setEditable] = useState(false);
