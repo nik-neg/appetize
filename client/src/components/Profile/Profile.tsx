@@ -1,34 +1,34 @@
-import { useState, useEffect, useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
+import { makeStyles } from "@material-ui/core/styles";
 import withWidth from "@material-ui/core/withWidth";
 import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useState } from "react";
 
 import ApiClient from "../../services/ApiClient";
 import { DropZone } from "../DropZone/DropZone";
 
 import { TextField } from "@material-ui/core";
-import { Dashboard } from "../Dashboard/Dashboard";
-import Button from "@material-ui/core/Button";
-import SaveIcon from "@material-ui/icons/Save";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import SaveIcon from "@material-ui/icons/Save";
+import { Dashboard } from "../Dashboard/Dashboard";
 
-import FadeIn from "react-fade-in";
 import Image from "material-ui-image";
+import FadeIn from "react-fade-in";
 
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import { LocalDishesParameter } from "../LocalDishesParameter/LocalDischesParameter";
-import { useDispatch, useSelector } from "react-redux";
-import { updateCity, logoutUser } from "../../store/userSlice";
-import "./Profile.scss";
-import { store } from "../../store/index";
+import { useDispatch } from "react-redux";
 import { history } from "../../history";
+import { store } from "../../store/index";
+import { logoutUser, updateCity } from "../../store/userSlice";
+import { LocalDishesParameter } from "../LocalDishesParameter/LocalDischesParameter";
+import "./Profile.scss";
 
 import apiServiceJWT from "../../services/ApiClientJWT";
 
@@ -39,14 +39,13 @@ import clientHelper from "../../helpers/clientHelper";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { selectUserData } from "../../store/selectors";
-import { IGeolocation } from "./types";
 import {
   CHARACTER_LIMIT_CITY,
   CHARACTER_LIMIT_DESCRIPTION,
   CHARACTER_LIMIT_RECIPE,
   CHARACTER_LIMIT_TITLE,
 } from "./constants";
-import React from "react";
+import { IGeolocation } from "./types";
 
 const upLoadButtonStyle = {
   maxWidth: "200px",

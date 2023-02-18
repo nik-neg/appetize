@@ -1,19 +1,16 @@
-import { ChangeEvent, useState } from "react";
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Grid from "@material-ui/core/Grid";
+import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import Image from "material-ui-image";
-import { history } from "../../history";
-import { backToProfileRequest, updateDailyTreat } from "../../store/userSlice";
-import "./Details.scss";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { TextField } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Image from "material-ui-image";
+import { useState } from "react";
 import FadeIn from "react-fade-in";
+import { useDispatch } from "react-redux";
+import { history } from "../../history";
 import ApiClient from "../../services/ApiClient";
-import { IDetailsProps, IDish } from "./types";
 import { selectDishes, selectUserData } from "../../store/selectors";
+import { backToProfileRequest, updateDailyTreat } from "../../store/userSlice";
 import {
   CHARACTER_LIMIT_DESCRIPTION,
   CHARACTER_LIMIT_RECIPE,
@@ -22,6 +19,8 @@ import {
   RECIPE,
   TITLE,
 } from "./constants";
+import "./Details.scss";
+import { IDetailsProps, IDish } from "./types";
 
 export const Details = ({ route }: IDetailsProps): JSX.Element => {
   const dishes = [...selectDishes()];

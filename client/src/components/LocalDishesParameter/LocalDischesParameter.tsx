@@ -1,24 +1,23 @@
-import "./LocalDishesParameter.scss";
+import Checkbox from "@material-ui/core/Checkbox";
 import { useState } from "react";
 import { InputSlider } from "../Slider";
-import Checkbox from "@material-ui/core/Checkbox";
+import "./LocalDishesParameter.scss";
 
-import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
+import SearchIcon from "@material-ui/icons/Search";
 
-import { useSelector, useDispatch } from "react-redux";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useDispatch } from "react-redux";
+import clientHelper from "../../helpers/clientHelper";
 import {
-  getDishesInRadius,
   clearDishesInStoreRequest,
+  getDishesInRadius,
   getGeoLocation,
 } from "../../store/userSlice";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import clientHelper from "../../helpers/clientHelper";
 
 import { store } from "../../store/index";
-import { IGeolocation } from "../Profile";
-import React from "react";
 import { selectUserData } from "../../store/selectors";
+import { IGeolocation } from "../Profile";
 
 export const LocalDishesParameter = (): JSX.Element => {
   const [radius, setRadius] = useState(1);

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import "./DropZone.scss";
-import { DropzoneDialogBase } from "material-ui-dropzone";
 import IconButton from "@material-ui/core/IconButton";
-import { useSelector, useDispatch } from "react-redux";
+import { DropzoneDialogBase } from "material-ui-dropzone";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  uploadImageBeforePublish,
   clearDishTextRequest,
+  uploadImageBeforePublish,
 } from "../../store/userSlice";
+import "./DropZone.scss";
 import { IDropZoneProps } from "./types";
 
 export const DropZone = (props: IDropZoneProps) => {

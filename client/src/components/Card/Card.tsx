@@ -1,34 +1,33 @@
 /* eslint-disable no-undef */
-import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Collapse from "@material-ui/core/Collapse";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import StarsIcon from "@material-ui/icons/Stars";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { history } from "../../history";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import StarsIcon from "@material-ui/icons/Stars";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import clsx from "clsx";
 import moment from "moment";
 import { useCallback, useState } from "react";
-import "./index.scss";
 import { useDispatch } from "react-redux";
+import { history } from "../../history";
+import { selectDishes } from "../../store/selectors";
 import {
+  allDishesDeletedRequest,
   deleteDish,
   upDownVote,
-  allDishesDeletedRequest,
 } from "../../store/userSlice";
+import { CardMediaWrapper } from "./Card.styles";
+import "./index.scss";
 import { IRecipeReviewCardProps } from "./types";
-import { selectDishes } from "../../store/selectors";
-import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -155,9 +154,9 @@ export const RecipeReviewCard = (props: IRecipeReviewCardProps) => {
         subheader={moment(+props.created).format("MMMM Do, YYYY")}
         style={{ textAlign: "left" }}
       />
-      <CardMedia
+      <CardMediaWrapper
         id={`dish-image-${props.index}`}
-        className={`dish-image ${classes.media}`}
+        className={`${classes.media}`}
         image={props.imageUrl}
         title={props.title}
         onClick={handleDishClick}

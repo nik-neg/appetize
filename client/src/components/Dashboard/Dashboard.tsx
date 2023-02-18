@@ -1,22 +1,25 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux"; // useDispatch
-import { RecipeReviewCard } from "../Card";
-import FadeIn from "react-fade-in";
+import Box from "@material-ui/core/Box";
+import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import IconButton from "@material-ui/core/IconButton";
-import { getDishesInRadius } from "../../store/userSlice";
-import { store } from "../../store/index";
 import Grow from "@mui/material/Grow";
+import { useEffect, useState } from "react";
+import FadeIn from "react-fade-in";
+import { useDispatch, useSelector } from "react-redux"; // useDispatch
+import { store } from "../../store/index";
+import { selectDishes, selectUserData } from "../../store/selectors";
+import { getDishesInRadius } from "../../store/userSlice";
+import { RecipeReviewCard } from "../Card";
+import {
+  ArrowContainer,
+  CardContainer,
+  DashboardContainer,
+} from "./Dashboard.styles";
 import "./index.scss";
-import Box from "@material-ui/core/Box";
-import { IDetailsProps } from "../Details/index.js";
-import { selectDishes } from "../../store/selectors";
 
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();
-  const userData = { ...useSelector((state) => state.user.userData) };
+  const userData = { ...selectUserData() };
   const searchData = { ...useSelector((state) => state.user.searchData) };
 
   const dishes = selectDishes();
@@ -115,9 +118,9 @@ export const Dashboard = (): JSX.Element => {
   return (
     <div>
       {mouthWateringDishes && mouthWateringDishes.length > 0 ? (
-        <div className="cards-position">
+        <DashboardContainer>
           {checked ? (
-            <div className="arrow-box">
+            <ArrowContainer>
               <FadeIn
                 delay={transitionTimeForArrowButton}
                 transitionDuration={1000}
@@ -129,14 +132,14 @@ export const Dashboard = (): JSX.Element => {
                   <ArrowBackIosIcon />
                 </IconButton>
               </FadeIn>
-            </div>
+            </ArrowContainer>
           ) : (
             ""
           )}
           <>
             {mouthWateringDishes.map((dish, index) => {
               return (
-                <div className="card-box" key={index}>
+                <CardContainer key={index}>
                   <Grow
                     key={index}
                     in={checked}
@@ -173,7 +176,7 @@ export const Dashboard = (): JSX.Element => {
                       />
                     </Box>
                   </Grow>
-                </div>
+                </CardContainer>
               );
             })}
           </>
@@ -194,7 +197,7 @@ export const Dashboard = (): JSX.Element => {
           ) : (
             ""
           )}
-        </div>
+        </DashboardContainer>
       ) : (
         ""
       )}
