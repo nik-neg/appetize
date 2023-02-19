@@ -14,7 +14,9 @@ import {
   getGeoLocation,
 } from "../../store/userSlice";
 
-import { RootState, store, useAppSelector } from "../../store/index";
+import { Polygon } from "../../helpers";
+import { store, useAppSelector } from "../../store/index";
+import { selectUserData } from "../../store/selectors";
 import { IGeolocation } from "../Profile";
 import {
   SLocalDishesContainer,
@@ -24,7 +26,7 @@ import {
 
 export const LocalDishesParameter = (): JSX.Element => {
   const [radius, setRadius] = useState(1);
-  const userData = useAppSelector((state: RootState) => state?.user?.userData);
+  const userData = useAppSelector(selectUserData);
   const userDataClone = { ...userData };
   const dispatch = useDispatch();
 
@@ -35,10 +37,11 @@ export const LocalDishesParameter = (): JSX.Element => {
     var crd = pos.coords;
     const { latitude, longitude } = crd;
 
-    const geoLocationPolygon = clientHelper.calculatePolygon(
-      { latitude, longitude },
-      radius
-    );
+    const geoLocationPolygon = clientHelper.calculatePolygon({
+      latitude,
+      longitude,
+      accuracy: radius,
+    });
     dispatch(getGeoLocation(geoLocationPolygon));
   };
   // for geo point
@@ -51,7 +54,7 @@ export const LocalDishesParameter = (): JSX.Element => {
     try {
       dispatch(clearDishesInStoreRequest());
       setTimeout(() => {
-        const geoLocationPolygon =
+        const geoLocationPolygon: Polygon =
           store.getState().user.searchData.geoLocationPolygon;
         dispatch(
           getDishesInRadius({

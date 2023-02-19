@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IDish } from "../components/Details";
 import { ILoginCredentials } from "../components/RegisterLogin";
+import { Polygon } from "../helpers";
 import ApiClient from "../services/ApiClient";
 import apiServiceJWT from "../services/ApiClientJWT";
 import { IUser } from "../services/types";
 import {
   ICityUser,
+  IDailyTreat,
   IDeleteDish,
   IDishesInRadius,
   IUploadImage,
@@ -147,13 +149,13 @@ export const backToProfileRequest = createAsyncThunk(
 );
 export const updateDailyTreat = createAsyncThunk(
   "state/updateDailyTreat",
-  async (dailyTreat) => {
+  async (dailyTreat: IDailyTreat) => {
     return dailyTreat;
   }
 );
 export const getGeoLocation = createAsyncThunk(
   "state/getGeoLocation",
-  async (geoLocationPolygon) => {
+  async (geoLocationPolygon: Polygon) => {
     return geoLocationPolygon;
   }
 );

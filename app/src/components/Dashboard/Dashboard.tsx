@@ -5,9 +5,10 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Grow from "@mui/material/Grow";
 import { useEffect, useState } from "react";
 import FadeIn from "react-fade-in";
-import { useDispatch, useSelector } from "react-redux"; // useDispatch
+import { useDispatch } from "react-redux"; // useDispatch
 import { store, useAppSelector } from "../../store/index";
 import {
+  numberOfDishes,
   selectAllDishesDeletedRequest,
   selectDishes,
   selectNewDishesRequest,
@@ -95,9 +96,8 @@ export const Dashboard = (): JSX.Element => {
       })
     );
   };
-  const numberOfImages = useSelector(
-    (state) => state.user.dishesInRadius.length
-  );
+  const numberOfImages = useAppSelector(numberOfDishes);
+
   const transitionTime = 1600;
   let fadeInFadeOutCoefficent = 0.4;
   const transitionTimeForArrowButton =
@@ -111,7 +111,7 @@ export const Dashboard = (): JSX.Element => {
     //     setChecked(!checked)
     //   }, 1250)
     // },
-    exit: (func, triggerValue) => {
+    exit: (func: any, triggerValue: boolean) => {
       if (!triggerValue) return;
       func(() => {
         setChecked(!checked);
@@ -166,7 +166,7 @@ export const Dashboard = (): JSX.Element => {
                         index={index}
                         city={dish.city}
                         voted={dish.likedByUserID.some(
-                          (userId) => userId === userData._id
+                          (userId: string) => userId === userData._id
                         )}
                         userID={userData._id}
                         votes={dish.votes}

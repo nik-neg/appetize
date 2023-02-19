@@ -52,3 +52,24 @@ export interface IVote {
   dishID: string;
   vote: number;
 }
+
+interface IPoint {
+  type: string;
+  coordinates: number;
+}
+
+export interface IDailyTreat {
+  userID: string;
+  creatorName: string;
+  city: string;
+  title: string;
+  description: string;
+  recipe: string;
+  imageUrl: string;
+  geoPoint: IPoint;
+  votes: number;
+  cookedNotOrdered: boolean;
+  likedByUserID: string;
+  created: string;
+  updated: string;
+}

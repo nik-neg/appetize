@@ -143,7 +143,7 @@ const deleteDish = async (id: string, dailyTreatID: string) =>
 const updateDish = async (
   id: string,
   dailyTreatsID: string,
-  dishData: IDish
+  dishData: Partial<IDish>
 ) => {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`);
   url.search = new URLSearchParams({

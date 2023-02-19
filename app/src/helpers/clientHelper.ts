@@ -1,4 +1,5 @@
 import { ICoordinates } from "../components/Profile/types";
+import { Polygon } from "./types";
 
 const options = {
   enableHighAccuracy: true,
@@ -13,7 +14,11 @@ const getGeoLocation = (success: PositionCallback) => {
   navigator.geolocation.getCurrentPosition(success, error, options);
 };
 
-const calculatePolygon = ({ latitude, longitude, accuracy }: ICoordinates) => {
+const calculatePolygon = ({
+  latitude,
+  longitude,
+  accuracy,
+}: ICoordinates): Polygon => {
   const earthRadius = 6371e3;
   const polygon = [];
   const kmToMeters = 1000;

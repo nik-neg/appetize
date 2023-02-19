@@ -23,9 +23,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import { useDispatch } from "react-redux";
 import { history } from "../../history";
-import { store, useAppSelector } from "../../store/index";
+import { store, useAppDispatch, useAppSelector } from "../../store/index";
 import { logoutUser, updateCity } from "../../store/userSlice";
 import { LocalDishesParameter } from "../LocalDishesParameter/LocalDischesParameter";
 import "./Profile.txt";
@@ -151,11 +150,7 @@ export const Profile = (): JSX.Element => {
     },
   };
 
-  const dispatch = useDispatch();
-
-  //const asyncWrapper = async (dispatch, asyncFunc, data) => {
-  //await dispatch(asyncFunc(data));
-  //}
+  const dispatch = useAppDispatch();
 
   const logoutUserInStore = useCallback(async () => {
     await dispatch(logoutUser());
@@ -396,7 +391,7 @@ export const Profile = (): JSX.Element => {
                     lg={4}
                     style={{
                       marginTop: "42.5%",
-                      "marginRight:": "10%",
+                      marginRight: "10%",
                       minWidth: "24rem",
                     }}
                   >

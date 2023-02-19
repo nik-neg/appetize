@@ -1,7 +1,9 @@
 import IconButton from "@material-ui/core/IconButton";
-import { DropzoneDialogBase } from "material-ui-dropzone";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { DropzoneDialogBase, FileObject } from "material-ui-dropzone";
+import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../store";
+import { selectUserData } from "../../store/selectors";
 import {
   clearDishTextRequest,
   uploadImageBeforePublish,
@@ -9,7 +11,7 @@ import {
 import { IDropZoneProps } from "./types";
 
 export const DropZone = (props: IDropZoneProps) => {
-  const [fileObjects, setFileObjects] = useState([]);
+  const [fileObjects, setFileObjects] = useState<FileObject[]>([]);
   const dialogTitle = () => (
     <>
       <span>Upload file</span>
@@ -20,33 +22,41 @@ export const DropZone = (props: IDropZoneProps) => {
     </>
   );
 
-  const asyncWrapper = async (dispatch, asyncFunc, data) => {
-    await dispatch(asyncFunc(data));
-  };
+  const uploadImageBeforePublishCallback = useCallback(async (data) => {
+    dispatch(uploadImageBeforePublish(data));
+  }, []);
 
   const dispatch = useDispatch();
-  const userData = { ...useSelector((state) => state.user.userData) };
+  const userData = { ...useAppSelector(selectUserData) };
   const baseUrl = "http://localhost:3001";
   let imageURL = `${baseUrl}/profile/${userData._id}/download?created=`;
 
   const handleUpload = async () => {
     dispatch(clearDishTextRequest());
     props.setImagePath("");
-    let chosenImageDate = new Date().getTime();
+    let chosenImageDate: string | number = new Date().getTime();
     chosenImageDate = props.avatar
       ? `${chosenImageDate}_avatar`
       : chosenImageDate;
     imageURL += chosenImageDate;
-    await asyncWrapper(dispatch, uploadImageBeforePublish, {
+
+    // await asyncWrapper(dispatch, uploadImageBeforePublish, {
+    //   userId: userData._id,
+    //   file: fileObjects["0"],
+    //   chosenImageDate,
+    //   imageURL: props.avatar ? imageURL : undefined,
+    // });
+    await uploadImageBeforePublishCallback({
       userId: userData._id,
       file: fileObjects["0"],
       chosenImageDate,
       imageURL: props.avatar ? imageURL : undefined,
     });
+
     props.setImagePath(imageURL);
   };
 
-  const handleDelete = (deleted) => {
+  const handleDelete = (deleted: FileObject) => {
     setFileObjects(fileObjects.filter((f) => f !== deleted));
   };
 
