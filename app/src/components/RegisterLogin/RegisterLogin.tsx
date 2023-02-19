@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import bcrypt from "bcryptjs";
 import { useCallback, useState } from "react";
+import Logo from "../../assets/logo.jpg";
 import { history } from "../../history";
 import { IUser } from "../../services/types";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -17,7 +18,6 @@ import {
 } from "../../store/userSlice";
 import { LOGIN_MESSAGE } from "./constants";
 import { Copyright } from "./Copyright";
-import Logo from "./logo.jpg";
 import { SAppTitle, SCopyrightWrapper } from "./RegisterLogin.styles";
 import "./RegisterLogin.txt";
 import { ILoginCredentials } from "./types";
@@ -76,7 +76,7 @@ export const RegisterLogin = (): JSX.Element => {
   const handleRegisterOrLogin = async (event: any) => {
     event.preventDefault();
 
-    const userData = selectedUser?.userData;
+    const userData = selectedUser; // previously getState
 
     if (!input.isUser) {
       const { firstName, lastName, email, password } = input;

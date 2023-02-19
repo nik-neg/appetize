@@ -50,7 +50,7 @@ export interface IDeleteDish {
 export interface IVote {
   voteID: string;
   dishID: string;
-  vote: number;
+  vote: string;
 }
 
 interface IPoint {
