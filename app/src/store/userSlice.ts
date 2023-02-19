@@ -140,12 +140,13 @@ export const getGeoLocation = createAsyncThunk(
   }
 );
 
-export const userSlice = createSlice({
+export const userSlice: any = createSlice({
   // TODO: refactor to more slices?
   name: "userData",
   initialState,
+  reducers: undefined,
   extraReducers: {
-    [createUserAndSafeToDB.fulfilled]: (state, action) => {
+    [createUserAndSafeToDB.fulfilled.toString()]: (state, action) => {
       const { user, accessToken, error, message } = action.payload;
       localStorage.setItem("accessToken", accessToken);
       if (user) {
@@ -156,10 +157,10 @@ export const userSlice = createSlice({
       state.isAuthenticated = true;
       state.loading = false;
     },
-    [createUserAndSafeToDB.pending]: (state, action) => {
+    [createUserAndSafeToDB.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [fetchUserDataFromDB.fulfilled]: (state, action) => {
+    [fetchUserDataFromDB.fulfilled.toString()]: (state, action) => {
       const { user, accessToken, error, message } = action.payload;
       localStorage.setItem("accessToken", accessToken);
       if (user) {
@@ -170,17 +171,17 @@ export const userSlice = createSlice({
       state.isAuthenticated = true;
       state.loading = false;
     },
-    [fetchUserDataFromDB.pending]: (state, action) => {
+    [fetchUserDataFromDB.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [updateCity.fulfilled]: (state, action) => {
+    [updateCity.fulfilled.toString()]: (state, action) => {
       state.userData = action.payload;
       state.loading = false;
     },
-    [updateCity.pending]: (state, action) => {
+    [updateCity.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [getDishesInRadius.fulfilled]: (state, action) => {
+    [getDishesInRadius.fulfilled.toString()]: (state, action) => {
       const { dishesInRadius, radius, filter, pageNumber, geoLocationPolygon } =
         action.payload;
       const newSearchData = { radius, filter, pageNumber, geoLocationPolygon };
@@ -200,40 +201,40 @@ export const userSlice = createSlice({
       state.allDishesDeletedRequest = false;
       state.loading = false;
     },
-    [getDishesInRadius.pending]: (state, action) => {
+    [getDishesInRadius.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [clearDishesInStoreRequest.fulfilled]: (state, action) => {
+    [clearDishesInStoreRequest.fulfilled.toString()]: (state, action) => {
       state.newDishesRequest += action.payload;
       state.loading = false;
     },
-    [clearDishesInStoreRequest.pending]: (state, action) => {
+    [clearDishesInStoreRequest.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [allDishesDeletedRequest.fulfilled]: (state, action) => {
+    [allDishesDeletedRequest.fulfilled.toString()]: (state, action) => {
       state.allDishesDeletedRequest = action.payload;
       state.loading = false;
     },
-    [allDishesDeletedRequest.pending]: (state, action) => {
+    [allDishesDeletedRequest.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [clearDishTextRequest.fulfilled]: (state, action) => {
+    [clearDishTextRequest.fulfilled.toString()]: (state) => {
       state.clearDishTextRequest += 1;
       state.loading = false;
     },
-    [clearDishTextRequest.pending]: (state, action) => {
+    [clearDishTextRequest.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [uploadImageBeforePublish.fulfilled]: (state, action) => {
+    [uploadImageBeforePublish.fulfilled.toString()]: (state, action) => {
       const { userData, chosenImageDate } = action.payload;
       if (userData) state.userData = userData;
       if (chosenImageDate) state.chosenImageDate = chosenImageDate;
       state.loading = false;
     },
-    [uploadImageBeforePublish.pending]: (state, action) => {
+    [uploadImageBeforePublish.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [logoutUser.fulfilled]: (state, action) => {
+    [logoutUser.fulfilled.toString()]: (state, action) => {
       localStorage.removeItem("accessToken");
       state.userData = action.payload.userData;
       state.dishesInRadius = action.payload.dishesInRadius;
@@ -245,20 +246,20 @@ export const userSlice = createSlice({
       state.isAuthenticated = false;
       state.loading = false;
     },
-    [logoutUser.pending]: (state, action) => {
+    [logoutUser.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [deleteDish.fulfilled]: (state, action) => {
+    [deleteDish.fulfilled.toString()]: (state, action) => {
       // TODO: if dishesInRadius is empty request images from pageNumber -
       state.dishesInRadius = state.dishesInRadius
         .filter((dailyTreat) => dailyTreat._id !== action.payload)
         .sort((a, b) => b.votes - a.votes);
       state.loading = false;
     },
-    [deleteDish.pending]: (state, action) => {
+    [deleteDish.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [upDownVote.fulfilled]: (state, action) => {
+    [upDownVote.fulfilled.toString()]: (state, action) => {
       const { user, dailyTreat } = action.payload;
       const { _id } = dailyTreat;
       state.userData = user;
@@ -267,17 +268,17 @@ export const userSlice = createSlice({
       state.dishesInRadius.sort((a, b) => b.votes - a.votes);
       state.loading = false;
     },
-    [upDownVote.pending]: (state, action) => {
+    [upDownVote.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [backToProfileRequest.fulfilled]: (state, action) => {
+    [backToProfileRequest.fulfilled.toString()]: (state, action) => {
       state.initialProfileRender = action.payload;
       state.loading = false;
     },
-    [backToProfileRequest.pending]: (state, action) => {
+    [backToProfileRequest.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [updateDailyTreat.fulfilled]: (state, action) => {
+    [updateDailyTreat.fulfilled.toString()]: (state, action) => {
       const dailyTreat = action.payload;
       const { _id } = dailyTreat;
       const index = state.dishesInRadius.findIndex((dish) => dish._id === _id);
@@ -286,14 +287,14 @@ export const userSlice = createSlice({
       state.dishesInRadius.sort((a, b) => b.votes - a.votes);
       state.loading = false;
     },
-    [updateDailyTreat.pending]: (state, action) => {
+    [updateDailyTreat.pending.toString()]: (state) => {
       state.loading = true;
     },
-    [getGeoLocation.fulfilled]: (state, action) => {
+    [getGeoLocation.fulfilled.toString()]: (state, action) => {
       state.searchData.geoLocationPolygon = action.payload;
       state.loading = false;
     },
-    [getGeoLocation.pending]: (state, action) => {
+    [getGeoLocation.pending.toString()]: (state) => {
       state.loading = true;
     },
   },
