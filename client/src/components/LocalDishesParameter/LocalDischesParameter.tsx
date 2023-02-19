@@ -18,6 +18,13 @@ import {
 import { store } from "../../store/index";
 import { selectUserData } from "../../store/selectors";
 import { IGeolocation } from "../Profile";
+import {
+  LocalDishesContainerColumn,
+  LocalDishesContainerRow,
+  SLocalDishesContainer,
+  SLocalDishesContainerColumn,
+  SLocalDishesContainerRow,
+} from "./LocalDishesParameter.styles";
 
 export const LocalDishesParameter = (): JSX.Element => {
   const [radius, setRadius] = useState(1);
@@ -85,14 +92,14 @@ export const LocalDishesParameter = (): JSX.Element => {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col">
+    <SLocalDishesContainer>
+      <SLocalDishesContainerRow>
+        <SLocalDishesContainerColumn>
           <InputSlider onSearch={setRadius} />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
+        </SLocalDishesContainerColumn>
+      </SLocalDishesContainerRow>
+      <LocalDishesContainerRow>
+        <LocalDishesContainerColumn>
           <FormControlLabel
             control={
               <Checkbox
@@ -107,8 +114,8 @@ export const LocalDishesParameter = (): JSX.Element => {
             }
             label="cooked"
           />
-        </div>
-        <div className="col">
+        </LocalDishesContainerColumn>
+        <LocalDishesContainerColumn>
           <FormControlLabel
             control={
               <Checkbox
@@ -123,8 +130,8 @@ export const LocalDishesParameter = (): JSX.Element => {
             }
             label="ordered"
           />
-        </div>
-        <div className="col">
+        </LocalDishesContainerColumn>
+        <LocalDishesContainerColumn>
           <FormControlLabel
             control={
               <Checkbox
@@ -139,9 +146,9 @@ export const LocalDishesParameter = (): JSX.Element => {
             }
             label="own"
           />
-        </div>
-      </div>
-      <div className="row">
+        </LocalDishesContainerColumn>
+      </LocalDishesContainerRow>
+      <LocalDishesContainerRow>
         <div className="col">
           <Button
             id="dishes-in-radius-button"
@@ -154,7 +161,7 @@ export const LocalDishesParameter = (): JSX.Element => {
             Find nice dishes 😋
           </Button>
         </div>
-      </div>
-    </div>
+      </LocalDishesContainerRow>
+    </SLocalDishesContainer>
   );
 };

@@ -1,16 +1,16 @@
 import styled from "styled-components";
 
-export const DashboardContainer = styled.div`
+export const SDashboardContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-export const ArrowContainer = styled.div`
+export const SArrowContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-export const CardContainer = styled.div`
+export const SCardContainer = styled.div`
   display: flex;
   justify-content: center;
 `;

@@ -19,7 +19,13 @@ import {
   RECIPE,
   TITLE,
 } from "./constants";
-import "./Details.scss";
+import {
+  SDetailsTitleWrapper,
+  SDishDescription,
+  SDishRecipeWrapper,
+  SDishTitleWrapper,
+} from "./Details.styles";
+import "./Details.txt";
 import { IDetailsProps, IDish } from "./types";
 
 export const Details = ({ route }: IDetailsProps): JSX.Element => {
@@ -88,12 +94,15 @@ export const Details = ({ route }: IDetailsProps): JSX.Element => {
   return (
     <FadeIn delay={950} transitionDuration={1750}>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={12} lg={12} className="dish-publisher">
-          {`${dish.creatorName} from ${dish.city}`}
-        </Grid>
+        <SDetailsTitleWrapper>
+          <Grid item xs={12} md={12} lg={12}>
+            {`${dish.creatorName} from ${dish.city}`}
+          </Grid>
+        </SDetailsTitleWrapper>
+
         <Grid item sm={12} xs={12}>
           {!editable ? (
-            <div className="dish-title">{`${dishText.title}`}</div>
+            <SDishTitleWrapper>{`${dishText.title}`}</SDishTitleWrapper>
           ) : (
             <TextField
               id="dish-title-change"
@@ -131,7 +140,7 @@ export const Details = ({ route }: IDetailsProps): JSX.Element => {
         </Grid>
         <Grid item sm={12} xs={12}>
           {!editable ? (
-            <div className="dish-description">{`${dishText.description}`}</div>
+            <SDishDescription>{`${dishText.description}`}</SDishDescription>
           ) : (
             <TextField
               id="dish-description-change"
@@ -154,7 +163,7 @@ export const Details = ({ route }: IDetailsProps): JSX.Element => {
         </Grid>
         <Grid item sm={12} xs={12}>
           {!editable ? (
-            <div className="dish-recipe">{`${dishText.recipe}`}</div>
+            <SDishRecipeWrapper>{`${dishText.recipe}`}</SDishRecipeWrapper>
           ) : (
             <TextField
               id="dish-recipe"

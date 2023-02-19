@@ -1,23 +1,23 @@
-const baseUrl = 'http://localhost:3001';
+import { IUser } from "./types";
 
-const registerUser = async (user) =>
-  fetch(`${baseUrl}/register`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
+const baseUrl = "http://localhost:3001";
+
+const registerUser = async (user: IUser) =>
+  fetch(`${baseUrl}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  })
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const loginUser = async (user) =>
-  fetch(`${baseUrl}/login`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
+const loginUser = async (user: IUser) =>
+  fetch(`${baseUrl}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  })
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
@@ -25,134 +25,125 @@ const loginUser = async (user) =>
 const uploadImage = async (id, data, chosenImageDate, imageURL) => {
   const queryObject = {
     created: chosenImageDate,
-  }
+  };
   if (imageURL) {
     queryObject.imageURL = imageURL;
   }
-  let url = new URL(`${baseUrl}/profile/${id}/upload`)
+  let url = new URL(`${baseUrl}/profile/${id}/upload`);
   url.search = new URLSearchParams(queryObject);
   const formData = new FormData();
-  formData.append('file', data.file);
+  formData.append("file", data.file);
 
-  return fetch(url,
-    {
-      method: 'POST',
-      body: formData,
-    })
+  return fetch(url, {
+    method: "POST",
+    body: formData,
+  })
     .then((data) => data)
     .then((data) => data)
     .catch((err) => console.log(err));
 };
 
-const removeUnusedImagesFromDB = async (id) =>
-{
-  let url = new URL(`${baseUrl}/profile/${id}/remove-images`)
-  return fetch(url,
-  {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+const removeUnusedImagesFromDB = async (id: string) => {
+  let url = new URL(`${baseUrl}/profile/${id}/remove-images`);
+  return fetch(url, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
   })
-  .then((data) => data)
-  .then((data) => data)
-  .catch((err) => console.log(err));
-}
+    .then((data) => data)
+    .then((data) => data)
+    .catch((err) => console.log(err));
+};
 
-const confirmCity = async (id, city) =>
-  fetch(`${baseUrl}/profile/${id}`,
-    {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(city),
-    })
+const confirmCity = async (id: string, city: string) =>
+  fetch(`${baseUrl}/profile/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(city),
+  })
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const publishToDashBoard = async (id, data) =>
-  fetch(`${baseUrl}/profile/${id}/dashboard`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
+const publishToDashBoard = async (id: string, data: any) =>
+  fetch(`${baseUrl}/profile/${id}/dashboard`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
     .then((dailyTreatData) => dailyTreatData)
     .then((dailyTreatData) => dailyTreatData)
     .catch((err) => console.log(err));
 
-const getDishesInRadius = async (id, filter, pageNumber, geoLocationPolygon) =>
-{
-  let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
+const getDishesInRadius = async (
+  id: string,
+  filter,
+  pageNumber: number,
+  geoLocationPolygon
+) => {
+  let url = new URL(`${baseUrl}/profile/${id}/dashboard`);
   url.search = new URLSearchParams({
     id,
     filter,
     pageNumber,
-    geoLocationPolygon
+    geoLocationPolygon,
+  });
+  return fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
   })
-  return fetch(url,
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
-}
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
+};
 
-const getDish = async (id) =>
-{
-  let url = new URL(`${baseUrl}/details/${id}`)
-  return fetch(url,
-  {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+const getDish = async (id) => {
+  let url = new URL(`${baseUrl}/details/${id}`);
+  return fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
   })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
-}
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
+};
 
 const voteDish = async (id, dailyTreatsID, upDownVote) => {
-  let url = new URL(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}`)
+  let url = new URL(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}`);
   url.search = new URLSearchParams({
-    upDownVote
+    upDownVote,
+  });
+  return fetch(url, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
   })
-  return fetch(
-    url,
-  {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
-}
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
+};
 
 const deleteDish = async (id, dailyTreatID) =>
-  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`,
-  {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+  fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
   })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
 
 const updateDish = async (id, dailyTreatsID, dishData) => {
-  let url = new URL(`${baseUrl}/profile/${id}/dashboard`)
+  let url = new URL(`${baseUrl}/profile/${id}/dashboard`);
   url.search = new URLSearchParams({
-    dailyTreatsID
-  })
-  return fetch(
-    url,
-  {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    dailyTreatsID,
+  });
+  return fetch(url, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dishData),
   })
-  .then((data) => data.json())
-  .then((data) => data)
-  .catch((err) => console.log(err));
-}
+    .then((data) => data.json())
+    .then((data) => data)
+    .catch((err) => console.log(err));
+};
 
 export default {
   loginUser,
@@ -165,5 +156,5 @@ export default {
   getDish,
   voteDish,
   deleteDish,
-  updateDish
+  updateDish,
 };

@@ -1,4 +1,4 @@
-@import '../../styles/utils/variables';
+@import '../../styles/utils/_variables.txt';
 
 .dish-publisher {
   font-family: $font-dish-publisher;
@@ -7,19 +7,19 @@
 }
 
 .dish-title {
-  font-family: $font-dish-text;
+  font-family: 'Crimson Pro', serif; //$font-dish-text;
   font-size: 4vw;
   font-weight: 900;
 }
 
 .dish-description {
-  font-family: $font-dish-text;
+  font-family: 'Crimson Pro', serif; //$font-dish-text;
   font-size: 3vw;
   font-weight: 900;
 }
 
 .dish-recipe {
-  font-family: $font-dish-text;
+  font-family: 'Crimson Pro', serif //$font-dish-text;
   font-size: 3vw;
   font-weight: 900;
 }

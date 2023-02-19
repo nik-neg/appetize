@@ -11,9 +11,9 @@ import { selectDishes, selectUserData } from "../../store/selectors";
 import { getDishesInRadius } from "../../store/userSlice";
 import { RecipeReviewCard } from "../Card";
 import {
-  ArrowContainer,
-  CardContainer,
-  DashboardContainer,
+  SArrowContainer,
+  SCardContainer,
+  SDashboardContainer,
 } from "./Dashboard.styles";
 import "./index.scss";
 
@@ -118,9 +118,9 @@ export const Dashboard = (): JSX.Element => {
   return (
     <div>
       {mouthWateringDishes && mouthWateringDishes.length > 0 ? (
-        <DashboardContainer>
+        <SDashboardContainer>
           {checked ? (
-            <ArrowContainer>
+            <SArrowContainer>
               <FadeIn
                 delay={transitionTimeForArrowButton}
                 transitionDuration={1000}
@@ -132,14 +132,14 @@ export const Dashboard = (): JSX.Element => {
                   <ArrowBackIosIcon />
                 </IconButton>
               </FadeIn>
-            </ArrowContainer>
+            </SArrowContainer>
           ) : (
             ""
           )}
           <>
             {mouthWateringDishes.map((dish, index) => {
               return (
-                <CardContainer key={index}>
+                <SCardContainer key={index}>
                   <Grow
                     key={index}
                     in={checked}
@@ -176,7 +176,7 @@ export const Dashboard = (): JSX.Element => {
                       />
                     </Box>
                   </Grow>
-                </CardContainer>
+                </SCardContainer>
               );
             })}
           </>
@@ -197,7 +197,7 @@ export const Dashboard = (): JSX.Element => {
           ) : (
             ""
           )}
-        </DashboardContainer>
+        </SDashboardContainer>
       ) : (
         ""
       )}

@@ -1,10 +1,10 @@
-import {ICoordinates} from "../components/Profile/types";
+import { ICoordinates } from "../components/Profile/types";
 
 const options = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0,
-};
+} as const;
 
 const error = (err: GeolocationPositionError) => {
   console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -18,7 +18,9 @@ const calculatePolygon = ({ latitude, longitude, accuracy }: ICoordinates) => {
   const polygon = [];
   const kmToMeters = 1000;
   const dLat = (accuracy * kmToMeters) / earthRadius;
-  const dLon = (accuracy * kmToMeters) / (earthRadius * Math.cos((Math.PI * latitude) / 180));
+  const dLon =
+    (accuracy * kmToMeters) /
+    (earthRadius * Math.cos((Math.PI * latitude) / 180));
   // right up
   let newLatitude = latitude + (dLat * 180) / Math.PI;
   let newLongitude = longitude + (dLon * 180) / Math.PI;
@@ -42,4 +44,4 @@ const calculatePolygon = ({ latitude, longitude, accuracy }: ICoordinates) => {
 export default {
   getGeoLocation,
   calculatePolygon,
- }
+};

@@ -20,7 +20,8 @@ import {
 } from "../../store/userSlice";
 import { LOGIN_MESSAGE } from "./constants";
 import Logo from "./logo.jpg";
-import "./RegisterLogin.scss";
+import { SAppTitle } from "./RegisterLogin.styles";
+import "./RegisterLogin.txt";
 import { ILoginCredentials } from "./types";
 
 function Copyright() {
@@ -174,7 +175,7 @@ export const RegisterLogin = (): JSX.Element => {
           alt="Remy Sharp"
           src={Logo}
         ></Avatar>
-        <div className="appName">Appetize</div>
+        <SAppTitle>Appetize</SAppTitle>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             {!input.isUser ? (

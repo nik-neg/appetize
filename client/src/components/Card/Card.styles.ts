@@ -1,5 +1,6 @@
-import styled from "styled-components";
 import CardMedia from "@material-ui/core/CardMedia";
-export const CardMediaWrapper = styled(CardMedia)`
+import styled from "styled-components";
+
+export const SCardMediaWrapper = styled(CardMedia)`
   cursor: pointer;
 `;

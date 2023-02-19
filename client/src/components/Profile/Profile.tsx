@@ -28,7 +28,7 @@ import { history } from "../../history";
 import { store } from "../../store/index";
 import { logoutUser, updateCity } from "../../store/userSlice";
 import { LocalDishesParameter } from "../LocalDishesParameter/LocalDischesParameter";
-import "./Profile.scss";
+import "./Profile.txt";
 
 import apiServiceJWT from "../../services/ApiClientJWT";
 
@@ -45,6 +45,14 @@ import {
   CHARACTER_LIMIT_RECIPE,
   CHARACTER_LIMIT_TITLE,
 } from "./constants";
+import {
+  SAvatatWrapper,
+  SButtonWrapper, SDashboardWrapper, SLogoutButtonWrapper, SLogoutButtonWrapperSmallDevices,
+  SPublishButtonColumn,
+  SPublishButtonRow,
+  SPublishButtonRowSmallDevice,
+  SUserName
+} from "./Profile.styles";
 import { IGeolocation } from "./types";
 
 const upLoadButtonStyle = {
@@ -267,7 +275,7 @@ export const Profile = (): JSX.Element => {
   };
 
   return (
-    <div className={classesGrid.root}>
+    <SAvatatWrapper className={classesGrid.root}>
       <FadeIn delay={950} transitionDuration={1750}>
         <Grid
           container
@@ -277,15 +285,15 @@ export const Profile = (): JSX.Element => {
           alignItems="flex-start"
         >
           <Grid item lg={4} sm={12} xs={12}>
-            <h1 className="user">{userData.firstName}</h1>
-            <div className="avatar-box">
+            <SUserName>{userData.firstName}</SUserName>
+            <SAvatatWrapper>
               <Avatar
                 alt="No Avatar"
                 src={imagePathForAvarar}
                 className={classesAvatar.large}
                 style={{ height: "8rem", width: "8rem" }}
               />
-            </div>
+            </SAvatatWrapper>
             <div>
               <DropZone
                 setOpen={setOpenAvatar}
@@ -319,7 +327,7 @@ export const Profile = (): JSX.Element => {
             <div id="update-zip-code-message">
               {!userData.hasUpdatedCity ? userData.notUpdatedCityText : ""}
             </div>
-            <div className="button-box">
+            <SButtonWrapper>
               <Button
                 id="save-city-button"
                 variant="contained"
@@ -331,8 +339,8 @@ export const Profile = (): JSX.Element => {
               >
                 Save
               </Button>
-            </div>
-            <div className="button-box">
+            </SButtonWrapper>
+            <SButtonWrapper>
               <Box component="span" display="block">
                 <Button
                   id="daily-treat-upload-button"
@@ -345,7 +353,7 @@ export const Profile = (): JSX.Element => {
                   Daily Treat
                 </Button>
               </Box>
-            </div>
+            </SButtonWrapper>
           </Grid>
           <Hidden only={["xs", "sm", "md"]}>
             <Grid item lg={4}>
@@ -366,7 +374,7 @@ export const Profile = (): JSX.Element => {
           </Hidden>
           <Hidden only={["xs", "sm", "md"]}>
             <Grid item lg={4}>
-              <div className="logout">
+              <SLogoutButtonWrapper>
                 <Button
                   variant="contained"
                   color="primary"
@@ -377,7 +385,7 @@ export const Profile = (): JSX.Element => {
                 >
                   Logout
                 </Button>
-              </div>
+              </SLogoutButtonWrapper>
               <Grid item lg={4}>
                 <Grid item lg={4}>
                   <Grid
@@ -468,8 +476,8 @@ export const Profile = (): JSX.Element => {
                   </Grid>
                   {imagePath.length > 0 ? (
                     <FadeIn delay={4500} transitionDuration={1000}>
-                      <div className="publish-button-row">
-                        <div className="publish-button-col">
+                      <SPublishButtonRow>
+                        <SPublishButtonColumn>
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -483,8 +491,8 @@ export const Profile = (): JSX.Element => {
                             }
                             label="Publish"
                           />
-                        </div>
-                        <div className="publish-button-col">
+                        </SPublishButtonColumn>
+                        <SPublishButtonColumn>
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -498,8 +506,8 @@ export const Profile = (): JSX.Element => {
                             }
                             label="Coocked"
                           />
-                        </div>
-                        <div className="publish-button-col">
+                        </SPublishButtonColumn>
+                        <SPublishButtonColumn>
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -513,8 +521,8 @@ export const Profile = (): JSX.Element => {
                             }
                             label="Ordered"
                           />
-                        </div>
-                      </div>
+                        </SPublishButtonColumn>
+                      </SPublishButtonRow>
                     </FadeIn>
                   ) : (
                     ""
@@ -610,7 +618,7 @@ export const Profile = (): JSX.Element => {
                 </Grid>
                 <Grid item sm={12} xs={12}>
                   <FadeIn delay={4500} transitionDuration={1000}>
-                    <div className="publish-button-row-small-device">
+                    <SPublishButtonRowSmallDevice>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -650,7 +658,7 @@ export const Profile = (): JSX.Element => {
                         }
                         label="Ordered"
                       />
-                    </div>
+                    </SPublishButtonRowSmallDevice>
                   </FadeIn>
                 </Grid>
               </>
@@ -684,11 +692,11 @@ export const Profile = (): JSX.Element => {
         </Grid>
         <Hidden lgUp>
           <Grid item sm={12}>
-            <div className="dashboard">
+            <SDashboardWrapper>
               <Dashboard id={userData._id} />
-            </div>
+            </SDashboardWrapper>
           </Grid>
-          <div className="logout-small-devices">
+          <SLogoutButtonWrapperSmallDevices>
             <Button
               variant="contained"
               color="primary"
@@ -699,7 +707,7 @@ export const Profile = (): JSX.Element => {
             >
               Logout
             </Button>
-          </div>
+          </SLogoutButtonWrapperSmallDevices>
         </Hidden>
       </FadeIn>
     </div>

@@ -25,7 +25,7 @@ import {
   deleteDish,
   upDownVote,
 } from "../../store/userSlice";
-import { CardMediaWrapper } from "./Card.styles";
+import { SCardMediaWrapper } from "./Card.styles";
 import "./index.scss";
 import { IRecipeReviewCardProps } from "./types";
 
@@ -154,7 +154,7 @@ export const RecipeReviewCard = (props: IRecipeReviewCardProps) => {
         subheader={moment(+props.created).format("MMMM Do, YYYY")}
         style={{ textAlign: "left" }}
       />
-      <CardMediaWrapper
+      <SCardMediaWrapper
         id={`dish-image-${props.index}`}
         className={`${classes.media}`}
         image={props.imageUrl}
