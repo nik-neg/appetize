@@ -9,7 +9,8 @@ import FadeIn from "react-fade-in";
 import { useDispatch } from "react-redux";
 import { history } from "../../history";
 import ApiClient from "../../services/ApiClient";
-import { selectDishes, selectUserData } from "../../store/selectors";
+import { RootState, useAppSelector } from "../../store";
+import { selectDishes } from "../../store/selectors";
 import { backToProfileRequest, updateDailyTreat } from "../../store/userSlice";
 import {
   CHARACTER_LIMIT_DESCRIPTION,
@@ -34,7 +35,7 @@ export const Details = ({ route }: IDetailsProps): JSX.Element => {
     (dish) => dish._id === route.params.dishId
   );
   const [dish, setDish] = useState<IDish>(filteredDish[0]);
-  const user = selectUserData();
+  const user = useAppSelector((state: RootState) => state?.user?.userData);
 
   const [editable, setEditable] = useState(false);
   const updateDish = async () => {

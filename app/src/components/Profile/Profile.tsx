@@ -38,7 +38,6 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import clientHelper from "../../helpers/clientHelper";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { selectUserData } from "../../store/selectors";
 import {
   CHARACTER_LIMIT_CITY,
   CHARACTER_LIMIT_DESCRIPTION,

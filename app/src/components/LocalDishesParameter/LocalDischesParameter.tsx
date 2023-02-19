@@ -14,8 +14,7 @@ import {
   getGeoLocation,
 } from "../../store/userSlice";
 
-import { store } from "../../store/index";
-import { selectUserData } from "../../store/selectors";
+import { RootState, store, useAppSelector } from "../../store/index";
 import { IGeolocation } from "../Profile";
 import {
   SLocalDishesContainer,
@@ -25,7 +24,9 @@ import {
 
 export const LocalDishesParameter = (): JSX.Element => {
   const [radius, setRadius] = useState(1);
-  const userData = selectUserData();
+  const userData = (r = useAppSelector(
+    (state: RootState) => state?.user?.userData
+  ));
   const userDataClone = { ...userData };
   const dispatch = useDispatch();
 

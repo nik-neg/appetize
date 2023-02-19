@@ -8,10 +8,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import bcrypt from "bcryptjs";
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 import { history } from "../../history";
 import { IUser } from "../../services/types";
-import { selectUserData } from "../../store/selectors";
+import { RootState, useAppDispatch, useAppSelector } from "../../store";
 import {
   createUserAndSafeToDB,
   fetchUserDataFromDB,
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const RegisterLogin = (): JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const classes = useStyles();
   const initialUserCredentials = {
@@ -71,7 +70,9 @@ export const RegisterLogin = (): JSX.Element => {
     []
   );
 
-  const selectedUser = selectUserData();
+  const selectedUser = useAppSelector(
+    (state: RootState) => state?.user?.userData
+  );
 
   const saltRounds = 10;
   const handleRegisterOrLogin = async (event: any) => {
