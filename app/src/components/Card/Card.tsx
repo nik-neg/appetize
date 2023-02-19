@@ -19,6 +19,7 @@ import moment from "moment";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { history } from "../../history";
+import { useAppSelector } from "../../store";
 import { selectDishes } from "../../store/selectors";
 import {
   allDishesDeletedRequest,
@@ -110,7 +111,7 @@ export const RecipeReviewCard = (props: IRecipeReviewCardProps) => {
 
   const dispatch = useDispatch();
 
-  const selectedDishes = selectDishes();
+  const selectedDishes = useAppSelector(selectDishes);
 
   const handleDelete = async () => {
     try {

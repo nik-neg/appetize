@@ -6,8 +6,14 @@ import Grow from "@mui/material/Grow";
 import { useEffect, useState } from "react";
 import FadeIn from "react-fade-in";
 import { useDispatch, useSelector } from "react-redux"; // useDispatch
-import { RootState, store, useAppSelector } from "../../store/index";
-import { selectDishes } from "../../store/selectors";
+import { store, useAppSelector } from "../../store/index";
+import {
+  selectAllDishesDeletedRequest,
+  selectDishes,
+  selectNewDishesRequest,
+  selectSearchData,
+  selectUserData,
+} from "../../store/selectors";
 import { getDishesInRadius } from "../../store/userSlice";
 import { RecipeReviewCard } from "../Card";
 import {
@@ -19,11 +25,11 @@ import {
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();
   const userData = {
-    ...useAppSelector((state: RootState) => state?.user?.userData),
+    ...useAppSelector(selectUserData),
   };
-  const searchData = { ...useSelector((state) => state.user.searchData) };
+  const searchData = { ...useAppSelector(selectSearchData) };
 
-  const dishes = selectDishes();
+  const dishes = useAppSelector(selectDishes);
 
   const [mouthWateringDishes, setMouthWateringDishes] = useState([...dishes]);
 
@@ -32,10 +38,8 @@ export const Dashboard = (): JSX.Element => {
     setMouthWateringDishes(newMouthWateringDishes);
   }, [dishes]);
 
-  const request = useSelector((state) => state.user.newDishesRequest);
-  const allDishesDeletedRequest = useSelector(
-    (state) => state.user.allDishesDeletedRequest
-  );
+  const request = useAppSelector(selectNewDishesRequest);
+  const allDishesDeletedRequest = useAppSelector(selectAllDishesDeletedRequest);
 
   useEffect(() => {
     // check if all dishes in the next page are deleted, then go one page back

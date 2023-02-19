@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { IDish } from "../components/Details";
 import { ILoginCredentials } from "../components/RegisterLogin";
 import ApiClient from "../services/ApiClient";
 import apiServiceJWT from "../services/ApiClientJWT";
@@ -9,9 +10,10 @@ import {
   IDishesInRadius,
   IUploadImage,
   IVote,
+  State,
 } from "./types";
 
-const initialState = {
+const initialState: State = {
   userData: {},
   dishesInRadius: [],
   searchData: {
@@ -209,7 +211,9 @@ export const userSlice: any = createSlice({
         state.searchData.pageNumber -= 1;
       }
       const filteredUserDishes = [
-        ...dishesInRadius.filter((dish) => dish.userID == state.userData._id),
+        ...dishesInRadius.filter(
+          (dish: IDish) => dish.userID == state.userData._id
+        ),
       ];
       state.userData.dailyFood = filteredUserDishes.map(
         (filteredDish) => filteredDish._id

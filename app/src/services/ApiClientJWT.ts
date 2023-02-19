@@ -1,10 +1,11 @@
+import { ILoginCredentials } from "../components/RegisterLogin";
 import { IUser } from "./types";
 
 const baseUrl = "http://localhost:3001";
 
 const apiServiceJWT = {
   register: async (user: IUser) => {},
-  loginUser: async (user: IUser) => {},
+  loginUser: async (user: ILoginCredentials) => {},
   getProfile: async (accessToken: string | null) => {},
   logout: async (accessToken: string | null) => {},
 };
@@ -22,13 +23,13 @@ apiServiceJWT.register = async (user) => {
     .catch((err) => console.log(err));
 };
 
-apiServiceJWT.loginUser = async (user) => {
+apiServiceJWT.loginUser = async (loginCredentials) => {
   return fetch(`${baseUrl}/login`, {
     method: "POST",
     credentials: "include",
     mode: "cors",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user),
+    body: JSON.stringify(loginCredentials),
   })
     .then((data) => data.json())
     .then((userData) => userData)

@@ -25,7 +25,7 @@ import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { useDispatch } from "react-redux";
 import { history } from "../../history";
-import { RootState, store, useAppSelector } from "../../store/index";
+import { store, useAppSelector } from "../../store/index";
 import { logoutUser, updateCity } from "../../store/userSlice";
 import { LocalDishesParameter } from "../LocalDishesParameter/LocalDischesParameter";
 import "./Profile.txt";
@@ -38,6 +38,7 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import clientHelper from "../../helpers/clientHelper";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { selectUserData } from "../../store/selectors/user";
 import {
   CHARACTER_LIMIT_CITY,
   CHARACTER_LIMIT_DESCRIPTION,
@@ -109,7 +110,7 @@ export const Profile = (): JSX.Element => {
 
   const [city, setCity] = useState("");
 
-  const user = useAppSelector((state: RootState) => state?.user?.userData);
+  const user = useAppSelector(selectUserData);
 
   const [userData, setUserData] = useState({
     _id: "",

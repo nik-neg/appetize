@@ -30,7 +30,7 @@ import "./Details.txt";
 import { IDetailsProps, IDish } from "./types";
 
 export const Details = ({ route }: IDetailsProps): JSX.Element => {
-  const dishes = [...selectDishes()];
+  const dishes = [...useAppSelector(selectDishes)];
   const filteredDish = dishes.filter(
     (dish) => dish._id === route.params.dishId
   );

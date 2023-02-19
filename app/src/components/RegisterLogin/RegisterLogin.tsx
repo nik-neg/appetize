@@ -9,7 +9,8 @@ import bcrypt from "bcryptjs";
 import { useCallback, useState } from "react";
 import { history } from "../../history";
 import { IUser } from "../../services/types";
-import { RootState, useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { selectUserData } from "../../store/selectors/user";
 import {
   createUserAndSafeToDB,
   fetchUserDataFromDB,
@@ -69,9 +70,7 @@ export const RegisterLogin = (): JSX.Element => {
     []
   );
 
-  const selectedUser = useAppSelector(
-    (state: RootState) => state?.user?.userData
-  );
+  const selectedUser = useAppSelector(selectUserData);
 
   const saltRounds = 10;
   const handleRegisterOrLogin = async (event: any) => {

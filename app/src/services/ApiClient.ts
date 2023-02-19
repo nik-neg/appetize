@@ -1,3 +1,4 @@
+import { IDish } from "../components/Details";
 import { IUser } from "./types";
 
 const baseUrl = "http://localhost:3001";
@@ -22,7 +23,12 @@ const loginUser = async (user: IUser) =>
     .then((userData) => userData)
     .catch((err) => console.log(err));
 
-const uploadImage = async (id, data, chosenImageDate, imageURL) => {
+const uploadImage = async (
+  id: string,
+  data: any,
+  chosenImageDate: string,
+  imageURL: string
+) => {
   const queryObject = {
     created: chosenImageDate,
   };
@@ -107,7 +113,11 @@ const getDish = async (id) => {
     .catch((err) => console.log(err));
 };
 
-const voteDish = async (id, dailyTreatsID, upDownVote) => {
+const voteDish = async (
+  id: string,
+  dailyTreatsID: string,
+  upDownVote: number
+) => {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}`);
   url.search = new URLSearchParams({
     upDownVote,
@@ -121,7 +131,7 @@ const voteDish = async (id, dailyTreatsID, upDownVote) => {
     .catch((err) => console.log(err));
 };
 
-const deleteDish = async (id, dailyTreatID) =>
+const deleteDish = async (id: string, dailyTreatID: string) =>
   fetch(`${baseUrl}/profile/${id}/dashboard/${dailyTreatID}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
@@ -130,7 +140,11 @@ const deleteDish = async (id, dailyTreatID) =>
     .then((data) => data)
     .catch((err) => console.log(err));
 
-const updateDish = async (id, dailyTreatsID, dishData) => {
+const updateDish = async (
+  id: string,
+  dailyTreatsID: string,
+  dishData: IDish
+) => {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`);
   url.search = new URLSearchParams({
     dailyTreatsID,
