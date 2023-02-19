@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "sever for the appetize application",
+  "description": "server for the appetize application",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage --verbose --runInBand --forceExit",
