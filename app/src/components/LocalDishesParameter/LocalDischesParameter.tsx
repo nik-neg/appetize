@@ -24,9 +24,7 @@ import {
 
 export const LocalDishesParameter = (): JSX.Element => {
   const [radius, setRadius] = useState(1);
-  const userData = (r = useAppSelector(
-    (state: RootState) => state?.user?.userData
-  ));
+  const userData = useAppSelector((state: RootState) => state?.user?.userData);
   const userDataClone = { ...userData };
   const dispatch = useDispatch();
 

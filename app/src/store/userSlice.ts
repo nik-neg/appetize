@@ -36,6 +36,7 @@ const initialState = {
 export const createUserAndSafeToDB = createAsyncThunk(
   "userData/createUser",
   async (input: IUser) => {
+    debugger;
     const response = await apiServiceJWT.register(input);
     return response;
   }

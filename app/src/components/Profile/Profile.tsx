@@ -25,7 +25,7 @@ import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { useDispatch } from "react-redux";
 import { history } from "../../history";
-import { store } from "../../store/index";
+import { RootState, store, useAppSelector } from "../../store/index";
 import { logoutUser, updateCity } from "../../store/userSlice";
 import { LocalDishesParameter } from "../LocalDishesParameter/LocalDischesParameter";
 import "./Profile.txt";
@@ -109,7 +109,7 @@ export const Profile = (): JSX.Element => {
 
   const [city, setCity] = useState("");
 
-  const user = selectUserData();
+  const user = useAppSelector((state: RootState) => state?.user?.userData);
 
   const [userData, setUserData] = useState({
     _id: "",

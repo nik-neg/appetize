@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -18,7 +17,7 @@ import {
 import { LOGIN_MESSAGE } from "./constants";
 import { Copyright } from "./Copyright";
 import Logo from "./logo.jpg";
-import { SAppTitle } from "./RegisterLogin.styles";
+import { SAppTitle, SCopyrightWrapper } from "./RegisterLogin.styles";
 import "./RegisterLogin.txt";
 import { ILoginCredentials } from "./types";
 
@@ -251,9 +250,9 @@ export const RegisterLogin = (): JSX.Element => {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
+      <SCopyrightWrapper>
         <Copyright />
-      </Box>
+      </SCopyrightWrapper>
     </Container>
   );
 };

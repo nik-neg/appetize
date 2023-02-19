@@ -6,7 +6,7 @@ import Grow from "@mui/material/Grow";
 import { useEffect, useState } from "react";
 import FadeIn from "react-fade-in";
 import { useDispatch, useSelector } from "react-redux"; // useDispatch
-import { store } from "../../store/index";
+import { RootState, store, useAppSelector } from "../../store/index";
 import { selectDishes } from "../../store/selectors";
 import { getDishesInRadius } from "../../store/userSlice";
 import { RecipeReviewCard } from "../Card";
@@ -18,7 +18,9 @@ import {
 
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();
-  const userData = { ...selectUserData() };
+  const userData = {
+    ...useAppSelector((state: RootState) => state?.user?.userData),
+  };
   const searchData = { ...useSelector((state) => state.user.searchData) };
 
   const dishes = selectDishes();
