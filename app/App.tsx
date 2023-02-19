@@ -1,4 +1,5 @@
 import { Route, Router, Switch } from "react-router-dom";
+import "./App.txt";
 import { Details } from "./components/Details/Details";
 import { Profile } from "./components/Profile/Profile";
 import { RegisterLogin } from "./components/RegisterLogin/RegisterLogin";
