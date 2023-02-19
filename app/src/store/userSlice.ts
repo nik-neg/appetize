@@ -121,7 +121,7 @@ export const deleteDish = createAsyncThunk(
 
 export const upDownVote = createAsyncThunk(
   "dishesInRadius/upDownVote",
-  async ({ voteID, dishID, vote }: IVote) => {
+  async ({ voteID, dishID, voteDecision }: IVote) => {
     const response = await ApiClient.voteDish(voteID, dishID, vote);
     return response;
   }

@@ -295,7 +295,7 @@ export const Profile = (): JSX.Element => {
             <div>
               <DropZone
                 setOpen={setOpenAvatar}
-                open={userData.hasUpdatedCity ? openAvatar : null}
+                open={openAvatar}
                 setImagePath={setImagePathForAvatar}
                 avatar={true}
               />
@@ -667,11 +667,7 @@ export const Profile = (): JSX.Element => {
           <Grid item lg={4} style={{ top: "8rem" }}>
             <LocalDishesParameter />
           </Grid>
-          <DropZone
-            setOpen={setOpen}
-            open={userData.hasUpdatedCity ? open : null}
-            setImagePath={setImagePath}
-          />
+          <DropZone setOpen={setOpen} open={open} setImagePath={setImagePath} />
           <Hidden only={["xs", "sm", "md"]}>
             <Grid item lg={4}></Grid>
           </Hidden>

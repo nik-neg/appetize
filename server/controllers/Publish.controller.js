@@ -2,15 +2,15 @@
 /* eslint-disable no-shadow */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-plusplus */
-const axios = require('axios');
+const axios = require("axios");
 
-const _ = require('lodash');
+const _ = require("lodash");
 
-const User = require('../models/User');
+const User = require("../models/User");
 
-const DailyTreat = require('../models/DailyTreat');
+const DailyTreat = require("../models/DailyTreat");
 
-const helper = require('../helpers/db.helpers');
+const helper = require("../helpers/db.helpers");
 
 module.exports.publishDish = async (req, res) => {
   const { id } = req.params;
@@ -20,13 +20,27 @@ module.exports.publishDish = async (req, res) => {
       _id: id,
     });
     if (!user) {
-      return res.status(400).send({ error: '400', message: 'Could not find user' });
+      return res
+        .status(400)
+        .send({ error: "400", message: "Could not find user" });
     }
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not find user - Internal server error' });
+    return res
+      .status(500)
+      .send({
+        error: "500",
+        message: "Could not find user - Internal server error",
+      });
   }
   const {
-    title, description, recipe, firstName, city, cookedNotOrdered, chosenImageDate, geoPoint,
+    title,
+    description,
+    recipe,
+    firstName,
+    city,
+    cookedNotOrdered,
+    chosenImageDate,
+    geoPoint,
   } = req.body;
   const { latitude, longitude, accuracy } = geoPoint;
   const imageUrl = `http://localhost:3001/profile/${id}/download?created=${chosenImageDate}`;
@@ -38,7 +52,10 @@ module.exports.publishDish = async (req, res) => {
       likedByUserID: [],
       city,
       cookedNotOrdered,
-      geoPoint: { type: 'Point', coordinates: [parseFloat(latitude), parseFloat(longitude)] },
+      geoPoint: {
+        type: "Point",
+        coordinates: [parseFloat(latitude), parseFloat(longitude)],
+      },
     });
     dailyTreat.title = title;
     dailyTreat.description = description;
@@ -53,7 +70,12 @@ module.exports.publishDish = async (req, res) => {
     await user.save();
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
-    res.status(500).send({ error: '500', message: 'Could not save daily treat - Internal server error' });
+    res
+      .status(500)
+      .send({
+        error: "500",
+        message: "Could not save daily treat - Internal server error",
+      });
   }
 };
 
@@ -63,36 +85,45 @@ module.exports.removeDish = async (req, res) => {
   try {
     const dailyTreat = await DailyTreat.findOne({ _id: dailyTreatID });
     let createdTime = Array.from(dailyTreat.imageUrl).reverse();
-    const cutIndex = createdTime.indexOf('=');
-    createdTime = createdTime.slice(0, cutIndex).reverse().join('');
+    const cutIndex = createdTime.indexOf("=");
+    createdTime = createdTime.slice(0, cutIndex).reverse().join("");
     // remove from dailytreats
     await DailyTreat.deleteOne({ _id: dailyTreatID });
     // remove from dailyFood list in user
     const user = await User.findOne({ _id: id });
-    user.dailyFood = user.dailyFood.filter((dailyTreat) => dailyTreat != dailyTreatID);
+    user.dailyFood = user.dailyFood.filter(
+      (dailyTreat) => dailyTreat != dailyTreatID
+    );
     await user.save();
     // remove from files and chunks
     const excludeDeletePattern = new RegExp(`${id}/${createdTime}`);
-    const result = await helper.removeImageData(excludeDeletePattern, 'deleteOne');
+    const result = await helper.removeImageData(
+      excludeDeletePattern,
+      "deleteOne"
+    );
     if (result) {
-      res.status(200).send({ message: 'Image removed' });
+      res.status(200).send({ message: "Image removed" });
     } else {
-      res.status(409).send({ message: 'Image could not be removed' });
+      res.status(409).send({ message: "Image could not be removed" });
     }
   } catch (e) {
-    res.status(500).send({ error: '500', message: 'Could not remove daily treat and image - Internal server error' });
+    res
+      .status(500)
+      .send({
+        error: "500",
+        message:
+          "Could not remove daily treat and image - Internal server error",
+      });
   }
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
-  const {
-    id, filter, pageNumber, geoLocationPolygon,
-  } = req.query;
+  const { id, filter, pageNumber, geoLocationPolygon } = req.query;
   const parsedFilter = JSON.parse(filter);
   let parsedGeoLocation = JSON.parse(geoLocationPolygon);
   parsedGeoLocation = parsedGeoLocation.map((arr) => arr.map((el) => +el));
   const polygon = {
-    type: 'Polygon',
+    type: "Polygon",
     coordinates: [parsedGeoLocation],
   };
   try {
@@ -106,16 +137,26 @@ module.exports.checkDishesInRadius = async (req, res) => {
 
     const PAGE_SIZE = 4;
     const toSkip = (pageNumber - 1) * PAGE_SIZE;
-    const dailyTreats = await helper.findDishesInDB(queryObject, polygon, toSkip, PAGE_SIZE);
+    const dailyTreats = await helper.findDishesInDB(
+      queryObject,
+      polygon,
+      toSkip,
+      PAGE_SIZE
+    );
     return res.status(200).send(dailyTreats);
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'checkDishesInRadius - Internal server error' });
+    return res
+      .status(500)
+      .send({
+        error: "500",
+        message: "checkDishesInRadius - Internal server error",
+      });
   }
 };
 
 module.exports.upDownVote = async (req, res) => {
   const { id, dailyTreatID } = req.params;
-  const { upDownVote } = req.query;
+  const { voteDecision } = req.query;
   const upVoteStatement = {
     dailyTreat: { $inc: { votes: 1 }, $push: { likedByUserID: id } },
     user: { $push: { liked: dailyTreatID } },
@@ -129,15 +170,26 @@ module.exports.upDownVote = async (req, res) => {
 
   try {
     const dailyTreatToCheck = await DailyTreat.findOne({ _id: dailyTreatID });
-    if (dailyTreatToCheck && ((dailyTreatToCheck.userID == id) || (dailyTreatToCheck.votes === 0 && upDownVote !== 'up'))) {
-      return res.status(409).send({ error: '409', message: 'User cannot vote for this dish!' });
+    if (
+      dailyTreatToCheck &&
+      (dailyTreatToCheck.userID == id ||
+        (dailyTreatToCheck.votes === 0 && voteDecision !== "up"))
+    ) {
+      return res
+        .status(409)
+        .send({ error: "409", message: "User cannot vote for this dish!" });
     }
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not find daily treat - Internal server error' });
+    return res
+      .status(500)
+      .send({
+        error: "500",
+        message: "Could not find daily treat - Internal server error",
+      });
   }
 
   try {
-    if (upDownVote === 'up') {
+    if (voteDecision === "up") {
       // like dish
       dailyTreat = await DailyTreat.findOneAndUpdate(
         {
@@ -145,13 +197,11 @@ module.exports.upDownVote = async (req, res) => {
           userID: { $ne: id },
         },
         upVoteStatement.dailyTreat,
-        { new: true },
+        { new: true }
       );
-      user = await User.findOneAndUpdate(
-        { _id: id },
-        upVoteStatement.user,
-        { new: true },
-      );
+      user = await User.findOneAndUpdate({ _id: id }, upVoteStatement.user, {
+        new: true,
+      });
     } else {
       // unlike dish
       dailyTreat = await DailyTreat.findOneAndUpdate(
@@ -160,18 +210,21 @@ module.exports.upDownVote = async (req, res) => {
           userID: { $ne: id },
         },
         downVoteStatement.dailyTreat,
-        { new: true },
+        { new: true }
       );
-      user = await User.findOneAndUpdate(
-        { _id: id },
-        downVoteStatement.user,
-        { new: true },
-      );
+      user = await User.findOneAndUpdate({ _id: id }, downVoteStatement.user, {
+        new: true,
+      });
     }
-    user = _.omit(user, ['password']);
+    user = _.omit(user, ["password"]);
     return res.status(200).send({ user, dailyTreat });
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not up/down vote daily treat - Internal server error' });
+    return res
+      .status(500)
+      .send({
+        error: "500",
+        message: "Could not up/down vote daily treat - Internal server error",
+      });
   }
 };
 
@@ -185,10 +238,15 @@ module.exports.updateDish = async (req, res) => {
         _id: dailyTreatsID,
       },
       { ...dishText, cookedNotOrdered: cookedOrdered.cooked },
-      { new: true },
+      { new: true }
     );
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not update daily treat - Internal server error' });
+    return res
+      .status(500)
+      .send({
+        error: "500",
+        message: "Could not update daily treat - Internal server error",
+      });
   }
 
   return res.status(200).send(updatedDailyTreat);
@@ -199,12 +257,29 @@ module.exports.readDish = async (req, res) => {
   try {
     const dailyTreat = await DailyTreat.findOne({ _id: id });
     const {
-      creatorName, city, cookedNotOrdered, title, description, recipe, imageUrl,
+      creatorName,
+      city,
+      cookedNotOrdered,
+      title,
+      description,
+      recipe,
+      imageUrl,
     } = dailyTreat;
     return res.status(200).send({
-      creatorName, city, cookedNotOrdered, title, description, recipe, imageUrl,
+      creatorName,
+      city,
+      cookedNotOrdered,
+      title,
+      description,
+      recipe,
+      imageUrl,
     });
   } catch (e) {
-    return res.status(500).send({ error: '500', message: 'Could not read daily treat - Internal server error' });
+    return res
+      .status(500)
+      .send({
+        error: "500",
+        message: "Could not read daily treat - Internal server error",
+      });
   }
 };

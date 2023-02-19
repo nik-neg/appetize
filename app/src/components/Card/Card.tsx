@@ -78,15 +78,15 @@ export const RecipeReviewCard = (props: IRecipeReviewCardProps) => {
   const handleLike = async () => {
     if (props.userID === props.dishUserID) return;
     setLikeColor(!likeColor);
-    let vote = "";
+    let voteDecision = "";
     if (!props.voted) {
-      vote = "up";
+      voteDecision = "up";
     } else {
-      vote = "down";
+      voteDecision = "down";
     }
     try {
       dispatch(
-        upDownVote({ voteID: props.userID, dishID: props.dishID, vote })
+        upDownVote({ voteID: props.userID, dishID: props.dishID, voteDecision })
       );
     } catch (e) {
       console.log(e);

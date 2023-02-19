@@ -116,11 +116,11 @@ const getDish = async (id) => {
 const voteDish = async (
   id: string,
   dailyTreatsID: string,
-  upDownVote: number
+  voteDecision: string
 ) => {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard/${dailyTreatsID}`);
   url.search = new URLSearchParams({
-    upDownVote,
+    voteDecision,
   });
   return fetch(url, {
     method: "PATCH",
