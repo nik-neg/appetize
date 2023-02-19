@@ -4,7 +4,7 @@ Appetize is a full responsive social media application for local food, where use
 add a title, description, and recipe and then publish it with geolocation API from Web API.
 A simple voting system enables to vote for favourite dishes.
 
-`Hint`: I'm currently refactoring Appetize to TypeScript, Styled Components and RTKQ.
+`Hint`: I'm currently refactoring Appetize to TypeScript, Styled Components, RTKQ and Vite.
 
 <div align="center">
 <table>
