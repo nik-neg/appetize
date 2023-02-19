@@ -25,12 +25,10 @@ module.exports.publishDish = async (req, res) => {
         .send({ error: "400", message: "Could not find user" });
     }
   } catch (e) {
-    return res
-      .status(500)
-      .send({
-        error: "500",
-        message: "Could not find user - Internal server error",
-      });
+    return res.status(500).send({
+      error: "500",
+      message: "Could not find user - Internal server error",
+    });
   }
   const {
     title,
@@ -70,12 +68,10 @@ module.exports.publishDish = async (req, res) => {
     await user.save();
     res.status(201).send(dailyTreatSaveResponse);
   } catch (e) {
-    res
-      .status(500)
-      .send({
-        error: "500",
-        message: "Could not save daily treat - Internal server error",
-      });
+    res.status(500).send({
+      error: "500",
+      message: "Could not save daily treat - Internal server error",
+    });
   }
 };
 
@@ -107,17 +103,15 @@ module.exports.removeDish = async (req, res) => {
       res.status(409).send({ message: "Image could not be removed" });
     }
   } catch (e) {
-    res
-      .status(500)
-      .send({
-        error: "500",
-        message:
-          "Could not remove daily treat and image - Internal server error",
-      });
+    res.status(500).send({
+      error: "500",
+      message: "Could not remove daily treat and image - Internal server error",
+    });
   }
 };
 
 module.exports.checkDishesInRadius = async (req, res) => {
+  debugger;
   const { id, filter, pageNumber, geoLocationPolygon } = req.query;
   const parsedFilter = JSON.parse(filter);
   let parsedGeoLocation = JSON.parse(geoLocationPolygon);
@@ -145,12 +139,10 @@ module.exports.checkDishesInRadius = async (req, res) => {
     );
     return res.status(200).send(dailyTreats);
   } catch (e) {
-    return res
-      .status(500)
-      .send({
-        error: "500",
-        message: "checkDishesInRadius - Internal server error",
-      });
+    return res.status(500).send({
+      error: "500",
+      message: "checkDishesInRadius - Internal server error",
+    });
   }
 };
 
@@ -180,12 +172,10 @@ module.exports.upDownVote = async (req, res) => {
         .send({ error: "409", message: "User cannot vote for this dish!" });
     }
   } catch (e) {
-    return res
-      .status(500)
-      .send({
-        error: "500",
-        message: "Could not find daily treat - Internal server error",
-      });
+    return res.status(500).send({
+      error: "500",
+      message: "Could not find daily treat - Internal server error",
+    });
   }
 
   try {
@@ -219,12 +209,10 @@ module.exports.upDownVote = async (req, res) => {
     user = _.omit(user, ["password"]);
     return res.status(200).send({ user, dailyTreat });
   } catch (e) {
-    return res
-      .status(500)
-      .send({
-        error: "500",
-        message: "Could not up/down vote daily treat - Internal server error",
-      });
+    return res.status(500).send({
+      error: "500",
+      message: "Could not up/down vote daily treat - Internal server error",
+    });
   }
 };
 
@@ -241,12 +229,10 @@ module.exports.updateDish = async (req, res) => {
       { new: true }
     );
   } catch (e) {
-    return res
-      .status(500)
-      .send({
-        error: "500",
-        message: "Could not update daily treat - Internal server error",
-      });
+    return res.status(500).send({
+      error: "500",
+      message: "Could not update daily treat - Internal server error",
+    });
   }
 
   return res.status(200).send(updatedDailyTreat);
@@ -275,11 +261,9 @@ module.exports.readDish = async (req, res) => {
       imageUrl,
     });
   } catch (e) {
-    return res
-      .status(500)
-      .send({
-        error: "500",
-        message: "Could not read daily treat - Internal server error",
-      });
+    return res.status(500).send({
+      error: "500",
+      message: "Could not read daily treat - Internal server error",
+    });
   }
 };

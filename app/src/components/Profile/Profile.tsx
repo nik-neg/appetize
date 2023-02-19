@@ -37,6 +37,7 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import clientHelper from "../../helpers/clientHelper";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { ICityUser } from "../../services/types";
 import { selectUserData } from "../../store/selectors/user";
 import {
   CHARACTER_LIMIT_CITY,
@@ -190,13 +191,14 @@ export const Profile = (): JSX.Element => {
       setDish((prevValue) => ({ ...prevValue, [name]: event.target.value }));
     };
 
-  const updateCityInStore = useCallback(async (data: any) => {
-    await dispatch(updateCity(data));
+  const updateCityInStore = useCallback(async ({ id, city }: ICityUser) => {
+    await dispatch(updateCity({ id, city }));
   }, []);
 
   const handleUpdateCity = async () => {
+    debugger;
     //await asyncWrapper(dispatch, updateCity, { id: userData._id, city });
-    await updateCityInStore(updateCity({ id: userData._id, city }));
+    await updateCityInStore({ id: userData._id, city });
 
     setCity("");
     if (!userData.hasUpdatedCity) {

@@ -22,11 +22,6 @@ export interface State {
   isAuthenticated: boolean;
 }
 
-export interface ICityUser {
-  id: string;
-  city: string;
-}
-
 export interface IDishesInRadius {
   id: string;
   radius: number;

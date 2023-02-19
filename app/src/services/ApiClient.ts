@@ -1,4 +1,5 @@
 import { IDish } from "../components/Details";
+import { ICityUser } from "../store/types";
 import { IUser } from "./types";
 
 const baseUrl = "http://localhost:3001";
@@ -60,8 +61,9 @@ const removeUnusedImagesFromDB = async (id: string) => {
     .catch((err) => console.log(err));
 };
 
-const confirmCity = async (id: string, city: string) =>
-  fetch(`${baseUrl}/profile/${id}`, {
+const confirmCity = async ({ id, city }: ICityUser) => {
+  debugger;
+  return fetch(`${baseUrl}/profile/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(city),
@@ -69,6 +71,7 @@ const confirmCity = async (id: string, city: string) =>
     .then((data) => data.json())
     .then((userData) => userData)
     .catch((err) => console.log(err));
+};
 
 const publishToDashBoard = async (id: string, data: any) =>
   fetch(`${baseUrl}/profile/${id}/dashboard`, {
@@ -102,7 +105,7 @@ const getDishesInRadius = async (
     .catch((err) => console.log(err));
 };
 
-const getDish = async (id) => {
+const getDish = async (id: string) => {
   let url = new URL(`${baseUrl}/details/${id}`);
   return fetch(url, {
     method: "GET",

@@ -47,7 +47,8 @@ export const LocalDishesParameter = (): JSX.Element => {
   // for geo point
 
   const handleRadiusSearch = async () => {
-    if ((!filter.cooked && !filter.ordered) || !userDataClone.city) {
+    debugger;
+    if (!filter.cooked && !filter.ordered) {
       return;
     }
     clientHelper.getGeoLocation(success);

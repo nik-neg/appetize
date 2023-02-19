@@ -4,9 +4,8 @@ import { ILoginCredentials } from "../components/RegisterLogin";
 import { Polygon } from "../helpers";
 import ApiClient from "../services/ApiClient";
 import apiServiceJWT from "../services/ApiClientJWT";
-import { IUser } from "../services/types";
+import { ICityUser, IUser } from "../services/types";
 import {
-  ICityUser,
   IDailyTreat,
   IDeleteDish,
   IDishesInRadius,
@@ -57,7 +56,8 @@ export const fetchUserDataFromDB = createAsyncThunk(
 export const updateCity = createAsyncThunk(
   "userData/updateCity",
   async (input: ICityUser) => {
-    const response = await ApiClient.confirmCity(input.id, input.city);
+    debugger;
+    const response = await ApiClient.confirmCity(input);
     return response;
   }
 );
@@ -122,7 +122,7 @@ export const deleteDish = createAsyncThunk(
 export const upDownVote = createAsyncThunk(
   "dishesInRadius/upDownVote",
   async ({ voteID, dishID, voteDecision }: IVote) => {
-    const response = await ApiClient.voteDish(voteID, dishID, vote);
+    const response = await ApiClient.voteDish(voteID, dishID, voteDecision);
     return response;
   }
 );
