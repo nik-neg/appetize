@@ -95,8 +95,8 @@ export const LocalDishesParameter = (): JSX.Element => {
           <InputSlider onSearch={setRadius} />
         </SLocalDishesContainerColumn>
       </SLocalDishesContainerRow>
-      <LocalDishesContainerRow>
-        <LocalDishesContainerColumn>
+      <SLocalDishesContainerRow>
+        <SLocalDishesContainerColumn>
           <FormControlLabel
             control={
               <Checkbox
@@ -111,8 +111,8 @@ export const LocalDishesParameter = (): JSX.Element => {
             }
             label="cooked"
           />
-        </LocalDishesContainerColumn>
-        <LocalDishesContainerColumn>
+        </SLocalDishesContainerColumn>
+        <SLocalDishesContainerColumn>
           <FormControlLabel
             control={
               <Checkbox
@@ -127,8 +127,8 @@ export const LocalDishesParameter = (): JSX.Element => {
             }
             label="ordered"
           />
-        </LocalDishesContainerColumn>
-        <LocalDishesContainerColumn>
+        </SLocalDishesContainerColumn>
+        <SLocalDishesContainerColumn>
           <FormControlLabel
             control={
               <Checkbox
@@ -143,9 +143,9 @@ export const LocalDishesParameter = (): JSX.Element => {
             }
             label="own"
           />
-        </LocalDishesContainerColumn>
-      </LocalDishesContainerRow>
-      <LocalDishesContainerRow>
+        </SLocalDishesContainerColumn>
+      </SLocalDishesContainerRow>
+      <SLocalDishesContainerRow>
         <div className="col">
           <Button
             id="dishes-in-radius-button"
@@ -158,7 +158,7 @@ export const LocalDishesParameter = (): JSX.Element => {
             Find nice dishes 😋
           </Button>
         </div>
-      </LocalDishesContainerRow>
+      </SLocalDishesContainerRow>
     </SLocalDishesContainer>
   );
 };

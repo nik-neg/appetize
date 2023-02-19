@@ -1,13 +1,12 @@
 import { createGlobalStyle } from "styled-components";
+import background from "../images/login-small.jpg";
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html {
-    background: url("login-small.jpg") no-repeat center center fixed;
+    background: url(${background}) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
   }
 `;
-
-export default GlobalStyle;
