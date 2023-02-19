@@ -76,9 +76,9 @@ const publishToDashBoard = async (id: string, data: any) =>
 
 const getDishesInRadius = async (
   id: string,
-  filter,
+  filter: any,
   pageNumber: number,
-  geoLocationPolygon
+  geoLocationPolygon: any
 ) => {
   let url = new URL(`${baseUrl}/profile/${id}/dashboard`);
   url.search = new URLSearchParams({

@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import bcrypt from "bcryptjs";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,23 +17,11 @@ import {
   fetchUserDataFromDB,
 } from "../../store/userSlice";
 import { LOGIN_MESSAGE } from "./constants";
+import { Copyright } from "./Copyright";
 import Logo from "./logo.jpg";
 import { SAppTitle } from "./RegisterLogin.styles";
 import "./RegisterLogin.txt";
 import { ILoginCredentials } from "./types";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"All rights reserved - Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Appetize
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -73,18 +60,14 @@ export const RegisterLogin = (): JSX.Element => {
     error: "",
   });
 
-  // const asyncWrapper = async (dispatch, asyncFunc, data) => {
-  //   await dispatch(asyncFunc(data));
-  // }
-
   const createUserAndSafeToDBCallback = useCallback(
-    (user: IUser) => createUserAndSafeToDB(user),
+    (user: IUser) => dispatch(createUserAndSafeToDB(user)),
     []
   );
 
   const fetchUserDataFromDBCallBack = useCallback(
     (loginCredentials: ILoginCredentials) =>
-      fetchUserDataFromDB(loginCredentials),
+      dispatch(fetchUserDataFromDB(loginCredentials)),
     []
   );
 
@@ -104,7 +87,6 @@ export const RegisterLogin = (): JSX.Element => {
         email,
         password: await bcrypt.hash(password, saltRounds),
       };
-      //await asyncWrapper(dispatch, createUserAndSafeToDB, user);
 
       await createUserAndSafeToDBCallback(user);
 

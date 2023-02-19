@@ -1,6 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ILoginCredentials } from "../components/RegisterLogin";
 import ApiClient from "../services/ApiClient";
 import apiServiceJWT from "../services/ApiClientJWT";
+import { IUser } from "../services/types";
+import {
+  ICityUser,
+  IDeleteDish,
+  IDishesInRadius,
+  IUploadImage,
+  IVote,
+} from "./types";
 
 const initialState = {
   userData: {},
@@ -26,7 +35,7 @@ const initialState = {
 
 export const createUserAndSafeToDB = createAsyncThunk(
   "userData/createUser",
-  async (input) => {
+  async (input: IUser) => {
     const response = await apiServiceJWT.register(input);
     return response;
   }
@@ -34,7 +43,7 @@ export const createUserAndSafeToDB = createAsyncThunk(
 
 export const fetchUserDataFromDB = createAsyncThunk(
   "userData/fetchUserDataFromDB",
-  async (input) => {
+  async (input: ILoginCredentials) => {
     const response = await apiServiceJWT.loginUser(input);
     return response;
   }
@@ -42,8 +51,8 @@ export const fetchUserDataFromDB = createAsyncThunk(
 
 export const updateCity = createAsyncThunk(
   "userData/updateCity",
-  async ({ id, city }) => {
-    const response = await ApiClient.confirmCity(id, { city });
+  async (input: ICityUser) => {
+    const response = await ApiClient.confirmCity(input.id, input.city);
     return response;
   }
 );
@@ -57,7 +66,13 @@ export const clearDishesInStoreRequest = createAsyncThunk(
 
 export const getDishesInRadius = createAsyncThunk(
   "dishesInRadius/getDishesInRadius",
-  async ({ id, radius, filter, pageNumber, geoLocationPolygon }) => {
+  async ({
+    id,
+    radius,
+    filter,
+    pageNumber,
+    geoLocationPolygon,
+  }: IDishesInRadius) => {
     const dishesInRadius = await ApiClient.getDishesInRadius(
       id,
       filter,
@@ -70,7 +85,7 @@ export const getDishesInRadius = createAsyncThunk(
 
 export const uploadImageBeforePublish = createAsyncThunk(
   "userData/uploadImageBeforePublish",
-  async ({ userId, file, chosenImageDate, imageURL }) => {
+  async ({ userId, file, chosenImageDate, imageURL }: IUploadImage) => {
     const userData = await ApiClient.uploadImage(
       userId,
       file,
@@ -93,7 +108,7 @@ export const logoutUser = createAsyncThunk("userData/logoutUser", async () => {
 
 export const deleteDish = createAsyncThunk(
   "dishesInRadius/deleteDish",
-  async ({ userId, dishId }) => {
+  async ({ userId, dishId }: IDeleteDish) => {
     await ApiClient.deleteDish(userId, dishId);
     return dishId;
   }
@@ -101,7 +116,7 @@ export const deleteDish = createAsyncThunk(
 
 export const upDownVote = createAsyncThunk(
   "dishesInRadius/upDownVote",
-  async ({ voteID, dishID, vote }) => {
+  async ({ voteID, dishID, vote }: IVote) => {
     const response = await ApiClient.voteDish(voteID, dishID, vote);
     return response;
   }
