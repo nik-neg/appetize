@@ -1,7 +1,6 @@
 # Appetize [![Tests](https://github.com/nik-neg/Appetize/actions/workflows/test.yml/badge.svg)](https://github.com/nik-neg/Appetize/actions/workflows/test.yml)
 
-Appetize is a full responsive social media application for local food, where user can upload their image from the filesystem,
-add a title, description, and recipe and then publish it with geolocation API from Web API.
+Appetize is a tested (unit, integration, e2e) full responsive social media application for local food, where user can upload their image from the filesystem, add a title, description, and recipe and then publish it with geolocation API from Web API.
 A simple voting system enables to vote for favourite dishes.
 
 `Hint`: I'm currently refactoring Appetize to TypeScript, Styled Components, RTKQ and Vite.
