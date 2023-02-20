@@ -50,11 +50,15 @@
     "rxjs": "7.0.0",
     "sinon": "^11.1.2",
     "socket.io": "^4.0.1",
-    "supertest": "^6.1.6"
+    "supertest": "^6.1.6",
+    "update-browserslist-db": "^1.0.10"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
