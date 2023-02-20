@@ -134,7 +134,7 @@ export const Profile = (): JSX.Element => {
   const [open, setOpen] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
   const [imagePath, setImagePath] = useState("");
-  const [imagePathForAvarar, setImagePathForAvatar] = useState("");
+  const [imagePathForAvatar, setImagePathForAvatar] = useState("");
 
   const dishTextInitialState = {
     title: "",
@@ -289,7 +289,7 @@ export const Profile = (): JSX.Element => {
             <SAvatatWrapper>
               <Avatar
                 alt="No Avatar"
-                src={imagePathForAvarar}
+                src={imagePathForAvatar}
                 className={classesAvatar.large}
                 style={{ height: "8rem", width: "8rem" }}
               />
