@@ -107,7 +107,7 @@ export const RegisterLogin = (): JSX.Element => {
     const userData = selectedUser; // previously getState
 
     if (!input.isUser) {
-      const { firstName, lastName, email, password } = input;
+      const { firstName, lastName, email, password } = getValues();
       const user = {
         firstName,
         lastName,
@@ -116,8 +116,6 @@ export const RegisterLogin = (): JSX.Element => {
       };
 
       await createUserAndSafeToDBCallback(user);
-
-      // userData = store.getState().user.userData;
 
       if (userData?.error) {
         setInput((prevState) => {
@@ -134,7 +132,6 @@ export const RegisterLogin = (): JSX.Element => {
       const { email, password } = input;
       const loginCredentials = { email, password };
 
-      // await asyncWrapper(dispatch, fetchUserDataFromDB, loginCredentials);
       await fetchUserDataFromDBCallBack(loginCredentials);
 
       if (userData?.error) {
@@ -183,7 +180,9 @@ export const RegisterLogin = (): JSX.Element => {
           src={Logo}
         ></Avatar>
         <SAppTitle>Appetize</SAppTitle>
+        {/*{import.meta.env.DEVELOPMENT === "true" && (*/}
         <DevTool control={control} placement="top-right" />
+        {/*)}*/}
         <form
           className={classes.form}
           noValidate
@@ -195,15 +194,12 @@ export const RegisterLogin = (): JSX.Element => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="fname"
-                    // name="firstName"
                     variant="outlined"
                     required
                     fullWidth
                     id="firstName"
                     label="First Name"
                     autoFocus
-                    // onChange={handleChange}
-                    // value={input.firstName}
                     {...register("firstName")}
                   />
                   <SErrorMessage>{errors.firstName?.message}</SErrorMessage>
@@ -215,10 +211,7 @@ export const RegisterLogin = (): JSX.Element => {
                     fullWidth
                     id="lastName"
                     label="Last Name"
-                    // name="lastName"
                     autoComplete="lname"
-                    // onChange={handleChange}
-                    // value={input.lastName}
                     {...register("lastName")}
                   />
                   <SErrorMessage>{errors.lastName?.message}</SErrorMessage>
@@ -234,10 +227,7 @@ export const RegisterLogin = (): JSX.Element => {
                 fullWidth
                 id="email"
                 label="Email Address"
-                // name="email"
                 autoComplete="email"
-                // onChange={handleChange}
-                // value={input.email}
                 {...register("email")}
               />
               <SErrorMessage>{errors.email?.message}</SErrorMessage>
@@ -247,13 +237,10 @@ export const RegisterLogin = (): JSX.Element => {
                 variant="outlined"
                 required
                 fullWidth
-                // name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                // onChange={handleChange}
-                // value={input.password}
                 {...register("password")}
               />
               <SErrorMessage>{errors.password?.message}</SErrorMessage>
