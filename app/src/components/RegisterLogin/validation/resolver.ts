@@ -1,6 +1,7 @@
 import { useCallback } from "react";
+import { ObjectSchema, ValidationError } from "yup";
 
-export const useYupValidationResolver = (validationSchema) =>
+export const useYupValidationResolver = (validationSchema: ObjectSchema<{}>) =>
   useCallback(
     async (data) => {
       try {
@@ -12,13 +13,14 @@ export const useYupValidationResolver = (validationSchema) =>
           values,
           errors: {},
         };
-      } catch (errors) {
+      } catch (errors: any) {
         return {
           values: {},
           errors: errors.inner.reduce(
-            (allErrors, currentError) => ({
+            (allErrors: ValidationError, currentError: ValidationError) => ({
               ...allErrors,
-              [currentError.path]: {
+              [currentError?.path?.toString() ?? "undefined"]: {
+                // todo: handle with counter ?
                 type: currentError.type ?? "validation",
                 message: currentError.message,
               },

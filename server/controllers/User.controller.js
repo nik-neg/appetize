@@ -9,7 +9,6 @@ const SECRET_KEY = process.env.SECRET_KEY || "loading";
 const User = require("../models/User");
 
 module.exports.createUser = async (req, res) => {
-  debugger;
   const { firstName, lastName, email, password } = req.body;
   let user = await User.findOne({
     email,

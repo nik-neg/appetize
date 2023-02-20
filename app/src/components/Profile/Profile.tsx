@@ -37,7 +37,7 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import clientHelper from "../../helpers/clientHelper";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { ICityUser } from "../../services/types";
+import { ICityUser, IUser } from "../../services/types";
 import { selectUserData } from "../../store/selectors/user";
 import {
   CHARACTER_LIMIT_CITY,
@@ -160,7 +160,9 @@ export const Profile = (): JSX.Element => {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const getProfile = async (accessToken: string | null) => {
-      const userInfo = await apiServiceJWT.getProfile(accessToken);
+      const userInfo: Partial<IUser> = await apiServiceJWT.getProfile(
+        accessToken
+      );
       if (userInfo.err) {
         history.push("/");
       } else {

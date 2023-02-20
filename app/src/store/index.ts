@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { State } from "./types";
 import { userSlice } from "./userSlice";
 
-export const store = configureStore({
+export const store = configureStore<{ user: State }>({
   reducer: { user: userSlice.reducer },
   // devTools: process.env.NODE_ENV !== "production",
 });

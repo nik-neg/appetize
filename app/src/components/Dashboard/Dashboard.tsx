@@ -15,9 +15,9 @@ import {
   selectSearchData,
   selectUserData,
 } from "../../store/selectors";
+import { IDailyTreat } from "../../store/types";
 import { getDishesInRadius } from "../../store/userSlice";
 import { RecipeReviewCard } from "../Card";
-import { IDish } from "../Details";
 import {
   SArrowContainer,
   SCardContainer,
@@ -87,6 +87,7 @@ export const Dashboard = (): JSX.Element => {
     }
     searchData.geoLocationPolygon =
       store.getState().user.searchData.geoLocationPolygon;
+
     dispatch(
       getDishesInRadius({
         id: userData._id,
@@ -145,7 +146,7 @@ export const Dashboard = (): JSX.Element => {
             ""
           )}
           <>
-            {dishes.map((dish: IDish, index: string) => {
+            {dishes.map((dish: IDailyTreat, index: number) => {
               return (
                 <SCardContainer key={index}>
                   <Grow

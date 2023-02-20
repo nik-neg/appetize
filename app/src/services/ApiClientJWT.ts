@@ -6,7 +6,9 @@ const baseUrl = "http://localhost:3001";
 const apiServiceJWT = {
   register: async (user: IUser) => {},
   loginUser: async (user: ILoginCredentials) => {},
-  getProfile: async (accessToken: string | null) => {},
+  getProfile: async (accessToken: string | null): Promise<Partial<IUser>> => {
+    return {};
+  },
   logout: async (accessToken: string | null) => {},
 };
 
@@ -36,7 +38,7 @@ apiServiceJWT.loginUser = async (loginCredentials) => {
     .catch((err) => console.log(err));
 };
 
-apiServiceJWT.getProfile = async (accessToken) => {
+apiServiceJWT.getProfile = async (accessToken): Promise<Partial<IUser>> => {
   return fetch(`${baseUrl}/profile`, {
     method: "GET",
     credentials: "include",

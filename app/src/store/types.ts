@@ -54,6 +54,7 @@ interface IPoint {
 }
 
 export interface IDailyTreat {
+  _id: string;
   userID: string;
   creatorName: string;
   city: string;
@@ -64,7 +65,7 @@ export interface IDailyTreat {
   geoPoint: IPoint;
   votes: number;
   cookedNotOrdered: boolean;
-  likedByUserID: string;
+  likedByUserID: string[];
   created: string;
   updated: string;
 }
