@@ -1,3 +1,4 @@
+import { DevTool } from "@hookform/devtools";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -6,7 +7,8 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import bcrypt from "bcryptjs";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Logo from "../../assets/logo.jpg";
 import { history } from "../../history";
 import { IUser } from "../../services/types";
@@ -18,9 +20,15 @@ import {
 } from "../../store/userSlice";
 import { LOGIN_MESSAGE } from "./constants";
 import { Copyright } from "./Copyright";
-import { SAppTitle, SCopyrightWrapper } from "./RegisterLogin.styles";
+import {
+  SAppTitle,
+  SCopyrightWrapper,
+  SErrorMessage,
+} from "./RegisterLogin.styles";
 import "./RegisterLogin.txt";
 import { ILoginCredentials } from "./types";
+import { useYupValidationResolver } from "./validation/resolver";
+import { loginSchema, registerSchema } from "./validation/schema";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,9 +51,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const RegisterLogin = (): JSX.Element => {
-  const dispatch = useAppDispatch();
-
-  const classes = useStyles();
   const initialUserCredentials = {
     firstName: "",
     lastName: "",
@@ -58,6 +63,31 @@ export const RegisterLogin = (): JSX.Element => {
     isUserMessage: LOGIN_MESSAGE["isUser"],
     error: "",
   });
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm({
+    resolver: useYupValidationResolver(
+      input.isUser ? loginSchema : registerSchema
+    ),
+  });
+
+  useEffect(() => {
+    setInput((prevState) => ({
+      ...prevState,
+      ...getValues(),
+    }));
+  }, [setInput, getValues]);
+
+  console.log({ errors, v: getValues() });
+
+  const dispatch = useAppDispatch();
+
+  const classes = useStyles();
 
   const createUserAndSafeToDBCallback = useCallback(
     (user: IUser) => dispatch(createUserAndSafeToDB(user)),
@@ -74,8 +104,6 @@ export const RegisterLogin = (): JSX.Element => {
 
   const saltRounds = 10;
   const handleRegisterOrLogin = async (event: any) => {
-    event.preventDefault();
-
     const userData = selectedUser; // previously getState
 
     if (!input.isUser) {
@@ -155,23 +183,30 @@ export const RegisterLogin = (): JSX.Element => {
           src={Logo}
         ></Avatar>
         <SAppTitle>Appetize</SAppTitle>
-        <form className={classes.form} noValidate>
+        <DevTool control={control} placement="top-right" />
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit(handleRegisterOrLogin)}
+        >
           <Grid container spacing={2}>
             {!input.isUser ? (
               <>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="fname"
-                    name="firstName"
+                    // name="firstName"
                     variant="outlined"
                     required
                     fullWidth
                     id="firstName"
                     label="First Name"
                     autoFocus
-                    onChange={handleChange}
-                    value={input.firstName}
+                    // onChange={handleChange}
+                    // value={input.firstName}
+                    {...register("firstName")}
                   />
+                  <SErrorMessage>{errors.firstName?.message}</SErrorMessage>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -180,11 +215,13 @@ export const RegisterLogin = (): JSX.Element => {
                     fullWidth
                     id="lastName"
                     label="Last Name"
-                    name="lastName"
+                    // name="lastName"
                     autoComplete="lname"
-                    onChange={handleChange}
-                    value={input.lastName}
+                    // onChange={handleChange}
+                    // value={input.lastName}
+                    {...register("lastName")}
                   />
+                  <SErrorMessage>{errors.lastName?.message}</SErrorMessage>
                 </Grid>
               </>
             ) : (
@@ -197,25 +234,29 @@ export const RegisterLogin = (): JSX.Element => {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                // name="email"
                 autoComplete="email"
-                onChange={handleChange}
-                value={input.email}
+                // onChange={handleChange}
+                // value={input.email}
+                {...register("email")}
               />
+              <SErrorMessage>{errors.email?.message}</SErrorMessage>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
+                // name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={handleChange}
-                value={input.password}
+                // onChange={handleChange}
+                // value={input.password}
+                {...register("password")}
               />
+              <SErrorMessage>{errors.password?.message}</SErrorMessage>
             </Grid>
             <Grid item xs={12}>
               <label id="register-login-error" value={input.error}>
@@ -231,7 +272,7 @@ export const RegisterLogin = (): JSX.Element => {
             id="register-login"
             label="register-login"
             className={classes.submit}
-            onClick={handleRegisterOrLogin}
+            // onClick={handleRegisterOrLogin}
           >
             {input.isUser ? "Sign in" : "Sign up"}
           </Button>

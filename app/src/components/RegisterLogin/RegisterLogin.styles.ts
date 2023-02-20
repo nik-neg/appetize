@@ -9,3 +9,8 @@ export const SAppTitle = styled.div`
 export const SCopyrightWrapper = styled.div`
   padding-top: 3rem;
 `;
+
+export const SErrorMessage = styled.div`
+  color: red;
+  padding-top: 0.5rem;
+`;
