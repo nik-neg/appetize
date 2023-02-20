@@ -1,0 +1,5 @@
+@import '_typography.txt';
+
+$font-app-name: 'Lobster', cursive;
+$font-dish-text: 'Crimson Pro', serif;
+$font-dish-publisher: 'Lobster', cursive;

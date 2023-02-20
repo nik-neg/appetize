@@ -1,0 +1,31 @@
+@import '../../styles/utils/_variables.txt';
+
+.dish-publisher {
+  font-family: $font-dish-publisher;
+  font-size: 4vw;
+  font-weight: 100;
+}
+
+.dish-title {
+  font-family: 'Crimson Pro', serif; //$font-dish-text;
+  font-size: 4vw;
+  font-weight: 900;
+}
+
+.dish-description {
+  font-family: 'Crimson Pro', serif; //$font-dish-text;
+  font-size: 3vw;
+  font-weight: 900;
+}
+
+.dish-recipe {
+  font-family: 'Crimson Pro', serif //$font-dish-text;
+  font-size: 3vw;
+  font-weight: 900;
+}
+
+.button {
+  width: 15vw;
+  width: 12.5%;
+}
+
