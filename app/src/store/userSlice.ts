@@ -4,7 +4,7 @@ import { ILoginCredentials } from "../components/RegisterLogin";
 import { Polygon } from "../helpers";
 import ApiClient from "../services/ApiClient";
 import apiServiceJWT from "../services/ApiClientJWT";
-import { ICityUser, IUser } from "../services/types";
+import { IUser } from "../services/types";
 import {
   IDailyTreat,
   IDeleteDish,
@@ -55,7 +55,7 @@ export const fetchUserDataFromDB = createAsyncThunk(
 
 export const updateCity = createAsyncThunk(
   "userData/updateCity",
-  async (input: ICityUser) => {
+  async (input: any) => {
     debugger;
     const response = await ApiClient.confirmCity(input);
     return response;

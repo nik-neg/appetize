@@ -104,7 +104,6 @@ module.exports.showProfile = async (req, res) => {
 };
 
 module.exports.setCity = async (req, res) => {
-  debugger;
   const { id } = req.params;
   const { city } = req.body;
   let user;

@@ -27,7 +27,6 @@ import {
 export const LocalDishesParameter = (): JSX.Element => {
   const [radius, setRadius] = useState(1);
   const userData = useAppSelector(selectUserData);
-  const userDataClone = { ...userData };
   const dispatch = useDispatch();
 
   const initialPageNumber = 1;
@@ -59,7 +58,7 @@ export const LocalDishesParameter = (): JSX.Element => {
           store.getState().user.searchData.geoLocationPolygon;
         dispatch(
           getDishesInRadius({
-            id: userDataClone._id,
+            id: userData._id,
             radius,
             filter: JSON.stringify(filter),
             pageNumber: initialPageNumber,

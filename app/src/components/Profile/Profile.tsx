@@ -196,8 +196,6 @@ export const Profile = (): JSX.Element => {
   }, []);
 
   const handleUpdateCity = async () => {
-    debugger;
-    //await asyncWrapper(dispatch, updateCity, { id: userData._id, city });
     await updateCityInStore({ id: userData._id, city });
 
     setCity("");
@@ -312,7 +310,7 @@ export const Profile = (): JSX.Element => {
                 maxLength: CHARACTER_LIMIT_CITY,
               }}
               value={city}
-              helperText={`${city.length}/${CHARACTER_LIMIT_TITLE}`}
+              helperText={`${city?.length}/${CHARACTER_LIMIT_TITLE}`}
               style={{
                 marginTop: "2.5%",
                 maxWidth: "6rem",
