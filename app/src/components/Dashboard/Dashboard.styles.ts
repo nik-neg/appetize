@@ -12,5 +12,6 @@ export const SArrowContainer = styled.div`
 
 export const SCardContainer = styled.div`
   display: flex;
+  padding: 0.5rem;
   justify-content: center;
 `;
