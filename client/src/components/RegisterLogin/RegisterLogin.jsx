@@ -82,6 +82,7 @@ export default function RegisterLogin () {
         firstName, lastName, email, password,
       } = input;
       const user = { firstName, lastName, email, password: await bcrypt.hash(password, saltRounds), };
+// hashing should be done in the backend to avoid all db users are affected, if the db has // been extracted by some hacker
       await asyncWrapper(dispatch, createUserAndSafeToDB, user);
       userData = store.getState().user.userData;
       if(userData?.error) {
